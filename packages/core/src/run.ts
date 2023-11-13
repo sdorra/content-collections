@@ -71,26 +71,14 @@ async function createTypeDefinitionFile(
   directory: string
 ) {
   const importPath = path.relative(directory, configuration.path);
-  let content = `import _config from "${importPath}";
-import z from "zod";
-
-type _Document = {
-  path: string;
-};
-
-type _Collections = typeof _config["collections"];
-
-type _CollectionsByName = {
-    [TCollection in _Collections[number] as TCollection["name"]]: _Collections[number];
-};
-
-type _GetByName<TName extends string> = _CollectionsByName[TName];
+  let content = `import mdxConfiguration from "${importPath}";
+import { GetTypeByName } from "@mdx-collections/core";
 `;
 
   const collections = configuration.collections;
   for (const collection of collections) {
     content += `\n`;
-    content += `export type ${collection.typeName} = z.infer<_GetByName<"${collection.name}">["schema"]> & { _document: _Document; };\n`;
+    content += `export type ${collection.typeName} = GetTypeByName<typeof mdxConfiguration, "${collection.name}">;\n`;
     content += `export declare const ${createArrayConstName(
       collection.name
     )}: Array<${collection.typeName}>;\n`;

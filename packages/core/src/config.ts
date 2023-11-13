@@ -18,11 +18,13 @@ export type Collection<TSchema extends ZodTypeAny> = {
   sources: string | string[];
 };
 
-export type AnyCollection = Collection<ZodAny>;
+export type AnyCollection = Collection<ZodTypeAny>;
 
 export type Configuration<TCollections extends Array<AnyCollection>> = {
   collections: TCollections;
 };
+
+export type AnyConfiguration = Configuration<Array<AnyCollection>>;
 
 export type InternalConfiguration = {
   collections: AnyCollection[];

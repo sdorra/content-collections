@@ -7,3 +7,4 @@ export async function build(config: string) {
 }
 
 export { defineCollection, type Configuration };
+export type { GetTypeByName } from "./types";
