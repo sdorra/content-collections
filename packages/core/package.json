@@ -1,0 +1,23 @@
+{
+  "name": "@mdx-collections/core",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "tsup": "^7.2.0",
+    "tsx": "^4.1.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "esbuild": "^0.19.5",
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.22.4"
+  }
+}

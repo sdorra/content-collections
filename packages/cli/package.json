@@ -1,0 +1,26 @@
+{
+  "name": "@mdx-collections/cli",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "tsup": "^7.2.0",
+    "tsx": "^4.1.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "@mdx-collections/core": "^1.0.0",
+    "ink": "^4.4.1",
+    "ink-spinner": "^5.0.0",
+    "pastel": "^2.0.2",
+    "react": "^18.2.0",
+    "zod": "^3.22.4"
+  }
+}

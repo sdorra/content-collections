@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Post One",
+    "description": "This is the first post",
+    "date": "2019-01-01T00:00:00.000Z",
+    "upper": "POST ONE",
+    "_document": {
+      "path": "posts/one.mdx"
+    }
+  },
+  {
+    "title": "Post Two",
+    "description": "This is the second post",
+    "date": "2020-01-01T00:00:00.000Z",
+    "upper": "POST TWO",
+    "_document": {
+      "path": "posts/two.md"
+    }
+  }
+]
