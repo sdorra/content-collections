@@ -1,4 +1,4 @@
-import { defineCollection, applyConfig, Configuration } from "./config";
+import { defineConfig, defineCollection, applyConfig } from "./config";
 import { run } from "./run";
 
 export async function build(config: string) {
@@ -6,5 +6,5 @@ export async function build(config: string) {
   await run(configuration);
 }
 
-export { defineCollection, type Configuration };
+export { defineConfig, defineCollection };
 export type { GetTypeByName } from "./types";

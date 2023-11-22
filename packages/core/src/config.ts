@@ -1,24 +1,23 @@
-import { ZodAny, ZodTypeAny } from "zod";
+import { ZodTypeAny } from "zod";
 import * as esbuild from "esbuild";
 import fs from "node:fs/promises";
 import path from "node:path";
 import packageJson from "../package.json";
 
-export type CollectionDefineRequest<TSchema extends ZodTypeAny> = {
+export type Collection<TSchema extends ZodTypeAny> = {
   name: string;
   typeName?: string;
   schema: TSchema;
   sources: string | string[];
 };
 
-export type Collection<TSchema extends ZodTypeAny> = {
-  name: string;
-  typeName: string;
-  schema: TSchema;
-  sources: string | string[];
-};
-
 export type AnyCollection = Collection<ZodTypeAny>;
+
+export function defineCollection<TSchema extends ZodTypeAny>(
+  collection: Collection<TSchema>
+) {
+  return collection;
+}
 
 export type Configuration<TCollections extends Array<AnyCollection>> = {
   collections: TCollections;
@@ -31,15 +30,10 @@ export type InternalConfiguration = {
   path: string;
 };
 
-export function defineCollection<TSchema extends ZodTypeAny>(
-  request: CollectionDefineRequest<TSchema>
+export function defineConfig<TConfig extends AnyConfiguration>(
+  config: TConfig
 ) {
-  return {
-    ...request,
-    typeName:
-      request.typeName ??
-      request.name.charAt(0).toUpperCase() + request.name.slice(1),
-  };
+  return config;
 }
 
 export async function applyConfig(
@@ -53,10 +47,7 @@ export async function applyConfig(
 
   await esbuild.build({
     entryPoints: [config],
-    external: [
-      ...Object.keys(packageJson.dependencies),
-      "@mdx-collections/*",
-    ],
+    external: [...Object.keys(packageJson.dependencies), "@mdx-collections/*"],
     bundle: true,
     platform: "node",
     format: "esm",
