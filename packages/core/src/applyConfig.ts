@@ -5,26 +5,56 @@ import packageJson from "../package.json";
 import { Collection } from "./config";
 import { ZodTypeAny } from "zod";
 
-type InternalConfiguration = {
+export type InternalConfiguration = {
   collections: Array<Collection<ZodTypeAny>>;
   path: string;
 };
 
+const importPathPlugin: esbuild.Plugin = {
+  name: "import-path",
+  setup(build) {
+    build.onResolve({ filter: /^\@mdx-collections\/core$/ }, () => {
+      return { path: path.join(__dirname, "index.ts"), external: true };
+    });
+  },
+};
+
+type Options = {
+  configName: string;
+  cacheDir?: string;
+};
+
+function resolveCacheDir(config: string, options: Options) {
+  if (options.cacheDir) {
+    return options.cacheDir;
+  }
+  return path.join(path.dirname(config), ".mdx-collections", "cache");
+}
+
 export async function applyConfig(
-  config: string
+  config: string,
+  options: Options = {
+    configName: "mdx-collection-config.js",
+  }
 ): Promise<InternalConfiguration> {
-  const directory = path.dirname(config);
-  const cacheDir = path.join(directory, ".mdx-collections", "cache");
+  const cacheDir = resolveCacheDir(config, options);
   await fs.mkdir(cacheDir, { recursive: true });
 
-  const outfile = path.join(cacheDir, "mdx-collection-config.mjs");
+  const outfile = path.join(cacheDir, options.configName);
 
+  const plugins: Array<esbuild.Plugin> = [];
+  if (process.env.NODE_ENV === "test") {
+    plugins.push(importPathPlugin);
+  }
+
+  // TODO handle build errors
   await esbuild.build({
     entryPoints: [config],
     external: [...Object.keys(packageJson.dependencies), "@mdx-collections/*"],
     bundle: true,
     platform: "node",
     format: "esm",
+    plugins,
     outfile,
   });
 

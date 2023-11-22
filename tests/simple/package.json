@@ -1,0 +1,19 @@
+{
+  "name": "@mdx-collections/tests-simple",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "mdx-collections build",
+    "test": "tsc"
+  },
+  "dependencies": {
+    "@mdx-collections/cli": "workspace:*",
+    "@mdx-collections/core": "workspace:*",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "18",
+    "tsx": "^4.1.1",
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,6 +1,7 @@
 import fg from "fast-glob";
 import fs from "node:fs/promises";
-import { AnyCollection, InternalConfiguration } from "./config";
+import { AnyCollection } from "./config";
+import { InternalConfiguration } from "./applyConfig";
 import matter from "gray-matter";
 import { readFile } from "fs/promises";
 import path from "node:path";
