@@ -10,10 +10,14 @@ async function processFile(collection: AnyCollection, filePath: string) {
   const file = await readFile(filePath, "utf-8");
   const { data } = matter(file);
 
-  const parsedData = await collection.schema.parseAsync(data);
+  let parsedData = await collection.schema.parseAsync(data);
+  if (collection.transform) {
+    parsedData = await collection.transform(parsedData);
+  }
+
   return {
     ...parsedData,
-    _document: {
+    _meta: {
       path: filePath,
     },
   };

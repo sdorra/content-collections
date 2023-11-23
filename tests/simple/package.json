@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "mdx-collections build",
-    "test": "tsc"
+    "typecheck": "tsc",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@mdx-collections/cli": "workspace:*",
@@ -14,6 +15,8 @@
   "devDependencies": {
     "@types/node": "18",
     "tsx": "^4.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite": "^5.0.2",
+    "vitest": "^0.34.6"
   }
 }

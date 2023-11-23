@@ -5,8 +5,11 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".mdx-collections/**"]
     },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "test": {
-      "dependsOn": ["build"]
+      "dependsOn": ["build", "typecheck"]
     }
   }
 }
