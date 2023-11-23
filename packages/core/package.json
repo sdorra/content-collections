@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts -d dist",
+    "typecheck": "tsc",
     "test": "vitest --run --coverage"
   },
   "devDependencies": {

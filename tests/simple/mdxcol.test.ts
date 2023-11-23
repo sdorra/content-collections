@@ -17,6 +17,7 @@ describe("mdxcol", () => {
       date: "2019-01-01T00:00:00.000Z",
       upper: "POST ONE",
       lower: "post one",
+      content: "# One",
       _meta: {
         path: "posts/one.mdx",
       },
@@ -34,6 +35,7 @@ describe("mdxcol", () => {
       date: "2020-01-01T00:00:00.000Z",
       upper: "POST TWO",
       lower: "post two",
+      content: "## Two",
       _meta: {
         path: "posts/two.md",
       },

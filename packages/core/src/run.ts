@@ -8,11 +8,11 @@ import path from "node:path";
 
 async function processFile(collection: AnyCollection, filePath: string) {
   const file = await readFile(filePath, "utf-8");
-  const { data } = matter(file);
+  const { data, content } = matter(file);
 
   let parsedData = await collection.schema.parseAsync(data);
   if (collection.transform) {
-    parsedData = await collection.transform(parsedData);
+    parsedData = await collection.transform(parsedData, content);
   }
 
   return {

@@ -2,11 +2,10 @@ import * as esbuild from "esbuild";
 import fs from "node:fs/promises";
 import path from "node:path";
 import packageJson from "../package.json";
-import { Collection } from "./config";
-import { ZodTypeAny } from "zod";
+import { AnyCollection } from "./config";
 
 export type InternalConfiguration = {
-  collections: Array<Collection<ZodTypeAny>>;
+  collections: Array<AnyCollection>;
   path: string;
 };
 

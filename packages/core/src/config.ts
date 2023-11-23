@@ -10,7 +10,7 @@ export type Document<TSchema extends ZodTypeAny> = z.infer<TSchema> & {
 };
 
 type TransformFn<TSchema extends ZodTypeAny> =
-  | ((data: Document<TSchema>) => any)
+  | ((data: Document<TSchema>, content: string) => any)
   | undefined;
 
 export type CollectionRequest<
