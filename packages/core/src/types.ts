@@ -10,6 +10,6 @@ export type GetTypeByName<
   TCollection = CollectionByName<TConfiguration>[TName]
 > = TCollection extends AnyCollection
   ? TCollection["transform"] extends (...args: any) => any
-    ? ReturnType<TCollection["transform"]>
+    ? Awaited<ReturnType<TCollection["transform"]>>
     : Document<TCollection["schema"]>
   : never;
