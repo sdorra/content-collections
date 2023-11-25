@@ -7,6 +7,7 @@ import { AnyCollection } from "./config";
 export type InternalConfiguration = {
   collections: Array<AnyCollection>;
   path: string;
+  generateTypes?: boolean;
 };
 
 const importPathPlugin: esbuild.Plugin = {
@@ -63,5 +64,6 @@ export async function applyConfig(
   return {
     ...module.default,
     path: config,
+    generateTypes: true,
   };
 }

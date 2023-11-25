@@ -5,6 +5,7 @@ import { InternalConfiguration } from "./applyConfig";
 import matter from "gray-matter";
 import { readFile } from "fs/promises";
 import path from "node:path";
+import pluralize from "pluralize";
 
 async function processFile(collection: AnyCollection, filePath: string) {
   const file = await readFile(filePath, "utf-8");
@@ -35,7 +36,8 @@ export async function processCollection(collection: AnyCollection) {
 }
 
 function createArrayConstName(name: string) {
-  return "all" + name.charAt(0).toUpperCase() + name.slice(1);
+  let suffix = name.charAt(0).toUpperCase() + name.slice(1);
+  return "all" + pluralize(suffix);
 }
 
 async function createDataFiles(
@@ -96,11 +98,12 @@ import { GetTypeByName } from "@mdx-collections/core";
   await fs.writeFile(path.join(directory, "index.d.ts"), content, "utf-8");
 }
 
-export async function run(configuration: InternalConfiguration) {
-  const directory = path.join(".mdx-collections", "generated");
+export async function run(configuration: InternalConfiguration, directory: string) {
   await fs.mkdir(directory, { recursive: true });
 
   await createDataFiles(configuration, directory);
   await createJavaScriptFile(configuration, directory);
-  await createTypeDefinitionFile(configuration, directory);
+  if (configuration.generateTypes){
+    await createTypeDefinitionFile(configuration, directory);
+  }
 }
