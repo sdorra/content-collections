@@ -17,10 +17,10 @@ const posts = defineCollection({
       upper: val.title.toUpperCase(),
     })),
   sources: "posts/**/*.md(x)?",
-  transform: (post, content) => ({
+  transform: async (context, post) => ({
     ...post,
     lower: post.upper.toLowerCase(),
-    content: content.trim(),
+    content: (await context.content()).trim(),
   }),
 });
 

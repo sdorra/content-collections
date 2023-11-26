@@ -1,6 +1,6 @@
 import fg from "fast-glob";
 import fs from "node:fs/promises";
-import { AnyCollection } from "./config";
+import { AnyCollection, Context } from "./config";
 import { InternalConfiguration } from "./applyConfig";
 import matter from "gray-matter";
 import { readFile } from "fs/promises";
@@ -13,7 +13,10 @@ async function processFile(collection: AnyCollection, filePath: string) {
 
   let parsedData = await collection.schema.parseAsync(data);
   if (collection.transform) {
-    parsedData = await collection.transform(parsedData, content);
+    const context: Context = {
+      content: async () => content,
+    };
+    parsedData = await collection.transform(context, parsedData);
   }
 
   return {
@@ -98,12 +101,15 @@ import { GetTypeByName } from "@mdx-collections/core";
   await fs.writeFile(path.join(directory, "index.d.ts"), content, "utf-8");
 }
 
-export async function run(configuration: InternalConfiguration, directory: string) {
+export async function run(
+  configuration: InternalConfiguration,
+  directory: string
+) {
   await fs.mkdir(directory, { recursive: true });
 
   await createDataFiles(configuration, directory);
   await createJavaScriptFile(configuration, directory);
-  if (configuration.generateTypes){
+  if (configuration.generateTypes) {
     await createTypeDefinitionFile(configuration, directory);
   }
 }

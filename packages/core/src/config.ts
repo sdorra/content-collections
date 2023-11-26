@@ -9,8 +9,12 @@ export type Document<TSchema extends ZodTypeAny> = z.infer<TSchema> & {
   _meta: Meta;
 };
 
+export type Context = {
+  content(): Promise<string>;
+};
+
 type TransformFn<TSchema extends ZodTypeAny> =
-  | ((data: Document<TSchema>, content: string) => any)
+  | ((context: Context, data: Document<TSchema>) => any)
   | undefined;
 
 export type CollectionRequest<
