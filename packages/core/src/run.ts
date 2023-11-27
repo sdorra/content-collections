@@ -7,54 +7,21 @@ import { readFile } from "fs/promises";
 import path from "node:path";
 import pluralize from "pluralize";
 
-async function processFile(collection: AnyCollection, filePath: string) {
-  const file = await readFile(filePath, "utf-8");
-  const { data, content } = matter(file);
-
-  let parsedData = await collection.schema.parseAsync(data);
-  if (collection.transform) {
-    const context: Context = {
-      content: async () => content,
-    };
-    parsedData = await collection.transform(context, parsedData);
-  }
-
-  return {
-    ...parsedData,
-    _meta: {
-      path: filePath,
-    },
-  };
-}
-
-export async function processCollection(collection: AnyCollection) {
-  const files = await fg(collection.sources);
-  const promises = files.map((file) => processFile(collection, file));
-  const data = await Promise.all(promises);
-
-  return {
-    data,
-    name: collection.name,
-  };
-}
-
 function createArrayConstName(name: string) {
   let suffix = name.charAt(0).toUpperCase() + name.slice(1);
   return "all" + pluralize(suffix);
 }
 
 async function createDataFiles(
-  configuration: InternalConfiguration,
+  collections: Array<CollectionResult>,
   directory: string
 ) {
-  const collections = configuration.collections;
   for (const collection of collections) {
-    const result = await processCollection(collection);
     const dataPath = path.join(
       directory,
-      `${createArrayConstName(collection.name)}.json`
+      `${createArrayConstName(collection.collection.name)}.json`
     );
-    await fs.writeFile(dataPath, JSON.stringify(result.data, null, 2));
+    await fs.writeFile(dataPath, JSON.stringify(collection.files.map(f => f.document), null, 2));
   }
 }
 
@@ -101,13 +68,100 @@ import { GetTypeByName } from "@mdx-collections/core";
   await fs.writeFile(path.join(directory, "index.d.ts"), content, "utf-8");
 }
 
+type CollectionFile = {
+  document: any;
+  content: string;
+};
+
+async function collectFile(
+  collection: AnyCollection,
+  filePath: string
+): Promise<CollectionFile> {
+  const file = await readFile(filePath, "utf-8");
+  const { data, content } = matter(file);
+
+  let parsedData = await collection.schema.parseAsync(data);
+
+  const document = {
+    ...parsedData,
+    _meta: {
+      path: filePath,
+    },
+  };
+
+  return {
+    document,
+    content,
+  };
+}
+
+type CollectionResult = {
+  files: Array<CollectionFile>;
+  collection: AnyCollection;
+};
+
+async function collectFromCollection(collection: AnyCollection): Promise<CollectionResult> {
+  const filePaths = await fg(collection.sources);
+  const promises = filePaths.map((filePath) =>
+    collectFile(collection, filePath)
+  );
+  return {
+    files: await Promise.all(promises),
+    collection,
+  };
+}
+
+function createContext(
+  collections: Array<CollectionResult>,
+  file: CollectionFile
+): Context {
+  return {
+    content: async () => file.content,
+    documents: (collection) => {
+      const resolved = collections.find((c) => c.collection.name === collection.name);
+      if (!resolved) {
+        throw new Error(`Collection ${collection.name} not found, do you have registered it in your configuration?`);
+      }
+      return resolved.files.map((file) => file.document);
+    },
+  };
+}
+
+async function transformCollection(
+  collections: Array<CollectionResult>,
+  collection: AnyCollection,
+  files: Array<CollectionFile>
+) {
+  if (collection.transform) {
+    for (const file of files) {
+      const context = createContext(collections, file);
+      file.document = await collection.transform(context, file.document);
+    }
+  }
+}
+
+async function collect(configuration: InternalConfiguration) {
+  const promises = configuration.collections.map((collection) =>
+    collectFromCollection(collection)
+  );
+  const collections = await Promise.all(promises);
+
+  for (const { collection, files } of collections) {
+    await transformCollection(collections, collection, files);
+  }
+
+  return collections;
+}
+
 export async function run(
   configuration: InternalConfiguration,
   directory: string
 ) {
   await fs.mkdir(directory, { recursive: true });
 
-  await createDataFiles(configuration, directory);
+  const collections = await collect(configuration);
+
+  await createDataFiles(collections, directory);
   await createJavaScriptFile(configuration, directory);
   if (configuration.generateTypes) {
     await createTypeDefinitionFile(configuration, directory);

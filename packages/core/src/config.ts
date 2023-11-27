@@ -11,6 +11,9 @@ export type Document<TSchema extends ZodTypeAny> = z.infer<TSchema> & {
 
 export type Context = {
   content(): Promise<string>;
+  documents<TCollection extends AnyCollection>(
+    collection: TCollection
+  ): Array<Document<TCollection["schema"]>>;
 };
 
 type TransformFn<TSchema extends ZodTypeAny> =

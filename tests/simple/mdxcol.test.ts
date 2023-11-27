@@ -15,6 +15,10 @@ describe("mdxcol", () => {
       title: "Post One",
       description: "This is the first post",
       date: "2019-01-01T00:00:00.000Z",
+      author: {
+        displayName: "Tricia Marie McMillan",
+        email: "trillian@hitchhiker.com",
+      },
       upper: "POST ONE",
       lower: "post one",
       content: "# One",
@@ -33,6 +37,10 @@ describe("mdxcol", () => {
       title: "Post Two",
       description: "This is the second post",
       date: "2020-01-01T00:00:00.000Z",
+      author: {
+        displayName: "Tricia Marie McMillan",
+        email: "trillian@hitchhiker.com",
+      },
       upper: "POST TWO",
       lower: "post two",
       content: "## Two",
