@@ -19,9 +19,10 @@ type TransformFn<TSchema extends ZodTypeAny> =
 
 export type CollectionRequest<
   TSchema extends ZodTypeAny,
+  TName extends string,
   TTransform extends TransformFn<TSchema> = undefined
 > = {
-  name: string;
+  name: TName;
   typeName?: string;
   schema: TSchema;
   sources: string | string[];
@@ -35,17 +36,19 @@ export type CollectionRequest<
 
 export type Collection<
   TSchema extends ZodTypeAny,
+  TName extends string,
   TTransform extends TransformFn<TSchema>
-> = CollectionRequest<TSchema, TTransform> & {
+> = CollectionRequest<TSchema,TName, TTransform> & {
   typeName: string;
 };
 
-export type AnyCollection = Collection<ZodTypeAny, any>;
+export type AnyCollection = Collection<ZodTypeAny, any, any>;
 
 export function defineCollection<
   TSchema extends ZodTypeAny,
+  TName extends string,
   TTransform extends TransformFn<TSchema>
->(collection: CollectionRequest<TSchema, TTransform>) {
+>(collection: CollectionRequest<TSchema, TName, TTransform>) {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
