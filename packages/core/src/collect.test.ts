@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { collect } from "./collect";
-import { defineCollection } from ".";
+import { CollectionError, collect } from "./collect";
+import { defineCollection } from "./config";
 import { z } from "zod";
 import path from "node:path";
 
@@ -45,6 +45,21 @@ describe("collect", () => {
 
     const [collection] = await collect([sample]);
     expect(collection?.files).toHaveLength(2);
+  });
+
+  it("should collect meta fields", async () => {
+    const sample = defineCollection({
+      name: "sample",
+      schema: z.object({
+        name: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/test/*.md"),
+    });
+
+    const [collection] = await collect([sample]);
+    expect(collection?.files[0]?.document._meta.path).toBe(
+      path.join(__dirname, "./__tests__/sources/test/001.md")
+    );
   });
 
   it("should transform the document", async () => {
@@ -129,15 +144,121 @@ describe("collect", () => {
       }),
       sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
       transform: async (context, document) => {
-        const author = await context.documents(authors).find(a => a.ref === document.author);
+        const author = await context
+          .documents(authors)
+          .find((a) => a.ref === document.author);
         return {
           ...document,
           author: author?.displayName,
         };
-      }
+      },
     });
 
     const collections = await collect([authors, posts]);
-    expect(collections[1]?.files[0]?.document.author).toBe("Tricia Marie McMillan");
+    expect(collections[1]?.files[0]?.document.author).toBe(
+      "Tricia Marie McMillan"
+    );
+  });
+
+  it("should throw if document validation fails", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+    });
+
+    await expect(collect([posts])).rejects.toThrowError(/invalid_type/);
+  });
+
+  it("should capture validation error", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+    });
+
+    const errors: Array<CollectionError> = [];
+    await collect([posts], (error) => errors.push(error));
+    expect(errors[0]?.type).toBe("Validation");
+  });
+
+  it("should not hold invalid documents", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+    });
+
+    const [collection] = await collect([posts], () => {});
+    expect(collection?.files).toHaveLength(0);
+  });
+
+  it("should report an error if a collection is not registered", async () => {
+    const authors = defineCollection({
+      name: "authors",
+      schema: z.object({
+        ref: z.string(),
+        displayName: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/authors/*.md"),
+    });
+
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        title: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+      transform: async (context, document) => {
+        const allAuthors = await context.documents(authors);
+        return {
+          ...document,
+          allAuthors,
+        };
+      },
+    });
+
+    const errors: Array<CollectionError> = [];
+    await collect([posts], (error) => errors.push(error));
+    expect(errors[0]?.type).toBe("Configuration");
+  });
+
+  it("should report an transform error", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        title: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+      transform: () => {
+        throw new Error("Something went wrong");
+      },
+    });
+
+    const errors: Array<CollectionError> = [];
+    await collect([posts], (error) => errors.push(error));
+    expect(errors[0]?.type).toBe("Transform");
+  });
+
+  it("should exclude documents with a transform error", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        title: z.string(),
+      }),
+      sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
+      transform: () => {
+        throw new Error("Something went wrong");
+      },
+    });
+
+    const [collection] = await collect([posts], () => {});
+    expect(collection?.files).toHaveLength(0);
   });
 });
