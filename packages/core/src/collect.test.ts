@@ -72,13 +72,16 @@ describe("collect", () => {
       transform: (context, document) => {
         return {
           ...document,
+          test: "test",
           name: document.name.toUpperCase(),
         };
       },
     });
 
     const [collection] = await collect([sample]);
-    expect(collection?.files[0]?.document.name).toBe("ONE");
+    const doc = collection?.files[0]?.document;
+    expect(doc.test).toBe("test");
+    expect(doc.name).toBe("ONE");
   });
 
   it("should add the content to the document", async () => {
@@ -236,8 +239,9 @@ describe("collect", () => {
         title: z.string(),
       }),
       sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
-      transform: () => {
+      transform: (doc) => {
         throw new Error("Something went wrong");
+        return doc;
       },
     });
 
@@ -253,8 +257,9 @@ describe("collect", () => {
         title: z.string(),
       }),
       sources: path.join(__dirname, "./__tests__/sources/posts/*.md"),
-      transform: () => {
+      transform: (doc) => {
         throw new Error("Something went wrong");
+        return doc;
       },
     });
 

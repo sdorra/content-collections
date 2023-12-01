@@ -23,35 +23,38 @@ type TransformFn<TSchema extends ZodTypeAny> =
 export type CollectionRequest<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema> = undefined
+  TTransform extends TransformFn<TSchema>,
+  TDocument
 > = {
   name: TName;
   typeName?: string;
   schema: TSchema;
+  transform?: TTransform;
   sources: string | string[];
-} & (TTransform extends undefined
-  ? {
-      transform?: never;
-    }
-  : {
-      transform: TTransform;
-    });
+  onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
+};
 
 export type Collection<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema>
-> = CollectionRequest<TSchema,TName, TTransform> & {
+  TTransform extends TransformFn<TSchema>,
+  TDocument
+> = CollectionRequest<TSchema, TName, TTransform, TDocument> & {
   typeName: string;
 };
 
-export type AnyCollection = Collection<ZodTypeAny, any, any>;
+export type AnyCollection = Collection<ZodTypeAny, any, any, any>;
 
 export function defineCollection<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema>
->(collection: CollectionRequest<TSchema, TName, TTransform>) {
+  TTransform extends TransformFn<TSchema>,
+  TDocument = [TTransform] extends [(...args: any) => any]
+    ? Awaited<ReturnType<TTransform>>
+    : Document<TSchema>
+>(
+  collection: CollectionRequest<TSchema, TName, TTransform, TDocument>
+): Collection<TSchema, TName, TTransform, TDocument> {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);

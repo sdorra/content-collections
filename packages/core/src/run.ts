@@ -85,4 +85,10 @@ export async function run(
   if (configuration.generateTypes) {
     await createTypeDefinitionFile(configuration, directory);
   }
+
+  for (const collection of collections) {
+    if (collection.onSuccess) {
+      await collection.onSuccess(collection.files.map((f) => f.document));
+    }
+  }
 }
