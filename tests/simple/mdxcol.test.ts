@@ -23,7 +23,7 @@ describe("mdxcol", () => {
       lower: "post one",
       content: "# One",
       _meta: {
-        path: "posts/one.mdx",
+        path: "one.mdx",
       },
     });
   });
@@ -45,7 +45,7 @@ describe("mdxcol", () => {
       lower: "post two",
       content: "## Two",
       _meta: {
-        path: "posts/two.md",
+        path: "two.md",
       },
     });
   });

@@ -22,11 +22,18 @@ describe("applyConfig", () => {
     expect(cfg.collections[0]?.typeName).toBe("Post");
   });
 
-  it("should have a source pattern", async () => {
+  it("should have a directory", async () => {
     const cfg = await config("config.001");
 
     expect(cfg.collections).toHaveLength(1);
-    expect(cfg.collections[0]?.sources).toBe("posts/**/*.md(x)?");
+    expect(cfg.collections[0]?.directory).toBe("posts");
+  });
+
+  it("should have a include pattern", async () => {
+    const cfg = await config("config.001");
+
+    expect(cfg.collections).toHaveLength(1);
+    expect(cfg.collections[0]?.include).toBe("**/*.md(x)?");
   });
 
   it("should generate a typeName", async () => {

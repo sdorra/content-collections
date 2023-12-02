@@ -1,7 +1,8 @@
 import matter from "gray-matter";
 import fg from "fast-glob";
 import { readFile } from "fs/promises";
-import { AnyCollection, Collection } from "dist";
+import { AnyCollection } from "./config";
+import path from "path";
 
 export type CollectionFile = {
   data: Record<string, unknown>;
@@ -9,8 +10,11 @@ export type CollectionFile = {
   path: string;
 };
 
-async function collectFile(filePath: string): Promise<CollectionFile> {
-  const file = await readFile(filePath, "utf-8");
+async function collectFile(
+  directory: string,
+  filePath: string
+): Promise<CollectionFile> {
+  const file = await readFile(path.join(directory, filePath), "utf-8");
   const { data, content: body } = matter(file);
 
   return {
@@ -21,15 +25,21 @@ async function collectFile(filePath: string): Promise<CollectionFile> {
 }
 
 async function resolveCollection<T extends FileCollection>(collection: T) {
-  const filePaths = await fg(collection.sources);
-  const promises = filePaths.map((filePath) => collectFile(filePath));
+  const filePaths = await fg(collection.include, {
+    cwd: collection.directory,
+    onlyFiles: true,
+    absolute: false,
+  });
+  const promises = filePaths.map((filePath) =>
+    collectFile(collection.directory, filePath)
+  );
   return {
     ...collection,
     files: await Promise.all(promises),
   };
 }
 
-type FileCollection = Pick<AnyCollection, "sources">;
+type FileCollection = Pick<AnyCollection, "directory" | "include">;
 
 export async function collect<T extends FileCollection>(
   unresolvedCollections: Array<T>

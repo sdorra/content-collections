@@ -5,7 +5,6 @@ import path from "path";
 import { createRunner } from "./run";
 
 describe("run", () => {
-
   async function run(configuration: any, directory: string) {
     const runner = await createRunner(configuration, directory);
     await runner.run();
@@ -21,7 +20,8 @@ describe("run", () => {
           schema: z.object({
             name: z.string(),
           }),
-          sources: [path.join(directory, "**/*.md")],
+          directory,
+          include: "**/*.md",
         }),
       ],
     });
@@ -52,10 +52,11 @@ describe("run", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: [path.join(directory, "**/*.md")],
+      directory,
+      include: "**/*.md",
       onSuccess: (documents) => {
         names = documents.map((d) => d.name);
-      }
+      },
     });
 
     const config = defineConfig({
@@ -84,7 +85,8 @@ describe("run", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: [path.join(directory, "**/*.md")],
+      directory,
+      include: "**/*.md",
       transform: async (_, document) => {
         return {
           ...document,
@@ -93,7 +95,7 @@ describe("run", () => {
       },
       onSuccess: async (documents) => {
         names = documents.map((d) => d.upper);
-      }
+      },
     });
 
     const config = defineConfig({

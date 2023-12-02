@@ -30,7 +30,8 @@ export type CollectionRequest<
   typeName?: string;
   schema: TSchema;
   transform?: TTransform;
-  sources: string | string[];
+  directory: string;
+  include: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 };
 

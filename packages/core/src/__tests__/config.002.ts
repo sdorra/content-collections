@@ -6,7 +6,8 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
   }),
-  sources: "posts/**/*.md(x)?",
+  directory: "posts",
+  include: "**/*.md(x)?",
 });
 
 export default defineConfig({

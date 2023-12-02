@@ -8,7 +8,8 @@ const authors = defineCollection({
     displayName: z.string(),
     email: z.string().email(),
   }),
-  sources: "authors/*.md",
+  directory: "authors",
+  include: "*.md"
 });
 
 const posts = defineCollection({
@@ -27,7 +28,8 @@ const posts = defineCollection({
       ...val,
       upper: val.title.toUpperCase(),
     })),
-  sources: "posts/**/*.md(x)?",
+  directory: "posts",
+  include: "**/*.md(x)?",
   transform: async (context, post) => {
     const author = context
       .documents(authors)

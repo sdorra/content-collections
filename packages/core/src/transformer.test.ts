@@ -48,7 +48,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       files,
     };
   }
@@ -79,7 +80,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: (_, document) => {
         return {
           ...document,
@@ -106,7 +108,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: async (context, document) => {
         return {
           ...document,
@@ -132,7 +135,8 @@ describe("transform", () => {
         title: z.string(),
         author: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const authors = defineCollection({
@@ -141,7 +145,8 @@ describe("transform", () => {
         ref: z.string(),
         displayName: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const collections = await transform([
@@ -167,7 +172,8 @@ describe("transform", () => {
         ref: z.string(),
         displayName: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const posts = defineCollection({
@@ -176,7 +182,8 @@ describe("transform", () => {
         title: z.string(),
         author: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: async (context, document) => {
         const author = await context
           .documents(authors)
@@ -209,7 +216,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     await expect(
@@ -228,7 +236,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const errors: Array<TransformError> = [];
@@ -250,7 +259,8 @@ describe("transform", () => {
       schema: z.object({
         name: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const [collection] = await transform(
@@ -272,7 +282,8 @@ describe("transform", () => {
         ref: z.string(),
         displayName: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
     });
 
     const posts = defineCollection({
@@ -280,7 +291,8 @@ describe("transform", () => {
       schema: z.object({
         title: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: async (context, document) => {
         const allAuthors = await context.documents(authors);
         return {
@@ -309,7 +321,8 @@ describe("transform", () => {
       schema: z.object({
         title: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: (doc) => {
         throw new Error("Something went wrong");
         return doc;
@@ -317,10 +330,15 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await transform([{
-      ...posts,
-      files: [firstPost],
-    }], (error) => errors.push(error));
+    await transform(
+      [
+        {
+          ...posts,
+          files: [firstPost],
+        },
+      ],
+      (error) => errors.push(error)
+    );
     expect(errors[0]?.type).toBe("Transform");
   });
 
@@ -330,17 +348,23 @@ describe("transform", () => {
       schema: z.object({
         title: z.string(),
       }),
-      sources: "*.md",
+      directory: "tests",
+      include: "*.md",
       transform: (doc) => {
         throw new Error("Something went wrong");
         return doc;
       },
     });
 
-    const [collection] = await transform([{
-      ...posts,
-      files: [firstPost],
-    }], () => {});
+    const [collection] = await transform(
+      [
+        {
+          ...posts,
+          files: [firstPost],
+        },
+      ],
+      () => {}
+    );
     expect(collection?.documents).toHaveLength(0);
   });
 });
