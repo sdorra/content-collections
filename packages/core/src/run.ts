@@ -2,7 +2,8 @@ import fs from "node:fs/promises";
 import { InternalConfiguration } from "./applyConfig";
 import path from "node:path";
 import pluralize from "pluralize";
-import { ResolvedCollection, collect } from "./collect";
+import { collect } from "./collect";
+import { TransformedCollection, transform } from "./transformer";
 
 function createArrayConstName(name: string) {
   let suffix = name.charAt(0).toUpperCase() + name.slice(1);
@@ -10,7 +11,7 @@ function createArrayConstName(name: string) {
 }
 
 async function createDataFiles(
-  collections: Array<ResolvedCollection>,
+  collections: Array<TransformedCollection>,
   directory: string
 ) {
   for (const collection of collections) {
@@ -21,7 +22,7 @@ async function createDataFiles(
     await fs.writeFile(
       dataPath,
       JSON.stringify(
-        collection.files.map((f) => f.document),
+        collection.documents.map((doc) => doc.document),
         null,
         2
       )
@@ -78,7 +79,8 @@ export async function run(
 ) {
   await fs.mkdir(directory, { recursive: true });
 
-  const collections = await collect(configuration.collections);
+  const resolved = await collect(configuration.collections);
+  const collections = await transform(resolved);
 
   await createDataFiles(collections, directory);
   await createJavaScriptFile(configuration, directory);
@@ -88,7 +90,9 @@ export async function run(
 
   for (const collection of collections) {
     if (collection.onSuccess) {
-      await collection.onSuccess(collection.files.map((f) => f.document));
+      await collection.onSuccess(
+        collection.documents.map((doc) => doc.document)
+      );
     }
   }
 }
