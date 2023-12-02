@@ -2,9 +2,15 @@ import { describe, expect, it } from "vitest";
 import { defineCollection, defineConfig } from ".";
 import { z } from "zod";
 import path from "path";
-import { run } from "./run";
+import { createRunner } from "./run";
 
 describe("run", () => {
+
+  async function run(configuration: any, directory: string) {
+    const runner = await createRunner(configuration, directory);
+    await runner.run();
+  }
+
   it("should run", async () => {
     const directory = path.join(__dirname, "__tests__", "sources", "test");
 

@@ -73,26 +73,28 @@ import { GetTypeByName } from "@mdx-collections/core";
   await fs.writeFile(path.join(directory, "index.d.ts"), content, "utf-8");
 }
 
-export async function run(
-  configuration: InternalConfiguration,
-  directory: string
-) {
+export async function createRunner(configuration: InternalConfiguration, directory: string) {
   await fs.mkdir(directory, { recursive: true });
 
   const resolved = await collect(configuration.collections);
-  const collections = await transform(resolved);
 
-  await createDataFiles(collections, directory);
-  await createJavaScriptFile(configuration, directory);
-  if (configuration.generateTypes) {
-    await createTypeDefinitionFile(configuration, directory);
-  }
+  return {
+    run: async () => {
+      const collections = await transform(resolved);
 
-  for (const collection of collections) {
-    if (collection.onSuccess) {
-      await collection.onSuccess(
-        collection.documents.map((doc) => doc.document)
-      );
-    }
-  }
+      await createDataFiles(collections, directory);
+      await createJavaScriptFile(configuration, directory);
+      if (configuration.generateTypes) {
+        await createTypeDefinitionFile(configuration, directory);
+      }
+
+      for (const collection of collections) {
+        if (collection.onSuccess) {
+          await collection.onSuccess(
+            collection.documents.map((doc) => doc.document)
+          );
+        }
+      }
+    },
+  };
 }
