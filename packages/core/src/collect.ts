@@ -5,6 +5,7 @@ import { AnyCollection } from "./config";
 import path from "path";
 import micromatch from "micromatch";
 import { Modification } from ".";
+import { c } from "vitest/dist/reporters-5f784f42.js";
 
 export type CollectionFile = {
   data: Record<string, unknown>;
@@ -52,9 +53,20 @@ export async function collect<T extends FileCollection>(
   return await Promise.all(promises);
 }
 
-export function isIncluded(collection: AnyCollection, path: string) {
+function createRelativePath(directory: string, filePath: string) {
+  if (!filePath.startsWith(directory)) {
+    throw new Error("Path is not in collection directory");
+  }
+  let relativePath = filePath.slice(directory.length);
+  if (relativePath.startsWith("/")) {
+    relativePath = relativePath.slice(1);
+  }
+  return relativePath;
+}
+
+export function isIncluded(collection: FileCollection, path: string) {
   if (path.startsWith(collection.directory)) {
-    let relativePath = path.slice(collection.directory.length + 1);
+    const relativePath = createRelativePath(collection.directory, path);
     return micromatch.isMatch(relativePath, collection.include);
   }
   return false;
@@ -87,9 +99,6 @@ export function sync<T extends FileCollection>(
   modification: Modification,
   path: string
 ) {
-  if (!path.startsWith(collection.directory)) {
-    throw new Error("Path is not in collection directory");
-  }
-  let relativePath = path.slice(collection.directory.length + 1);
+  const relativePath = createRelativePath(collection.directory, path);
   return syncFile(collection, modification, relativePath);
 }
