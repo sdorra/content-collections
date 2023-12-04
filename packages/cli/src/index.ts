@@ -2,11 +2,17 @@
 import { Clerc, helpPlugin, versionPlugin, completionsPlugin } from "clerc";
 import build from "./commands/build.js";
 import watch from "./commands/watch.js";
+import packageJson from "../package.json";
+
+const name = "mdx-collections";
+if (!packageJson.bin[name]) {
+  throw new Error(`Missing bin entry for ${name} in package.json`);
+}
 
 Clerc.create()
-  .scriptName("mdx-collections")
-  .description("Build collections from MDX files")
-  .version("1.0.0")
+  .scriptName(name)
+  .description(packageJson.description)
+  .version(packageJson.version)
   .command("build", "Build collections", {
     flags: {
       config: {

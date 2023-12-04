@@ -1,5 +1,6 @@
 {
   "name": "@mdx-collections/cli",
+  "description": "Build collections from MDX files",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
