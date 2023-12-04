@@ -11,4 +11,5 @@ export async function build(config: string) {
 }
 
 export * from "./config";
-export type { GetTypeByName } from "./types";
+export { applyConfig, createRunner };
+export type { GetTypeByName, Modification } from "./types";

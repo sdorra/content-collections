@@ -3,6 +3,8 @@ import fg from "fast-glob";
 import { readFile } from "fs/promises";
 import { AnyCollection } from "./config";
 import path from "path";
+import micromatch from "micromatch";
+import { Modification } from ".";
 
 export type CollectionFile = {
   data: Record<string, unknown>;
@@ -48,4 +50,46 @@ export async function collect<T extends FileCollection>(
     resolveCollection(collection)
   );
   return await Promise.all(promises);
+}
+
+export function isIncluded(collection: AnyCollection, path: string) {
+  if (path.startsWith(collection.directory)) {
+    let relativePath = path.slice(collection.directory.length + 1);
+    return micromatch.isMatch(relativePath, collection.include);
+  }
+  return false;
+}
+
+type ResolvedCollection<T extends FileCollection> = T & {
+  files: Array<CollectionFile>;
+};
+
+async function syncFile<T extends FileCollection>(
+  collection: ResolvedCollection<T>,
+  modification: Modification,
+  path: string
+) {
+  if ("added" === modification) {
+    const file = await collectFile(collection.directory, path);
+    collection.files.push(file);
+  } else if ("changed" === modification) {
+    const file = await collectFile(collection.directory, path);
+    const index = collection.files.findIndex((file) => file.path === path);
+    collection.files[index] = file;
+  } else if ("removed" === modification) {
+    const index = collection.files.findIndex((file) => file.path === path);
+    collection.files.splice(index, 1);
+  }
+}
+
+export function sync<T extends FileCollection>(
+  collection: ResolvedCollection<T>,
+  modification: Modification,
+  path: string
+) {
+  if (!path.startsWith(collection.directory)) {
+    throw new Error("Path is not in collection directory");
+  }
+  let relativePath = path.slice(collection.directory.length + 1);
+  return syncFile(collection, modification, relativePath);
 }

@@ -10,6 +10,7 @@
     "test": "vitest --run --coverage"
   },
   "devDependencies": {
+    "@types/micromatch": "^4.0.6",
     "@types/node": "^20.9.0",
     "@types/pluralize": "^0.0.33",
     "@vitest/coverage-v8": "^0.34.6",
@@ -23,6 +24,7 @@
     "esbuild": "^0.19.5",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
+    "micromatch": "^4.0.5",
     "pluralize": "^8.0.0",
     "zod": "^3.22.4"
   }

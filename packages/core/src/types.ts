@@ -1,6 +1,8 @@
 import { ZodTypeAny } from "zod";
 import { AnyCollection, AnyConfiguration, Collection } from "./config";
 
+export type Modification = "added" | "changed" | "removed";
+
 type CollectionByName<TConfiguration extends AnyConfiguration> = {
   [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
 };
