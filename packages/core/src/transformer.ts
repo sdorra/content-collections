@@ -1,6 +1,5 @@
-import { AnyCollection } from "dist";
 import { CollectionFile } from "./collect";
-import { Context } from "./config";
+import { AnyCollection, Context } from "./config";
 
 type ParsedFile = {
   document: any;
