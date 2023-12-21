@@ -34,7 +34,7 @@ function resolveCacheDir(config: string, options: Options) {
 export async function applyConfig(
   config: string,
   options: Options = {
-    configName: "mdx-collection-config.js",
+    configName: "mdx-collection-config.mjs",
   }
 ): Promise<InternalConfiguration> {
   const cacheDir = resolveCacheDir(config, options);
