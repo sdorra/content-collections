@@ -1,8 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
-import { TransformError, ResolvedCollection, transform } from "./transformer";
+import {
+  TransformError,
+  ResolvedCollection,
+  createTransformer,
+} from "./transformer";
 import { CollectionFile } from "./collect";
-import { defineCollection } from ".";
+import { defineCollection } from "./config";
 
 const sampleOne: CollectionFile = {
   data: {
@@ -55,7 +59,7 @@ describe("transform", () => {
   }
 
   it("should create two document", async () => {
-    const [collection] = await transform([
+    const [collection] = await createTransformer()([
       createSampleCollection(sampleOne, sampleTwo),
     ]);
 
@@ -63,13 +67,17 @@ describe("transform", () => {
   });
 
   it("should create document with meta", async () => {
-    const [collection] = await transform([createSampleCollection(sampleOne)]);
+    const [collection] = await createTransformer()([
+      createSampleCollection(sampleOne),
+    ]);
 
     expect(collection?.documents[0].document._meta.path).toBe("001.md");
   });
 
   it("should parse documents data", async () => {
-    const [collection] = await transform([createSampleCollection(sampleOne)]);
+    const [collection] = await createTransformer()([
+      createSampleCollection(sampleOne),
+    ]);
 
     expect(collection?.documents[0].document.name).toBe("One");
   });
@@ -91,7 +99,7 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await transform([
+    const [collection] = await createTransformer()([
       {
         ...sample,
         files: [sampleOne],
@@ -118,7 +126,7 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await transform([
+    const [collection] = await createTransformer()([
       {
         ...sample,
         files: [sampleOne],
@@ -149,7 +157,7 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const collections = await transform([
+    const collections = await createTransformer()([
       {
         ...posts,
         files: [firstPost],
@@ -195,7 +203,7 @@ describe("transform", () => {
       },
     });
 
-    const collections = await transform([
+    const collections = await createTransformer()([
       {
         ...authors,
         files: [authorTrillian],
@@ -221,7 +229,7 @@ describe("transform", () => {
     });
 
     await expect(
-      transform([
+      createTransformer()([
         {
           ...posts,
           files: [firstPost],
@@ -241,15 +249,12 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await transform(
-      [
-        {
-          ...posts,
-          files: [firstPost],
-        },
-      ],
-      (error) => errors.push(error)
-    );
+    await createTransformer((error) => errors.push(error))([
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
     expect(errors[0]?.type).toBe("Validation");
   });
 
@@ -263,15 +268,12 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const [collection] = await transform(
-      [
-        {
-          ...posts,
-          files: [firstPost],
-        },
-      ],
-      () => {}
-    );
+    const [collection] = await createTransformer(() => {})([
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
     expect(collection?.documents).toHaveLength(0);
   });
 
@@ -303,15 +305,12 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await transform(
-      [
-        {
-          ...posts,
-          files: [firstPost],
-        },
-      ],
-      (error) => errors.push(error)
-    );
+    await createTransformer((error) => errors.push(error))([
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
     expect(errors[0]?.type).toBe("Configuration");
   });
 
@@ -330,15 +329,12 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await transform(
-      [
-        {
-          ...posts,
-          files: [firstPost],
-        },
-      ],
-      (error) => errors.push(error)
-    );
+    await createTransformer((error) => errors.push(error))([
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
     expect(errors[0]?.type).toBe("Transform");
   });
 
@@ -356,15 +352,12 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await transform(
-      [
-        {
-          ...posts,
-          files: [firstPost],
-        },
-      ],
-      () => {}
-    );
+    const [collection] = await createTransformer(() => {})([
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
     expect(collection?.documents).toHaveLength(0);
   });
 });

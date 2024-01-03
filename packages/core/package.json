@@ -20,13 +20,14 @@
     "@types/micromatch": "^4.0.6",
     "@types/node": "^20.9.0",
     "@types/pluralize": "^0.0.33",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^1.1.0",
     "tsup": "^7.2.0",
     "tsx": "^4.1.1",
     "typescript": "^5.3.2",
-    "vitest": "^0.34.6"
+    "vitest": "^1.1.0"
   },
   "dependencies": {
+    "@parcel/watcher": "^2.3.0",
     "camelcase": "^8.0.0",
     "esbuild": "^0.19.5",
     "fast-glob": "^3.3.2",

@@ -1,15 +1,16 @@
 import path from "path";
 import { describe, it, expect } from "vitest";
-import { applyConfig } from "./applyConfig";
+import { createConfigurationReader } from "./configurationReader";
 import { existsSync } from "fs";
 
 function config(name: string) {
   const configPath = path.join(__dirname, "__tests__", name + ".ts");
-  return applyConfig(configPath, { configName: name + ".js" });
+  const readConfig = createConfigurationReader();
+  return readConfig(configPath, { configName: name + ".js" });
 }
 
-describe("applyConfig", () => {
-  it("should apply the config", async () => {
+describe("configurationReader", () => {
+  it("should read the config", async () => {
     const cfg = await config("config.001");
 
     expect(cfg.collections).toHaveLength(1);
@@ -26,7 +27,7 @@ describe("applyConfig", () => {
     const cfg = await config("config.001");
 
     expect(cfg.collections).toHaveLength(1);
-    expect(cfg.collections[0]?.directory).toBe("posts");
+    expect(cfg.collections[0]?.directory).toBe("sources/posts");
   });
 
   it("should have a include pattern", async () => {
@@ -43,7 +44,7 @@ describe("applyConfig", () => {
     expect(cfg.collections[0]?.typeName).toBe("Post");
   });
 
-  it("should apply the config with an imported collection", async () => {
+  it("should read the config with an imported collection", async () => {
     const cfg = await config("config.003");
 
     expect(cfg.collections).toHaveLength(1);
@@ -77,7 +78,8 @@ describe("applyConfig", () => {
     );
     const configPath = path.join(basedir, "config.001.ts");
     const configName = "different.config.js";
-    const cfg = await applyConfig(configPath, {
+    const readConfig = createConfigurationReader();
+    const cfg = await readConfig(configPath, {
       configName,
       cacheDir,
     });
@@ -85,5 +87,17 @@ describe("applyConfig", () => {
     const compiledConfig = path.join(cacheDir, configName);
     expect(cfg.collections).toHaveLength(1);
     expect(existsSync(compiledConfig)).toBe(true);
+  });
+
+  it("should throw an error if the config file does not exists", async () => {
+    await expect(config("non-existing")).rejects.toThrowError(
+      /configuration file .*\/non-existing.ts does not exist/
+    );
+  });
+
+  it("should throw an error if the config file is invalid", async () => {
+    await expect(config("invalid")).rejects.toThrowError(
+      /configuration file .*\/invalid.ts is invalid/
+    );
   });
 });

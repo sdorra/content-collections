@@ -1,5 +1,6 @@
-import { CollectionFile } from "./collect";
+import { CollectionFile } from "./types";
 import { AnyCollection, Context } from "./config";
+import { ErrorHandler, isDefined, throwingErrorHandler } from "./utils";
 
 type ParsedFile = {
   document: any;
@@ -8,7 +9,7 @@ type ParsedFile = {
 
 export type ResolvedCollection = AnyCollection & {
   files: Array<CollectionFile>;
- };
+};
 
 export type TransformedCollection = AnyCollection & {
   documents: Array<any>;
@@ -24,20 +25,7 @@ export class TransformError extends Error {
   }
 }
 
-type ErrorHandler = (error: TransformError) => void;
-
-const throwingErrorHandler: ErrorHandler = (error) => {
-  throw error;
-};
-
-function isDefined<T>(value: T | undefined | null): value is T {
-  return value !== undefined && value !== null;
-}
-
-export async function transform(
-  untransformedCollections: Array<ResolvedCollection>,
-  errorHandler = throwingErrorHandler
-) {
+export function createTransformer(errorHandler: ErrorHandler = throwingErrorHandler) {
   async function parseFile(
     collection: AnyCollection,
     file: CollectionFile
@@ -120,14 +108,18 @@ export async function transform(
     return collection.documents;
   }
 
-  const promises = untransformedCollections.map((collection) =>
-    parseCollection(collection)
-  );
-  const collections = await Promise.all(promises);
+  return async (untransformedCollections: Array<ResolvedCollection>) => {
+    const promises = untransformedCollections.map((collection) =>
+      parseCollection(collection)
+    );
+    const collections = await Promise.all(promises);
 
-  for (const collection of collections) {
-    collection.documents = await transformCollection(collections, collection);
-  }
+    for (const collection of collections) {
+      collection.documents = await transformCollection(collections, collection);
+    }
 
-  return collections;
+    return collections;
+  };
 }
+
+export type Transformer = ReturnType<typeof createTransformer>;

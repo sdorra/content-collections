@@ -16,7 +16,7 @@ const posts = defineCollection({
       ...val,
       upper: val.title.toUpperCase(),
     })),
-  directory: "posts",
+  directory: "sources/posts",
   include: "**/*.md(x)?",
 });
 
