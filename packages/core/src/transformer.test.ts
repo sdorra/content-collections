@@ -5,7 +5,7 @@ import {
   ResolvedCollection,
   createTransformer,
 } from "./transformer";
-import { CollectionFile } from "./collect";
+import { CollectionFile } from "./types";
 import { defineCollection } from "./config";
 
 const sampleOne: CollectionFile = {
