@@ -2,7 +2,7 @@
 import { Clerc, helpPlugin, versionPlugin, completionsPlugin } from "clerc";
 import build from "./commands/build.js";
 import watch from "./commands/watch.js";
-import packageJson from "../package.json";
+import packageJson from "../package.json" assert { type: "json" };
 
 const name = "mdx-collections";
 if (!packageJson.bin[name]) {
