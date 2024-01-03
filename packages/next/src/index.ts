@@ -1,7 +1,6 @@
-import { applyConfig, createRunner } from "@mdx-collections/core";
+import { createBuilder } from "@mdx-collections/core";
 import type { NextConfig } from "next";
 import type webpack from "webpack";
-import path from "path";
 
 let initialized = false;
 
@@ -27,13 +26,8 @@ class MdxCollectionWebpackPlugin {
         initialized = true;
 
         console.log("Starting mdx-collections", this.options.configPath);
-        const config = await applyConfig(this.options.configPath);
-
-        const baseDirectory = path.dirname(this.options.configPath);
-        const directory = path.join(baseDirectory, ".mdx-collections", "generated");
-
-        const runner = await createRunner(config, directory);
-        await runner.run();
+        const builder = await createBuilder(this.options.configPath);
+        await builder.build();
       }
     );
 
