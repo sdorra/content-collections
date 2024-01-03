@@ -20,7 +20,7 @@ function resolveOutputDir(baseDirectory: string, options: Options) {
   if (options.outputDir) {
     return options.outputDir;
   }
-  return path.join(baseDirectory, ".mdx-collections", "generated");
+  return path.join(baseDirectory, ".content-collections", "generated");
 }
 
 export async function createBuilder(

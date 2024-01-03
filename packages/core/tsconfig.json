@@ -20,7 +20,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@mdx-collections/core": ["./src"]
+      "@content-collections/core": ["./src"]
     }
   }
 }

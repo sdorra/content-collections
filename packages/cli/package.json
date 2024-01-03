@@ -1,11 +1,11 @@
 {
-  "name": "@mdx-collections/cli",
-  "description": "Build collections from MDX files",
-  "version": "1.0.0",
+  "name": "@content-collections/cli",
+  "description": "Command line interface for content-collections",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/src/index.js",
   "bin": {
-    "mdx-collections": "dist/src/index.js"
+    "content-collections": "dist/src/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -18,7 +18,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@mdx-collections/core": "^1.0.0",
+    "@content-collections/core": "workspace:*",
     "clerc": "^0.42.2"
   }
 }

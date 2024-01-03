@@ -1,4 +1,4 @@
-import { defineConfig } from "@mdx-collections/core";
+import { defineConfig } from "@content-collections/core";
 import posts from "./collections/posts";
 
 export default defineConfig({

@@ -1,5 +1,5 @@
 {
-  "name": "@mdx-collections/tests-next",
+  "name": "@content-collections/tests-next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mdx-collections/next": "workspace:*",
-    "@mdx-collections/core": "workspace:*",
+    "@content-collections/next": "workspace:*",
+    "@content-collections/core": "workspace:*",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"

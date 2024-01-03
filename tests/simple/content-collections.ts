@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defineCollection, defineConfig } from "@mdx-collections/core";
+import { defineCollection, defineConfig } from "@content-collections/core";
 
 const authors = defineCollection({
   name: "authors",

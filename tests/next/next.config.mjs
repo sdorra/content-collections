@@ -1,6 +1,6 @@
-import { withMdxCollections } from "@mdx-collections/next";
+import { withcontentCollections } from "@content-collections/next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {}
 
-export default withMdxCollections(nextConfig);
+export default withcontentCollections(nextConfig);

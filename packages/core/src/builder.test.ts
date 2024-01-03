@@ -29,7 +29,7 @@ describe("builder", () => {
     const outputDir = path.join(
       __dirname,
       "__tests__",
-      ".mdx-collections",
+      ".content-collections",
       "generated-" + name
     );
     const builder = await origCreateBuilder(configPath, {

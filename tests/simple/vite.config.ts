@@ -5,9 +5,9 @@ import path from "path";
 export default defineConfig({
   resolve: {
     alias: {
-      "mdx-collections": path.resolve(
+      "content-collections": path.resolve(
         __dirname,
-        "./.mdx-collections/generated"
+        "./.content-collections/generated"
       ),
     },
   },

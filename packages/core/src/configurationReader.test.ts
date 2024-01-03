@@ -73,7 +73,7 @@ describe("configurationReader", () => {
     const basedir = path.join(__dirname, "__tests__");
     const cacheDir = path.join(
       basedir,
-      ".mdx-collections",
+      ".content-collections",
       "different-cache-dir"
     );
     const configPath = path.join(basedir, "config.001.ts");

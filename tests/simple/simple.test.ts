@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { allPosts } from "mdx-collections";
+import { allPosts } from "content-collections";
 
-describe("mdxcol", () => {
+describe("simple", () => {
   it("should collect two posts", () => {
     expect(allPosts).toHaveLength(2);
   });

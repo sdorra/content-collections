@@ -1,7 +1,7 @@
 {
-  "name": "@mdx-collections/next",
-  "description": "Use MDX Collection with Next.js",
-  "version": "1.0.0",
+  "name": "@content-collections/next",
+  "description": "Use content-collection with Next.js",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,7 +16,7 @@
     "build": "tsup src/index.ts --format esm --dts -d dist"
   },
   "dependencies": {
-    "@mdx-collections/core": "workspace:*"
+    "@content-collections/core": "workspace:*"
   },
   "peerDependencies": {
     "next": "^12 || ^13 || ^14"

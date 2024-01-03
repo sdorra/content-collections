@@ -1,4 +1,4 @@
-import { createBuilder } from "@mdx-collections/core";
+import { createBuilder } from "@content-collections/core";
 
 export default async function build(config: string) {
   console.log("Building collections...");

@@ -1,4 +1,4 @@
-import { defineCollection, defineConfig } from "@mdx-collections/core";
+import { defineCollection, defineConfig } from "@content-collections/core";
 import fs from "node:fs";
 import z from "zod";
 

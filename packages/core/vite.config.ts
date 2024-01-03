@@ -3,7 +3,7 @@ import { defineConfig } from "vitest/config";
 const excludes = [
   "**/node_modules/**",
   "**/tmp/**",
-  "**/.mdx-collections/**",
+  "**/.content-collections/**",
   "**/__tests__/**",
   "**/types.ts",
 ];

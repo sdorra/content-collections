@@ -1,15 +1,15 @@
 {
-  "name": "@mdx-collections/tests-simple",
-  "version": "1.0.0",
+  "name": "@content-collections/tests-simple",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "mdx-collections build",
+    "build": "content-collections build",
     "typecheck": "tsc",
     "test": "vitest --run"
   },
   "dependencies": {
-    "@mdx-collections/cli": "workspace:*",
-    "@mdx-collections/core": "workspace:*",
+    "@content-collections/cli": "workspace:*",
+    "@content-collections/core": "workspace:*",
     "zod": "^3.22.4"
   },
   "devDependencies": {

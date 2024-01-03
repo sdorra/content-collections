@@ -1,4 +1,4 @@
-import { createBuilder } from "@mdx-collections/core";
+import { createBuilder } from "@content-collections/core";
 
 export default async function watch(configPath: string) {
   console.log("start initial build");

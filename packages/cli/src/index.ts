@@ -4,7 +4,7 @@ import build from "./commands/build.js";
 import watch from "./commands/watch.js";
 import packageJson from "../package.json" assert { type: "json" };
 
-const name = "mdx-collections";
+const name = "content-collections";
 if (!packageJson.bin[name]) {
   throw new Error(`Missing bin entry for ${name} in package.json`);
 }
@@ -18,7 +18,7 @@ Clerc.create()
       config: {
         type: String,
         description: "Path to config file",
-        default: "mdxcol.config.ts",
+        default: "content-collections.ts",
       },
     },
   })
@@ -30,7 +30,7 @@ Clerc.create()
       config: {
         type: String,
         description: "Path to config file",
-        default: "mdxcol.config.ts",
+        default: "content-collections.ts",
       },
     },
   })

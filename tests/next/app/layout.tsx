@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MdxCollections Next.js Example',
-  description: 'Using MdxCollections with Next.js',
+  title: 'contentCollections Next.js Example',
+  description: 'Using contentCollections with Next.js',
 }
 
 export default function RootLayout({

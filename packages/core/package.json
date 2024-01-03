@@ -1,6 +1,6 @@
 {
-  "name": "@mdx-collections/core",
-  "version": "1.0.0",
+  "name": "@content-collections/core",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.cjs",
   "types": "./dist/index.d.ts",

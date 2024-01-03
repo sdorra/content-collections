@@ -1,4 +1,4 @@
-import { createBuilder } from "@mdx-collections/core";
+import { createBuilder } from "@content-collections/core";
 import type { NextConfig } from "next";
 import type webpack from "webpack";
 
@@ -9,23 +9,23 @@ type Options = {
 };
 
 const defaultOptions: Options = {
-  configPath: "mdxcol.config.ts",
+  configPath: "content-collections.ts",
 };
 
-class MdxCollectionWebpackPlugin {
+class contentCollectionWebpackPlugin {
   constructor(readonly options: Options) {}
 
   apply(compiler: webpack.Compiler) {
 
     compiler.hooks.beforeCompile.tapPromise(
-      "MdxCollectionWebpackPlugin",
+      "contentCollectionWebpackPlugin",
       async () => {
         if (initialized) {
           return;
         }
         initialized = true;
 
-        console.log("Starting mdx-collections", this.options.configPath);
+        console.log("Starting content-collections", this.options.configPath);
         const builder = await createBuilder(this.options.configPath);
         await builder.build();
       }
@@ -35,8 +35,8 @@ class MdxCollectionWebpackPlugin {
 }
 
 
-export function createMdxCollectionPlugin(pluginOptions: Options) {
-  const plugin = new MdxCollectionWebpackPlugin(pluginOptions);
+export function createcontentCollectionPlugin(pluginOptions: Options) {
+  const plugin = new contentCollectionWebpackPlugin(pluginOptions);
   return (nextConfig: Partial<NextConfig> = {}): Partial<NextConfig> => {
     return {
       ...nextConfig,
@@ -62,4 +62,4 @@ export function createMdxCollectionPlugin(pluginOptions: Options) {
   };
 }
 
-export const withMdxCollections = createMdxCollectionPlugin(defaultOptions);
+export const withcontentCollections = createcontentCollectionPlugin(defaultOptions);

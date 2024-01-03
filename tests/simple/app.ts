@@ -1,4 +1,4 @@
-import { allPosts } from "mdx-collections";
+import { allPosts } from "content-collections";
 
 for (const post of allPosts) {
   console.log("---");

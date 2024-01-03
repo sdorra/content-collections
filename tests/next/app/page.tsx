@@ -1,4 +1,4 @@
-import { allAuthors, allPosts } from "mdx-collections";
+import { allAuthors, allPosts } from "content-collections";
 export default function Home() {
   return (
     <main className="space-y-5 p-10">

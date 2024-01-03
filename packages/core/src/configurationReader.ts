@@ -24,7 +24,7 @@ export type InternalConfiguration = {
 const importPathPlugin: esbuild.Plugin = {
   name: "import-path",
   setup(build) {
-    build.onResolve({ filter: /^\@mdx-collections\/core$/ }, () => {
+    build.onResolve({ filter: /^\@content-collections\/core$/ }, () => {
       return { path: path.join(__dirname, "index.ts"), external: true };
     });
   },
@@ -35,13 +35,13 @@ export type Options = {
   cacheDir?: string;
 };
 
-export const defaultConfigName = "mdx-collection-config.mjs";
+export const defaultConfigName = "content-collection-config.mjs";
 
 function resolveCacheDir(config: string, options: Options) {
   if (options.cacheDir) {
     return options.cacheDir;
   }
-  return path.join(path.dirname(config), ".mdx-collections", "cache");
+  return path.join(path.dirname(config), ".content-collections", "cache");
 }
 
 async function compile(configurationPath: string, outfile: string) {
@@ -52,7 +52,7 @@ async function compile(configurationPath: string, outfile: string) {
 
   await esbuild.build({
     entryPoints: [configurationPath],
-    external: [...Object.keys(packageJson.dependencies), "@mdx-collections/*"],
+    external: [...Object.keys(packageJson.dependencies), "@content-collections/*"],
     bundle: true,
     platform: "node",
     format: "esm",

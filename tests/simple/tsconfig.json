@@ -17,10 +17,10 @@
     "noEmit": true,
     /* If your code doesn't run in the DOM: */
     "lib": ["es2022"],
-    /* import generated collection with mdx-collections */
+    /* import generated collection with content-collections */
     "baseUrl": ".",
     "paths": {
-      "mdx-collections": ["./.mdx-collections/generated"]
+      "content-collections": ["./.content-collections/generated"]
     },
   }
 }

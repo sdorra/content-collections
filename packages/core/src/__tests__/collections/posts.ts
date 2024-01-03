@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defineCollection } from "@mdx-collections/core";
+import { defineCollection } from "@content-collections/core";
 
 export default defineCollection({
   name: "posts",

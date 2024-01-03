@@ -1,14 +1,16 @@
 {
-  "name": "@mdx-collections/root",
-  "version": "1.0.0",
+  "name": "@content-collections/root",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "content",
+    "collections",
+    "markdown",
+    "frontmatter",
+    "typescript"
+  ],
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "turbo": "^1.10.16"
   }
