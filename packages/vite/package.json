@@ -1,0 +1,29 @@
+{
+  "name": "@mdx-collections/vite",
+  "description": "Use MDX Collection with Vite",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist"
+  },
+  "dependencies": {
+    "@mdx-collections/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": "^4 || ^5"
+  },
+  "devDependencies": {
+    "vite": "^4",
+    "tsup": "^7.2.0",
+    "typescript": "^5.3.2"
+  }
+}
