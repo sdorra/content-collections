@@ -85,9 +85,10 @@ describe("transform", () => {
   it("should transform document", async () => {
     const sample = defineCollection({
       name: "sample",
-      schema: z.object({
-        name: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          name: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: (_, document) => {
@@ -113,9 +114,10 @@ describe("transform", () => {
   it("should add the content to the document", async () => {
     const sample = defineCollection({
       name: "sample",
-      schema: z.object({
-        name: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          name: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: async (context, document) => {
@@ -139,20 +141,22 @@ describe("transform", () => {
   it("should collect with multiple collections", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        title: z.string(),
-        author: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          title: z.string(),
+          author: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
 
     const authors = defineCollection({
       name: "authors",
-      schema: z.object({
-        ref: z.string(),
-        displayName: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          ref: z.string(),
+          displayName: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
@@ -176,20 +180,22 @@ describe("transform", () => {
   it("should transform with collection references", async () => {
     const authors = defineCollection({
       name: "authors",
-      schema: z.object({
-        ref: z.string(),
-        displayName: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          ref: z.string(),
+          displayName: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
 
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        title: z.string(),
-        author: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          title: z.string(),
+          author: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: async (context, document) => {
@@ -221,9 +227,10 @@ describe("transform", () => {
   it("should throw if document validation fails", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        name: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          name: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
@@ -241,9 +248,10 @@ describe("transform", () => {
   it("should capture validation error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        name: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          name: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
@@ -261,9 +269,10 @@ describe("transform", () => {
   it("should not hold invalid documents", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        name: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          name: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
@@ -280,19 +289,21 @@ describe("transform", () => {
   it("should report an error if a collection is not registered", async () => {
     const authors = defineCollection({
       name: "authors",
-      schema: z.object({
-        ref: z.string(),
-        displayName: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          ref: z.string(),
+          displayName: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
     });
 
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        title: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          title: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: async (context, document) => {
@@ -317,9 +328,10 @@ describe("transform", () => {
   it("should report an transform error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        title: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          title: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: (doc) => {
@@ -341,9 +353,10 @@ describe("transform", () => {
   it("should exclude documents with a transform error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: z.object({
-        title: z.string(),
-      }),
+      schema: (z) =>
+        z.object({
+          title: z.string(),
+        }),
       directory: "tests",
       include: "*.md",
       transform: (doc) => {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { GetTypeByName } from "./types";
 import { defineCollection, defineConfig } from "./config";
-import { z } from "zod";
 
 describe("types", () => {
   describe("GetTypeByName", () => {
@@ -11,11 +10,13 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: z.object({
-          name: z.string(),
-          age: z.number(),
-        }),
+        schema: (z) =>
+          z.object({
+            name: z.string(),
+            age: z.number(),
+          }),
       });
+
       const config = defineConfig({
         collections: [collection],
       });
@@ -27,8 +28,6 @@ describe("types", () => {
         age: 20,
         // @ts-expect-error city is not in the schema
         city: "New York",
-        // TODO: why we get no error, if _meta is missing?
-        // if the type is inferred from the transform function, we get an error
         _meta: {
           path: "persons/john.md",
         },
@@ -43,16 +42,17 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: z.object({
-          name: z.string(),
-          age: z.number(),
-        }),
+        schema: (z) =>
+          z.object({
+            name: z.string(),
+            age: z.number(),
+          }),
         transform: (ctx, data) => {
           return {
             ...data,
             city: "New York",
           };
-        }
+        },
       });
 
       const config = defineConfig({
@@ -62,8 +62,9 @@ describe("types", () => {
       type Person = GetTypeByName<typeof config, "person">;
       const person: Person = {
         name: "John",
-        age: 20,
         city: "New York",
+        // @ts-expect-error street is not in the schema
+        street: "Main Street",
         _meta: {
           path: "persons/john.md",
         },

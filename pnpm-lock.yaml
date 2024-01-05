@@ -80,7 +80,7 @@ importers:
         specifier: ^4.1.1
         version: 4.7.0
       typescript:
-        specifier: ^5.3.2
+        specifier: ^5.3.3
         version: 5.3.3
       vitest:
         specifier: ^1.1.0
@@ -166,9 +166,6 @@ importers:
       typescript:
         specifier: ^5
         version: 5.3.3
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
 
   tests/simple:
     dependencies:
@@ -178,9 +175,6 @@ importers:
       '@content-collections/core':
         specifier: workspace:*
         version: link:../../packages/core
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
     devDependencies:
       '@types/node':
         specifier: '18'
@@ -5289,3 +5283,4 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false

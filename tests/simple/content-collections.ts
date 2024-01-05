@@ -1,9 +1,8 @@
-import { z } from "zod";
 import { defineCollection, defineConfig } from "@content-collections/core";
 
 const authors = defineCollection({
   name: "authors",
-  schema: z.object({
+  schema: (z) => z.object({
     ref: z.string(),
     displayName: z.string(),
     email: z.string().email(),
@@ -15,7 +14,7 @@ const authors = defineCollection({
 const posts = defineCollection({
   name: "posts",
   typeName: "Post",
-  schema: z
+  schema: (z) => z
     .object({
       title: z.string().min(5),
       description: z.string().min(10),

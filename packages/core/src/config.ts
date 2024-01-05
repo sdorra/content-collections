@@ -16,20 +16,18 @@ export type Context = {
   ): Array<Document<TCollection["schema"]>>;
 };
 
-type TransformFn<TSchema extends ZodTypeAny> =
-  | ((context: Context, data: Document<TSchema>) => any)
-  | undefined;
+type Z = typeof z;
 
 export type CollectionRequest<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema>,
+  TTransformResult,
   TDocument
 > = {
   name: TName;
   typeName?: string;
-  schema: TSchema;
-  transform?: TTransform;
+  schema: (z: Z) => TSchema;
+  transform?: (context: Context, data: Document<TSchema>) => TTransformResult;
   directory: string;
   include: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
@@ -38,10 +36,11 @@ export type CollectionRequest<
 export type Collection<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema>,
+  TTransformResult,
   TDocument
-> = CollectionRequest<TSchema, TName, TTransform, TDocument> & {
+> = Omit<CollectionRequest<TSchema, TName, TTransformResult, TDocument>, "schema"> & {
   typeName: string;
+  schema: TSchema;
 };
 
 export type AnyCollection = Collection<ZodTypeAny, any, any, any>;
@@ -49,13 +48,13 @@ export type AnyCollection = Collection<ZodTypeAny, any, any, any>;
 export function defineCollection<
   TSchema extends ZodTypeAny,
   TName extends string,
-  TTransform extends TransformFn<TSchema>,
-  TDocument = [TTransform] extends [(...args: any) => any]
-    ? Awaited<ReturnType<TTransform>>
-    : Document<TSchema>
+  TTransformResult = never,
+  TDocument = [TTransformResult] extends [never]
+    ? Document<TSchema>
+    : Awaited<TTransformResult>
 >(
-  collection: CollectionRequest<TSchema, TName, TTransform, TDocument>
-): Collection<TSchema, TName, TTransform, TDocument> {
+  collection: CollectionRequest<TSchema, TName, TTransformResult, TDocument>
+): Collection<TSchema, TName, TTransformResult, TDocument> {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
@@ -63,6 +62,7 @@ export function defineCollection<
   return {
     ...collection,
     typeName,
+    schema: collection.schema(z),
   };
 }
 

@@ -1,10 +1,9 @@
-import { z } from "zod";
 import { defineCollection } from "@content-collections/core";
 
 export default defineCollection({
   name: "posts",
   typeName: "Post",
-  schema: z
+  schema: z => z
     .object({
       title: z.string().min(5),
       description: z.string().min(10),

@@ -9,8 +9,7 @@
   },
   "dependencies": {
     "@content-collections/cli": "workspace:*",
-    "@content-collections/core": "workspace:*",
-    "zod": "^3.22.4"
+    "@content-collections/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18",
