@@ -12,6 +12,6 @@
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "turbo": "^1.10.16"
+    "turbo": "^1.11.3"
   }
 }
