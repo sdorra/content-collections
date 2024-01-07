@@ -1,6 +1,7 @@
 import { CollectionFile } from "./types";
 import { AnyCollection, Context } from "./config";
-import { ErrorHandler, isDefined, throwingErrorHandler } from "./utils";
+import { isDefined } from "./utils";
+import { Emitter } from "./events";
 
 type ParsedFile = {
   document: any;
@@ -25,7 +26,7 @@ export class TransformError extends Error {
   }
 }
 
-export function createTransformer(errorHandler: ErrorHandler = throwingErrorHandler) {
+export function createTransformer(emitter: Emitter) {
   async function parseFile(
     collection: AnyCollection,
     file: CollectionFile
@@ -34,7 +35,11 @@ export function createTransformer(errorHandler: ErrorHandler = throwingErrorHand
 
     let parsedData = await collection.schema.safeParseAsync(data);
     if (!parsedData.success) {
-      errorHandler(new TransformError("Validation", parsedData.error.message));
+      emitter.emit("transformer:validation-error", {
+        collection,
+        file,
+        error: new TransformError("Validation", parsedData.error.message),
+      });
       return null;
     }
 
@@ -97,9 +102,15 @@ export function createTransformer(errorHandler: ErrorHandler = throwingErrorHand
           });
         } catch (error) {
           if (error instanceof TransformError) {
-            errorHandler(error);
+            emitter.emit("transformer:error", {
+              collection,
+              error,
+            });
           } else {
-            errorHandler(new TransformError("Transform", String(error)));
+            emitter.emit("transformer:error", {
+              collection,
+              error: new TransformError("Transform", String(error)),
+            });
           }
         }
       }

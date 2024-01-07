@@ -1,10 +1,16 @@
 import watcher, { SubscribeCallback } from "@parcel/watcher";
 import { Modification } from "./types";
+import { Emitter } from "./events";
 
 type SyncFn = (modification: Modification, path: string) => Promise<boolean>;
 type BuildFn = () => Promise<void>;
 
-export async function createWatcher(paths: Array<string>, sync: SyncFn, build: BuildFn) {
+export async function createWatcher(
+  emitter: Emitter,
+  paths: Array<string>,
+  sync: SyncFn,
+  build: BuildFn
+) {
   const onChange: SubscribeCallback = async (error, events) => {
     if (error) {
       console.error(error);
@@ -15,6 +21,10 @@ export async function createWatcher(paths: Array<string>, sync: SyncFn, build: B
 
     for (const event of events) {
       if (await sync(event.type, event.path)) {
+        emitter.emit("watch:file-changed", {
+          filePath: event.path,
+          modification: event.type,
+        });
         rebuild = true;
       }
     }

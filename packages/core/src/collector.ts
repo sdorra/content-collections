@@ -3,8 +3,9 @@ import fg from "fast-glob";
 import { readFile } from "fs/promises";
 import { AnyCollection } from "./config";
 import path from "path";
-import { ErrorHandler, isDefined, throwingErrorHandler } from "./utils";
+import { isDefined } from "./utils";
 import { CollectionFile } from "./types";
+import { Emitter } from "./events";
 
 export type ErrorType = "Parse" | "Read";
 
@@ -18,15 +19,15 @@ export class CollectError extends Error {
 
 type FileCollection = Pick<AnyCollection, "directory" | "include">;
 
-export function createCollector(
-  baseDirectory: string = ".",
-  errorHandler: ErrorHandler = throwingErrorHandler
-) {
-  async function read(path: string) {
+export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
+  async function read(filePath: string) {
     try {
-      return await readFile(path, "utf-8");
+      return await readFile(filePath, "utf-8");
     } catch (error) {
-      errorHandler(new CollectError("Read", String(error)));
+      emitter.emit("collector:read-error", {
+        filePath,
+        error: new CollectError("Read", String(error)),
+      });
       return null;
     }
   }

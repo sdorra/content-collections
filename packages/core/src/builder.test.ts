@@ -3,12 +3,13 @@ import { createBuilder as origCreateBuilder } from "./builder";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import { Emitter } from "./events";
 
 // we mock the watcher module, because it causes problems in some situations
 // we test the watcher module separately
 vi.mock("./watcher", async () => {
   return {
-    createWatcher: async (paths: Array<string>) => {
+    createWatcher: async (_: Emitter, paths: Array<string>) => {
       return {
         paths,
         unsubscribe: async () => {},
@@ -72,6 +73,25 @@ describe("builder", () => {
         "utf-8"
       );
       expect(authorsLength).toBe("1");
+    });
+
+    it("should emit build:start and build:end", async () => {
+      const { builder } = await createBuilder("config.002");
+      const events: Array<string> = [];
+
+      builder.on("build:start", (event) => {
+        events.push("build:start");
+        expect(event.startedAt).toBeDefined();
+      });
+      builder.on("build:end", (event) => {
+        events.push("build:end");
+        expect(event.startedAt).toBeDefined();
+        expect(event.endedAt).toBeDefined();
+      });
+
+      await builder.build();
+
+      expect(events).toEqual(["build:start", "build:end"]);
     });
   });
 

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { z } from "zod";
 import {
   TransformError,
@@ -7,6 +7,7 @@ import {
 } from "./transformer";
 import { CollectionFile } from "./types";
 import { defineCollection } from "./config";
+import { Events, createEmitter } from "./events";
 
 const sampleOne: CollectionFile = {
   data: {
@@ -43,6 +44,12 @@ const authorTrillian: CollectionFile = {
 };
 
 describe("transform", () => {
+  let emitter = createEmitter<Events>();
+
+  beforeEach(() => {
+    emitter = createEmitter<Events>();
+  });
+
   function createSampleCollection(
     ...files: Array<CollectionFile>
   ): ResolvedCollection {
@@ -59,7 +66,7 @@ describe("transform", () => {
   }
 
   it("should create two document", async () => {
-    const [collection] = await createTransformer()([
+    const [collection] = await createTransformer(emitter)([
       createSampleCollection(sampleOne, sampleTwo),
     ]);
 
@@ -67,7 +74,7 @@ describe("transform", () => {
   });
 
   it("should create document with meta", async () => {
-    const [collection] = await createTransformer()([
+    const [collection] = await createTransformer(emitter)([
       createSampleCollection(sampleOne),
     ]);
 
@@ -75,7 +82,7 @@ describe("transform", () => {
   });
 
   it("should parse documents data", async () => {
-    const [collection] = await createTransformer()([
+    const [collection] = await createTransformer(emitter)([
       createSampleCollection(sampleOne),
     ]);
 
@@ -100,7 +107,7 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await createTransformer()([
+    const [collection] = await createTransformer(emitter)([
       {
         ...sample,
         files: [sampleOne],
@@ -128,7 +135,7 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await createTransformer()([
+    const [collection] = await createTransformer(emitter)([
       {
         ...sample,
         files: [sampleOne],
@@ -161,7 +168,7 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const collections = await createTransformer()([
+    const collections = await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],
@@ -209,7 +216,7 @@ describe("transform", () => {
       },
     });
 
-    const collections = await createTransformer()([
+    const collections = await createTransformer(emitter)([
       {
         ...authors,
         files: [authorTrillian],
@@ -235,8 +242,12 @@ describe("transform", () => {
       include: "*.md",
     });
 
+    emitter.on("transformer:validation-error", (event) => {
+      throw event.error;
+    });
+
     await expect(
-      createTransformer()([
+      createTransformer(emitter)([
         {
           ...posts,
           files: [firstPost],
@@ -257,7 +268,10 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await createTransformer((error) => errors.push(error))([
+    emitter.on("transformer:validation-error", (event) =>
+      errors.push(event.error)
+    );
+    await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],
@@ -277,7 +291,7 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const [collection] = await createTransformer(() => {})([
+    const [collection] = await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],
@@ -316,7 +330,8 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await createTransformer((error) => errors.push(error))([
+    emitter.on("transformer:error", (event) => errors.push(event.error));
+    await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],
@@ -341,7 +356,9 @@ describe("transform", () => {
     });
 
     const errors: Array<TransformError> = [];
-    await createTransformer((error) => errors.push(error))([
+    emitter.on("transformer:error", (event) => errors.push(event.error));
+
+    await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],
@@ -365,7 +382,7 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await createTransformer(() => {})([
+    const [collection] = await createTransformer(emitter)([
       {
         ...posts,
         files: [firstPost],

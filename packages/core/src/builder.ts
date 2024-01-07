@@ -11,6 +11,7 @@ import { isDefined } from "./utils";
 import { createSynchronizer } from "./synchronizer";
 import path from "node:path";
 import { createWatcher } from "./watcher";
+import { Events, createEmitter } from "./events";
 
 type Options = ConfigurationOptions & {
   outputDir?: string;
@@ -29,12 +30,14 @@ export async function createBuilder(
     configName: defaultConfigName,
   }
 ) {
+  const emitter = createEmitter<Events>();
+
   const readConfiguration = createConfigurationReader();
   const configuration = await readConfiguration(configurationPath, options);
   const baseDirectory = path.dirname(configurationPath);
   const directory = resolveOutputDir(baseDirectory, options);
 
-  const collector = createCollector(baseDirectory);
+  const collector = createCollector(emitter, baseDirectory);
   const writer = await createWriter(directory);
 
   const [resolved] = await Promise.all([
@@ -48,7 +51,7 @@ export async function createBuilder(
     resolved,
     baseDirectory
   );
-  const transform = createTransformer();
+  const transform = createTransformer(emitter);
 
   async function sync(modification: Modification, filePath: string) {
     if (modification === "delete") {
@@ -58,6 +61,11 @@ export async function createBuilder(
   }
 
   async function build() {
+    const startedAt = Date.now();
+    emitter.emit("build:start", {
+      startedAt,
+    });
+
     const collections = await transform(resolved);
     await writer.createDataFiles(collections);
 
@@ -68,13 +76,18 @@ export async function createBuilder(
       );
 
     await Promise.all(pendingOnSuccess.filter(isDefined));
+
+    emitter.emit("build:end", {
+      startedAt,
+      endedAt: Date.now(),
+    });
   }
 
   async function watch() {
     const paths = resolved.map((collection) =>
       path.join(baseDirectory, collection.directory)
     );
-    const watcher = await createWatcher(paths, sync, build);
+    const watcher = await createWatcher(emitter, paths, sync, build);
     return watcher;
   }
 
@@ -82,6 +95,7 @@ export async function createBuilder(
     sync,
     build,
     watch,
+    on: emitter.on,
   };
 }
 

@@ -1,49 +1,60 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { createCollector } from "./collector";
+import { Events, createEmitter } from "./events";
 
 describe("collector", () => {
+  let emitter = createEmitter<Events>();
+
+  beforeEach(() => {
+    emitter = createEmitter<Events>();
+  });
+
   describe("collectFile", () => {
     it("should collect file", async () => {
-      const { collectFile } = createCollector();
+      const { collectFile } = createCollector(emitter);
 
       const file = await collectFile(
-        __dirname, "./__tests__/sources/test/001.md"
+        __dirname,
+        "./__tests__/sources/test/001.md"
       );
 
       if (!file) {
         throw new Error("File not found");
       }
 
-      expect(file.path).toBe("./__tests__/sources/test/001.md")
+      expect(file.path).toBe("./__tests__/sources/test/001.md");
       expect(file.body.trim()).toBe("# One");
       expect(file.data.name).toBe("One");
     });
 
     it("should throw an error if file does not exist", async () => {
-      const { collectFile } = createCollector();
+      emitter.on("collector:read-error", ({ error }) => {
+        throw error;
+      });
+      const { collectFile } = createCollector(emitter);
 
       await expect(
-        collectFile(
-          __dirname, "./__tests__/sources/test/notfound.md"
-        )
+        collectFile(__dirname, "./__tests__/sources/test/notfound.md")
       ).rejects.toThrow("no such file or directory");
     });
 
     it("should capture the error and return null", async () => {
-      const { collectFile } = createCollector(__dirname, (error) => {
+      emitter.on("collector:read-error", ({ error }) => {
         expect(error.type).toBe("Read");
         expect(error.message).toMatch(/no such file or directory/);
       });
 
+      const { collectFile } = createCollector(emitter, __dirname);
       const file = await collectFile(
-        __dirname, "./__tests__/sources/test/notfound.md"
+        __dirname,
+        "./__tests__/sources/test/notfound.md"
       );
       expect(file).toBeNull();
     });
   });
 
   describe("collect", () => {
-    const { collect } = createCollector(__dirname);
+    const { collect } = createCollector(emitter, __dirname);
 
     it("should collect one collection", async () => {
       const collections = await collect([
