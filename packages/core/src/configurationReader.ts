@@ -8,7 +8,7 @@ import { existsSync } from "node:fs";
 export type ErrorType = "Read" | "Compile";
 
 export class ConfigurationError extends Error {
-  type: string;
+  type: ErrorType;
   constructor(type: ErrorType, message: string) {
     super(message);
     this.type = type;

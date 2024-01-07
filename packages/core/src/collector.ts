@@ -10,7 +10,7 @@ import { Emitter } from "./events";
 export type ErrorType = "Parse" | "Read";
 
 export class CollectError extends Error {
-  type: string;
+  type: ErrorType;
   constructor(type: ErrorType, message: string) {
     super(message);
     this.type = type;
@@ -50,13 +50,21 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       return null;
     }
 
-    const { data, body } = parse(file);
+    try {
+      const { data, body } = parse(file);
 
-    return {
-      data,
-      body,
-      path: filePath,
-    };
+      return {
+        data,
+        body,
+        path: filePath,
+      };
+    } catch (error) {
+      emitter.emit("collector:parse-error", {
+        filePath: path.join(directory, filePath),
+        error: new CollectError("Parse", String(error)),
+      });
+      return null;
+    }
   }
 
   async function resolveCollection<T extends FileCollection>(collection: T) {

@@ -51,6 +51,20 @@ describe("collector", () => {
       );
       expect(file).toBeNull();
     });
+
+    it("should capture the parse error", async () => {
+      emitter.on("collector:parse-error", ({ error }) => {
+        expect(error.type).toBe("Parse");
+        expect(error.message).toMatch(/end of the stream/);
+      });
+
+      const { collectFile } = createCollector(emitter, __dirname);
+      const file = await collectFile(
+        __dirname,
+        "./__tests__/sources/test/broken-frontmatter"
+      );
+      expect(file).toBeNull();
+    });
   });
 
   describe("collect", () => {

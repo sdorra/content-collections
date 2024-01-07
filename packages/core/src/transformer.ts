@@ -19,7 +19,7 @@ export type TransformedCollection = AnyCollection & {
 export type ErrorType = "Validation" | "Configuration" | "Transform";
 
 export class TransformError extends Error {
-  type: string;
+  type: ErrorType;
   constructor(type: ErrorType, message: string) {
     super(message);
     this.type = type;

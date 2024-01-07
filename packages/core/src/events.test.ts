@@ -1,10 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { createEmitter } from "./events";
+import { e } from "vitest/dist/reporters-O4LBziQ_.js";
 
 type Events = {
   test: {
     a: string;
   };
+  other: {
+    error: Error
+  }
 };
 
 describe("events", () => {
@@ -40,5 +44,24 @@ describe("events", () => {
       // @ts-expect-error b does not exist
       expect(event.b).toBeUndefined();
     });
+  });
+
+  it("should emit extra collection-error on error event", () => {
+    const emitter = createEmitter<Events>();
+
+    const events: Array<string> = [];
+
+    emitter.on("other", (event) => {
+      events.push("other");
+    });
+    emitter.on("cc-error", (event) => {
+      events.push("error");
+      expect(event.event).toBe("other");
+      expect(event.error.message).toBe("test");
+    });
+
+    emitter.emit("other", { error: new Error("test") });
+
+    expect(events).toEqual(["other", "error"]);
   });
 });
