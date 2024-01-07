@@ -37,6 +37,7 @@ export async function createBuilder(
   const baseDirectory = path.dirname(configurationPath);
   const directory = resolveOutputDir(baseDirectory, options);
 
+  // TODO: we should not collect files before the user has a chance to register listeners
   const collector = createCollector(emitter, baseDirectory);
   const writer = await createWriter(directory);
 
