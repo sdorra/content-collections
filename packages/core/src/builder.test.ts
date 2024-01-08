@@ -79,19 +79,19 @@ describe("builder", () => {
       const { builder } = await createBuilder("config.002");
       const events: Array<string> = [];
 
-      builder.on("build:start", (event) => {
-        events.push("build:start");
+      builder.on("builder:start", (event) => {
+        events.push("builder:start");
         expect(event.startedAt).toBeDefined();
       });
-      builder.on("build:end", (event) => {
-        events.push("build:end");
+      builder.on("builder:end", (event) => {
+        events.push("builder:end");
         expect(event.startedAt).toBeDefined();
         expect(event.endedAt).toBeDefined();
       });
 
       await builder.build();
 
-      expect(events).toEqual(["build:start", "build:end"]);
+      expect(events).toEqual(["builder:start", "builder:end"]);
     });
   });
 

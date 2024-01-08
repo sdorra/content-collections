@@ -13,6 +13,16 @@ import path from "node:path";
 import { createWatcher } from "./watcher";
 import { Events, createEmitter } from "./events";
 
+export type BuilderEvents = {
+  "builder:start": {
+    startedAt: number;
+  };
+  "builder:end": {
+    startedAt: number;
+    endedAt: number;
+  };
+};
+
 type Options = ConfigurationOptions & {
   outputDir?: string;
 };
@@ -63,7 +73,7 @@ export async function createBuilder(
 
   async function build() {
     const startedAt = Date.now();
-    emitter.emit("build:start", {
+    emitter.emit("builder:start", {
       startedAt,
     });
 
@@ -78,7 +88,7 @@ export async function createBuilder(
 
     await Promise.all(pendingOnSuccess.filter(isDefined));
 
-    emitter.emit("build:end", {
+    emitter.emit("builder:end", {
       startedAt,
       endedAt: Date.now(),
     });

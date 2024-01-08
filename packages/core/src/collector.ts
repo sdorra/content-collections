@@ -7,6 +7,17 @@ import { isDefined } from "./utils";
 import { CollectionFile } from "./types";
 import { Emitter } from "./events";
 
+export type CollectorEvents = {
+  "collector:read-error": {
+    filePath: string;
+    error: CollectError;
+  };
+  "collector:parse-error": {
+    filePath: string;
+    error: CollectError;
+  };
+}
+
 export type ErrorType = "Parse" | "Read";
 
 export class CollectError extends Error {

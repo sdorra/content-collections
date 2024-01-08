@@ -1,8 +1,8 @@
 import { EventEmitter } from "node:events";
-import { CollectError } from "./collector";
-import { TransformError } from "./transformer";
-import { AnyCollection } from "./config";
-import { CollectionFile, Modification } from "./types";
+import { BuilderEvents } from "./builder";
+import { CollectorEvents } from "./collector";
+import { TransformerEvents } from "./transformer";
+import { WatcherEvents } from "./watcher";
 
 type EventMap = Record<string, object>;
 
@@ -16,38 +16,10 @@ type SystemEvent = {
 
 type ErrorEvent = EventWithError & SystemEvent;
 
-// TODO: colocate types with fired events in the same file
-
-export type Events = {
-  "build:start": {
-    startedAt: number;
-  };
-  "build:end": {
-    startedAt: number;
-    endedAt: number;
-  };
-  "watch:file-changed": {
-    filePath: string;
-    modification: Modification;
-  };
-  "collector:read-error": {
-    filePath: string;
-    error: CollectError;
-  };
-  "collector:parse-error": {
-    filePath: string;
-    error: CollectError;
-  };
-  "transformer:validation-error": {
-    collection: AnyCollection;
-    file: CollectionFile;
-    error: TransformError;
-  };
-  "transformer:error": {
-    collection: AnyCollection;
-    error: TransformError;
-  };
-};
+export type Events = BuilderEvents &
+  CollectorEvents &
+  TransformerEvents &
+  WatcherEvents;
 
 export type SystemEvents = {
   _error: ErrorEvent;

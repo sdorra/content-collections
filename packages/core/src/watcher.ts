@@ -2,6 +2,13 @@ import watcher, { SubscribeCallback } from "@parcel/watcher";
 import { Modification } from "./types";
 import { Emitter } from "./events";
 
+export type WatcherEvents = {
+  "watcher:file-changed": {
+    filePath: string;
+    modification: Modification;
+  };
+};
+
 type SyncFn = (modification: Modification, path: string) => Promise<boolean>;
 type BuildFn = () => Promise<void>;
 
@@ -21,7 +28,7 @@ export async function createWatcher(
 
     for (const event of events) {
       if (await sync(event.type, event.path)) {
-        emitter.emit("watch:file-changed", {
+        emitter.emit("watcher:file-changed", {
           filePath: event.path,
           modification: event.type,
         });

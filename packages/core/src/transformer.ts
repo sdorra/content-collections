@@ -3,6 +3,18 @@ import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
 
+export type TransformerEvents = {
+  "transformer:validation-error": {
+    collection: AnyCollection;
+    file: CollectionFile;
+    error: TransformError;
+  };
+  "transformer:error": {
+    collection: AnyCollection;
+    error: TransformError;
+  };
+}
+
 type ParsedFile = {
   document: any;
   content: string;

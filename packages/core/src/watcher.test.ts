@@ -184,7 +184,7 @@ describe.runIf(isEnabled)("watcher", () => {
     await mkdir("tmp");
 
     const localEvents: Array<string> = [];
-    emitter.on("watch:file-changed", ({ modification, filePath }) =>
+    emitter.on("watcher:file-changed", ({ modification, filePath }) =>
       localEvents.push(`${modification}:${filePath}`)
     );
 
