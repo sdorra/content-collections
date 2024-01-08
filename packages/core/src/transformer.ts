@@ -2,6 +2,7 @@ import { CollectionFile } from "./types";
 import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
+import { basename, dirname, extname } from "node:path";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -13,7 +14,7 @@ export type TransformerEvents = {
     collection: AnyCollection;
     error: TransformError;
   };
-}
+};
 
 type ParsedFile = {
   document: any;
@@ -38,6 +39,14 @@ export class TransformError extends Error {
   }
 }
 
+function createPath(path: string, ext: string) {
+  let p = path.slice(0, -ext.length);
+  if (p.endsWith("/index")) {
+    p = p.slice(0, -6);
+  }
+  return p;
+}
+
 export function createTransformer(emitter: Emitter) {
   async function parseFile(
     collection: AnyCollection,
@@ -55,10 +64,21 @@ export function createTransformer(emitter: Emitter) {
       return null;
     }
 
+    const ext = extname(path);
+
+    let extension = ext;
+    if (extension.startsWith(".")) {
+      extension = extension.slice(1);
+    }
+
     const document = {
       ...parsedData.data,
       _meta: {
-        path,
+        filePath: path,
+        fileName: basename(path),
+        directory: dirname(path),
+        extension,
+        path: createPath(path, ext),
       },
     };
 

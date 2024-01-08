@@ -2,7 +2,11 @@ import { ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
 
 export type Meta = {
+  filePath: string;
+  fileName: string;
+  directory: string;
   path: string;
+  extension: string;
 };
 
 export type Document<TSchema extends ZodTypeAny> = z.infer<TSchema> & {

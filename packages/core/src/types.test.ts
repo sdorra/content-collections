@@ -29,7 +29,11 @@ describe("types", () => {
         // @ts-expect-error city is not in the schema
         city: "New York",
         _meta: {
-          path: "persons/john.md",
+          fileName: "john.md",
+          filePath: "persons/john.md",
+          directory: "persons",
+          path: "persons/john",
+          extension: "md",
         },
       };
 
@@ -66,7 +70,11 @@ describe("types", () => {
         // @ts-expect-error street is not in the schema
         street: "Main Street",
         _meta: {
-          path: "persons/john.md",
+          fileName: "john.md",
+          filePath: "persons/john.md",
+          directory: "persons",
+          path: "persons/john",
+          extension: "md",
         },
       };
 

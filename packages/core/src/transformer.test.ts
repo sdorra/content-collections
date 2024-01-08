@@ -6,7 +6,7 @@ import {
   createTransformer,
 } from "./transformer";
 import { CollectionFile } from "./types";
-import { defineCollection } from "./config";
+import { Meta, defineCollection } from "./config";
 import { Events, createEmitter } from "./events";
 
 const sampleOne: CollectionFile = {
@@ -24,6 +24,22 @@ const sampleTwo: CollectionFile = {
   body: "# Two",
   path: "002.md",
 };
+
+const sampleThree: CollectionFile = {
+  data: {
+    name: "Three",
+  },
+  body: "# Three",
+  path: "nested/003.md",
+}
+
+const sampleFour: CollectionFile = {
+  data: {
+    name: "Four",
+  },
+  body: "# Four",
+  path: "nested/index.md",
+}
 
 const firstPost: CollectionFile = {
   data: {
@@ -65,6 +81,21 @@ describe("transform", () => {
     };
   }
 
+  function createNestedSampleCollection(
+    ...files: Array<CollectionFile>
+  ): ResolvedCollection {
+    return {
+      name: "sample",
+      typeName: "Sample",
+      schema: z.object({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "**/*.md",
+      files,
+    };
+  }
+
   it("should create two document", async () => {
     const [collection] = await createTransformer(emitter)([
       createSampleCollection(sampleOne, sampleTwo),
@@ -75,10 +106,36 @@ describe("transform", () => {
 
   it("should create document with meta", async () => {
     const [collection] = await createTransformer(emitter)([
-      createSampleCollection(sampleOne),
+      createNestedSampleCollection(sampleThree),
     ]);
 
-    expect(collection?.documents[0].document._meta.path).toBe("001.md");
+    const meta: Meta = collection?.documents[0].document._meta;
+    if (!meta) {
+      throw new Error("No meta");
+    }
+
+    expect(meta.filePath).toBe("nested/003.md");
+    expect(meta.fileName).toBe("003.md");
+    expect(meta.directory).toBe("nested");
+    expect(meta.extension).toBe("md");
+    expect(meta.path).toBe("nested/003");
+  });
+
+  it("should create document with meta for index files", async () => {
+    const [collection] = await createTransformer(emitter)([
+      createNestedSampleCollection(sampleFour),
+    ]);
+
+    const meta: Meta = collection?.documents[0].document._meta;
+    if (!meta) {
+      throw new Error("No meta");
+    }
+
+    expect(meta.filePath).toBe("nested/index.md");
+    expect(meta.fileName).toBe("index.md");
+    expect(meta.directory).toBe("nested");
+    expect(meta.extension).toBe("md");
+    expect(meta.path).toBe("nested");
   });
 
   it("should parse documents data", async () => {

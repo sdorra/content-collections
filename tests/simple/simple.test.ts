@@ -23,7 +23,11 @@ describe("simple", () => {
       lower: "post one",
       content: "# One",
       _meta: {
-        path: "one.mdx",
+        path: "one",
+        directory: ".",
+        extension: "mdx",
+        filePath: "one.mdx",
+        fileName: "one.mdx",
       },
     });
   });
@@ -45,7 +49,11 @@ describe("simple", () => {
       lower: "post two",
       content: "## Two",
       _meta: {
-        path: "two.md",
+        path: "two",
+        directory: ".",
+        extension: "md",
+        filePath: "two.md",
+        fileName: "two.md",
       },
     });
   });
