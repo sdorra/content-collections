@@ -10,8 +10,8 @@ export default async function build(config: string) {
   registerErrorListeners(builder);
 
   let receivedError = false;
-  builder.on("cc-error", ({ event, error }) => {
-    if (isUnknownError(event)) {
+  builder.on("_error", ({ _event, error }) => {
+    if (isUnknownError(_event)) {
       console.log();
       console.log("Unknown error:", error.message);
       console.log();

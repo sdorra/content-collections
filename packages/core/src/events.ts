@@ -10,9 +10,13 @@ type EventWithError = {
   error: Error;
 };
 
-type ErrorEvent = EventWithError & {
-  event: string;
+type SystemEvent = {
+  _event: string;
 };
+
+type ErrorEvent = EventWithError & SystemEvent;
+
+// TODO: colocate types with fired events in the same file
 
 export type Events = {
   "build:start": {
@@ -45,6 +49,11 @@ export type Events = {
   };
 };
 
+export type SystemEvents = {
+  _error: ErrorEvent;
+  _all: SystemEvent;
+};
+
 type Keys<TEvents extends EventMap> = keyof TEvents & string;
 type Listener<TEvent> = (event: TEvent) => void;
 
@@ -60,7 +69,10 @@ export function createEmitter<TEvents extends EventMap>() {
     listener: Listener<TEvents[TKey]>
   ): void;
 
-  function on(key: "cc-error", listener: Listener<ErrorEvent>): void;
+  function on<TKey extends Keys<SystemEvents>>(
+    key: TKey,
+    listener: Listener<SystemEvents[TKey]>
+  ): void;
 
   function on(key: string, listener: Listener<any>) {
     emitter.on(key, listener);
@@ -68,12 +80,18 @@ export function createEmitter<TEvents extends EventMap>() {
 
   function emit<TKey extends Keys<TEvents>>(key: TKey, event: TEvents[TKey]) {
     emitter.emit(key, event);
+
     if (isEventWithError(event)) {
-      emitter.emit("cc-error", {
+      emitter.emit("_error", {
         ...event,
-        event: key,
+        _event: key,
       });
     }
+
+    emitter.emit("_all", {
+      ...event,
+      _event: key,
+    });
   }
 
   return {

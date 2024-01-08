@@ -27,8 +27,8 @@ export default async function watch(configPath: string) {
 
   registerErrorListeners(builder);
 
-  builder.on("cc-error", ({ event, error }) => {
-    if (isUnknownError(event)) {
+  builder.on("_error", ({ _event, error }) => {
+    if (isUnknownError(_event)) {
       console.log("... error", error.message);
     }
   });

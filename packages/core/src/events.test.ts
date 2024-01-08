@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { createEmitter } from "./events";
-import { e } from "vitest/dist/reporters-O4LBziQ_.js";
 
 type Events = {
   test: {
@@ -54,14 +53,32 @@ describe("events", () => {
     emitter.on("other", (event) => {
       events.push("other");
     });
-    emitter.on("cc-error", (event) => {
+    emitter.on("_error", (event) => {
       events.push("error");
-      expect(event.event).toBe("other");
+      expect(event._event).toBe("other");
       expect(event.error.message).toBe("test");
     });
 
     emitter.emit("other", { error: new Error("test") });
 
     expect(events).toEqual(["other", "error"]);
+  });
+
+  it("should emit extra _all event", () => {
+    const emitter = createEmitter<Events>();
+
+    const events: Array<string> = [];
+
+    emitter.on("test", (event) => {
+      events.push("test");
+    });
+    emitter.on("_all", (event) => {
+      events.push("all");
+      expect(event._event).toBe("test");
+    });
+
+    emitter.emit("test", { a: "test" });
+
+    expect(events).toEqual(["test", "all"]);
   });
 });
