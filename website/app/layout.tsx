@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { Analytics } from "@/components/Analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

@@ -14,6 +14,7 @@
     "bright": "^0.8.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "fathom-client": "^3.6.0",
     "lucide-react": "^0.308.0",
     "next": "14.0.4",
     "react": "^18",

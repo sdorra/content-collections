@@ -209,6 +209,9 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.0
+      fathom-client:
+        specifier: ^3.6.0
+        version: 3.6.0
       lucide-react:
         specifier: ^0.308.0
         version: 0.308.0(react@18.2.0)
@@ -3031,6 +3034,10 @@ packages:
     resolution: {integrity: sha512-ifCoaXsDrsdkWTtiNJX5uzHDsrck5TzfKKDcuFFTIrrc/BS076qgEIfoIy1VeZqViznfKiysPYTh/QeHtnIsYA==}
     dependencies:
       reusify: 1.0.4
+
+  /fathom-client@3.6.0:
+    resolution: {integrity: sha512-/mrgmVvpw4HqDCcqUfPulERhONKgnJGL74RAxfqKDuRQ+7w9lKoTHMzqBWE7WNBvmsgZEthQWJFOWOEjv+T3gA==}
+    dev: false
 
   /figures@5.0.0:
     resolution: {integrity: sha512-ej8ksPF4x6e5wvK9yevct0UCXh8TTFlWGVLlgjZuoBH1HwjIfKE/IdL5mq89sFA7zELi1VhKpmtDnrs7zWyeyg==}
