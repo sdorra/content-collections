@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import { Fragment } from "react";
+import { Code } from "bright";
 
 type Props = {
   params: {
@@ -10,6 +11,19 @@ type Props = {
     page: string;
   };
 };
+
+type SyntaxHighlighterProps = {
+  lang?: string;
+  children?: React.ReactNode;
+};
+
+function SyntaxHighlighter({ lang, children }: SyntaxHighlighterProps) {
+  return (
+    <Code lang={lang} theme="material-palenight">
+      {children}
+    </Code>
+  );
+}
 
 export default async function Page({ params: { category, page } }: Props) {
   const docPage = allDocs.find(
@@ -26,9 +40,9 @@ export default async function Page({ params: { category, page } }: Props) {
   });
 
   return (
-    <article className="prose">
+    <article className="mx-auto prose prose-slate max-w-3xl prose-invert py-5 px-10">
       <h1>{docPage.title}</h1>
-      <Content />
+      <Content components={{ pre: SyntaxHighlighter }} />
     </article>
   );
 }
