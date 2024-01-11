@@ -25,8 +25,6 @@ function SyntaxHighlighter({ lang, children }: SyntaxHighlighterProps) {
   );
 }
 
-// TODO make the page completely static
-
 export default async function Page({ params: { category, page } }: Props) {
   const docPage = allDocs.find(
     (doc) => doc._meta.path === `${category}/${page}`
@@ -48,3 +46,18 @@ export default async function Page({ params: { category, page } }: Props) {
     </article>
   );
 }
+
+export function generateStaticParams() {
+  return allDocs.map((doc) => {
+    const path = doc._meta.path;
+    const [category, page] = path.split("/");
+    return {
+      params: {
+        category,
+        page,
+      },
+    };
+  });
+}
+
+export const dynamicParams = false;
