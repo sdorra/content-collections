@@ -52,10 +52,8 @@ export function generateStaticParams() {
     const path = doc._meta.path;
     const [category, page] = path.split("/");
     return {
-      params: {
-        category,
-        page,
-      },
+      category,
+      page,
     };
   });
 }

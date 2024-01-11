@@ -23,8 +23,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          inter.className,
-          "max-w-5xl min-h-svh mx-auto grid grid-rows-[auto,1fr,auto] selection:bg-orange-500 selection:text-white"
+          "bg-fixed bg-gradient-to-bl from-slate-950 to-slate-800 text-slate-300",
+          "max-w-5xl min-h-svh mx-auto grid grid-rows-[auto,1fr,auto]",
+          "selection:bg-orange-500 selection:text-white",
+          inter.className
         )}
       >
         <Header />

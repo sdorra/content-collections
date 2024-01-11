@@ -53,7 +53,4 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-gradient-to-bl from-slate-950 mx-auto to-slate-800 text-slate-300 text-foreground;
-  }
 }

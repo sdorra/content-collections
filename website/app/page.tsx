@@ -18,7 +18,7 @@ type FeatureCardProps = {
 function FeatureCard({ title, comingSoon, children }: FeatureCardProps) {
   const Icon = comingSoon ? Clock8 : CheckCircle2;
   return (
-    <Card className="bg-slate-800">
+    <Card className="bg-slate-800 relative">
       <CardHeader>
         <CardTitle className="flex">
           <Icon className="inline-block mr-2 text-primary" />
