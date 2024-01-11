@@ -43,7 +43,16 @@ function XIcon() {
 export function Footer() {
   return (
     <footer className="flex justify-between px-10 py-5 text-muted-foreground">
-      <p>Made by Sebastian Sdorra</p>
+      <p>
+        Made with ❤️ by{" "}
+        <a
+          href="https://sdorra.dev"
+          target="_blank"
+          className="hover:text-primary-foreground hover:underline hover:decoration-primary"
+        >
+          Sebastian Sdorra
+        </a>
+      </p>
       <div className="flex gap-2 items-center">
         <FooterLink
           href="https://twitter.com/ssdorra"
