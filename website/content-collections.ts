@@ -14,7 +14,6 @@ const docs = defineCollection({
     const body = String(
       await compile(content, {
         outputFormat: "function-body",
-        /* …otherOptions */
       })
     );
     return {

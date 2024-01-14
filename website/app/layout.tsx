@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -24,13 +23,13 @@ export default function RootLayout({
       <body
         className={cn(
           "bg-fixed bg-gradient-to-bl from-slate-950 to-slate-800 text-slate-300",
-          "max-w-5xl min-h-svh mx-auto grid grid-rows-[auto,1fr,auto]",
+          "max-w-5xl min-h-svh mx-auto flex flex-col",
           "selection:bg-orange-500 selection:text-white",
           inter.className
         )}
       >
         <Header />
-        <main>{children}</main>
+        <main className="flex-grow">{children}</main>
         <Footer />
         <Analytics />
       </body>

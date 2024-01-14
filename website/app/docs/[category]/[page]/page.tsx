@@ -40,7 +40,7 @@ export default async function Page({ params: { category, page } }: Props) {
   });
 
   return (
-    <article className="mx-auto prose prose-slate max-w-3xl prose-invert py-5 px-10">
+    <article className="mx-auto prose prose-slate max-w-3xl prose-invert py-5 px-5 sm:px-10">
       <h1>{docPage.title}</h1>
       <Content components={{ pre: SyntaxHighlighter }} />
     </article>
