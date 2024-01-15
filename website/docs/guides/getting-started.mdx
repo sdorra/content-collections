@@ -39,11 +39,10 @@ title: "Getting started"
      name: "posts",
      directory: "src/posts",
      include: "**/*.md",
-     schema: (z) =>
-       z.object({
-         title: z.string(),
-         summary: z.string(),
-       }),
+     schema: (z) => ({
+       title: z.string(),
+       summary: z.string(),
+     }),
    });
 
    export default defineConfig({

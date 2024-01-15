@@ -3,6 +3,7 @@ import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
 import { basename, dirname, extname } from "node:path";
+import { z } from "zod";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -54,7 +55,9 @@ export function createTransformer(emitter: Emitter) {
   ): Promise<ParsedFile | null> {
     const { data, body, path } = file;
 
-    let parsedData = await collection.schema.safeParseAsync(data);
+    const schema = z.object(collection.schema);
+
+    let parsedData = await schema.safeParseAsync(data);
     if (!parsedData.success) {
       emitter.emit("transformer:validation-error", {
         collection,

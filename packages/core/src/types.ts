@@ -1,4 +1,4 @@
-import { ZodTypeAny } from "zod";
+import { ZodRawShape } from "zod";
 import { AnyCollection, AnyConfiguration, Collection } from "./config";
 
 export type Modification = "create" | "update" | "delete";
@@ -20,7 +20,7 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
 };
 
 type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<ZodTypeAny, any, any, infer TDocument>
+  TCollection extends Collection<any, ZodRawShape, any, any, infer TDocument>
     ? TDocument
     : never;
 

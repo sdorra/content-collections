@@ -1,4 +1,4 @@
-import { ZodTypeAny, z } from "zod";
+import { ZodObject, ZodRawShape, z } from "zod";
 import { generateTypeName } from "./utils";
 
 export type Meta = {
@@ -9,7 +9,7 @@ export type Meta = {
   extension: string;
 };
 
-export type Document<TSchema extends ZodTypeAny> = z.infer<TSchema> & {
+export type Schema<TShape extends ZodRawShape> = z.infer<ZodObject<TShape>> & {
   _meta: Meta;
 };
 
@@ -17,48 +17,60 @@ export type Context = {
   content(): Promise<string>;
   documents<TCollection extends AnyCollection>(
     collection: TCollection
-  ): Array<Document<TCollection["schema"]>>;
+  ): Array<Schema<TCollection["schema"]>>;
 };
 
 type Z = typeof z;
 
 export type CollectionRequest<
-  TSchema extends ZodTypeAny,
   TName extends string,
+  TShape extends ZodRawShape,
+  TSchema,
   TTransformResult,
   TDocument
 > = {
   name: TName;
   typeName?: string;
-  schema: (z: Z) => TSchema;
-  transform?: (context: Context, data: Document<TSchema>) => TTransformResult;
+  schema: (z: Z) => TShape;
+  transform?: (context: Context, data: TSchema) => TTransformResult;
   directory: string;
   include: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 };
 
 export type Collection<
-  TSchema extends ZodTypeAny,
   TName extends string,
+  TShape extends ZodRawShape,
+  TSchema,
   TTransformResult,
   TDocument
-> = Omit<CollectionRequest<TSchema, TName, TTransformResult, TDocument>, "schema"> & {
+> = Omit<
+  CollectionRequest<TName, TShape, TSchema, TTransformResult, TDocument>,
+  "schema"
+> & {
   typeName: string;
-  schema: TSchema;
+  schema: TShape;
 };
 
-export type AnyCollection = Collection<ZodTypeAny, any, any, any>;
+export type AnyCollection = Collection<any, ZodRawShape, any, any, any>;
 
 export function defineCollection<
-  TSchema extends ZodTypeAny,
   TName extends string,
+  TShape extends ZodRawShape,
+  TSchema = Schema<TShape>,
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
-    ? Document<TSchema>
+    ? Schema<TShape>
     : Awaited<TTransformResult>
 >(
-  collection: CollectionRequest<TSchema, TName, TTransformResult, TDocument>
-): Collection<TSchema, TName, TTransformResult, TDocument> {
+  collection: CollectionRequest<
+    TName,
+    TShape,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >
+): Collection<TName, TShape, TSchema, TTransformResult, TDocument> {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);

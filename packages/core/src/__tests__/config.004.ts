@@ -10,10 +10,9 @@ function mkdir(directory: string) {
 
 const posts = defineCollection({
   name: "posts",
-  schema: (z) =>
-    z.object({
-      title: z.string(),
-    }),
+  schema: (z) => ({
+    title: z.string(),
+  }),
   directory: "sources/posts",
   include: "**/*.md(x)?",
   onSuccess: (documents) => {
@@ -28,10 +27,9 @@ const posts = defineCollection({
 
 const authors = defineCollection({
   name: "authors",
-  schema: (z) =>
-    z.object({
-      displayName: z.string(),
-    }),
+  schema: (z) => ({
+    displayName: z.string(),
+  }),
   directory: "sources/authors",
   include: "**/*.md(x)?",
   onSuccess: (documents) => {

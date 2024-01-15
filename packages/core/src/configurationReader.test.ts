@@ -2,6 +2,7 @@ import path from "path";
 import { describe, it, expect } from "vitest";
 import { createConfigurationReader } from "./configurationReader";
 import { existsSync } from "fs";
+import { z } from "zod";
 
 function config(name: string) {
   const configPath = path.join(__dirname, "__tests__", name);
@@ -58,12 +59,12 @@ describe("configurationReader", () => {
       throw new Error("collection does not have a schema");
     }
 
-    let result = schema.safeParse({
+    let result = z.object(schema).safeParse({
       title: "Hello",
     });
     expect(result.success).toBe(true);
 
-    result = schema.safeParse({
+    result = z.object(schema).safeParse({
       greeting: "Hello",
     });
     expect(result.success).toBe(false);

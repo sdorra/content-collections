@@ -10,11 +10,10 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: (z) =>
-          z.object({
-            name: z.string(),
-            age: z.number(),
-          }),
+        schema: (z) => ({
+          name: z.string(),
+          age: z.number(),
+        }),
       });
 
       const config = defineConfig({
@@ -46,11 +45,10 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: (z) =>
-          z.object({
-            name: z.string(),
-            age: z.number(),
-          }),
+        schema: (z) => ({
+          name: z.string(),
+          age: z.number(),
+        }),
         transform: (ctx, data) => {
           return {
             ...data,
@@ -80,5 +78,58 @@ describe("types", () => {
 
       expect(person).toBeTruthy();
     });
+  });
+
+  it("should infer type from other collection", () => {
+    const countryCollection = defineCollection({
+      name: "country",
+      directory: "./countries",
+      include: "*.md",
+      schema: (z) => ({
+        code: z.string().length(2),
+        name: z.string(),
+      }),
+    });
+
+    const personCollection = defineCollection({
+      name: "person",
+      directory: "./persons",
+      include: "*.md",
+      schema: (z) => ({
+        name: z.string(),
+        age: z.number(),
+        countryCode: z.string().length(2),
+      }),
+      transform: (ctx, data) => {
+        const { _meta: _, countryCode, ...person } = data;
+        const countries = ctx.documents(countryCollection);
+        const doc = countries.find((c) => c.code === countryCode);
+        if (!doc) {
+          throw new Error(`Country ${data.countryCode} not found`);
+        }
+        const { _meta: __, ...country } = doc;
+        return {
+          ...person,
+          country,
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [countryCollection, personCollection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "Hans",
+      age: 20,
+      country: {
+        code: "de",
+        name: "Germany",
+      },
+    };
+
+    expect(person).toBeTruthy();
   });
 });
