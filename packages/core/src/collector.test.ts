@@ -23,7 +23,7 @@ describe("collector", () => {
       }
 
       expect(file.path).toBe("./__tests__/sources/test/001.md");
-      expect(file.body.trim()).toBe("# One");
+      expect(file.data.content.trim()).toBe("# One");
       expect(file.data.name).toBe("One");
     });
 
@@ -124,8 +124,8 @@ describe("collector", () => {
         },
       ]);
 
-      expect(collection?.files[0]?.body.trim()).toBe("# One");
-      expect(collection?.files[1]?.body.trim()).toBe("# Two");
+      expect(collection?.files[0]?.data.content.trim()).toBe("# One");
+      expect(collection?.files[1]?.data.content.trim()).toBe("# Two");
     });
 
     it("should collect single collection from multiple sources", async () => {

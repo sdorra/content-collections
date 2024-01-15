@@ -47,8 +47,8 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     const { data, content } = matter(file);
 
     return {
-      data,
-      body: content,
+      ...data,
+      content
     };
   }
 
@@ -62,11 +62,10 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
 
     try {
-      const { data, body } = parse(file);
+      const data = parse(file);
 
       return {
         data,
-        body,
         path: filePath,
       };
     } catch (error) {

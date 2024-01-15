@@ -26,8 +26,9 @@ describe("synchronizer", () => {
 
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
-        data: {},
-        body: "changed",
+        data: {
+          content: "changed"
+        },
         path: "new.md",
       }),
       [collection]
@@ -43,8 +44,9 @@ describe("synchronizer", () => {
       include: "**/*.md",
       files: [
         {
-          data: {},
-          body: "",
+          data: {
+            content: ""
+          },
           path: "new.md",
         },
       ],
@@ -64,8 +66,9 @@ describe("synchronizer", () => {
       include: "**/*.md",
       files: [
         {
-          data: {},
-          body: "",
+          data: {
+            content: ""
+          },
           path: "new.md",
         },
       ],
@@ -73,15 +76,16 @@ describe("synchronizer", () => {
 
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
-        data: {},
-        body: "changed",
+        data: {
+          content: "changed"
+        },
         path: "new.md",
       }),
       [collection]
     );
 
     expect(await synchronizer.changed("content/new.md")).toBe(true);
-    expect(collection.files[0]?.body).toBe("changed");
+    expect(collection.files[0]?.data.content).toBe("changed");
   });
 
   it("should not add file, if path is not in collection directory", async () => {
@@ -93,8 +97,9 @@ describe("synchronizer", () => {
 
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
-        data: {},
-        body: "changed",
+        data: {
+          content: "changed"
+        },
         path: "other/new.md",
       }),
       [collection]
@@ -113,8 +118,9 @@ describe("synchronizer", () => {
 
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
-        data: {},
-        body: "changed",
+        data: {
+          content: "changed"
+        },
         path: "content/new.html",
       }),
       [collection]
@@ -130,8 +136,9 @@ describe("synchronizer", () => {
       include: "**/*.md",
       files: [
         {
-          data: {},
-          body: "",
+          data: {
+            content: ""
+          },
           path: "new.md",
         },
       ],
@@ -151,8 +158,9 @@ describe("synchronizer", () => {
       include: "**/*.md",
       files: [
         {
-          data: {},
-          body: "",
+          data: {
+            content: ""
+          },
           path: "new.md",
         },
       ],

@@ -1,4 +1,4 @@
-import { ZodObject, ZodRawShape, z } from "zod";
+import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
 
 export type Meta = {
@@ -9,12 +9,23 @@ export type Meta = {
   extension: string;
 };
 
-export type Schema<TShape extends ZodRawShape> = z.infer<ZodObject<TShape>> & {
+type WithContent = {
+  content: ZodString;
+};
+
+type AddContent<TShape extends ZodRawShape> = TShape extends {
+  content: ZodTypeAny;
+}
+  ? TShape
+  : TShape & WithContent;
+
+export type Schema<TShape extends ZodRawShape> = z.infer<
+  ZodObject<AddContent<TShape>>
+> & {
   _meta: Meta;
 };
 
 export type Context = {
-  content(): Promise<string>;
   documents<TCollection extends AnyCollection>(
     collection: TCollection
   ): Array<Schema<TCollection["schema"]>>;

@@ -12,32 +12,32 @@ import { Events, createEmitter } from "./events";
 const sampleOne: CollectionFile = {
   data: {
     name: "One",
+    content: "# One",
   },
-  body: "# One",
   path: "001.md",
 };
 
 const sampleTwo: CollectionFile = {
   data: {
     name: "Two",
+    content: "# Two",
   },
-  body: "# Two",
   path: "002.md",
 };
 
 const sampleThree: CollectionFile = {
   data: {
     name: "Three",
+    content: "# Three",
   },
-  body: "# Three",
   path: "nested/003.md",
 };
 
 const sampleFour: CollectionFile = {
   data: {
     name: "Four",
+    content: "# Four",
   },
-  body: "# Four",
   path: "nested/index.md",
 };
 
@@ -45,8 +45,8 @@ const firstPost: CollectionFile = {
   data: {
     title: "First post",
     author: "trillian",
+    content: "# First post",
   },
-  body: "# First post",
   path: "first.md",
 };
 
@@ -54,8 +54,8 @@ const authorTrillian: CollectionFile = {
   data: {
     ref: "trillian",
     displayName: "Tricia Marie McMillan",
+    content: "# Trillian",
   },
-  body: "# Trillian",
   path: "trillian.md",
 };
 
@@ -182,12 +182,6 @@ describe("transform", () => {
       }),
       directory: "tests",
       include: "*.md",
-      transform: async (context, document) => {
-        return {
-          ...document,
-          content: await context.content(),
-        };
-      },
     });
 
     const [collection] = await createTransformer(emitter)([

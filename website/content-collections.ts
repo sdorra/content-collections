@@ -8,8 +8,7 @@ const docs = defineCollection({
   schema: (z) => ({
     title: z.string(),
   }),
-  transform: async (context, data) => {
-    const content = await context.content();
+  transform: async (context, { content, ...data }) => {
     const body = String(
       await compile(content, {
         outputFormat: "function-body",

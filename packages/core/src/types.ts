@@ -4,8 +4,10 @@ import { AnyCollection, AnyConfiguration, Collection } from "./config";
 export type Modification = "create" | "update" | "delete";
 
 export type CollectionFile = {
-  data: Record<string, unknown>;
-  body: string;
+  data: {
+    content: string;
+    [key: string]: unknown;
+  };
   path: string;
 };
 

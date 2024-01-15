@@ -101,16 +101,18 @@ describe("types", () => {
         countryCode: z.string().length(2),
       }),
       transform: (ctx, data) => {
-        const { _meta: _, countryCode, ...person } = data;
         const countries = ctx.documents(countryCollection);
-        const doc = countries.find((c) => c.code === countryCode);
-        if (!doc) {
+        const country = countries.find((c) => c.code === data.countryCode);
+        if (!country) {
           throw new Error(`Country ${data.countryCode} not found`);
         }
-        const { _meta: __, ...country } = doc;
         return {
-          ...person,
-          country,
+          name: data.name,
+          age: data.age,
+          country: {
+            code: country.code,
+            name: country.name,
+          }
         };
       },
     });

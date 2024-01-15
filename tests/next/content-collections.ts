@@ -41,7 +41,7 @@ const posts = defineCollection({
       },
       upper: post.title.toUpperCase(),
       lower: post.title.toLowerCase(),
-      content: (await context.content()).trim(),
+      content: post.content.trim(),
     };
   },
 });

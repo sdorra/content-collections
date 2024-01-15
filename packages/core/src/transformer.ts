@@ -19,7 +19,6 @@ export type TransformerEvents = {
 
 type ParsedFile = {
   document: any;
-  content: string;
 };
 
 export type ResolvedCollection = AnyCollection & {
@@ -49,13 +48,20 @@ function createPath(path: string, ext: string) {
 }
 
 export function createTransformer(emitter: Emitter) {
+  function createSchema(schema: z.ZodRawShape) {
+    return z.object({
+      content: z.string(),
+      ...schema,
+    });
+  }
+
   async function parseFile(
     collection: AnyCollection,
     file: CollectionFile
   ): Promise<ParsedFile | null> {
-    const { data, body, path } = file;
+    const { data, path } = file;
 
-    const schema = z.object(collection.schema);
+    const schema = createSchema(collection.schema);
 
     let parsedData = await schema.safeParseAsync(data);
     if (!parsedData.success) {
@@ -87,7 +93,6 @@ export function createTransformer(emitter: Emitter) {
 
     return {
       document,
-      content: body,
     };
   }
 
@@ -105,10 +110,8 @@ export function createTransformer(emitter: Emitter) {
 
   function createContext(
     collections: Array<TransformedCollection>,
-    file: ParsedFile
   ): Context {
     return {
-      content: async () => file.content,
       documents: (collection) => {
         const resolved = collections.find((c) => c.name === collection.name);
         if (!resolved) {
@@ -128,8 +131,8 @@ export function createTransformer(emitter: Emitter) {
   ) {
     if (collection.transform) {
       const docs = [];
+      const context = createContext(collections);
       for (const doc of collection.documents) {
-        const context = createContext(collections, doc);
         try {
           docs.push({
             ...doc,
