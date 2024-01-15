@@ -4,12 +4,18 @@
   "version": "0.1.0",
   "type": "module",
   "main": "dist/src/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "bin": {
     "content-collections": "dist/src/index.js"
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "prepack": "cp ../../README.md ./README.md",
+    "postpack": "rm -f ./README.md"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",

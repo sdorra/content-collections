@@ -11,10 +11,16 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts -d dist",
     "typecheck": "tsc",
-    "test": "vitest --run --coverage"
+    "test": "vitest --run --coverage",
+    "prepack": "cp ../../README.md ./README.md",
+    "postpack": "rm -f ./README.md"
   },
   "devDependencies": {
     "@types/micromatch": "^4.0.6",
