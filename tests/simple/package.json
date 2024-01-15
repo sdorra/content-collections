@@ -1,6 +1,7 @@
 {
   "name": "@content-collections/tests-simple",
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "build": "content-collections build",
