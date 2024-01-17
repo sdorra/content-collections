@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/cli",
   "description": "Command line interface for content-collections",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "dist/src/index.js",
   "files": [
@@ -29,6 +29,6 @@
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
-    "@content-collections/core": "0.x"
+    "@content-collections/core": "0.1.1"
   }
 }

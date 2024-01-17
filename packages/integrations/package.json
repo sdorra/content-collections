@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/integrations",
   "description": "Utils for integrating Content Collections with other tools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -20,6 +20,6 @@
     "@content-collections/core": "workspace:*"
   },
   "peerDependencies": {
-    "@content-collections/core": "0.x"
+    "@content-collections/core": "0.1.1"
   }
 }

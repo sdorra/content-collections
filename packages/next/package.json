@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/next",
   "description": "Use content-collection with Next.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "next": "^12 || ^13 || ^14",
-    "@content-collections/core": "0.x"
+    "@content-collections/core": "0.1.1"
   },
   "devDependencies": {
     "next": "^14.0.3",
