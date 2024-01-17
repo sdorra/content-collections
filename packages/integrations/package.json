@@ -17,7 +17,8 @@
     "build": "tsup src/index.ts --format esm,cjs --dts -d dist"
   },
   "devDependencies": {
-    "@content-collections/core": "workspace:*"
+    "@content-collections/core": "workspace:*",
+    "tsup": "^7.2.0"
   },
   "peerDependencies": {
     "@content-collections/core": "0.1.1"
