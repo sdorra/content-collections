@@ -1,8 +1,7 @@
 {
   "name": "@content-collections/vite",
   "description": "Use content-collections with Vite",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,14 +16,17 @@
     "build": "tsup src/index.ts --format esm --dts -d dist"
   },
   "dependencies": {
-    "@content-collections/core": "workspace:*"
+    "@content-collections/integrations": "workspace:*"
   },
   "peerDependencies": {
-    "vite": "^4 || ^5"
+    "vite": "^5",
+    "@content-collections/core": "0.x"
   },
   "devDependencies": {
-    "vite": "^4",
+    "@types/node": "20.x",
     "tsup": "^7.2.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "vite": "^5",
+    "@content-collections/core": "workspace:*"
   }
 }

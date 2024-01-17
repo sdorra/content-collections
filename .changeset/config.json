@@ -10,5 +10,9 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@content-collections/website", "@content-collections/tests-*"]
+  "ignore": [
+    "@content-collections/website",
+    "@content-collections/tests-*",
+    "samples-*"
+  ]
 }
