@@ -1,5 +1,5 @@
 {
-  "name": "@content-collections/tests-simple",
+  "name": "integrations-cli",
   "version": "0.1.0",
   "private": true,
   "type": "module",

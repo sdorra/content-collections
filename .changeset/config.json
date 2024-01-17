@@ -12,7 +12,7 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@content-collections/website",
-    "@content-collections/tests-*",
+    "integrations-*",
     "samples-*"
   ]
 }
