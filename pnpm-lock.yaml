@@ -70,6 +70,9 @@ importers:
         specifier: ^18
         version: 18.2.0(react@18.2.0)
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.40.1
+        version: 1.40.1
       '@types/node':
         specifier: ^20
         version: 20.11.4
@@ -79,21 +82,12 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.2.18
-      autoprefixer:
-        specifier: ^10.0.1
-        version: 10.4.16(postcss@8.4.32)
       eslint:
         specifier: ^8
         version: 8.56.0
       eslint-config-next:
         specifier: 14.0.3
         version: 14.0.3(eslint@8.56.0)(typescript@5.3.3)
-      postcss:
-        specifier: ^8
-        version: 8.4.32
-      tailwindcss:
-        specifier: ^3.3.0
-        version: 3.4.0
       typescript:
         specifier: ^5
         version: 5.3.3
@@ -223,6 +217,9 @@ importers:
       '@content-collections/core':
         specifier: workspace:*
         version: link:../core
+      '@content-collections/integrations':
+        specifier: workspace:*
+        version: link:../integrations
     devDependencies:
       next:
         specifier: ^14.0.3

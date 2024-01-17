@@ -1,8 +1,7 @@
 {
   "name": "@content-collections/next",
   "description": "Use content-collection with Next.js",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,14 +9,16 @@
     "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts -d dist"
+    "build": "tsup src/index.ts --format esm,cjs --dts -d dist"
   },
   "dependencies": {
-    "@content-collections/core": "workspace:*"
+    "@content-collections/core": "workspace:*",
+    "@content-collections/integrations": "workspace:*"
   },
   "peerDependencies": {
     "next": "^12 || ^13 || ^14"

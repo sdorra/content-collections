@@ -1,24 +1,25 @@
-import { allAuthors, allPosts } from "content-collections";
-export default function Home() {
+import {  allCharacters } from "content-collections";
+
+export default function Page() {
   return (
-    <main className="space-y-5 p-10">
-      <h1 className="text-4xl font-bold">Collections</h1>
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Posts</h2>
-        <ul>
-          {allPosts.map((post) => (
-            <li key={post._meta.path}>{post.title}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Authors</h2>
-        <ul>
-          {allAuthors.map((author) => (
-            <li key={author._meta.path}>{author.displayName}</li>
-          ))}
-        </ul>
-      </div>
+    <main>
+      <h1>Characters</h1>
+      <ul>
+        {allCharacters.map((character) => (
+          <li key={character.name}>
+            <h2>{character.name}</h2>
+
+            <ul>
+              <li>Planet of origin: {character.origin}</li>
+              <li>Species: {character.species}</li>
+            </ul>
+
+            <p>{character.content}</p>
+
+            <a href={character.source}>Source</a>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
