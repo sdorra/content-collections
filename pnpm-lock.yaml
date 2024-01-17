@@ -211,9 +211,15 @@ importers:
       '@content-collections/core':
         specifier: workspace:*
         version: link:../core
+      '@types/node':
+        specifier: '20'
+        version: 20.11.4
       tsup:
         specifier: ^7.2.0
         version: 7.2.0(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
   packages/next:
     dependencies:
