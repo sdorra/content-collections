@@ -1,4 +1,4 @@
-import { allDocs } from "content-collections";
+import { allDocs, allReadmes } from "content-collections";
 import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
@@ -26,9 +26,7 @@ function SyntaxHighlighter({ lang, children }: SyntaxHighlighterProps) {
 }
 
 export default async function Page({ params: { category, page } }: Props) {
-  const docPage = allDocs.find(
-    (doc) => doc._meta.path === `${category}/${page}`
-  );
+  const docPage = findPage(category, page);
   if (!docPage) {
     return notFound();
   }
@@ -47,8 +45,20 @@ export default async function Page({ params: { category, page } }: Props) {
   );
 }
 
+function findPage(category: string, page: string) {
+  if (category === "integrations") {
+    return allReadmes.find((doc) => doc._meta.directory === page);
+  }
+  return allDocs.find((doc) => doc._meta.path === `${category}/${page}`);
+}
+
 export function generateStaticParams() {
-  return allDocs.map((doc) => {
+  const integrations = allReadmes.map((doc) => ({
+    category: "integrations",
+    page: doc._meta.directory,
+  }));
+
+  const docs = allDocs.map((doc) => {
     const path = doc._meta.path;
     const [category, page] = path.split("/");
     return {
@@ -56,6 +66,8 @@ export function generateStaticParams() {
       page,
     };
   });
+
+  return [...docs, ...integrations];
 }
 
 export const dynamicParams = false;

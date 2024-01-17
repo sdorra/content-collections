@@ -2,33 +2,11 @@
 title: "Getting started"
 ---
 
-1. Install required packages:
+1. Install Content Collections and integrate it in your build.
 
-   We have to install the following packages:
-
-   - `@content-collections/core`
-   - `@content-collections/cli`
-   - `concurrently`
-
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/cli concurrently
-   ```
-
-1. Adjust your `tsconfig.json`:
-
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
-
-   We require a path alias for the generated files.
-   This is necessary because the CLI will generate the files in the `.content-collections/generated` folder.
+   * [Next.js](/docs/integrations/nextjs)
+   * [Vite](/docs/integrations/vite)
+   * [CLI (generic integration)](/docs/integrations/cli)
 
 1. Create a `content-collections.ts` file at the root of your project:
 
@@ -52,23 +30,6 @@ title: "Getting started"
 
    This file defines a collection named `posts` in the `src/posts` folder.
    The collection will include all markdown files (`**/*.md`) and the schema will validate the `title` and `summary` fields.
-
-1. Add the content-collection cli to your `package.json` scripts:
-
-   ```json
-   {
-     "scripts": {
-       "dev": "concurrently 'content-collections watch' 'build-scripts dev'",
-       "build": "content-collections build && build-scripts build"
-     }
-   }
-   ```
-
-   First, we modify the `dev` script to simultaneously execute the `content-collections watch` command along with our regular `dev` command.
-
-   Next, we execute the `content-collections build` command prior to our regular `build` command.
-
-   **Note:** Make sure to replace `build-scripts` with the appropriate command for your framework, such as `next` or `vite`.
 
 1. Create your content files (e.g.: `src/posts/hello-world.md`):
 
