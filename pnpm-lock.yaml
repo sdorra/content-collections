@@ -335,12 +335,12 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.0)
     devDependencies:
-      '@content-collections/cli':
-        specifier: workspace:*
-        version: link:../packages/cli
       '@content-collections/core':
         specifier: workspace:*
         version: link:../packages/core
+      '@content-collections/next':
+        specifier: workspace:*
+        version: link:../packages/next
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.0)

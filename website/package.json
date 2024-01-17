@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently 'content-collections watch' 'next dev'",
-    "build": "content-collections build && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -23,7 +23,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@content-collections/cli": "workspace:*",
+    "@content-collections/next": "workspace:*",
     "@content-collections/core": "workspace:*",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20",
