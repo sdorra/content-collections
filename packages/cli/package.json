@@ -13,9 +13,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsx src/index.ts",
-    "prepack": "cp ../../README.md ./README.md",
-    "postpack": "rm -f ./README.md"
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*",
