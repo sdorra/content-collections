@@ -17,14 +17,15 @@
     "prepack": "cp ../../README.md ./README.md",
     "postpack": "rm -f ./README.md"
   },
+  "dependencies": {
+    "@content-collections/core": "workspace:*",
+    "@content-collections/integrations": "workspace:*",
+    "clerc": "^0.42.2"
+  },
   "devDependencies": {
     "@types/node": "^20.9.0",
     "tsup": "^7.2.0",
     "tsx": "^4.1.1",
     "typescript": "^5.3.2"
-  },
-  "dependencies": {
-    "@content-collections/core": "workspace:*",
-    "clerc": "^0.42.2"
   }
 }

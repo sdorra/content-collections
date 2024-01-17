@@ -1,0 +1,21 @@
+{
+  "name": "@content-collections/integrations",
+  "description": "Utils for integrating Content Collections with other tools",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist"
+  },
+  "dependencies": {
+    "@content-collections/core": "workspace:*"
+  }
+}

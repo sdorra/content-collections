@@ -1,21 +1,12 @@
 import { createBuilder } from "@content-collections/core";
-import { isUnknownError, registerErrorListeners } from "../errors.js";
+import { configureLogging } from "@content-collections/integrations";
 
 export default async function build(config: string) {
-  console.log("Building collections...");
-
-  console.time("Finished building collections");
   const builder = await createBuilder(config);
-
-  registerErrorListeners(builder);
+  configureLogging(builder);
 
   let receivedError = false;
-  builder.on("_error", ({ _event, error }) => {
-    if (isUnknownError(_event)) {
-      console.log();
-      console.log("Unknown error:", error.message);
-      console.log();
-    }
+  builder.on("_error", () => {
     receivedError = true;
   });
 
@@ -25,8 +16,6 @@ export default async function build(config: string) {
     if (receivedError) {
       console.log("Failed to build collections, exiting...");
       process.exit(1);
-    } else {
-      console.timeEnd("Finished building collections");
     }
   }
 }
