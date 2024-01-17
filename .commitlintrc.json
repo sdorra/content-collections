@@ -1,3 +1,26 @@
 {
-  "extends": ["@commitlint/config-conventional"]
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "refactor",
+        "test",
+        "sample",
+        "build",
+        "ci",
+        "perf",
+        "chore"
+      ]
+    ],
+    "scope-enum": [
+      2,
+      "always",
+      ["core", "cli", "website", "vite", "next", "shared"]
+    ]
+  }
 }
