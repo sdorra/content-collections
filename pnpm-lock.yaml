@@ -131,9 +131,6 @@ importers:
 
   packages/cli:
     dependencies:
-      '@content-collections/core':
-        specifier: workspace:*
-        version: link:../core
       '@content-collections/integrations':
         specifier: workspace:*
         version: link:../integrations
@@ -141,6 +138,9 @@ importers:
         specifier: ^0.42.2
         version: 0.42.2
     devDependencies:
+      '@content-collections/core':
+        specifier: workspace:*
+        version: link:../core
       '@types/node':
         specifier: ^20.9.0
         version: 20.10.6
@@ -207,20 +207,20 @@ importers:
         version: 1.1.1(@types/node@20.10.6)
 
   packages/integrations:
-    dependencies:
+    devDependencies:
       '@content-collections/core':
         specifier: workspace:*
         version: link:../core
 
   packages/next:
     dependencies:
-      '@content-collections/core':
-        specifier: workspace:*
-        version: link:../core
       '@content-collections/integrations':
         specifier: workspace:*
         version: link:../integrations
     devDependencies:
+      '@content-collections/core':
+        specifier: workspace:*
+        version: link:../core
       next:
         specifier: ^14.0.3
         version: 14.0.4(react-dom@18.2.0)(react@18.2.0)

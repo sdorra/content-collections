@@ -18,15 +18,15 @@
   "dependencies": {
     "@content-collections/integrations": "workspace:*"
   },
-  "peerDependencies": {
-    "vite": "^5",
-    "@content-collections/core": "0.x"
-  },
   "devDependencies": {
     "@types/node": "20.x",
     "tsup": "^7.2.0",
     "typescript": "^5.3.2",
     "vite": "^5",
     "@content-collections/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": "^5",
+    "@content-collections/core": "0.x"
   }
 }

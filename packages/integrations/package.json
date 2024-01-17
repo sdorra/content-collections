@@ -16,7 +16,10 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts -d dist"
   },
-  "dependencies": {
+  "devDependencies": {
     "@content-collections/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@content-collections/core": "0.x"
   }
 }

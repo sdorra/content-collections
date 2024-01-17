@@ -18,14 +18,17 @@
     "postpack": "rm -f ./README.md"
   },
   "dependencies": {
-    "@content-collections/core": "workspace:*",
     "@content-collections/integrations": "workspace:*",
     "clerc": "^0.42.2"
   },
   "devDependencies": {
+    "@content-collections/core": "workspace:*",
     "@types/node": "^20.9.0",
     "tsup": "^7.2.0",
     "tsx": "^4.1.1",
     "typescript": "^5.3.2"
+  },
+  "peerDependencies": {
+    "@content-collections/core": "0.x"
   }
 }
