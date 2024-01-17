@@ -37,8 +37,7 @@ title: Vite Integration
 
    export default defineConfig({
     plugins: [/** other plugins */, contentCollections()],
-  });
-
+   });
    ```
 
    Add the Content Collections plugin to your Vite config.
