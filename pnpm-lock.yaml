@@ -341,10 +341,10 @@ importers:
   samples/mdx:
     dependencies:
       '@content-collections/core':
-        specifier: 0.1.1
+        specifier: 0.2.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.1.0
+        specifier: 0.1.1
         version: link:../../packages/vite
       '@mdx-js/mdx':
         specifier: ^3.0.0
@@ -381,10 +381,10 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.1.1
+        specifier: 0.2.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.1.0
+        specifier: 0.1.1
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -440,10 +440,10 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.1.1
+        specifier: 0.2.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.1.0
+        specifier: 0.1.1
         version: link:../../packages/vite
       '@mdx-js/rollup':
         specifier: ^3.0.0
