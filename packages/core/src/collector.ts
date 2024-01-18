@@ -3,7 +3,7 @@ import fg from "fast-glob";
 import { readFile } from "fs/promises";
 import { AnyCollection } from "./config";
 import path from "path";
-import { isDefined } from "./utils";
+import { isDefined, orderByPath } from "./utils";
 import { CollectionFile } from "./types";
 import { Emitter } from "./events";
 
@@ -16,7 +16,7 @@ export type CollectorEvents = {
     filePath: string;
     error: CollectError;
   };
-}
+};
 
 export type ErrorType = "Parse" | "Read";
 
@@ -48,7 +48,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
 
     return {
       ...data,
-      content
+      content,
     };
   }
 
@@ -77,7 +77,10 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
-  async function resolveDirectory<T extends FileCollection>(collection: T, directory: string) {
+  async function resolveDirectory<T extends FileCollection>(
+    collection: T,
+    directory: string
+  ) {
     const collectionDirectory = path.join(baseDirectory, directory);
 
     const filePaths = await fg(collection.include, {
@@ -106,7 +109,9 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
 
     return {
       ...collection,
-      files: files.filter(isDefined),
+      files: files
+        .filter(isDefined)
+        .sort(orderByPath),
     };
   }
 

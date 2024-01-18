@@ -139,6 +139,18 @@ describe("collector", () => {
       expect(collection?.files).toHaveLength(2);
     });
 
+    it("should sort files by name", async () => {
+      const [collection] = await collect([
+        {
+          directory: "./__tests__/sources/test",
+          include: ["002.md", "001.md"],
+        },
+      ]);
+
+      const paths = collection?.files.map((file) => file.path);
+      expect(paths).toEqual(["001.md", "002.md"]);
+    });
+
     it("should collect single collection from multiple directories", async () => {
       const [collection] = await collect([
         {

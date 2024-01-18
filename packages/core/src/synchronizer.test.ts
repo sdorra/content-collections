@@ -38,6 +38,41 @@ describe("synchronizer", () => {
     expect(collection.files.length).toBe(1);
   });
 
+  it("should sort collection after adding new file", async () => {
+    const collection = {
+      directory: "content",
+      include: "**/*.md",
+      files: [
+        {
+          data: {
+            content: ""
+          },
+          path: "b.md",
+        },
+        {
+          data: {
+            content: ""
+          },
+          path: "c.md",
+        },
+      ],
+    };
+
+    const synchronizer = createSynchronizer(
+      createCollectionFileReader({
+        data: {
+          content: "changed"
+        },
+        path: "a.md",
+      }),
+      [collection]
+    );
+    expect(await synchronizer.changed("content/a.md")).toBe(true);
+
+    const paths = collection.files.map((file) => file.path);
+    expect(paths).toEqual(["a.md", "b.md", "c.md"]);
+  });
+
   it("should add new file to collection with multiple directories", async () => {
     const collection = {
       directory: ["content", "other"],

@@ -1,6 +1,7 @@
 import micromatch from "micromatch";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 import path from "node:path";
+import { orderByPath } from "./utils";
 
 type CollectionFileReader = (
   directory: string,
@@ -116,6 +117,7 @@ export function createSynchronizer<T extends FileCollection>(
 
     if (index === -1) {
       collection.files.push(file);
+      collection.files.sort(orderByPath);
     } else {
       collection.files[index] = file;
     }
