@@ -1,5 +1,14 @@
 # @content-collections/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- [`5c7022f`](https://github.com/sdorra/content-collections/commit/5c7022f630a9194ff5579f792c06dcca31611cd5) Thanks [@sdorra](https://github.com/sdorra)! - Update version range of core package
+
+- Updated dependencies [[`5c7022f`](https://github.com/sdorra/content-collections/commit/5c7022f630a9194ff5579f792c06dcca31611cd5)]:
+  - @content-collections/integrations@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes
