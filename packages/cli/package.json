@@ -27,6 +27,6 @@
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
-    "@content-collections/core": "^0.1.2"
+    "@content-collections/core": "0.x"
   }
 }
