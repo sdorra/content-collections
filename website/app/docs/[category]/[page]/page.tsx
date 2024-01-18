@@ -1,4 +1,4 @@
-import { allDocs, allIntgrations, allSamples } from "content-collections";
+import { allDocs, allIntegrations, allSamples } from "content-collections";
 import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
@@ -48,7 +48,7 @@ export default async function Page({ params: { category, page } }: Props) {
 
 function findPage(category: string, page: string) {
   if (category === "integrations") {
-    return allIntgrations.find((doc) => doc.name === page);
+    return allIntegrations.find((doc) => doc.name === page);
   }
   if (category === "samples") {
     return allSamples.find((doc) => doc.name === page);
@@ -70,7 +70,7 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const integrations = allIntgrations.map((doc) => ({
+  const integrations = allIntegrations.map((doc) => ({
     category: "integrations",
     page: doc.name,
   }));
