@@ -13,6 +13,11 @@
     },
     "test": {
       "dependsOn": ["build", "typecheck", "lint"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
     }
   }
 }
