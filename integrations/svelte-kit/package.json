@@ -1,0 +1,24 @@
+{
+  "name": "integrations-svelte-kit",
+  "version": "0.0.0",
+	"private": true,
+	"type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "lint": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "playwright test"
+  },
+  "devDependencies": {
+    "@content-collections/core": "workspace:*",
+    "@content-collections/vite": "workspace:*",
+    "@playwright/test": "^1.40.1",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.3"
+  }
+}
