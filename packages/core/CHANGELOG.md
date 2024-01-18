@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.1.2
+
+### Patch Changes
+
+- [`ca48b40`](https://github.com/sdorra/content-collections/commit/ca48b401518ed71bd019f9196fa3d3ad2fc777f9) Thanks [@sdorra](https://github.com/sdorra)! - Fix usage of watcher inside stackblitz
+
 ## 0.1.1
 
 ### Patch Changes
