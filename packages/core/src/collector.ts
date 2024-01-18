@@ -77,8 +77,9 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
-  async function resolveCollection<T extends FileCollection>(collection: T) {
-    const collectionDirectory = path.join(baseDirectory, collection.directory);
+  async function resolveDirectory<T extends FileCollection>(collection: T, directory: string) {
+    const collectionDirectory = path.join(baseDirectory, directory);
+
     const filePaths = await fg(collection.include, {
       cwd: collectionDirectory,
       onlyFiles: true,
@@ -88,7 +89,20 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       collectFile(collectionDirectory, filePath)
     );
 
-    const files = await Promise.all(promises);
+    return Promise.all(promises);
+  }
+
+  async function resolveCollection<T extends FileCollection>(collection: T) {
+    let files: Array<CollectionFile | null> = [];
+    if (typeof collection.directory === "string") {
+      files = await resolveDirectory(collection, collection.directory);
+    } else {
+      const promises = collection.directory.map((directory) =>
+        resolveDirectory(collection, directory)
+      );
+      const resolved = await Promise.all(promises);
+      files = resolved.flat();
+    }
 
     return {
       ...collection,

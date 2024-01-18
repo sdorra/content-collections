@@ -175,6 +175,17 @@ describe("builder", () => {
       expect(watcher.paths).toEqual([
         path.join(__dirname, "__tests__", "sources", "posts"),
       ]);
-    })
+    });
+
+    it("should pass multiple collection directories to the watcher", async () => {
+      const { builder } = await createBuilder("config.005");
+
+      const watcher = await builder.watch();
+      // @ts-ignore our mock returns a watcher with a paths property
+      expect(watcher.paths).toEqual([
+        path.join(__dirname, "__tests__", "sources", "posts"),
+        path.join(__dirname, "__tests__", "sources", "test"),
+      ]);
+    });
   });
 });

@@ -139,6 +139,20 @@ describe("collector", () => {
       expect(collection?.files).toHaveLength(2);
     });
 
+    it("should collect single collection from multiple directories", async () => {
+      const [collection] = await collect([
+        {
+          directory: [
+            "./__tests__/sources/test/",
+            "./__tests__/sources/posts/",
+          ],
+          include: "*.md",
+        },
+      ]);
+
+      expect(collection?.files).toHaveLength(3);
+    });
+
     it("should collect multiple collections", async () => {
       const collections = await collect([
         {

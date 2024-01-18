@@ -12,13 +12,28 @@ export function createSynchronizer<T extends FileCollection>(
   collections: Array<ResolvedCollection<T>>,
   baseDirectory: string = "."
 ) {
-  function findCollection(filePath: string) {
+  function findCollectionAndDirectory(filePath: string) {
     const resolvedFilePath = path.resolve(filePath);
-    return collections.find((collection) => {
-      return resolvedFilePath.startsWith(
-        path.resolve(baseDirectory, collection.directory)
-      );
-    });
+    for (const collection of collections) {
+      const directories: Array<string> = [];
+      if (typeof collection.directory === "string") {
+        directories.push(collection.directory);
+      } else {
+        directories.push(...collection.directory);
+      }
+
+      for (const directory of directories) {
+        const resolvedDirectory = path.resolve(baseDirectory, directory);
+        if (resolvedFilePath.startsWith(resolvedDirectory)) {
+          return {
+            collection,
+            directory,
+          };
+        }
+      }
+    }
+
+    return null;
   }
 
   function createRelativePath(collectionPath: string, filePath: string) {
@@ -33,12 +48,13 @@ export function createSynchronizer<T extends FileCollection>(
   }
 
   function resolve(filePath: string) {
-    const collection = findCollection(filePath);
-    if (!collection) {
+    const collectionAndDirectory = findCollectionAndDirectory(filePath);
+    if (!collectionAndDirectory) {
       return null;
     }
 
-    const relativePath = createRelativePath(collection.directory, filePath);
+    const { collection, directory } = collectionAndDirectory;
+    const relativePath = createRelativePath(directory, filePath);
     if (!micromatch.isMatch(relativePath, collection.include)) {
       return null;
     }
@@ -76,10 +92,23 @@ export function createSynchronizer<T extends FileCollection>(
       (file) => file.path === relativePath
     );
 
-    const file = await readCollectionFile(
-      path.join(baseDirectory, collection.directory),
-      relativePath
-    );
+    const directories: Array<string> = [];
+    if (typeof collection.directory === "string") {
+      directories.push(collection.directory);
+    } else {
+      directories.push(...collection.directory);
+    }
+
+    let file: CollectionFile | null = null;
+    for (const directory of directories) {
+      file = await readCollectionFile(
+        path.join(baseDirectory, directory),
+        relativePath
+      );
+      if (file) {
+        break;
+      }
+    }
 
     if (!file) {
       return false;
