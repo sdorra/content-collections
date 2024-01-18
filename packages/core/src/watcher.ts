@@ -1,4 +1,4 @@
-import watcher, { SubscribeCallback } from "@parcel/watcher";
+import * as watcher from "@parcel/watcher";
 import { Modification } from "./types";
 import { Emitter } from "./events";
 
@@ -18,7 +18,7 @@ export async function createWatcher(
   sync: SyncFn,
   build: BuildFn
 ) {
-  const onChange: SubscribeCallback = async (error, events) => {
+  const onChange: watcher.SubscribeCallback = async (error, events) => {
     if (error) {
       console.error(error);
       return;
