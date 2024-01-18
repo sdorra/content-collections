@@ -1,4 +1,4 @@
-import { allDocs, allIntgrations } from "content-collections";
+import { allDocs, allIntgrations, allSamples } from "content-collections";
 import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
@@ -50,10 +50,15 @@ function findPage(category: string, page: string) {
   if (category === "integrations") {
     return allIntgrations.find((doc) => doc.name === page);
   }
+  if (category === "samples") {
+    return allSamples.find((doc) => doc.name === page);
+  }
   return allDocs.find((doc) => doc._meta.path === `${category}/${page}`);
 }
 
-export function generateMetadata({ params: { category, page } }: Props): Metadata {
+export function generateMetadata({
+  params: { category, page },
+}: Props): Metadata {
   const docPage = findPage(category, page);
   if (!docPage) {
     return notFound();
@@ -61,12 +66,17 @@ export function generateMetadata({ params: { category, page } }: Props): Metadat
   return {
     title: docPage.title,
     description: docPage.description,
-  }
+  };
 }
 
 export function generateStaticParams() {
   const integrations = allIntgrations.map((doc) => ({
     category: "integrations",
+    page: doc.name,
+  }));
+
+  const samples = allSamples.map((doc) => ({
+    category: "samples",
     page: doc.name,
   }));
 
@@ -79,7 +89,7 @@ export function generateStaticParams() {
     };
   });
 
-  return [...docs, ...integrations];
+  return [...docs, ...samples, ...integrations];
 }
 
 export const dynamicParams = false;
