@@ -3,7 +3,7 @@ import { compile } from "@mdx-js/mdx";
 
 const readme = defineCollection({
   name: "readme",
-  directory: "../packages",
+  directory: "../integrations",
   include: "*/README.md",
   schema: (z) => ({
     title: z.string(),
