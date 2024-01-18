@@ -41,6 +41,11 @@ const samples = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     linkText: z.string().optional(),
+    stackBlitz: z
+      .object({
+        file: z.string(),
+      })
+      .optional(),
   }),
   transform: async (context, data) => {
     const body = String(
@@ -57,6 +62,7 @@ const samples = defineCollection({
     return {
       title: data.title,
       description: data.description,
+      stackBlitz: data.stackBlitz,
       href,
       linkText,
       name,
