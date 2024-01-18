@@ -1,5 +1,5 @@
 import { Builder, createBuilder } from "@content-collections/core";
-import { Plugin } from "vite";
+import { Plugin, UserConfig } from "vite";
 import path from "node:path";
 import { configureLogging } from "@content-collections/integrations";
 
@@ -7,7 +7,7 @@ type Options = {
   configPath: string;
 };
 
-function resolveConfig(root: string, configPath: string) {
+function resolveConfigPath(root: string, configPath: string) {
   if (!path.isAbsolute(configPath)) {
     configPath = path.resolve(root, configPath);
   }
@@ -24,28 +24,41 @@ export default function contentCollectionsPlugin(
     name: "content-collections",
 
     config(config) {
-      let configPath = resolveConfig(
+      let configPath = resolveConfigPath(
         config.root || process.cwd(),
         options.configPath
       );
-      const directory = path.dirname(configPath);
-      return {
+
+      const directory = path.resolve(
+        path.dirname(configPath),
+        "./.content-collections/generated"
+      );
+
+      const configPatch: Partial<UserConfig> = {
         optimizeDeps: {
           exclude: ["content-collections"],
         },
         resolve: {
           alias: {
-            "content-collections": path.resolve(
-              directory,
-              "./.content-collections/generated/index.js"
-            ),
+            "content-collections": directory,
           },
         },
       };
+
+      if ((config.server?.fs?.allow || []).length > 0) {
+        // required for Svelte Kit
+        configPatch.server = {
+          fs: {
+            allow: [directory],
+          },
+        };
+      }
+
+      return configPatch;
     },
 
     async configResolved(config: any) {
-      let configPath = resolveConfig(config.root, options.configPath);
+      let configPath = resolveConfigPath(config.root, options.configPath);
       console.log(
         "Starting content-collections with config",
         path.relative(process.cwd(), configPath)
