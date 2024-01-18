@@ -27,6 +27,6 @@
   },
   "peerDependencies": {
     "vite": "^5",
-    "@content-collections/core": "0.1.1"
+    "@content-collections/core": "^0.1.1"
   }
 }

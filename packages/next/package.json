@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "next": "^12 || ^13 || ^14",
-    "@content-collections/core": "0.1.1"
+    "@content-collections/core": "^0.1.1"
   },
   "devDependencies": {
     "next": "^14.0.3",
