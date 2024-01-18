@@ -1,5 +1,7 @@
 ---
 title: Next.js Integration
+description: Integrate Content Collections into your Next.js app
+linkText: Next.js
 ---
 
 1. Install required packages:

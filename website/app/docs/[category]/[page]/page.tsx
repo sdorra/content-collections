@@ -1,9 +1,10 @@
-import { allDocs, allReadmes } from "content-collections";
+import { allDocs, allIntgrations } from "content-collections";
 import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import { Fragment } from "react";
 import { Code } from "bright";
+import { Metadata } from "next";
 
 type Props = {
   params: {
@@ -38,7 +39,7 @@ export default async function Page({ params: { category, page } }: Props) {
   });
 
   return (
-    <article className="mx-auto prose prose-slate max-w-3xl prose-invert py-5 px-5 sm:px-10">
+    <article className="min-w-0 prose prose-slate hover:prose-a:decoration-primary max-w-3xl prose-invert py-5 px-5 sm:px-10">
       <h1>{docPage.title}</h1>
       <Content components={{ pre: SyntaxHighlighter }} />
     </article>
@@ -47,15 +48,26 @@ export default async function Page({ params: { category, page } }: Props) {
 
 function findPage(category: string, page: string) {
   if (category === "integrations") {
-    return allReadmes.find((doc) => doc._meta.directory === page);
+    return allIntgrations.find((doc) => doc.name === page);
   }
   return allDocs.find((doc) => doc._meta.path === `${category}/${page}`);
 }
 
+export function generateMetadata({ params: { category, page } }: Props): Metadata {
+  const docPage = findPage(category, page);
+  if (!docPage) {
+    return notFound();
+  }
+  return {
+    title: docPage.title,
+    description: docPage.description,
+  }
+}
+
 export function generateStaticParams() {
-  const integrations = allReadmes.map((doc) => ({
+  const integrations = allIntgrations.map((doc) => ({
     category: "integrations",
-    page: doc._meta.directory,
+    page: doc.name,
   }));
 
   const docs = allDocs.map((doc) => {

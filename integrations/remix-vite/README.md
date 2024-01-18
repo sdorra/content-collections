@@ -1,5 +1,7 @@
 ---
 title: Remix Vite Integration
+description: Content Collections integration for Remix (Vite)
+linkText: Remix (Vite)
 ---
 
 1. Install required packages:

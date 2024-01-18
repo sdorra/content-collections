@@ -1,21 +1,33 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compile } from "@mdx-js/mdx";
 
-const readme = defineCollection({
-  name: "readme",
+const integrations = defineCollection({
+  name: "intgrations",
   directory: "../integrations",
   include: "*/README.md",
   schema: (z) => ({
     title: z.string(),
+    description: z.string().optional(),
+    linkText: z.string().optional(),
   }),
-  transform: async (context, { content, ...data }) => {
+  transform: async (context, data) => {
     const body = String(
-      await compile(content, {
+      await compile(data.content, {
         outputFormat: "function-body",
       })
     );
+    let linkText = data.linkText;
+    if (!linkText) {
+      linkText = data.title;
+    }
+    const href = `/docs/integrations/${data._meta.directory}`;
+    const name = data._meta.directory;
     return {
-      ...data,
+      title: data.title,
+      description: data.description,
+      href,
+      linkText,
+      name,
       body,
     };
   },
@@ -27,6 +39,7 @@ const docs = defineCollection({
   include: "**/*.mdx",
   schema: (z) => ({
     title: z.string(),
+    description: z.string().optional(),
   }),
   transform: async (context, { content, ...data }) => {
     const body = String(
@@ -42,5 +55,5 @@ const docs = defineCollection({
 });
 
 export default defineConfig({
-  collections: [readme, docs],
+  collections: [integrations, docs],
 });

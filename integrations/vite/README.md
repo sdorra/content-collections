@@ -1,5 +1,7 @@
 ---
 title: Vite Integration
+description: Setup guide for the Content Collections Vite plugin
+linkText: Vite
 ---
 
 1. Install required packages:

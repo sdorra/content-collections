@@ -1,5 +1,7 @@
 ---
 title: Command Line Interface
+description: Setup guide for the Content Collections CLI
+linkText: CLI
 ---
 
 1. Install required packages:
