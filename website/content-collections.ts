@@ -9,6 +9,7 @@ const integrations = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     linkText: z.string().optional(),
+    icon: z.string().optional(),
   }),
   transform: async (context, data) => {
     const body = String(
@@ -25,6 +26,7 @@ const integrations = defineCollection({
     return {
       title: data.title,
       description: data.description,
+      icon: data.icon,
       href,
       linkText,
       name,
@@ -71,27 +73,6 @@ const samples = defineCollection({
   },
 });
 
-const docs = defineCollection({
-  name: "docs",
-  directory: "docs",
-  include: "**/*.mdx",
-  schema: (z) => ({
-    title: z.string(),
-    description: z.string().optional(),
-  }),
-  transform: async (context, { content, ...data }) => {
-    const body = String(
-      await compile(content, {
-        outputFormat: "function-body",
-      })
-    );
-    return {
-      ...data,
-      body,
-    };
-  },
-});
-
 export default defineConfig({
-  collections: [integrations, samples, docs],
+  collections: [integrations, samples],
 });

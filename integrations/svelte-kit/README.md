@@ -1,13 +1,52 @@
 ---
-title: "Getting started"
+title: Svelte Kit Integration
+description: Integrate Content Collections into your Svelte Kit app
+linkText: Svelte Kit
+icon: svelte
 ---
 
-1. Install Content Collections and integrate it in your build.
+1. Install required packages:
 
-   * [Next.js](/docs/integrations/next)
-   * [Vite](/docs/integrations/vite)
-   * [Remix (Vite)](/docs/integrations/remix-vite)
-   * [CLI (generic integration)](/docs/integrations/cli)
+   We have to install the following packages:
+
+   - `@content-collections/core`
+   - `@content-collections/vite`
+
+   ```bash
+   pnpm add -D @content-collections/core @content-collections/vite
+   ```
+
+1. Adjust your `svelte.config.js`:
+
+   ```js
+   const config = {
+     // ...
+     kit: {
+       // ...
+       alias: {
+         "content-collections": "./.content-collections/generated"
+       }
+     }
+   };
+   ```
+
+   We require a path alias for the generated files.
+   This is necessary because we will generate the files in the `.content-collections/generated` folder.
+
+1. Modify your `vite.config.ts`:
+
+   ```ts
+   import { sveltekit } from "@sveltejs/kit/vite";
+   import contentCollections from "@content-collections/vite";
+   import { defineConfig } from "vite";
+
+   export default defineConfig({
+     plugins: [sveltekit(), contentCollections()],
+   });
+   ```
+
+   Add the Content Collections plugin to your Vite config.
+
 
 1. Create a `content-collections.ts` file at the root of your project:
 
@@ -52,23 +91,21 @@ title: "Getting started"
 
 1. Usage in your code:
 
-   ```tsx
-   import { allPosts } from "content-collections";
+   ```svelte
+   <script>
+     import { allPosts } from "content-collections";
+   </script>
 
-   export function Posts() {
-     return (
-       <ul>
-         {allPosts.map((post) => (
-           <li key={post._meta.path}>
-             <a href={`/posts/${post._meta.path}`}>
-               <h3>{post.title}</h3>
-               <p>{post.summary}</p>
-             </a>
-           </li>
-         ))}
-       </ul>
-     );
-   }
+   <h1>Posts</h1>
+
+   <ul>
+     {#each allPosts as post}
+       <li>
+         <h2>{post.title}</h2>
+         <p>{post.summary}</p>
+       </li>
+     {/each}
+   </ul>
    ```
 
    Now you can just import the `allPosts` collection and use it in your code.

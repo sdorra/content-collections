@@ -1,10 +1,6 @@
-import {
-  allDocs,
-  allIntegrations,
-  allSamples,
-} from "@/.content-collections/generated";
-import { NavLink } from "./components/NavLink";
-import { NavSection } from "./components/NavSection";
+import { allIntegrations, allSamples } from "@/.content-collections/generated";
+import { NavLink } from "./[category]/[page]/components/NavLink";
+import { NavSection } from "./[category]/[page]/components/NavSection";
 
 type Props = {
   children: React.ReactNode;
@@ -15,18 +11,10 @@ export default function DocLayout({ children }: Props) {
     <div className="flex flex-col-reverse sm:flex-row w-full">
       <aside className="w-42 text-nowrap pl-10">
         <nav>
-          <NavSection title="Guides">
-            {allDocs
-              .filter((d) => d._meta.directory === "guides")
-              .map((doc) => (
-                <NavLink
-                  title={doc.title}
-                  key={doc._meta.path}
-                  href={`/docs/${doc._meta.path}`}
-                >
-                  {doc.title}
-                </NavLink>
-              ))}
+          <NavSection title="Docs">
+            <NavLink title="Getting started" href="/docs">
+              Getting started
+            </NavLink>
           </NavSection>
           <NavSection title="Integrations">
             {allIntegrations.map((doc) => (
