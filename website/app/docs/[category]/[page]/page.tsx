@@ -6,6 +6,7 @@ import { Fragment } from "react";
 import { Code } from "bright";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
+import { createStackBlitzLink } from "@/lib/stackblitz";
 
 type Props = {
   params: {
@@ -35,7 +36,6 @@ function StackBlitzIcon() {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>StackBlitz</title>
       <path d="M10.797 14.182H3.635L16.728 0l-3.525 9.818h7.162L7.272 24l3.524-9.818Z" />
     </svg>
   );
@@ -46,13 +46,11 @@ type StackBlitzProps = {
 };
 
 function StackBlitz({ sample }: StackBlitzProps) {
-  const params = new URLSearchParams(sample.stackBlitz || {}).toString();
-
   return (
     <div className="text-center">
       <Button asChild>
         <a
-          href={`https://stackblitz.com/github/sdorra/content-collections/tree/main/samples/${sample.name}/?${params}`}
+          href={createStackBlitzLink("samples", sample.name, sample.stackBlitz)}
           className="flex items-center justify-center gap-2"
         >
           <StackBlitzIcon />

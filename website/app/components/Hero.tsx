@@ -38,9 +38,14 @@ export function Hero() {
         and begin. Built-in validation ensures the accuracy of your data.
         Preprocess your data before it enters your app.
       </p>
-      <Button size="lg" className="w-fit sm:col-span-2 md:col-span-1" asChild>
-        <Link href="/docs/guides/getting-started">Getting started</Link>
+      <div className="space-x-4 sm:col-span-2 md:col-span-1">
+      <Button size="lg" className="w-fit" asChild>
+        <Link href="/docs">Getting started</Link>
       </Button>
+      <Button size="lg" className="w-fit outline outline-2 hover:bg-slate-800" variant="ghost" asChild>
+        <a href="#see-it-in-action">See it in action</a>
+      </Button>
+      </div>
     </header>
   );
 }
