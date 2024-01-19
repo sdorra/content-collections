@@ -8,8 +8,8 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/next": "workspace:*",
-    "@content-collections/core": "workspace:*",
+    "@content-collections/next": "0.1.1",
+    "@content-collections/core": "0.2.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"

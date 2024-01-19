@@ -9,8 +9,8 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@content-collections/cli": "workspace:*",
-    "@content-collections/core": "workspace:*"
+    "@content-collections/cli": "0.1.2",
+    "@content-collections/core": "0.2.0"
   },
   "devDependencies": {
     "@types/node": "18",

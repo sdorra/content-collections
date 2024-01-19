@@ -8,8 +8,8 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "workspace:*",
-    "@content-collections/vite": "workspace:*",
+    "@content-collections/core": "0.2.0",
+    "@content-collections/vite": "0.1.2",
     "@playwright/test": "^1.40.1",
     "@solidjs/start": "^0.4.10",
     "solid-js": "^1.8.11",
