@@ -1,12 +1,12 @@
 {
   "name": "integrations-svelte-kit",
   "version": "0.0.0",
-	"private": true,
-	"type": "module",
+  "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite dev",
     "lint": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"test": "playwright test"
+    "test": "playwright test"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",

@@ -1,5 +1,11 @@
 # @content-collections/vite
 
+## 0.1.2
+
+### Patch Changes
+
+- [`7e0b2d6`](https://github.com/sdorra/content-collections/commit/7e0b2d621f2ab9c1244558ce1c36fe94e08dfdff) Thanks [@sdorra](https://github.com/sdorra)! - Add generated directory to list of allowed files. This required if vite is running with server.fs.strict.
+
 ## 0.1.1
 
 ### Patch Changes
