@@ -32,7 +32,7 @@ export default function DocsRoot() {
           by using the{" "}
           <Link
             className="hover:decoration-primary"
-            href="/docs/integration/cli"
+            href="/docs/integrations/cli"
           >
             CLI
           </Link>
