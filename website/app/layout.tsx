@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Content Collections",
   description: "Transform your content into type-safe data collections.",
-  metadataBase: new URL("https://content-collections.dev"),
+  metadataBase: new URL("https://www.content-collections.dev"),
 };
 
 export default function RootLayout({
