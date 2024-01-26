@@ -20,7 +20,7 @@
     "scope-enum": [
       2,
       "always",
-      ["core", "cli", "website", "vite", "next", "shared"]
+      ["core", "cli", "website", "vite", "remix-vite", "next", "shared"]
     ]
   }
 }

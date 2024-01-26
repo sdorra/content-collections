@@ -95,6 +95,10 @@
         "label": "vite"
       },
       {
+        "value": "remix-vite",
+        "label": "remix-vite"
+      },
+      {
         "value": "next",
         "label": "next"
       },

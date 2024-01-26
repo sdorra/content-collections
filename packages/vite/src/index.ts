@@ -3,8 +3,13 @@ import { Plugin, UserConfig } from "vite";
 import path from "node:path";
 import { configureLogging } from "@content-collections/integrations";
 
-type Options = {
+export type Options = {
   configPath: string;
+  isEnabled?: (config: UserConfig) => boolean;
+};
+
+const defaultOptions = {
+  configPath: "content-collections.ts",
 };
 
 function resolveConfigPath(root: string, configPath: string) {
@@ -15,18 +20,25 @@ function resolveConfigPath(root: string, configPath: string) {
 }
 
 export default function contentCollectionsPlugin(
-  options: Options = {
-    configPath: "content-collections.ts",
-  }
+  options: Partial<Options> = {}
 ): Plugin {
+  const pluginOptions = { ...defaultOptions, ...options };
+
   let builder: Builder;
+  let isEnabled = false;
+
   return {
     name: "content-collections",
 
     config(config) {
+      isEnabled = options.isEnabled ? options.isEnabled(config) : true;
+      if (!isEnabled) {
+        return;
+      }
+
       let configPath = resolveConfigPath(
         config.root || process.cwd(),
-        options.configPath
+        pluginOptions.configPath
       );
 
       const directory = path.resolve(
@@ -58,7 +70,10 @@ export default function contentCollectionsPlugin(
     },
 
     async configResolved(config: any) {
-      let configPath = resolveConfigPath(config.root, options.configPath);
+      if (!isEnabled) {
+        return;
+      }
+      let configPath = resolveConfigPath(config.root, pluginOptions.configPath);
       console.log(
         "Starting content-collections with config",
         path.relative(process.cwd(), configPath)
@@ -71,12 +86,18 @@ export default function contentCollectionsPlugin(
     },
 
     async buildStart() {
+      if (!isEnabled) {
+        return;
+      }
       console.log("Start initial build");
       await builder.build();
       return;
     },
 
     async configureServer() {
+      if (!isEnabled) {
+        return;
+      }
       console.log("Start watching");
       builder.watch();
       return;

@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@content-collections/core": "0.2.0",
-    "@content-collections/vite": "0.1.2",
+    "@content-collections/remix-vite": "0.0.0",
     "@playwright/test": "^1.40.1",
     "@remix-run/dev": "^2.5.0",
     "@types/react": "^18.2.20",

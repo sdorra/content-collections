@@ -116,9 +116,9 @@ importers:
       '@content-collections/core':
         specifier: 0.2.0
         version: link:../../packages/core
-      '@content-collections/vite':
-        specifier: 0.1.2
-        version: link:../../packages/vite
+      '@content-collections/remix-vite':
+        specifier: 0.1.0
+        version: link:../../packages/remix-vite
       '@playwright/test':
         specifier: ^1.40.1
         version: 1.40.1
@@ -375,6 +375,30 @@ importers:
       webpack:
         specifier: ^5.89.0
         version: 5.89.0(esbuild@0.18.20)
+
+  packages/remix-vite:
+    devDependencies:
+      '@content-collections/core':
+        specifier: workspace:*
+        version: link:../core
+      '@content-collections/integrations':
+        specifier: workspace:*
+        version: link:../integrations
+      '@content-collections/vite':
+        specifier: workspace:*
+        version: link:../vite
+      '@types/node':
+        specifier: 20.x
+        version: 20.11.4
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.2
+        version: 5.3.3
+      vite:
+        specifier: ^5
+        version: 5.0.10(@types/node@20.11.4)
 
   packages/vite:
     dependencies:
