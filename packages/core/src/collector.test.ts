@@ -55,7 +55,7 @@ describe("collector", () => {
     it("should capture the parse error", async () => {
       emitter.on("collector:parse-error", ({ error }) => {
         expect(error.type).toBe("Parse");
-        expect(error.message).toMatch(/end of the stream/);
+        expect(error.message).toMatch(/^YAMLParseError:/);
       });
 
       const { collectFile } = createCollector(emitter, __dirname);
@@ -179,5 +179,20 @@ describe("collector", () => {
 
       expect(collections).toHaveLength(2);
     });
+  });
+
+  it("should treat dates as string", async () => {
+    const { collectFile } = createCollector(emitter);
+
+    const file = await collectFile(
+      __dirname,
+      "./__tests__/sources/books/hgttg.md"
+    );
+
+    if (!file) {
+      throw new Error("File not found");
+    }
+
+    expect(typeof file.data.published).toBe("string");
   });
 });

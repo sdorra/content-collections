@@ -6,6 +6,7 @@ import path from "path";
 import { isDefined, orderByPath } from "./utils";
 import { CollectionFile } from "./types";
 import { Emitter } from "./events";
+import { parse, stringify } from "yaml";
 
 export type CollectorEvents = {
   "collector:read-error": {
@@ -43,8 +44,15 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
-  function parse(file: string) {
-    const { data, content } = matter(file);
+  function parseFile(file: string) {
+    const { data, content } = matter(file, {
+      engines: {
+        yaml: {
+          parse,
+          stringify,
+        },
+      },
+    });
 
     return {
       ...data,
@@ -62,7 +70,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
 
     try {
-      const data = parse(file);
+      const data = parseFile(file);
 
       return {
         data,
@@ -109,9 +117,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
 
     return {
       ...collection,
-      files: files
-        .filter(isDefined)
-        .sort(orderByPath),
+      files: files.filter(isDefined).sort(orderByPath),
     };
   }
 

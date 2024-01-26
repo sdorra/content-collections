@@ -40,6 +40,7 @@
     "gray-matter": "^4.0.3",
     "micromatch": "^4.0.5",
     "pluralize": "^8.0.0",
+    "yaml": "^2.3.4",
     "zod": "^3.22.4"
   }
 }

@@ -6,7 +6,7 @@ const posts = defineCollection({
   include: "*.md",
   schema: (z) => ({
     title: z.string(),
-    date: z.date(),
+    date: z.string(),
   }),
 });
 

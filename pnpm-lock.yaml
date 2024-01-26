@@ -307,6 +307,9 @@ importers:
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
+      yaml:
+        specifier: ^2.3.4
+        version: 2.3.4
       zod:
         specifier: ^3.22.4
         version: 3.22.4
