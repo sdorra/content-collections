@@ -1,0 +1,31 @@
+{
+  "name": "@content-collections/solid-start",
+  "description": "Use content-collections with SolidStart",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "tsup": "^7.2.0",
+    "typescript": "^5.3.2",
+    "vite": "^5",
+    "@content-collections/core": "workspace:*",
+    "@content-collections/vite": "workspace:*",
+    "@content-collections/integrations": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": "^5",
+    "@content-collections/core": "^0.x"
+  }
+}

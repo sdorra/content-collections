@@ -103,6 +103,10 @@
         "label": "next"
       },
       {
+        "value": "solid-start",
+        "label": "solid-start"
+      },
+      {
         "value": "shared",
         "label": "shared"
       },

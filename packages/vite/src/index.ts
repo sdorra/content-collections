@@ -32,9 +32,10 @@ export default function contentCollectionsPlugin(
 
     config(config) {
       isEnabled = options.isEnabled ? options.isEnabled(config) : true;
-      if (!isEnabled) {
-        return;
-      }
+
+      // even if the plugin is disabled, we need to configure the alias
+      // vite is often executed multiple time and the plugin should only
+      // run once, but the aliases must be available for all runs
 
       let configPath = resolveConfigPath(
         config.root || process.cwd(),
