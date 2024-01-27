@@ -10,10 +10,10 @@ icon: solid
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/vite`
+   - `@content-collections/solid-start`
 
    ```bash
-   pnpm add -D @content-collections/core @content-collections/vite
+   pnpm add -D @content-collections/core @content-collections/solid-start
    ```
 
 1. Adjust your `tsconfig.json`:

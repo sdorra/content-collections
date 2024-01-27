@@ -10,10 +10,10 @@ icon: remix
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/vite`
+   - `@content-collections/remix-vite`
 
    ```bash
-   pnpm add -D @content-collections/core @content-collections/vite
+   pnpm add -D @content-collections/core @content-collections/remix-vite
    ```
 
 1. Adjust your `tsconfig.json`:
