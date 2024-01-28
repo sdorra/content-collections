@@ -1,0 +1,35 @@
+{
+  "name": "integrations-qwik",
+  "description": "App with Routing built-in ready to create your app",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "private": true,
+  "trustedDependencies": [
+    "sharp"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode ssr",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "^1.4.1",
+    "@builder.io/qwik-city": "^1.4.1",
+    "@content-collections/vite": "0.1.2",
+    "@content-collections/core": "0.2.0",
+    "@types/eslint": "^8.56.2",
+    "@types/node": "^20.11.6",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@playwright/test": "^1.40.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-qwik": "^1.4.1",
+    "prettier": "^3.2.4",
+    "typescript": "5.3.3",
+    "undici": "*",
+    "vite": "^5.0.12",
+    "vite-tsconfig-paths": "^4.2.1"
+  }
+}
