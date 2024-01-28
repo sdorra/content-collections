@@ -43,7 +43,7 @@ class ContentCollectionWebpackPlugin {
   }
 }
 
-export function createcontentCollectionPlugin(pluginOptions: Options) {
+export function createContentCollectionPlugin(pluginOptions: Options) {
   const plugin = new ContentCollectionWebpackPlugin(pluginOptions);
   return (nextConfig: Partial<NextConfig> = {}): Partial<NextConfig> => {
     return {
@@ -70,5 +70,17 @@ export function createcontentCollectionPlugin(pluginOptions: Options) {
   };
 }
 
-export const withcontentCollections =
-  createcontentCollectionPlugin(defaultOptions);
+export const withContentCollections =
+  createContentCollectionPlugin(defaultOptions);
+
+// Fixed typos in function names, but keep the old for backwards compatibility
+export {
+  /**
+   * @deprecated use `createContentCollectionPlugin` instead
+   */
+  createContentCollectionPlugin as createcontentCollectionPlugin,
+  /**
+   * @deprecated use `withContentCollections` instead
+   */
+  withContentCollections as withcontentCollections,
+};

@@ -1,4 +1,4 @@
-const { withcontentCollections } = require("@content-collections/next");
+const { withContentCollections } = require("@content-collections/next");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {}
