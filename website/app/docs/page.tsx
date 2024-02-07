@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function DocsRoot() {
   return (
     <div className="w-full pl-10">
-      <div className="prose prose-slate prose-invert">
+      <div className="prose prose-base prose-invert">
         <h1>Getting started</h1>
         <p>
           Content Collection support most of the major web frameworks. <br />
@@ -17,7 +17,7 @@ export default function DocsRoot() {
           <li key={doc.href}>
             <a
               href={doc.href}
-              className="flex flex-col justify-center items-center hover:text-primary gap-2"
+              className="flex flex-col justify-center items-center hover:text-primary-600 gap-2"
               title={doc.description}
             >
               <BrandIcon icon={doc.icon || doc.name} className="w-20 h-10" />
@@ -26,12 +26,12 @@ export default function DocsRoot() {
           </li>
         ))}
       </ul>
-      <div className="prose prose-slate prose-invert mt-10">
+      <div className="prose prose-base prose-invert mt-10">
         <p>
           If your framework is not listed, you can still use Content Collections
           by using the{" "}
           <Link
-            className="hover:decoration-primary"
+            className="hover:decoration-primary-600"
             href="/docs/integrations/cli"
           >
             CLI

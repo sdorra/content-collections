@@ -3,9 +3,7 @@ import { notFound } from "next/navigation";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import { Fragment } from "react";
-import { Code } from "bright";
 import { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { createStackBlitzLink } from "@/lib/stackblitz";
 
 type Props = {
@@ -15,23 +13,10 @@ type Props = {
   };
 };
 
-type SyntaxHighlighterProps = {
-  lang?: string;
-  children?: React.ReactNode;
-};
-
-function SyntaxHighlighter({ lang, children }: SyntaxHighlighterProps) {
-  return (
-    <Code lang={lang} theme="material-palenight">
-      {children}
-    </Code>
-  );
-}
-
 function StackBlitzIcon() {
   return (
     <svg
-      className="size-5 stroke-white fill-white"
+      className="size-5 stroke-current fill-current"
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -48,15 +33,13 @@ type StackBlitzProps = {
 function StackBlitz({ sample }: StackBlitzProps) {
   return (
     <div className="text-center">
-      <Button asChild>
-        <a
-          href={createStackBlitzLink("samples", sample.name, sample.stackBlitz)}
-          className="flex items-center justify-center gap-2"
-        >
-          <StackBlitzIcon />
-          Open Sample in StackBlitz
-        </a>
-      </Button>
+      <a
+        href={createStackBlitzLink("samples", sample.name, sample.stackBlitz)}
+        className="inline-flex border-2 px-4 py-2 rounded-lg items-center justify-center gap-2 hover:border-primary-600 hover:text-primary-600"
+      >
+        <StackBlitzIcon />
+        Open Sample in StackBlitz
+      </a>
     </div>
   );
 }
@@ -79,9 +62,9 @@ export default async function Page({ params: { category, page } }: Props) {
 
   return (
     <div className="min-w-0">
-      <article className="prose prose-slate hover:prose-a:decoration-primary max-w-3xl prose-invert py-5 px-5 sm:px-10">
+      <article className="prose prose-base prose-code:text-base hover:prose-a:decoration-primary-600 max-w-3xl prose-invert py-5 px-5 sm:px-10">
         <h1>{docPage.title}</h1>
-        <Content components={{ pre: SyntaxHighlighter }} />
+        <Content />
       </article>
       {isSample(category, docPage) ? <StackBlitz sample={docPage} /> : null}
     </div>

@@ -20,7 +20,7 @@ export function SeeItInActionSection() {
             <a
               href={createStackBlitzLink("integrations", integration.name)}
               target="_blank"
-              className="hover:text-primary"
+              className="hover:text-primary-600"
               title={integration.title}
             >
               <BrandIcon
@@ -38,7 +38,7 @@ export function SeeItInActionSection() {
           href="https://stackblitz.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline hover:decoration-primary"
+          className="underline hover:decoration-primary-600"
         >
           StackBlitz
         </a>{" "}
@@ -48,7 +48,7 @@ export function SeeItInActionSection() {
           href="https://github.com/sdorra/content-collections/tree/main/integrations"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline hover:decoration-primary"
+          className="underline hover:decoration-primary-600"
         >
           GitHub repository
         </a>{" "}

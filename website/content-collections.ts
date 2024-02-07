@@ -1,5 +1,15 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import rehypeShiki from "@shikijs/rehype";
 import { compile } from "@mdx-js/mdx";
+
+async function mdx(content: string) {
+  return String(
+    await compile(content, {
+      outputFormat: "function-body",
+      rehypePlugins: [[rehypeShiki, { theme: "one-dark-pro" }]],
+    })
+  );
+}
 
 const integrations = defineCollection({
   name: "integrations",
@@ -11,12 +21,9 @@ const integrations = defineCollection({
     linkText: z.string().optional(),
     icon: z.string().optional(),
   }),
-  transform: async (context, data) => {
-    const body = String(
-      await compile(data.content, {
-        outputFormat: "function-body",
-      })
-    );
+  transform: async (_, data) => {
+    const body = await mdx(data.content);
+
     let linkText = data.linkText;
     if (!linkText) {
       linkText = data.title;
@@ -50,11 +57,8 @@ const samples = defineCollection({
       .optional(),
   }),
   transform: async (context, data) => {
-    const body = String(
-      await compile(data.content, {
-        outputFormat: "function-body",
-      })
-    );
+    const body = await mdx(data.content);
+
     let linkText = data.linkText;
     if (!linkText) {
       linkText = data.title;

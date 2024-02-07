@@ -8,7 +8,7 @@ type Props = {
 
 export default function DocLayout({ children }: Props) {
   return (
-    <div className="flex flex-col-reverse sm:flex-row w-full">
+    <div className="flex flex-col-reverse sm:flex-row w-full mx-auto max-w-5xl">
       <aside className="w-42 text-nowrap pl-10">
         <nav>
           <NavSection title="Docs">
