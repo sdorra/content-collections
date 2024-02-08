@@ -95,18 +95,9 @@ export async function createBuilder(
   }
 
   async function watch() {
-    const paths: Array<string> = [];
-
-    for (const collection of resolved) {
-      if (typeof collection.directory === "string") {
-        paths.push(path.join(baseDirectory, collection.directory));
-      } else {
-        paths.push(
-          ...collection.directory.map((dir) => path.join(baseDirectory, dir))
-        );
-      }
-    }
-
+    const paths = resolved.map((collection) =>
+      path.join(baseDirectory, collection.directory)
+    );
     const watcher = await createWatcher(emitter, paths, sync, build);
     return watcher;
   }

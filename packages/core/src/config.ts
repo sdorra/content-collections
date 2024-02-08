@@ -44,7 +44,7 @@ export type CollectionRequest<
   typeName?: string;
   schema: (z: Z) => TShape;
   transform?: (context: Context, data: TSchema) => TTransformResult;
-  directory: string | string[];
+  directory: string;
   include: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 };

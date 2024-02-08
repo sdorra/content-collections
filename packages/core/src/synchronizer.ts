@@ -13,28 +13,13 @@ export function createSynchronizer<T extends FileCollection>(
   collections: Array<ResolvedCollection<T>>,
   baseDirectory: string = "."
 ) {
-  function findCollectionAndDirectory(filePath: string) {
+  function findCollection(filePath: string) {
     const resolvedFilePath = path.resolve(filePath);
-    for (const collection of collections) {
-      const directories: Array<string> = [];
-      if (typeof collection.directory === "string") {
-        directories.push(collection.directory);
-      } else {
-        directories.push(...collection.directory);
-      }
-
-      for (const directory of directories) {
-        const resolvedDirectory = path.resolve(baseDirectory, directory);
-        if (resolvedFilePath.startsWith(resolvedDirectory)) {
-          return {
-            collection,
-            directory,
-          };
-        }
-      }
-    }
-
-    return null;
+    return collections.find((collection) => {
+      return resolvedFilePath.startsWith(
+        path.resolve(baseDirectory, collection.directory)
+      );
+    });
   }
 
   function createRelativePath(collectionPath: string, filePath: string) {
@@ -49,13 +34,12 @@ export function createSynchronizer<T extends FileCollection>(
   }
 
   function resolve(filePath: string) {
-    const collectionAndDirectory = findCollectionAndDirectory(filePath);
-    if (!collectionAndDirectory) {
+    const collection = findCollection(filePath);
+    if (!collection) {
       return null;
     }
 
-    const { collection, directory } = collectionAndDirectory;
-    const relativePath = createRelativePath(directory, filePath);
+    const relativePath = createRelativePath(collection.directory, filePath);
     if (!micromatch.isMatch(relativePath, collection.include)) {
       return null;
     }
@@ -93,23 +77,10 @@ export function createSynchronizer<T extends FileCollection>(
       (file) => file.path === relativePath
     );
 
-    const directories: Array<string> = [];
-    if (typeof collection.directory === "string") {
-      directories.push(collection.directory);
-    } else {
-      directories.push(...collection.directory);
-    }
-
-    let file: CollectionFile | null = null;
-    for (const directory of directories) {
-      file = await readCollectionFile(
-        path.join(baseDirectory, directory),
-        relativePath
-      );
-      if (file) {
-        break;
-      }
-    }
+    const file = await readCollectionFile(
+      path.join(baseDirectory, collection.directory),
+      relativePath
+    );
 
     if (!file) {
       return false;

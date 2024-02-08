@@ -73,27 +73,6 @@ describe("synchronizer", () => {
     expect(paths).toEqual(["a.md", "b.md", "c.md"]);
   });
 
-  it("should add new file to collection with multiple directories", async () => {
-    const collection = {
-      directory: ["content", "other"],
-      include: "**/*.md",
-      files: [],
-    };
-
-    const synchronizer = createSynchronizer(
-      createCollectionFileReader({
-        data: {
-          content: "changed"
-        },
-        path: "new.md",
-      }),
-      [collection]
-    );
-    expect(await synchronizer.changed("content/new.md")).toBe(true);
-
-    expect(collection.files.length).toBe(1);
-  });
-
   it("should delete file", () => {
     const collection = {
       directory: "content",
@@ -112,28 +91,6 @@ describe("synchronizer", () => {
       collection,
     ]);
     synchronizer.deleted("content/new.md");
-
-    expect(collection.files.length).toBe(0);
-  });
-
-  it("should delete file from collection with multiple directories", () => {
-    const collection = {
-      directory: ["content", "other"],
-      include: "**/*.md",
-      files: [
-        {
-          data: {
-            content: ""
-          },
-          path: "new.md",
-        },
-      ],
-    };
-
-    const synchronizer = createSynchronizer(noopCollectionFileReader, [
-      collection,
-    ]);
-    synchronizer.deleted("other/new.md");
 
     expect(collection.files.length).toBe(0);
   });
@@ -163,34 +120,6 @@ describe("synchronizer", () => {
     );
 
     expect(await synchronizer.changed("content/new.md")).toBe(true);
-    expect(collection.files[0]?.data.content).toBe("changed");
-  });
-
-  it("should change file in collection with multiple directories", async () => {
-    const collection = {
-      directory: ["content", "other"],
-      include: "**/*.md",
-      files: [
-        {
-          data: {
-            content: ""
-          },
-          path: "new.md",
-        },
-      ],
-    };
-
-    const synchronizer = createSynchronizer(
-      createCollectionFileReader({
-        data: {
-          content: "changed"
-        },
-        path: "new.md",
-      }),
-      [collection]
-    );
-
-    expect(await synchronizer.changed("other/new.md")).toBe(true);
     expect(collection.files[0]?.data.content).toBe("changed");
   });
 
