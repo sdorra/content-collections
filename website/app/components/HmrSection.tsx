@@ -38,7 +38,7 @@ export async function HmrSection() {
       <Content>
         <Title center>Beautiful DX</Title>
         <p className="text-lg max-w-2xl text-center mx-auto">
-          Content Collections is all about delivering a delightful user
+          Content Collections is all about delivering a delightful developer
           experience. It offers a smooth developer journey, eliminating the
           hassle of server restarts or browser refreshes. Any changes you make
           to your content are automatically reflected in the collections,
