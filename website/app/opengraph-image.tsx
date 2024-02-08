@@ -24,7 +24,7 @@ export default async function Image() {
           fontFamily: "Inter",
         }}
       >
-        <div tw="flex items-center text-base-200">
+        <div tw="flex items-center text-slate-200">
           {/* @ts-ignore logo as buffer is fine */}
           <img width="496" height="496" src={logo} alt="" />
 
@@ -36,11 +36,11 @@ export default async function Image() {
           </div>
         </div>
         <div tw="flex items-center justify-center w-full">
-          <p tw="mr-4 text-2xl text-base-200 text-center">
+          <p tw="mr-4 text-2xl text-slate-200 text-center">
             Made with ❤️ by Sebastian Sdorra
           </p>
           <img
-            tw="rounded-full border-2 border-base-400"
+            tw="rounded-full border-2 border-slate-400/50"
             width="64"
             height="64"
             src="https://avatars.githubusercontent.com/u/493333"
