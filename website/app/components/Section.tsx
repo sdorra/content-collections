@@ -43,7 +43,7 @@ export function Title({ center, className, children }: TitleProps) {
         className
       )}
     >
-      <CheckCircle2 className="inline-block mr-2 size-8 text-primary-600" />
+      <CheckCircle2 className="inline-block mr-2 size-8 text-primary-600 flex-shrink-0" />
       <span>{children}</span>
     </h2>
   );
