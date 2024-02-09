@@ -1,12 +1,10 @@
-import matter from "gray-matter";
 import fg from "fast-glob";
 import { readFile } from "fs/promises";
-import { AnyCollection } from "./config";
 import path from "path";
 import { isDefined, orderByPath } from "./utils";
-import { CollectionFile } from "./types";
+import { CollectionFile, FileCollection } from "./types";
 import { Emitter } from "./events";
-import { parse, stringify } from "yaml";
+import { parsers } from "./parser";
 
 export type CollectorEvents = {
   "collector:read-error": {
@@ -29,8 +27,6 @@ export class CollectError extends Error {
   }
 }
 
-type FileCollection = Pick<AnyCollection, "directory" | "include">;
-
 export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
   async function read(filePath: string) {
     try {
@@ -44,33 +40,19 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
-  function parseFile(file: string) {
-    const { data, content } = matter(file, {
-      engines: {
-        yaml: {
-          parse,
-          stringify,
-        },
-      },
-    });
-
-    return {
-      ...data,
-      content,
-    };
-  }
-
-  async function collectFile(
-    directory: string,
+  async function collectFile<T extends FileCollection>(
+    collection: T,
     filePath: string
   ): Promise<CollectionFile | null> {
-    const file = await read(path.join(directory, filePath));
+    const absolutePath = path.join(baseDirectory, collection.directory, filePath);
+
+    const file = await read(absolutePath);
     if (!file) {
       return null;
     }
 
     try {
-      const data = parseFile(file);
+      const data = parsers[collection.parser].parse(file);
 
       return {
         data,
@@ -78,7 +60,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       };
     } catch (error) {
       emitter.emit("collector:parse-error", {
-        filePath: path.join(directory, filePath),
+        filePath: path.join(collection.directory, filePath),
         error: new CollectError("Parse", String(error)),
       });
       return null;
@@ -93,7 +75,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       absolute: false,
     });
     const promises = filePaths.map((filePath) =>
-      collectFile(collectionDirectory, filePath)
+      collectFile(collection, filePath)
     );
 
     const files = await Promise.all(promises);

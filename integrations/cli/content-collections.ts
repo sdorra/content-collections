@@ -46,6 +46,17 @@ const posts = defineCollection({
   },
 });
 
+const categories = defineCollection({
+  name: "categories",
+  directory: "categories",
+  include: "*.yml",
+  parser: "yaml",
+  schema: (z) => ({
+    title: z.string(),
+    description: z.string(),
+  }),
+});
+
 export default defineConfig({
-  collections: [authors, posts],
+  collections: [authors, posts, categories],
 });

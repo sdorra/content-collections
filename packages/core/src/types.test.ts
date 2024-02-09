@@ -27,6 +27,7 @@ describe("types", () => {
         age: 20,
         // @ts-expect-error city is not in the schema
         city: "New York",
+        content: "John is 20 years old",
         _meta: {
           fileName: "john.md",
           filePath: "persons/john.md",
@@ -67,6 +68,7 @@ describe("types", () => {
         city: "New York",
         // @ts-expect-error street is not in the schema
         street: "Main Street",
+        content: "John is 20 years old",
         _meta: {
           fileName: "john.md",
           filePath: "persons/john.md",
@@ -129,6 +131,172 @@ describe("types", () => {
       country: {
         code: "de",
         name: "Germany",
+      },
+    };
+
+    expect(person).toBeTruthy();
+  });
+
+  it("should have content if parser is not defined", () => {
+    const collection = defineCollection({
+      name: "person",
+      typeName: "person",
+      directory: "./persons",
+      include: "*.md",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "John",
+      content: "John is 20 years old",
+      _meta: {
+        fileName: "john.md",
+        filePath: "persons/john.md",
+        directory: "persons",
+        path: "persons/john",
+        extension: "md",
+      },
+    };
+
+    expect(person).toBeTruthy();
+  });
+
+  it("should have content if parser is frontmatter", () => {
+    const collection = defineCollection({
+      name: "person",
+      typeName: "person",
+      directory: "./persons",
+      include: "*.md",
+      parser: "frontmatter",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "John",
+      content: "John is 20 years old",
+      _meta: {
+        fileName: "john.md",
+        filePath: "persons/john.md",
+        directory: "persons",
+        path: "persons/john",
+        extension: "md",
+      },
+    };
+
+    expect(person).toBeTruthy();
+  });
+
+  it("should have no content if parser is yaml", () => {
+    const collection = defineCollection({
+      name: "person",
+      typeName: "person",
+      directory: "./persons",
+      include: "*.md",
+      parser: "yaml",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "John",
+      // @ts-expect-error content is defined with yaml parser
+      content: "John is 20 years old",
+      _meta: {
+        fileName: "john.md",
+        filePath: "persons/john.md",
+        directory: "persons",
+        path: "persons/john",
+        extension: "md",
+      },
+    };
+
+    expect(person).toBeTruthy();
+  });
+
+  it("should have no content if parser is json", () => {
+    const collection = defineCollection({
+      name: "person",
+      typeName: "person",
+      directory: "./persons",
+      include: "*.md",
+      parser: "json",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "John",
+      // @ts-expect-error content is defined with yaml parser
+      content: "John is 20 years old",
+      _meta: {
+        fileName: "john.md",
+        filePath: "persons/john.md",
+        directory: "persons",
+        path: "persons/john",
+        extension: "md",
+      },
+    };
+
+    expect(person).toBeTruthy();
+  });
+
+  it("should should not override content type", () => {
+    const collection = defineCollection({
+      name: "person",
+      typeName: "person",
+      directory: "./persons",
+      include: "*.md",
+      schema: (z) => ({
+        name: z.string(),
+        content: z.number(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Person = GetTypeByName<typeof config, "person">;
+
+    const person: Person = {
+      name: "John",
+      content: 42,
+      _meta: {
+        fileName: "john.md",
+        filePath: "persons/john.md",
+        directory: "persons",
+        path: "persons/john",
+        extension: "md",
       },
     };
 

@@ -4,6 +4,7 @@ import { isDefined } from "./utils";
 import { Emitter } from "./events";
 import { basename, dirname, extname } from "node:path";
 import { z } from "zod";
+import { Parser, parsers } from "./parser";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -48,7 +49,11 @@ function createPath(path: string, ext: string) {
 }
 
 export function createTransformer(emitter: Emitter) {
-  function createSchema(schema: z.ZodRawShape) {
+  function createSchema(parserName: Parser, schema: z.ZodRawShape) {
+    const parser = parsers[parserName];
+    if (!parser.hasContent) {
+      return z.object(schema);
+    }
     return z.object({
       content: z.string(),
       ...schema,
@@ -61,7 +66,7 @@ export function createTransformer(emitter: Emitter) {
   ): Promise<ParsedFile | null> {
     const { data, path } = file;
 
-    const schema = createSchema(collection.schema);
+    const schema = createSchema(collection.parser, collection.schema);
 
     let parsedData = await schema.safeParseAsync(data);
     if (!parsedData.success) {
@@ -108,9 +113,7 @@ export function createTransformer(emitter: Emitter) {
     };
   }
 
-  function createContext(
-    collections: Array<TransformedCollection>,
-  ): Context {
+  function createContext(collections: Array<TransformedCollection>): Context {
     return {
       documents: (collection) => {
         const resolved = collections.find((c) => c.name === collection.name);

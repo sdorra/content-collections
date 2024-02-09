@@ -1,30 +1,17 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { Writer, createWriter } from "./writer";
+import { describe, it, expect } from "vitest";
+import { createWriter } from "./writer";
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
+import path from "node:path";
+import { tmpdirTest } from "./__tests__/tmpdir";
 
 describe("writer", () => {
-  let writer: Writer;
-
-  beforeEach(async () => {
-    if (existsSync("tmp")) {
-      await fs.rm("tmp", { recursive: true });
-    }
-    writer = await createWriter("tmp");
-  });
-
-  afterEach(async () => {
-    if (existsSync("tmp")) {
-      await fs.rm("tmp", { recursive: true });
-    }
-  });
-
-  async function readJson(path: string) {
-    const content = await fs.readFile(path, "utf-8");
+  async function readJson(directory: string, filePath: string) {
+    const content = await fs.readFile(path.join(directory, filePath), "utf-8");
     return JSON.parse(content);
   }
 
-  it("should write data files", async () => {
+  tmpdirTest("should write data files", async ({ tmpdir }) => {
     const collections = [
       {
         name: "test",
@@ -56,22 +43,23 @@ describe("writer", () => {
       },
     ];
 
+    const writer = await createWriter(tmpdir);
     await writer.createDataFiles(collections);
 
-    const allTests = await readJson("tmp/allTests.json");
+    const allTests = await readJson(tmpdir, "allTests.json");
     expect(allTests).toEqual(["one", "two", "three"]);
 
-    const allSamples = await readJson("tmp/allSamples.json");
+    const allSamples = await readJson(tmpdir, "allSamples.json");
     expect(allSamples).toEqual(["four", "five", "six"]);
   });
 
-  it("should write javascript file", async () => {
+  tmpdirTest("should write javascript file", async ({ tmpdir }) => {
     await fs.writeFile(
-      "tmp/allTests.json",
+      path.join(tmpdir, "allTests.json"),
       JSON.stringify(["one", "two", "three"])
     );
     await fs.writeFile(
-      "tmp/allSamples.json",
+      path.join(tmpdir, "allSamples.json"),
       JSON.stringify(["four", "five", "six"])
     );
 
@@ -84,16 +72,17 @@ describe("writer", () => {
       },
     ];
 
+    const writer = await createWriter(tmpdir);
     await writer.createJavaScriptFile({ collections });
 
     // @ts-ignore the file is generated before
-    const indexJs = await import("./tmp/index.js");
+    const indexJs = await import(path.join(tmpdir, "index.js"));
 
     expect(indexJs.allTests).toEqual(["one", "two", "three"]);
     expect(indexJs.allSamples).toEqual(["four", "five", "six"]);
   });
 
-  it("should write type definition file", async () => {
+  tmpdirTest("should write type definition file", async ({ tmpdir }) => {
     const collections = [
       {
         name: "test",
@@ -105,31 +94,33 @@ describe("writer", () => {
       },
     ];
 
+    const writer = await createWriter(tmpdir);
     await writer.createTypeDefinitionFile({
       collections,
-      path: "./tmp/config.ts",
+      path: path.join(tmpdir, "config.ts"),
       generateTypes: true,
     });
 
-    const content = await fs.readFile("tmp/index.d.ts", "utf-8");
+    const content = await fs.readFile(path.join(tmpdir, "index.d.ts"), "utf-8");
     expect(content).toContain("export type Test =");
     expect(content).toContain("export type Sample =");
   });
 
-  it("should not write type definition file", async () => {
+  tmpdirTest("should not write type definition file", async ({ tmpdir }) => {
     const collections = [
       {
         name: "test",
         typeName: "Test",
-      }
+      },
     ];
 
+    const writer = await createWriter(tmpdir);
     await writer.createTypeDefinitionFile({
       collections,
-      path: "./tmp/config.ts",
+      path: path.join(tmpdir, "config.ts"),
       generateTypes: false,
     });
 
-    expect(existsSync("tmp/index.d.ts")).toBe(false);
+    expect(existsSync(path.join(tmpdir, "index.d.ts"))).toBe(false);
   });
 });

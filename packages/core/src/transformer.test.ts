@@ -41,6 +41,13 @@ const sampleFour: CollectionFile = {
   path: "nested/index.md",
 };
 
+const sampleWithoutContent: CollectionFile = {
+  data: {
+    name: "Four",
+  },
+  path: "nested/index.md",
+};
+
 const firstPost: CollectionFile = {
   data: {
     title: "First post",
@@ -72,6 +79,7 @@ describe("transform", () => {
     return {
       name: "sample",
       typeName: "Sample",
+      parser: "frontmatter",
       schema: {
         name: z.string(),
       },
@@ -87,6 +95,7 @@ describe("transform", () => {
     return {
       name: "sample",
       typeName: "Sample",
+      parser: "frontmatter",
       schema: {
         name: z.string(),
       },
@@ -298,6 +307,51 @@ describe("transform", () => {
         },
       ])
     ).rejects.toThrowError(/invalid_type/);
+  });
+
+  it("should throw if frontmatter document has no content", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+    });
+
+    emitter.on("transformer:validation-error", (event) => {
+      throw event.error;
+    });
+
+    await expect(
+      createTransformer(emitter)([
+        {
+          ...posts,
+          files: [sampleWithoutContent],
+        },
+      ])
+    ).rejects.toThrowError(/invalid_type/);
+  });
+
+  it("should not throw if yaml document has no content", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+      directory: "tests",
+      parser: "yaml",
+      include: "*.yml",
+    });
+
+    const [collection] = await createTransformer(emitter)([
+      {
+        ...posts,
+        files: [sampleWithoutContent],
+      },
+    ]);
+
+    expect(collection?.documents).toHaveLength(1);
   });
 
   it("should capture validation error", async () => {

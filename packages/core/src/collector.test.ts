@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createCollector } from "./collector";
 import { Events, createEmitter } from "./events";
+import { FileCollection } from "./types";
 
 describe("collector", () => {
   let emitter = createEmitter<Events>();
@@ -9,21 +10,27 @@ describe("collector", () => {
     emitter = createEmitter<Events>();
   });
 
+  const sampleCollection: FileCollection = {
+    directory: "./__tests__/sources",
+    include: "**/*.md",
+    parser: "frontmatter",
+  };
+
   describe("collectFile", () => {
     it("should collect file", async () => {
-      const { collectFile } = createCollector(emitter);
+      const { collectFile } = createCollector(emitter, __dirname);
 
       const file = await collectFile(
-        __dirname,
-        "./__tests__/sources/test/001.md"
+        sampleCollection,
+        "test/001.md"
       );
 
       if (!file) {
         throw new Error("File not found");
       }
 
-      expect(file.path).toBe("./__tests__/sources/test/001.md");
-      expect(file.data.content.trim()).toBe("# One");
+      expect(file.path).toBe("test/001.md");
+      expect(file.data.content?.trim()).toBe("# One");
       expect(file.data.name).toBe("One");
     });
 
@@ -34,7 +41,7 @@ describe("collector", () => {
       const { collectFile } = createCollector(emitter);
 
       await expect(
-        collectFile(__dirname, "./__tests__/sources/test/notfound.md")
+        collectFile(sampleCollection, "test/notfound.md")
       ).rejects.toThrow("no such file or directory");
     });
 
@@ -46,8 +53,8 @@ describe("collector", () => {
 
       const { collectFile } = createCollector(emitter, __dirname);
       const file = await collectFile(
-        __dirname,
-        "./__tests__/sources/test/notfound.md"
+        sampleCollection,
+        "test/notfound.md"
       );
       expect(file).toBeNull();
     });
@@ -60,8 +67,8 @@ describe("collector", () => {
 
       const { collectFile } = createCollector(emitter, __dirname);
       const file = await collectFile(
-        __dirname,
-        "./__tests__/sources/test/broken-frontmatter"
+        sampleCollection,
+        "test/broken-frontmatter"
       );
       expect(file).toBeNull();
     });
@@ -75,6 +82,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
@@ -86,6 +94,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
@@ -97,6 +106,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
@@ -109,6 +119,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
@@ -121,11 +132,12 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
-      expect(collection?.files[0]?.data.content.trim()).toBe("# One");
-      expect(collection?.files[1]?.data.content.trim()).toBe("# Two");
+      expect(collection?.files[0]?.data.content?.trim()).toBe("# One");
+      expect(collection?.files[1]?.data.content?.trim()).toBe("# Two");
     });
 
     it("should collect single collection from multiple sources", async () => {
@@ -133,6 +145,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test",
           include: ["001.md", "002.md"],
+          parser: "frontmatter",
         },
       ]);
 
@@ -144,6 +157,7 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test",
           include: ["002.md", "001.md"],
+          parser: "frontmatter",
         },
       ]);
 
@@ -156,10 +170,12 @@ describe("collector", () => {
         {
           directory: "./__tests__/sources/test/",
           include: "*.md",
+          parser: "frontmatter",
         },
         {
           directory: "./__tests__/sources/posts/",
           include: "*.md",
+          parser: "frontmatter",
         },
       ]);
 
@@ -168,11 +184,11 @@ describe("collector", () => {
   });
 
   it("should treat dates as string", async () => {
-    const { collectFile } = createCollector(emitter);
+    const { collectFile } = createCollector(emitter, __dirname);
 
     const file = await collectFile(
-      __dirname,
-      "./__tests__/sources/books/hgttg.md"
+      sampleCollection,
+      "books/hgttg.md"
     );
 
     if (!file) {

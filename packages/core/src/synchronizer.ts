@@ -3,13 +3,13 @@ import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 import path from "node:path";
 import { orderByPath } from "./utils";
 
-type CollectionFileReader = (
-  directory: string,
+type CollectionFileReader<T extends FileCollection> = (
+  collection: T,
   filePath: string
 ) => Promise<CollectionFile | null>;
 
 export function createSynchronizer<T extends FileCollection>(
-  readCollectionFile: CollectionFileReader,
+  readCollectionFile: CollectionFileReader<T>,
   collections: Array<ResolvedCollection<T>>,
   baseDirectory: string = "."
 ) {
@@ -77,10 +77,7 @@ export function createSynchronizer<T extends FileCollection>(
       (file) => file.path === relativePath
     );
 
-    const file = await readCollectionFile(
-      path.join(baseDirectory, collection.directory),
-      relativePath
-    );
+    const file = await readCollectionFile(collection, relativePath);
 
     if (!file) {
       return false;

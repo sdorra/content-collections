@@ -1,5 +1,6 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
+import { Parser, Parsers } from "./parser";
 
 export type Meta = {
   filePath: string;
@@ -19,16 +20,29 @@ type AddContent<TShape extends ZodRawShape> = TShape extends {
   ? TShape
   : TShape & WithContent;
 
-export type Schema<TShape extends ZodRawShape> = z.infer<
-  ZodObject<AddContent<TShape>>
-> & {
+type GetParsedShape<
+  TParser extends Parser,
+  TShape extends ZodRawShape,
+> = Parsers[TParser]["hasContent"] extends true ? AddContent<TShape> : TShape;
+
+type GetShape<
+  TParser extends Parser | undefined,
+  TShape extends ZodRawShape,
+> = TParser extends Parser
+  ? GetParsedShape<TParser, TShape>
+  : AddContent<TShape>;
+
+export type Schema<
+  TParser extends Parser | undefined,
+  TShape extends ZodRawShape,
+> = z.infer<ZodObject<GetShape<TParser, TShape>>> & {
   _meta: Meta;
 };
 
 export type Context = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection
-  ): Array<Schema<TCollection["schema"]>>;
+  ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
 };
 
 type Z = typeof z;
@@ -36,11 +50,13 @@ type Z = typeof z;
 export type CollectionRequest<
   TName extends string,
   TShape extends ZodRawShape,
+  TParser,
   TSchema,
   TTransformResult,
-  TDocument
+  TDocument,
 > = {
   name: TName;
+  parser?: TParser;
   typeName?: string;
   schema: (z: Z) => TShape;
   transform?: (context: Context, data: TSchema) => TTransformResult;
@@ -52,43 +68,59 @@ export type CollectionRequest<
 export type Collection<
   TName extends string,
   TShape extends ZodRawShape,
+  TParser extends Parser,
   TSchema,
   TTransformResult,
-  TDocument
+  TDocument,
 > = Omit<
-  CollectionRequest<TName, TShape, TSchema, TTransformResult, TDocument>,
+  CollectionRequest<
+    TName,
+    TShape,
+    TParser,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >,
   "schema"
 > & {
   typeName: string;
   schema: TShape;
+  parser: TParser;
 };
 
-export type AnyCollection = Collection<any, ZodRawShape, any, any, any>;
+export type AnyCollection = Collection<any, ZodRawShape, Parser, any, any, any>;
 
 export function defineCollection<
   TName extends string,
   TShape extends ZodRawShape,
-  TSchema = Schema<TShape>,
+  TParser extends Parser = "frontmatter",
+  TSchema = Schema<TParser, TShape>,
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
-    ? Schema<TShape>
-    : Awaited<TTransformResult>
+    ? Schema<TParser, TShape>
+    : Awaited<TTransformResult>,
 >(
   collection: CollectionRequest<
     TName,
     TShape,
+    TParser,
     TSchema,
     TTransformResult,
     TDocument
   >
-): Collection<TName, TShape, TSchema, TTransformResult, TDocument> {
+): Collection<TName, TShape, TParser, TSchema, TTransformResult, TDocument> {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
   }
+  let parser = collection.parser;
+  if (!parser) {
+    parser = "frontmatter" as TParser;
+  }
   return {
     ...collection,
     typeName,
+    parser,
     schema: collection.schema(z),
   };
 }

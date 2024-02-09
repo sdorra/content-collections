@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { createSynchronizer } from "./synchronizer";
-import { CollectionFile } from "./types";
+import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 
 describe("synchronizer", () => {
   async function noopCollectionFileReader(): Promise<CollectionFile | null> {
@@ -8,7 +8,7 @@ describe("synchronizer", () => {
   }
 
   function createCollectionFileReader(collectionFile: CollectionFile) {
-    return async (_: string, filePath: string) => {
+    return async (_: any, filePath: string) => {
       if (filePath !== collectionFile.path) {
         return null;
       }
@@ -27,7 +27,7 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "changed"
+          content: "changed",
         },
         path: "new.md",
       }),
@@ -45,13 +45,13 @@ describe("synchronizer", () => {
       files: [
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "b.md",
         },
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "c.md",
         },
@@ -61,7 +61,7 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "changed"
+          content: "changed",
         },
         path: "a.md",
       }),
@@ -74,13 +74,14 @@ describe("synchronizer", () => {
   });
 
   it("should delete file", () => {
-    const collection = {
+    const collection: ResolvedCollection<FileCollection> = {
       directory: "content",
       include: "**/*.md",
+      parser: "frontmatter",
       files: [
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "new.md",
         },
@@ -102,7 +103,7 @@ describe("synchronizer", () => {
       files: [
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "new.md",
         },
@@ -112,7 +113,7 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "changed"
+          content: "changed",
         },
         path: "new.md",
       }),
@@ -133,7 +134,7 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "changed"
+          content: "changed",
         },
         path: "other/new.md",
       }),
@@ -154,7 +155,7 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "changed"
+          content: "changed",
         },
         path: "content/new.html",
       }),
@@ -166,13 +167,14 @@ describe("synchronizer", () => {
   });
 
   it("should not delete file, if path is not in collection directory", () => {
-    const collection = {
+    const collection: ResolvedCollection<FileCollection> = {
       directory: "content",
       include: "**/*.md",
+      parser: "frontmatter",
       files: [
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "new.md",
         },
@@ -188,13 +190,14 @@ describe("synchronizer", () => {
   });
 
   it("should not delete file, if path is not included", () => {
-    const collection = {
+    const collection: ResolvedCollection<FileCollection> = {
       directory: "content",
       include: "**/*.md",
+      parser: "frontmatter",
       files: [
         {
           data: {
-            content: ""
+            content: "",
           },
           path: "new.md",
         },
@@ -210,16 +213,16 @@ describe("synchronizer", () => {
   });
 
   it("should not sync file, if file could not be read", async () => {
-    const collection = {
+    const collection: ResolvedCollection<FileCollection> = {
       directory: "content",
       include: "**/*.md",
+      parser: "frontmatter",
       files: [],
     };
 
-    const synchronizer = createSynchronizer(
-      noopCollectionFileReader,
-      [collection]
-    );
+    const synchronizer = createSynchronizer(noopCollectionFileReader, [
+      collection,
+    ]);
 
     expect(await synchronizer.changed("content/new.md")).toBe(false);
     expect(collection.files.length).toBe(0);
