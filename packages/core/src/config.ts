@@ -39,10 +39,16 @@ export type Schema<
   _meta: Meta;
 };
 
+export type CacheFn = <TInput, TOutput>(
+  input: TInput,
+  compute: (input: TInput) => Promise<TOutput> | TOutput
+) => Promise<TOutput>;
+
 export type Context = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection
   ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
+  cache: CacheFn;
 };
 
 type Z = typeof z;
@@ -125,8 +131,11 @@ export function defineCollection<
   };
 }
 
+type Cache = "memory" | "file" | "none";
+
 export type Configuration<TCollections extends Array<AnyCollection>> = {
   collections: TCollections;
+  cache?: Cache;
 };
 
 export type AnyConfiguration = Configuration<Array<AnyCollection>>;

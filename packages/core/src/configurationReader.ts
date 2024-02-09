@@ -18,6 +18,7 @@ export class ConfigurationError extends Error {
 export type InternalConfiguration = {
   collections: Array<AnyCollection>;
   path: string;
+  cache: string;
   generateTypes?: boolean;
 };
 
@@ -52,7 +53,10 @@ async function compile(configurationPath: string, outfile: string) {
 
   await esbuild.build({
     entryPoints: [configurationPath],
-    external: [...Object.keys(packageJson.dependencies), "@content-collections/*"],
+    external: [
+      ...Object.keys(packageJson.dependencies),
+      "@content-collections/*",
+    ],
     bundle: true,
     platform: "node",
     format: "esm",
@@ -99,6 +103,7 @@ export function createConfigurationReader() {
       ...module.default,
       path: configurationPath,
       generateTypes: true,
+      cache: module.default.cache || "memory",
     };
   };
 }

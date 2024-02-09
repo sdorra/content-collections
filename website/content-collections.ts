@@ -21,8 +21,8 @@ const integrations = defineCollection({
     linkText: z.string().optional(),
     icon: z.string().optional(),
   }),
-  transform: async (data) => {
-    const body = await mdx(data.content);
+  transform: async (data, ctx) => {
+    const body = await ctx.cache(data.content, mdx);
 
     let linkText = data.linkText;
     if (!linkText) {
@@ -56,8 +56,8 @@ const samples = defineCollection({
       })
       .optional(),
   }),
-  transform: async (data) => {
-    const body = await mdx(data.content);
+  transform: async (data, ctx) => {
+    const body = await ctx.cache(data.content, mdx);
 
     let linkText = data.linkText;
     if (!linkText) {

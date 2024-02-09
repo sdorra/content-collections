@@ -12,6 +12,7 @@ import { createSynchronizer } from "./synchronizer";
 import path from "node:path";
 import { createWatcher } from "./watcher";
 import { Events, createEmitter } from "./events";
+import { createCache } from "./cache";
 
 export type BuilderEvents = {
   "builder:start": {
@@ -62,7 +63,9 @@ export async function createBuilder(
     resolved,
     baseDirectory
   );
-  const transform = createTransformer(emitter);
+
+  const cache = await createCache(configuration.cache, baseDirectory);
+  const transform = createTransformer(emitter, cache);
 
   async function sync(modification: Modification, filePath: string) {
     if (modification === "delete") {

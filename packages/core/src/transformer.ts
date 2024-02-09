@@ -1,10 +1,11 @@
 import { CollectionFile } from "./types";
-import { AnyCollection, Context } from "./config";
+import { AnyCollection, CacheFn, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
 import { basename, dirname, extname } from "node:path";
 import { z } from "zod";
 import { Parser, parsers } from "./parser";
+import { createNoopCache } from "./cache";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -48,7 +49,10 @@ function createPath(path: string, ext: string) {
   return p;
 }
 
-export function createTransformer(emitter: Emitter) {
+export function createTransformer(
+  emitter: Emitter,
+  cache: CacheFn = createNoopCache()
+) {
   function createSchema(parserName: Parser, schema: z.ZodRawShape) {
     const parser = parsers[parserName];
     if (!parser.hasContent) {
@@ -125,6 +129,7 @@ export function createTransformer(emitter: Emitter) {
         }
         return resolved.documents.map((doc) => doc.document);
       },
+      cache,
     };
   }
 
