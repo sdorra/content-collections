@@ -59,7 +59,7 @@ export type CollectionRequest<
   parser?: TParser;
   typeName?: string;
   schema: (z: Z) => TShape;
-  transform?: (context: Context, data: TSchema) => TTransformResult;
+  transform?: (data: TSchema, context: Context) => TTransformResult;
   directory: string;
   include: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;

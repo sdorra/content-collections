@@ -29,7 +29,7 @@ const posts = defineCollection({
   }),
   // we can exclude the content from the data
   // because remix will load the content for us
-  transform: async (_, {content, _meta, ...data}) => {
+  transform: async ({content, _meta, ...data}) => {
     // turn e.g.: posts.hello-world.mdx into hello-world
     const slug = _meta.path.replace("posts.", "");
     return {

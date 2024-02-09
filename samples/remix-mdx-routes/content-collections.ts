@@ -11,13 +11,13 @@ const characters = defineCollection({
     source: z.string().min(1).url(),
   }),
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  transform: (context, { content: _, _meta, ...data }) => {
+  transform: ({ content: _, _meta, ...data }) => {
     const slug = _meta.path.replace("characters.", "");
     return {
       ...data,
-      slug
-    }
-  }
+      slug,
+    };
+  },
 });
 
 export default defineConfig({

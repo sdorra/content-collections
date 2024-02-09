@@ -19,7 +19,7 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
   }),
-  transform: (_, data) => {
+  transform: (data) => {
     const slug = data._meta.path;
     return {
       ...data,
@@ -47,7 +47,7 @@ const people = defineCollection({
     name: z.string(),
     homeworld: z.string().url(),
   }),
-  transform: async (_, data) => {
+  transform: async (data) => {
     const response = await fetch(data.homeworld);
     const planet = await response.json();
     return {
@@ -90,7 +90,7 @@ const posts = defineCollection({
     title: z.string(),
     author: z.string(),
   }),
-  transform: async (context, document) => {
+  transform: async (document, context) => {
     const author = await context
       .documents(authors)
       .find((a) => a.ref === document.author);
@@ -121,7 +121,7 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
   }),
-  transform: async (_, { content, ...data }) => {
+  transform: async ({ content, ...data }) => {
     const body = String(
       await compile(content, {
         outputFormat: "function-body",

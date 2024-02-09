@@ -35,14 +35,14 @@ linkText: Next.js
 1. Modify your `next.config.js`:
 
    ```js
-   const { withcontentCollections } = require("@content-collections/next");
+   const { withContentCollections } = require("@content-collections/next");
 
    /** @type {import('next').NextConfig} */
    const nextConfig = {
       // your next.js config
    };
 
-   module.exports = withcontentCollections(nextConfig);
+   module.exports = withContentCollections(nextConfig);
    ```
 
    This will add content collections to the build of your next.js app.

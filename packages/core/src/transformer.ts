@@ -139,7 +139,7 @@ export function createTransformer(emitter: Emitter) {
         try {
           docs.push({
             ...doc,
-            document: await collection.transform(context, doc.document),
+            document: await collection.transform(doc.document, context),
           });
         } catch (error) {
           if (error instanceof TransformError) {

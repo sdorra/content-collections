@@ -50,7 +50,7 @@ describe("types", () => {
           name: z.string(),
           age: z.number(),
         }),
-        transform: (ctx, data) => {
+        transform: (data) => {
           return {
             ...data,
             city: "New York",
@@ -102,7 +102,7 @@ describe("types", () => {
         age: z.number(),
         countryCode: z.string().length(2),
       }),
-      transform: (ctx, data) => {
+      transform: (data, ctx) => {
         const countries = ctx.documents(countryCollection);
         const country = countries.find((c) => c.code === data.countryCode);
         if (!country) {

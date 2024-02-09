@@ -19,7 +19,7 @@ const posts = defineCollection({
     title: z.string(),
     date: z.date(),
   }),
-  transform: async (_, { content, ...data }) => {
+  transform: async ({ content, ...data }) => {
     const body = String(
       await compile(content, {
         outputFormat: "function-body",

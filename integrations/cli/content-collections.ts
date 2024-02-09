@@ -24,7 +24,7 @@ const posts = defineCollection({
   }),
   directory: "posts",
   include: "**/*.md(x)?",
-  transform: async (context, post) => {
+  transform: async (post, context) => {
     const author = context
       .documents(authors)
       .find((author) => author.ref === post.author);

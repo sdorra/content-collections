@@ -163,7 +163,7 @@ describe("transform", () => {
       }),
       directory: "tests",
       include: "*.md",
-      transform: (_, document) => {
+      transform: (document) => {
         return {
           ...document,
           test: "test",
@@ -259,7 +259,7 @@ describe("transform", () => {
       }),
       directory: "tests",
       include: "*.md",
-      transform: async (context, document) => {
+      transform: async (document, context) => {
         const author = await context
           .documents(authors)
           .find((a) => a.ref === document.author);
@@ -414,7 +414,7 @@ describe("transform", () => {
       }),
       directory: "tests",
       include: "*.md",
-      transform: async (context, document) => {
+      transform: async (document, context) => {
         const allAuthors = await context.documents(authors);
         return {
           ...document,
