@@ -1,6 +1,7 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
 import { Parser, Parsers } from "./parser";
+import { CacheFn } from "./cache";
 
 export type Meta = {
   filePath: string;
@@ -38,11 +39,6 @@ export type Schema<
 > = z.infer<ZodObject<GetShape<TParser, TShape>>> & {
   _meta: Meta;
 };
-
-export type CacheFn = <TInput, TOutput>(
-  input: TInput,
-  compute: (input: TInput) => Promise<TOutput> | TOutput
-) => Promise<TOutput>;
 
 export type Context = {
   documents<TCollection extends AnyCollection>(

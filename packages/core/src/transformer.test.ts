@@ -8,6 +8,19 @@ import {
 import { CollectionFile } from "./types";
 import { Meta, defineCollection } from "./config";
 import { Events, createEmitter } from "./events";
+import { CacheManager } from "./cache";
+
+const noopCacheManager: CacheManager = {
+  cache: () => {
+    return {
+      cacheFn: async (input, fn) => {
+        return fn(input);
+      },
+      tidyUp: async () => {},
+    };
+  },
+  flush: async () => {},
+};
 
 const sampleOne: CollectionFile = {
   data: {
@@ -106,17 +119,19 @@ describe("transform", () => {
   }
 
   it("should create two document", async () => {
-    const [collection] = await createTransformer(emitter)([
-      createSampleCollection(sampleOne, sampleTwo),
-    ]);
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([createSampleCollection(sampleOne, sampleTwo)]);
 
     expect(collection?.documents).toHaveLength(2);
   });
 
   it("should create document with meta", async () => {
-    const [collection] = await createTransformer(emitter)([
-      createNestedSampleCollection(sampleThree),
-    ]);
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([createNestedSampleCollection(sampleThree)]);
 
     const meta: Meta = collection?.documents[0].document._meta;
     if (!meta) {
@@ -131,9 +146,10 @@ describe("transform", () => {
   });
 
   it("should create document with meta for index files", async () => {
-    const [collection] = await createTransformer(emitter)([
-      createNestedSampleCollection(sampleFour),
-    ]);
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([createNestedSampleCollection(sampleFour)]);
 
     const meta: Meta = collection?.documents[0].document._meta;
     if (!meta) {
@@ -148,9 +164,10 @@ describe("transform", () => {
   });
 
   it("should parse documents data", async () => {
-    const [collection] = await createTransformer(emitter)([
-      createSampleCollection(sampleOne),
-    ]);
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([createSampleCollection(sampleOne)]);
 
     expect(collection?.documents[0].document.name).toBe("One");
   });
@@ -172,7 +189,10 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await createTransformer(emitter)([
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...sample,
         files: [sampleOne],
@@ -193,7 +213,10 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const [collection] = await createTransformer(emitter)([
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...sample,
         files: [sampleOne],
@@ -224,7 +247,10 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const collections = await createTransformer(emitter)([
+    const collections = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],
@@ -270,7 +296,10 @@ describe("transform", () => {
       },
     });
 
-    const collections = await createTransformer(emitter)([
+    const collections = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...authors,
         files: [authorTrillian],
@@ -300,7 +329,10 @@ describe("transform", () => {
     });
 
     await expect(
-      createTransformer(emitter)([
+      createTransformer(
+        emitter,
+        noopCacheManager
+      )([
         {
           ...posts,
           files: [firstPost],
@@ -324,7 +356,10 @@ describe("transform", () => {
     });
 
     await expect(
-      createTransformer(emitter)([
+      createTransformer(
+        emitter,
+        noopCacheManager
+      )([
         {
           ...posts,
           files: [sampleWithoutContent],
@@ -344,7 +379,10 @@ describe("transform", () => {
       include: "*.yml",
     });
 
-    const [collection] = await createTransformer(emitter)([
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [sampleWithoutContent],
@@ -368,7 +406,10 @@ describe("transform", () => {
     emitter.on("transformer:validation-error", (event) =>
       errors.push(event.error)
     );
-    await createTransformer(emitter)([
+    await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],
@@ -387,7 +428,10 @@ describe("transform", () => {
       include: "*.md",
     });
 
-    const [collection] = await createTransformer(emitter)([
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],
@@ -425,7 +469,10 @@ describe("transform", () => {
 
     const errors: Array<TransformError> = [];
     emitter.on("transformer:error", (event) => errors.push(event.error));
-    await createTransformer(emitter)([
+    await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],
@@ -451,7 +498,10 @@ describe("transform", () => {
     const errors: Array<TransformError> = [];
     emitter.on("transformer:error", (event) => errors.push(event.error));
 
-    await createTransformer(emitter)([
+    await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],
@@ -474,7 +524,10 @@ describe("transform", () => {
       },
     });
 
-    const [collection] = await createTransformer(emitter)([
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
       {
         ...posts,
         files: [firstPost],

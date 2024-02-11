@@ -1,80 +1,148 @@
-import { describe, it, expect } from "vitest";
-import { createCache } from "./cache";
+import { describe, expect } from "vitest";
+import { createCacheManager } from "./cache";
 import { tmpdirTest } from "./__tests__/tmpdir";
+import path from "node:path";
+import { existsSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 
-describe("cache", () => {
-  it("noop cache should not cache at all", async () => {
-    let counter = 0;
-
-    function increase() {
-      counter++;
-      return counter;
-    }
-
-    const cache = await createCache("none", "tmp");
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(2);
+describe("cacheManager", () => {
+  tmpdirTest("should create cacheManager", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    expect(cacheManager).toBeDefined();
   });
 
-  it("memory cache should cache in memory", async () => {
-    let counter = 0;
-
-    function increase() {
-      counter++;
-      return counter;
-    }
-
-    const cache = await createCache("memory", "tmp");
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(1);
+  tmpdirTest("should create cache directory", async ({ tmpdir }) => {
+    await createCacheManager(tmpdir, "configChecksum");
+    const dir = path.join(tmpdir, ".content-collections", "cache");
+    expect(existsSync(dir)).toBe(true);
   });
 
-  it("memory cache should reset", async () => {
-    let counter = 0;
-
-    function increase() {
-      counter++;
-      return counter;
-    }
-
-    let cache = await createCache("memory", "tmp");
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(1);
-
-    cache = await createCache("memory", "tmp");
-    expect(await cache(1, increase)).toBe(2);
-    expect(await cache(1, increase)).toBe(2);
+  tmpdirTest("should not create file directory", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    cacheManager.cache("collection", "file");
+    const dir = path.join(
+      tmpdir,
+      ".content-collections",
+      "cache",
+      "collection",
+      "file"
+    );
+    expect(existsSync(dir)).toBe(false);
   });
 
-  tmpdirTest("file cache should cache", async ({ tmpdir }) => {
-    let counter = 0;
-
-    function increase() {
-      counter++;
-      return counter;
-    }
-
-    let cache = await createCache("file", tmpdir);
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(1);
+  tmpdirTest("should create file directory", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+    await cache.cacheFn("input", () => "output");
+    const dir = path.join(
+      tmpdir,
+      ".content-collections",
+      "cache",
+      "collection",
+      "file"
+    );
+    expect(existsSync(dir)).toBe(true);
   });
 
-  tmpdirTest("file cache should cache, event after recreation", async ({ tmpdir }) => {
+  tmpdirTest("should cache", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+
     let counter = 0;
 
-    function increase() {
+    function inc() {
       counter++;
       return counter;
     }
 
-    let cache = await createCache("file", tmpdir);
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(1);
+    expect(await cache.cacheFn("input", inc)).toBe(1);
+    expect(await cache.cacheFn("input", inc)).toBe(1);
+  });
 
-    increase();
+  tmpdirTest("should compute if key changes", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
 
-    cache = await createCache("file", tmpdir);
-    expect(await cache(1, increase)).toBe(1);
-    expect(await cache(1, increase)).toBe(1);
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("i-1", inc)).toBe(1);
+    expect(await cache.cacheFn("i-2", inc)).toBe(2);
+  });
+
+  tmpdirTest("should cache across sessions", async ({ tmpdir }) => {
+    let cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    let cache = cacheManager.cache("collection", "file");
+
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("i-1", inc)).toBe(1);
+    await cache.tidyUp();
+    await cacheManager.flush();
+
+    cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    cache = cacheManager.cache("collection", "file");
+
+    counter = 42;
+    expect(await cache.cacheFn("i-1", inc)).toBe(1);
+  });
+
+  tmpdirTest(
+    "should compute if config checksum changes",
+    async ({ tmpdir }) => {
+      let cacheManager = await createCacheManager(tmpdir, "configChecksum");
+      let cache = cacheManager.cache("collection", "file");
+
+      let counter = 0;
+
+      function inc() {
+        counter++;
+        return counter;
+      }
+
+      expect(await cache.cacheFn("i-1", inc)).toBe(1);
+      await cache.tidyUp();
+      await cacheManager.flush();
+
+      cacheManager = await createCacheManager(tmpdir, "changed");
+      cache = cacheManager.cache("collection", "file");
+
+      expect(await cache.cacheFn("i-1", inc)).toBe(2);
+    }
+  );
+
+  tmpdirTest("should tidy up", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    let cache = cacheManager.cache("collection", "file");
+
+    await cache.cacheFn("i-1", () => "output");
+    await cache.tidyUp();
+
+    const dir = path.join(
+      tmpdir,
+      ".content-collections",
+      "cache",
+      "collection",
+      "file"
+    );
+
+    const files = await readdir(dir);
+    expect(files).toHaveLength(1);
+
+    cache = cacheManager.cache("collection", "file");
+
+    await cache.cacheFn("i-2", () => "output");
+    await cache.tidyUp();
+
+    expect(await readdir(dir)).toHaveLength(1);
   });
 });

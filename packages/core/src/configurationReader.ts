@@ -4,6 +4,7 @@ import path from "node:path";
 import packageJson from "../package.json";
 import { AnyCollection } from "./config";
 import { existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 export type ErrorType = "Read" | "Compile";
 
@@ -18,7 +19,7 @@ export class ConfigurationError extends Error {
 export type InternalConfiguration = {
   collections: Array<AnyCollection>;
   path: string;
-  cache: string;
+  checksum: string;
   generateTypes?: boolean;
 };
 
@@ -99,11 +100,16 @@ export function createConfigurationReader() {
     const module = await import(
       `file://${path.resolve(outfile)}?x=${Date.now()}`
     );
+
+    const hash = createHash("sha256");
+    hash.update(await fs.readFile(outfile, "utf-8"));
+    const checksum = hash.digest("hex");
+
     return {
       ...module.default,
       path: configurationPath,
       generateTypes: true,
-      cache: module.default.cache || "memory",
+      checksum,
     };
   };
 }

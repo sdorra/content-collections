@@ -1,11 +1,11 @@
 import { CollectionFile } from "./types";
-import { AnyCollection, CacheFn, Context } from "./config";
+import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
 import { basename, dirname, extname } from "node:path";
 import { z } from "zod";
 import { Parser, parsers } from "./parser";
-import { createNoopCache } from "./cache";
+import { CacheManager, Cache } from "./cache";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -51,7 +51,7 @@ function createPath(path: string, ext: string) {
 
 export function createTransformer(
   emitter: Emitter,
-  cache: CacheFn = createNoopCache()
+  cacheManager: CacheManager
 ) {
   function createSchema(parserName: Parser, schema: z.ZodRawShape) {
     const parser = parsers[parserName];
@@ -117,7 +117,10 @@ export function createTransformer(
     };
   }
 
-  function createContext(collections: Array<TransformedCollection>): Context {
+  function createContext(
+    collections: Array<TransformedCollection>,
+    cache: Cache
+  ): Context {
     return {
       documents: (collection) => {
         const resolved = collections.find((c) => c.name === collection.name);
@@ -129,7 +132,7 @@ export function createTransformer(
         }
         return resolved.documents.map((doc) => doc.document);
       },
-      cache,
+      cache: cache.cacheFn,
     };
   }
 
@@ -139,13 +142,15 @@ export function createTransformer(
   ) {
     if (collection.transform) {
       const docs = [];
-      const context = createContext(collections);
       for (const doc of collection.documents) {
+        const cache = cacheManager.cache(collection.name, doc.document._meta.path);
+        const context = createContext(collections, cache);
         try {
           docs.push({
             ...doc,
             document: await collection.transform(doc.document, context),
           });
+          await cache.tidyUp();
         } catch (error) {
           if (error instanceof TransformError) {
             emitter.emit("transformer:error", {
@@ -160,6 +165,7 @@ export function createTransformer(
           }
         }
       }
+      await cacheManager.flush();
       return docs;
     }
     return collection.documents;
