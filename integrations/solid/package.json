@@ -8,8 +8,8 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.2.0",
-    "@content-collections/solid-start": "0.0.0",
+    "@content-collections/core": "0.3.0",
+    "@content-collections/solid-start": "0.1.0",
     "@playwright/test": "^1.40.1",
     "@solidjs/start": "^0.4.10",
     "solid-js": "^1.8.11",

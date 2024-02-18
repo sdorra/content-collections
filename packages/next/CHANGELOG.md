@@ -1,5 +1,14 @@
 # @content-collections/next
 
+## 0.1.2
+
+### Patch Changes
+
+- [`d7be23b`](https://github.com/sdorra/content-collections/commit/d7be23baadc86d41453beeb219aab51c6fdf9467) Thanks [@sdorra](https://github.com/sdorra)! - Fix typo in function names
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes

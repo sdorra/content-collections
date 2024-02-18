@@ -1,5 +1,18 @@
 # @content-collections/vite
 
+## 0.2.0
+
+### Minor Changes
+
+- [`fc22fa3`](https://github.com/sdorra/content-collections/commit/fc22fa384ae06ddd9f8a6ca52ced369f26f15d23) Thanks [@sdorra](https://github.com/sdorra)! - Add option to disable execution
+
+### Patch Changes
+
+- [`9de2ba8`](https://github.com/sdorra/content-collections/commit/9de2ba8b34a90d4e70a5f9a3dfd8bb2ced370adb) Thanks [@sdorra](https://github.com/sdorra)! - Add aliases to configuration, even if the plugin is disabled
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.1.1
+
 ## 0.1.2
 
 ### Patch Changes

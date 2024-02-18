@@ -1,5 +1,21 @@
 # @content-collections/core
 
+## 0.3.0
+
+### Minor Changes
+
+- [`129088d`](https://github.com/sdorra/content-collections/commit/129088d4e12d049d56adf762dac210f120a45e22) Thanks [@sdorra](https://github.com/sdorra)! - Add cache function to context
+
+- [`7b65d76`](https://github.com/sdorra/content-collections/commit/7b65d76afca5e291ed21b2805a6580e59075a314) Thanks [@sdorra](https://github.com/sdorra)! - #3 add support for json and yaml
+
+- [`5cef04e`](https://github.com/sdorra/content-collections/commit/5cef04e7786f9369b89eac5b44c43249f4718f3b) Thanks [@sdorra](https://github.com/sdorra)! - Make document the first parameter of the transform function
+
+- [`8eb192f`](https://github.com/sdorra/content-collections/commit/8eb192f14dac9badbce4d07c156df33dfb5b9672) Thanks [@sdorra](https://github.com/sdorra)! - Revert support for multiple directories in a single collection
+
+### Patch Changes
+
+- [`8c43837`](https://github.com/sdorra/content-collections/commit/8c438376b6912394ac402f107f95450f2f1b1dd2) Thanks [@sdorra](https://github.com/sdorra)! - Treat date values in frontmatter as string instead of Date object, see #4
+
 ## 0.2.0
 
 ### Minor Changes
