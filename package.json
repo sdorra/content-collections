@@ -21,6 +21,6 @@
     "@commitlint/cli": "^18.4.4",
     "@commitlint/config-conventional": "^18.4.4",
     "husky": "^8.0.3",
-    "turbo": "^1.11.3"
+    "turbo": "^1.12.4"
   }
 }
