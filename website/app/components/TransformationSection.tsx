@@ -19,7 +19,7 @@ export async function TransformationSection() {
     <Section backgroundGrid>
       <Content>
         <Title center>Transformation</Title>
-        <p className="text-lg max-w-2xl text-center mx-auto">
+        <p className="text-lg max-w-2xl md:text-center mx-auto">
           Content Collection does not handle the transformation or compilation
           of content for you. We understand that there are numerous options and
           use cases, so we leave that flexibility in your hands. However, we

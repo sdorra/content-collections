@@ -38,7 +38,7 @@ export function Title({ center, className, children }: TitleProps) {
       className={cn(
         "text-4xl font-bold mb-6 flex items-center text-slate-100",
         {
-          "justify-center": center,
+          "md:justify-center": center,
         },
         className
       )}

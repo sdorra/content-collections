@@ -37,7 +37,7 @@ export async function HmrSection() {
     <Section className="mt-10" backgroundGrid>
       <Content>
         <Title center>Beautiful DX</Title>
-        <p className="text-lg max-w-2xl text-center mx-auto">
+        <p className="text-lg max-w-2xl md:text-center mx-auto">
           Content Collections is all about delivering a delightful developer
           experience. It offers a smooth developer journey, eliminating the
           hassle of server restarts or browser refreshes. Any changes you make

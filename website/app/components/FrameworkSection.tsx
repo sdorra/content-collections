@@ -7,9 +7,9 @@ import clsx from "clsx";
 export function FrameworkSection() {
   return (
     <Section>
-      <Content className="space-y-10 text-center">
+      <Content className="space-y-10">
         <Title center>Support</Title>
-        <p className="text-lg max-w-2xl text-center mx-auto">
+        <p className="text-lg max-w-2xl md:text-center mx-auto">
           Content Collection offers a variety of adapters that seamlessly
           integrate with popular web frameworks. This ensures a smooth
           integration process, allowing you to easily incorporate Content
