@@ -42,7 +42,7 @@ export async function TypeSafeApiSection() {
   return (
     <Section>
       <Content className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
-        <div className="flex flex-col items-center gap-5">
+        <div className="flex flex-col gap-5">
           <Title>Simple TypeSafe API</Title>
           <p>
             No more need for the tedious task of manual content fetching and
