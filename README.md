@@ -110,6 +110,18 @@ Transform your content into type-safe data collections. Eliminate the need for m
 
 For a more detailed guide, please refer to the [documentation](https://content-collections.dev/docs/guides/getting-started).
 
+## Sponsors
+
+<a href="https://supastarter.dev">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/sponsors/supastarter/dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/sponsors/supastarter/light.svg">
+    <img alt="supastarter" src="./assets/sponsors/supastarter/light.svg" height="64">
+  </picture>
+</a>
+
+### [Become a sponsor](https://github.com/sponsors/sdorra)
+
 ## License
 
 Content Collections is licensed under the [MIT License](./LICENSE).
