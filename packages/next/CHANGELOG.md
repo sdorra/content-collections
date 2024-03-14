@@ -1,5 +1,14 @@
 # @content-collections/next
 
+## 0.1.3
+
+### Patch Changes
+
+- [`4aa2362`](https://github.com/sdorra/content-collections/commit/4aa2362c5e05f766725766fa2ce17bdebcb9a212) Thanks [@sdorra](https://github.com/sdorra)! - Remove the workaround that suppresses warning messages from the output
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.1.1
+
 ## 0.1.2
 
 ### Patch Changes

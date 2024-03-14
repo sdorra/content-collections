@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.3.1
+
+### Patch Changes
+
+- [`037662a`](https://github.com/sdorra/content-collections/commit/037662a6b13634c09b0c04ff0001d0f5145686ab) Thanks [@sdorra](https://github.com/sdorra)! - Fix wrong entrypoint of core module
+
+- [`9e591f1`](https://github.com/sdorra/content-collections/commit/9e591f15161aaaef5ca98834a810d87fc166010a) Thanks [@sdorra](https://github.com/sdorra)! - Exclude package dependencies of config bundling
+
 ## 0.3.0
 
 ### Minor Changes
