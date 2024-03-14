@@ -55,15 +55,6 @@ export function createContentCollectionPlugin(pluginOptions: Options) {
           return nextConfig.webpack(config, options);
         }
 
-        config.infrastructureLogging = {
-          ...config.infrastructureLogging,
-          // TODO: not the best way to do this, but it works for now.
-          // Silence warning about dynamic import of next.config file.
-          // > [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Parsing of /Users/wes/Sites/mux/next-video/dist/config.js for build dependencies failed at 'import(path.resolve("next.config.js"))'.
-          // > Build dependencies behind this expression are ignored and might cause incorrect cache invalidation.
-          level: "error",
-        };
-
         return config;
       },
     };
