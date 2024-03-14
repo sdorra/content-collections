@@ -54,6 +54,7 @@ async function compile(configurationPath: string, outfile: string) {
 
   await esbuild.build({
     entryPoints: [configurationPath],
+    packages: "external",
     external: [
       ...Object.keys(packageJson.dependencies),
       "@content-collections/*",
