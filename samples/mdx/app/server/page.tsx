@@ -8,7 +8,7 @@ export default function ServerPage() {
       {allPosts.map((post) => (
         <article key={post._meta.path}>
           <h2>{post.title}</h2>
-          <MDXContent content={post.content} />
+          <MDXContent code={post.content} />
         </article>
       ))}
     </>

@@ -565,13 +565,13 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@content-collections/core':
-        specifier: workspace:*
+        specifier: 0.3.1
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: workspace:*
+        specifier: 0.1.1
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: workspace:*
+        specifier: 0.1.3
         version: link:../../packages/next
       '@types/node':
         specifier: ^20
