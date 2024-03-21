@@ -1,10 +1,8 @@
 import { Sample, allIntegrations, allSamples } from "content-collections";
 import { notFound } from "next/navigation";
-import { run } from "@mdx-js/mdx";
-import * as runtime from "react/jsx-runtime";
-import { Fragment } from "react";
 import { Metadata } from "next";
 import { createStackBlitzLink } from "@/lib/stackblitz";
+import {MDXContent} from "@content-collections/mdx/react";
 
 type Props = {
   params: {
@@ -54,17 +52,11 @@ export default async function Page({ params: { category, page } }: Props) {
     return notFound();
   }
 
-  const { default: Content } = await run(docPage.body, {
-    ...runtime,
-    baseUrl: import.meta.url,
-    Fragment,
-  });
-
   return (
     <div className="min-w-0">
       <article className="prose prose-base prose-code:text-base hover:prose-a:decoration-primary-600 max-w-3xl prose-invert py-5 px-5 sm:px-10">
         <h1>{docPage.title}</h1>
-        <Content />
+        <MDXContent code={docPage.body} />
       </article>
       {isSample(category, docPage) ? <StackBlitz sample={docPage} /> : null}
     </div>
