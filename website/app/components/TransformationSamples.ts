@@ -111,7 +111,7 @@ export default defineConfig({
     description: "Show how to transform content with MDX",
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compile } from "@mdx-js/mdx";
+import { compileMDX } from "@content-collections/mdx";
 
 const posts = defineCollection({
   name: "posts",
@@ -121,12 +121,8 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
   }),
-  transform: async ({ content, ...data }) => {
-    const body = String(
-      await compile(content, {
-        outputFormat: "function-body",
-      })
-    );
+  transform: async (document, context) => {
+    const body = await compileMDX(context, document);
     return {
       ...data,
       body,
