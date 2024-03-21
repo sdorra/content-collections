@@ -1,27 +1,25 @@
 {
-  "name": "samples-mdx",
-  "private": true,
+  "name": "samples-next-mdx",
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "typecheck": "tsc --noEmit",
-    "test": "playwright test"
+    "dev": "next dev",
+    "start": "next start"
   },
   "dependencies": {
-    "@content-collections/core": "0.3.1",
-    "@content-collections/vite": "0.2.0",
-    "@mdx-js/mdx": "^3.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "14.1.4",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
-    "@types/node": "^20.11.4",
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "@content-collections/core": "workspace:*",
+    "@content-collections/mdx": "workspace:*",
+    "@content-collections/next": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "typescript": "^5"
   }
 }

@@ -1,23 +1,18 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compile } from "@mdx-js/mdx";
+import { compileMDX } from "@content-collections/mdx";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "content",
-  include: "*.md",
+  directory: "posts",
+  include: "*.mdx",
   schema: (z) => ({
     title: z.string(),
-    date: z.string(),
   }),
-  transform: async ({ content, ...data }) => {
-    const body = String(
-      await compile(content, {
-        outputFormat: "function-body",
-      })
-    );
+  transform: async (post, ctx) => {
+    const content = await compileMDX(ctx, post);
     return {
-      ...data,
-      body,
+      ...post,
+      content,
     };
   },
 });

@@ -28,6 +28,7 @@
         "remix-vite",
         "next",
         "solid-start",
+        "mdx",
         "shared"
       ]
     ]

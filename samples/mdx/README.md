@@ -6,25 +6,31 @@ stackBlitz:
 ---
 
 In order to use [MDX](https://mdxjs.com/) files with Content Collections, we have to transform the collected content.
+We have a special package to simplify this process.
+Let's see how we can use it.
+
+First we have to install the package `@content-collections/mdx` package.
+
+```sh
+pnpm add @content-collections/mdx
+```
+
+After installing the package, we can use the `compileMDX` function to compile the content of our document.
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compile } from "@mdx-js/mdx";
+import { compileMDX } from "@content-collections/mdx";
 
 const posts = defineCollection({
   name: "posts",
   directory: "content",
-  include: "*.md",
+  include: "*.mdx",
   schema: (z) => ({
     title: z.string(),
     date: z.date(),
   }),
-  transform: async ({ content, ...data }) => {
-    const body = String(
-      await compile(content, {
-        outputFormat: "function-body",
-      })
-    );
+  transform: async (document, context) => {
+    const body = await compileMDX(context, document);
     return {
       ...data,
       body,
@@ -37,49 +43,11 @@ export default defineConfig({
 });
 ```
 
-In the example above, we use the `transform` function to compile the collected content with `@mdx-js/mdx` and add the compiled body to the collected data.
-
-Now we need a component to render the compiled MDX:
-
-```tsx
-import { Fragment, useEffect, useState } from "react";
-import * as runtime from "react/jsx-runtime";
-import { run } from "@mdx-js/mdx";
-
-type Props = {
-  code: string;
-};
-
-type MdxModule = Awaited<ReturnType<typeof run>>;
-
-export function MdxContent({ code }: Props) {
-  const [mdxModule, setMdxModule] = useState<MdxModule>();
-  const Content = mdxModule && mdxModule.default;
-
-  useEffect(
-    function () {
-      (async function () {
-        setMdxModule(
-          await run(code, { ...runtime, baseUrl: import.meta.url, Fragment })
-        );
-      })();
-    },
-    [code]
-  );
-
-  if (!Content) {
-    return null;
-  }
-
-  return <Content />;
-}
-```
-
-Now we can use the `MdxContent` component to render the compiled MDX:
+Now we can use the `MDXContent` component to render the compiled MDX.
 
 ```tsx
 import { allPosts } from "content-collections";
-import { MdxContent } from "./MdxContent";
+import { MDXContent } from "@content-collections/mdx/react";
 
 export default function App() {
   return (
@@ -89,7 +57,7 @@ export default function App() {
         {allPosts.map((post) => (
           <li key={post._meta.path}>
             <h2>{post.title}</h2>
-            <MdxContent code={post.body} />
+            <MDXContent content={post.body} />
           </li>
         ))}
       </ul>
@@ -97,3 +65,5 @@ export default function App() {
   );
 }
 ```
+
+And that's it! Now we can use MDX files with Content Collections.

@@ -1,0 +1,51 @@
+{
+  "name": "@content-collections/mdx",
+  "description": "Compile MDX as part of your content-collection transform function",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./react": {
+      "types": "./dist/react/client.d.ts",
+      "react-server": "./dist/react/server.js",
+      "default": "./dist/react/client.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest --run --coverage",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "esbuild": "^0.19.5",
+    "mdx-bundler": "^10.0.1",
+    "unified": "^11.0.4"
+  },
+  "peerDependencies": {
+    "@content-collections/core": "0.x",
+    "react": "^18.0.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@content-collections/core": "workspace:*",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "@types/mdast": "^4.0.3",
+    "@types/node": "^20.11.27",
+    "@types/react": "^18.2.67",
+    "@types/react-dom": "^18.2.22",
+    "@vitest/coverage-v8": "^1.1.0",
+    "happy-dom": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.3.2",
+    "vitest": "^1.1.0"
+  }
+}
