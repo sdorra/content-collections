@@ -32,7 +32,7 @@ const posts = defineCollection({
   transform: async (document, context) => {
     const body = await compileMDX(context, document);
     return {
-      ...data,
+      ...document,
       body,
     };
   },
