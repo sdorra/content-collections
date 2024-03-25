@@ -1,16 +1,19 @@
 import { Context, Meta } from "@content-collections/core";
 import { Pluggable, Transformer } from "unified";
+import { valueToEstree } from "estree-util-value-to-estree";
 import { bundleMDX } from "mdx-bundler";
 import fs from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
+import { Root } from "mdast";
+import "mdast-util-mdx";
 
 type Document = {
   _meta: Meta;
   content: string;
 };
 
-type FileAppender = ReturnType<typeof createFileAppender>
+type FileAppender = ReturnType<typeof createFileAppender>;
 
 export type Options = {
   cwd?: string;
@@ -19,11 +22,19 @@ export type Options = {
   rehypePlugins?: Pluggable[];
 };
 
-async function appendFile(files: Record<string, string>, importPath: string, filePath: string) {
+async function appendFile(
+  files: Record<string, string>,
+  importPath: string,
+  filePath: string
+) {
   files[importPath] = await fs.readFile(filePath, "utf-8");
 }
 
-async function appendDirectory(files: Record<string, string>, importPathPrefix: string, directoryPath: string) {
+async function appendDirectory(
+  files: Record<string, string>,
+  importPathPrefix: string,
+  directoryPath: string
+) {
   if (!existsSync(directoryPath)) {
     return;
   }
@@ -35,7 +46,10 @@ async function appendDirectory(files: Record<string, string>, importPathPrefix: 
   }
 }
 
-function createFileAppender(tasks: Promise<void>[], files: Record<string, string>) {
+function createFileAppender(
+  tasks: Promise<void>[],
+  files: Record<string, string>
+) {
   return {
     content: (importPath: string, content: string) => {
       files[importPath] = content;
@@ -66,6 +80,38 @@ function addMetaToVFile(_meta: Meta): Pluggable {
   };
 }
 
+function defineDocument(document: Document): Pluggable {
+  return (): Transformer<Root> => (ast) => {
+    ast.children.unshift({
+      type: "mdxjsEsm",
+      value: "",
+      data: {
+        estree: {
+          type: "Program",
+          sourceType: "module",
+          body: [
+            {
+              type: "ExportNamedDeclaration",
+              specifiers: [],
+              declaration: {
+                type: "VariableDeclaration",
+                kind: "const",
+                declarations: [
+                  {
+                    type: "VariableDeclarator",
+                    id: { type: "Identifier", name: "_document" },
+                    init: valueToEstree(document),
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+  };
+}
+
 async function compile(document: Document, options: Options = {}) {
   const files = await createFiles(options);
 
@@ -73,13 +119,13 @@ async function compile(document: Document, options: Options = {}) {
     source: document.content,
     cwd: options.cwd,
     files,
+
     mdxOptions(mdxOptions) {
-      mdxOptions.rehypePlugins = [
-        ...(options.rehypePlugins ?? []),
-      ];
+      mdxOptions.rehypePlugins = [...(options.rehypePlugins ?? [])];
 
       mdxOptions.remarkPlugins = [
         addMetaToVFile(document._meta),
+        defineDocument(document),
         ...(options.remarkPlugins ?? []),
       ];
 
