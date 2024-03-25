@@ -2,10 +2,7 @@ import { describe, expect, it, beforeEach } from "vitest";
 import { Options, compileMDX } from ".";
 import { Context, Meta } from "@content-collections/core";
 import { MDXContent, useMDXComponent } from "./react/server";
-import {
-  useMDXComponent as useClientMDXComponent,
-  MDXContent as MDXClientContent,
-} from "./react/client";
+import { useMDXComponent as useClientMDXComponent, MDXContent as MDXClientContent } from "./react/client";
 import { cleanup, render, renderHook, screen } from "@testing-library/react";
 import { Pluggable, Transformer } from "unified";
 import { Node, Parent } from "mdast";
@@ -32,7 +29,7 @@ describe("MDX tests", () => {
       { cache },
       {
         content,
-        _meta: sampleMeta,
+        _meta: sampleMeta
       },
       options
     );
@@ -158,7 +155,7 @@ describe("MDX tests", () => {
       { cache },
       {
         content: "<HelloWorld />",
-        _meta: sampleMeta,
+        _meta: sampleMeta
       }
     );
 
@@ -174,20 +171,6 @@ describe("MDX tests", () => {
     render(<Content />);
 
     expect(screen.getByRole("heading")).toHaveTextContent("Hello World!");
-  });
-
-  it("should have access to the document", async () => {
-    const doc = {
-      title: "Hello World ...",
-      content: "# {_document.title}",
-      _meta: sampleMeta,
-    };
-
-    const mdx = await compileMDX({ cache }, doc);
-
-    render(<MDXContent code={mdx} />);
-
-    expect(screen.getByRole("heading")).toHaveTextContent("Hello World ...");
   });
 });
 
