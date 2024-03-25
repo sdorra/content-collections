@@ -2,7 +2,7 @@ import { Sample, allIntegrations, allSamples } from "content-collections";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { createStackBlitzLink } from "@/lib/stackblitz";
-import {MDXContent} from "@content-collections/mdx/react";
+import { MDXContent } from "@content-collections/mdx/react";
 
 type Props = {
   params: {
