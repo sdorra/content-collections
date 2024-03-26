@@ -573,6 +573,9 @@ importers:
       '@content-collections/next':
         specifier: 0.1.3
         version: link:../../packages/next
+      '@playwright/test':
+        specifier: ^1.40.1
+        version: 1.40.1
       '@types/node':
         specifier: ^20
         version: 20.11.27
