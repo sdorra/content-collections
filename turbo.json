@@ -5,14 +5,17 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".content-collections/**"]
     },
-    "typecheck": {
-      "dependsOn": ["^build"]
-    },
     "lint": {
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["build", "typecheck", "lint"]
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "^test"]
+    },
+    "check": {
+      "dependsOn": ["^test", "^lint"]
     },
     "dev": {
       "dependsOn": ["^build"],

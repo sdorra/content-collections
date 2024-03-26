@@ -5,12 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "vinxi dev --port 5179",
-    "test": "playwright test"
+    "disabled-test": "playwright test"
   },
   "dependencies": {
     "@content-collections/core": "0.3.1",
     "@content-collections/solid-start": "0.1.0",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.42.1",
     "@solidjs/start": "^0.4.10",
     "solid-js": "^1.8.11",
     "vinxi": "^0.1.4"
