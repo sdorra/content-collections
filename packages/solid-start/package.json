@@ -16,16 +16,16 @@
     "build": "tsup src/index.ts --format esm --dts -d dist"
   },
   "devDependencies": {
+    "@content-collections/core": "workspace:*",
+    "@content-collections/integrations": "workspace:*",
+    "@content-collections/vite": "workspace:*",
     "@types/node": "20.x",
     "tsup": "^7.2.0",
     "typescript": "^5.3.2",
-    "vite": "^5",
-    "@content-collections/core": "workspace:*",
-    "@content-collections/vite": "workspace:*",
-    "@content-collections/integrations": "workspace:*"
+    "vite": "^5.2.6"
   },
   "peerDependencies": {
-    "vite": "^5",
-    "@content-collections/core": "^0.x"
+    "@content-collections/core": "^0.x",
+    "vite": "^5"
   }
 }
