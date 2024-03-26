@@ -13,7 +13,9 @@
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "build": "turbo build",
+    "test": "turbo test"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
