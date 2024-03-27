@@ -1,4 +1,4 @@
-import { unstable_vitePlugin as remix } from "@remix-run/dev";
+import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import mdx from "@mdx-js/rollup";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -8,14 +8,14 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 export default defineConfig({
   plugins: [
-    remix(),
     mdx({
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
     }),
+    remix(),
     contentCollections(),
     tsconfigPaths(),
   ],
   server: {
     port: 5177,
-  }
+  },
 });
