@@ -114,7 +114,7 @@ describe("types", () => {
           country: {
             code: country.code,
             name: country.name,
-          }
+          },
         };
       },
     });
@@ -301,5 +301,40 @@ describe("types", () => {
     };
 
     expect(person).toBeTruthy();
+  });
+
+  it("should return invalid type if returned schema is not a valid json object", () => {
+    const collection = defineCollection({
+      name: "person",
+      directory: "./persons",
+      include: "*.md",
+      schema: (z) => ({
+        // date is not a valid json
+        date: z.date(),
+      }),
+    });
+
+    // @ts-expect-error content is not a valid json object
+    expect(collection.name).toBeDefined();
+  });
+
+  it("should return invalid type if returned transform is not a valid json object", () => {
+    const collection = defineCollection({
+      name: "person",
+      directory: "./persons",
+      include: "*.md",
+      schema: (z) => ({
+        // date is not a valid json
+        date: z.string(),
+      }),
+      transform: (data) => {
+        return {
+          date: new Date(data.date),
+        };
+      },
+    });
+
+    // @ts-expect-error content is not a valid json object
+    expect(collection.name).toBeDefined();
   });
 });

@@ -70,6 +70,13 @@ const firstPost: CollectionFile = {
   path: "first.md",
 };
 
+const invalidPost: CollectionFile = {
+  data: {
+    date: new Date(),
+  },
+  path: "first.md",
+};
+
 const authorTrillian: CollectionFile = {
   data: {
     ref: "trillian",
@@ -534,5 +541,64 @@ describe("transform", () => {
       },
     ]);
     expect(collection?.documents).toHaveLength(0);
+  });
+
+  it("should report an result error, if the transform result is not a valid JSON object", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      transform: (doc) => {
+        return {
+          ...doc,
+          date: new Date(),
+        };
+      },
+      directory: "tests",
+      include: "*.md"
+    });
+
+    const errors: Array<TransformError> = [];
+    emitter.on("transformer:result-error", (event) => errors.push(event.error));
+
+    await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
+      // @ts-expect-error posts is invalid
+      {
+        ...posts,
+        files: [firstPost],
+      },
+    ]);
+    expect(errors[0]?.type).toBe("Result");
+  });
+
+  it("should report an result error, if the schema result is not a valid JSON object", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      parser: "json",
+      schema: (z) => ({
+        date: z.date(),
+      }),
+      directory: "tests",
+      include: "*.md"
+    });
+
+    const errors: Array<TransformError> = [];
+    emitter.on("transformer:result-error", (event) => errors.push(event.error));
+
+    await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
+      // @ts-expect-error posts is invalid
+      {
+        ...posts,
+        files: [invalidPost],
+      },
+    ]);
+    expect(errors[0]?.type).toBe("Result");
   });
 });

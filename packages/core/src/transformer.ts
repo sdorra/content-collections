@@ -6,11 +6,17 @@ import { basename, dirname, extname } from "node:path";
 import { z } from "zod";
 import { Parser, parsers } from "./parser";
 import { CacheManager, Cache } from "./cache";
+import { jsonObjectScheme } from "./json";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
     collection: AnyCollection;
     file: CollectionFile;
+    error: TransformError;
+  };
+  "transformer:result-error": {
+    collection: AnyCollection;
+    document: any;
     error: TransformError;
   };
   "transformer:error": {
@@ -31,7 +37,7 @@ export type TransformedCollection = AnyCollection & {
   documents: Array<any>;
 };
 
-export type ErrorType = "Validation" | "Configuration" | "Transform";
+export type ErrorType = "Validation" | "Configuration" | "Transform" | "Result";
 
 export class TransformError extends Error {
   type: ErrorType;
@@ -143,12 +149,16 @@ export function createTransformer(
     if (collection.transform) {
       const docs = [];
       for (const doc of collection.documents) {
-        const cache = cacheManager.cache(collection.name, doc.document._meta.path);
+        const cache = cacheManager.cache(
+          collection.name,
+          doc.document._meta.path
+        );
         const context = createContext(collections, cache);
         try {
+          const document = await collection.transform(doc.document, context);
           docs.push({
             ...doc,
-            document: await collection.transform(doc.document, context),
+            document,
           });
           await cache.tidyUp();
         } catch (error) {
@@ -168,7 +178,25 @@ export function createTransformer(
       await cacheManager.flush();
       return docs;
     }
+
     return collection.documents;
+  }
+
+  async function validateDocuments(collection: AnyCollection, documents: Array<any>) {
+    const docs = [];
+    for (const doc of documents) {
+      let parsedData = await jsonObjectScheme.safeParseAsync(doc.document);
+      if (parsedData.success) {
+        docs.push(doc);
+      } else {
+        emitter.emit("transformer:result-error", {
+          collection,
+          document: doc.document,
+          error: new TransformError("Result", parsedData.error.message),
+        });
+      }
+    }
+    return docs;
   }
 
   return async (untransformedCollections: Array<ResolvedCollection>) => {
@@ -178,7 +206,8 @@ export function createTransformer(
     const collections = await Promise.all(promises);
 
     for (const collection of collections) {
-      collection.documents = await transformCollection(collections, collection);
+      const documents = await transformCollection(collections, collection);
+      collection.documents = await validateDocuments(collection, documents);
     }
 
     return collections;
