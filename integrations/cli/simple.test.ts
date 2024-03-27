@@ -14,7 +14,7 @@ describe("simple", () => {
     expect(post).toEqual({
       title: "Post One",
       description: "This is the first post",
-      date: "2019-01-01T00:00:00.000Z",
+      date: "2019-01-01",
       author: {
         displayName: "Tricia Marie McMillan",
         email: "trillian@hitchhiker.com",
@@ -40,7 +40,7 @@ describe("simple", () => {
     expect(post).toEqual({
       title: "Post Two",
       description: "This is the second post",
-      date: "2020-01-01T00:00:00.000Z",
+      date: "2020-01-01",
       author: {
         displayName: "Tricia Marie McMillan",
         email: "trillian@hitchhiker.com",

@@ -26,8 +26,7 @@ const posts = defineCollection({
   directory: "content",
   include: "*.mdx",
   schema: (z) => ({
-    title: z.string(),
-    date: z.date(),
+    title: z.string()
   }),
   transform: async (document, context) => {
     const body = await compileMDX(context, document);
