@@ -2,6 +2,7 @@ import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
 import { Parser, Parsers } from "./parser";
 import { CacheFn } from "./cache";
+import { JSONObject } from "./json";
 
 export type Meta = {
   filePath: string;
@@ -92,6 +93,16 @@ export type Collection<
 
 export type AnyCollection = Collection<any, ZodRawShape, Parser, any, any, any>;
 
+type NonJSONObjectError =
+  "The return type of the transform function must be an valid JSONObject, the following type is not valid:";
+
+const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
+
+type InvalidReturnType<TMessage extends string, TObject> = {
+  [InvalidReturnTypeSymbol]: TMessage;
+  object: TObject;
+};
+
 export function defineCollection<
   TName extends string,
   TShape extends ZodRawShape,
@@ -101,6 +112,9 @@ export function defineCollection<
   TDocument = [TTransformResult] extends [never]
     ? Schema<TParser, TShape>
     : Awaited<TTransformResult>,
+  TResult = TDocument extends JSONObject
+    ? Collection<TName, TShape, TParser, TSchema, TTransformResult, TDocument>
+    : InvalidReturnType<NonJSONObjectError, TDocument>,
 >(
   collection: CollectionRequest<
     TName,
@@ -110,7 +124,7 @@ export function defineCollection<
     TTransformResult,
     TDocument
   >
-): Collection<TName, TShape, TParser, TSchema, TTransformResult, TDocument> {
+): TResult {
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
@@ -124,7 +138,7 @@ export function defineCollection<
     typeName,
     parser,
     schema: collection.schema(z),
-  };
+  } as TResult;
 }
 
 type Cache = "memory" | "file" | "none";
