@@ -83,15 +83,9 @@ export default function contentCollectionsPlugin(
       builder = await createBuilder(configPath);
       configureLogging(builder);
 
-      return;
-    },
-
-    async buildStart() {
-      if (!isEnabled) {
-        return;
-      }
       console.log("Start initial build");
       await builder.build();
+
       return;
     },
 
