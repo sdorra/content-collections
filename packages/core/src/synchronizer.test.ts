@@ -227,4 +227,73 @@ describe("synchronizer", () => {
     expect(await synchronizer.changed("content/new.md")).toBe(false);
     expect(collection.files.length).toBe(0);
   });
+
+  it("should add file to multiple collections, with the same directory and pattern", async () => {
+    const one: ResolvedCollection<FileCollection> = {
+      directory: "content",
+      include: "**/*.md",
+      parser: "frontmatter",
+      files: [],
+    };
+
+    const two: ResolvedCollection<FileCollection> = {
+      directory: "content",
+      include: "**/*.md",
+      parser: "frontmatter",
+      files: [],
+    };
+
+    const synchronizer = createSynchronizer(
+      createCollectionFileReader({
+        data: {
+          content: "changed",
+        },
+        path: "new.md",
+      }),
+      [one, two]
+    );
+    expect(await synchronizer.changed("content/new.md")).toBe(true);
+
+    expect(one.files.length).toBe(1);
+    expect(two.files.length).toBe(1);
+  });
+
+  it("should delete file from multiple collections, with the same directory and pattern", () => {
+    const one: ResolvedCollection<FileCollection> = {
+      directory: "content",
+      include: "**/*.md",
+      parser: "frontmatter",
+      files: [
+        {
+          data: {
+            content: "",
+          },
+          path: "new.md",
+        },
+      ],
+    };
+
+    const two: ResolvedCollection<FileCollection> = {
+      directory: "content",
+      include: "**/*.md",
+      parser: "frontmatter",
+      files: [
+        {
+          data: {
+            content: "",
+          },
+          path: "new.md",
+        },
+      ],
+    };
+
+    const synchronizer = createSynchronizer(noopCollectionFileReader, [
+      one,
+      two,
+    ]);
+    synchronizer.deleted("content/new.md");
+
+    expect(one.files.length).toBe(0);
+    expect(two.files.length).toBe(0);
+  });
 });

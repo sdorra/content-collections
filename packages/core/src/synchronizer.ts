@@ -13,9 +13,9 @@ export function createSynchronizer<T extends FileCollection>(
   collections: Array<ResolvedCollection<T>>,
   baseDirectory: string = "."
 ) {
-  function findCollection(filePath: string) {
+  function findCollections(filePath: string) {
     const resolvedFilePath = path.resolve(filePath);
-    return collections.find((collection) => {
+    return collections.filter((collection) => {
       return resolvedFilePath.startsWith(
         path.resolve(baseDirectory, collection.directory)
       );
@@ -34,63 +34,71 @@ export function createSynchronizer<T extends FileCollection>(
   }
 
   function resolve(filePath: string) {
-    const collection = findCollection(filePath);
-    if (!collection) {
-      return null;
-    }
+    const collections = findCollections(filePath);
 
-    const relativePath = createRelativePath(collection.directory, filePath);
-    if (!micromatch.isMatch(relativePath, collection.include)) {
-      return null;
-    }
-
-    return {
-      collection,
-      relativePath,
-    };
+    return collections
+      .map((collection) => {
+        const relativePath = createRelativePath(collection.directory, filePath);
+        return {
+          collection,
+          relativePath,
+        };
+      })
+      .filter(({ collection, relativePath }) => {
+        return micromatch.isMatch(relativePath, collection.include);
+      });
   }
 
   function deleted(filePath: string) {
-    const resolved = resolve(filePath);
-    if (!resolved) {
+    const resolvedCollections = resolve(filePath);
+
+    if (resolvedCollections.length === 0) {
       return false;
     }
 
-    const { collection, relativePath } = resolved;
+    let changed = false;
+    for (const { collection, relativePath } of resolvedCollections) {
+      const index = collection.files.findIndex(
+        (file) => file.path === relativePath
+      );
+      const deleted = collection.files.splice(index, 1);
 
-    const index = collection.files.findIndex(
-      (file) => file.path === relativePath
-    );
-    const deleted = collection.files.splice(index, 1);
-
-    return deleted.length > 0;
+      if (deleted.length > 0) {
+        changed = true;
+      }
+    }
+    return changed;
   }
 
   async function changed(filePath: string) {
-    const resolved = resolve(filePath);
-    if (!resolved) {
+    const resolvedCollections = resolve(filePath);
+
+    if (resolvedCollections.length === 0) {
       return false;
     }
 
-    const { collection, relativePath } = resolved;
-    const index = collection.files.findIndex(
-      (file) => file.path === relativePath
-    );
+    let changed = false;
 
-    const file = await readCollectionFile(collection, relativePath);
+    for (const { collection, relativePath } of resolvedCollections) {
+      const index = collection.files.findIndex(
+        (file) => file.path === relativePath
+      );
 
-    if (!file) {
-      return false;
+      const file = await readCollectionFile(collection, relativePath);
+
+      if (file) {
+        changed = true;
+
+        if (index === -1) {
+          collection.files.push(file);
+          collection.files.sort(orderByPath);
+        } else {
+          collection.files[index] = file;
+        }
+      }
     }
 
-    if (index === -1) {
-      collection.files.push(file);
-      collection.files.sort(orderByPath);
-    } else {
-      collection.files[index] = file;
-    }
-
-    return true;
+    return changed;
   }
 
   return {
