@@ -8,7 +8,7 @@ export default function remixContentCollectionsPlugin(
     ...(options || {}),
     isEnabled(config) {
       // @ts-ignore - this is a remix specific property
-      if (config.__remixPluginResolvedConfig) {
+      if (config.__remixPluginResolvedConfig || config.__remixPluginContext) {
         return true;
       }
       return false;
