@@ -4,7 +4,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import contentCollections from "@content-collections/remix-vite";
 
 export default defineConfig({
-  plugins: [remix(), tsconfigPaths(), contentCollections()],
+  plugins: [contentCollections(), remix(), tsconfigPaths()],
   server: {
     port: 5176,
   },

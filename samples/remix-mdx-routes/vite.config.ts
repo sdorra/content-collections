@@ -8,11 +8,11 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 export default defineConfig({
   plugins: [
+    contentCollections(),
     mdx({
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
     }),
     remix(),
-    contentCollections(),
     tsconfigPaths(),
   ],
   server: {

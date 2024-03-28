@@ -36,7 +36,7 @@ icon: remix
 1. Modify your `vite.config.ts`:
 
    ```ts
-   import { unstable_vitePlugin as remix } from "@remix-run/dev";
+   import { vitePlugin as remix } from "@remix-run/dev";
    import { defineConfig } from "vite";
    import tsconfigPaths from "vite-tsconfig-paths";
    import contentCollections from "@content-collections/vite";
@@ -46,7 +46,7 @@ icon: remix
    });
    ```
 
-   Add the Content Collections plugin to your Vite config.
+   Add the Content Collections plugin to your Vite config, before the remix plugin.
 
 
 1. Create a `content-collections.ts` file at the root of your project:
