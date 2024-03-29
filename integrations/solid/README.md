@@ -22,10 +22,10 @@ icon: solid
    {
      "compilerOptions": {
        // ...
-      "paths": {
-        "~/*": ["./src/*"],
-        "content-collections": ["./.content-collections/generated"]
-      },
+       "paths": {
+         "~/*": ["./src/*"],
+         "content-collections": ["./.content-collections/generated"]
+       }
      }
    }
    ```
@@ -33,14 +33,15 @@ icon: solid
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `vite.config.ts`:
+1. Modify your `app.config.ts`:
 
    ```ts
    import { defineConfig } from "@solidjs/start/config";
-   import contentCollections from "@content-collections/vite";
-
+   import contentCollections from "@content-collections/solid-start";
    export default defineConfig({
-     plugins: [contentCollections()],
+     vite: {
+       plugins: [contentCollections()],
+     },
    });
    ```
 
