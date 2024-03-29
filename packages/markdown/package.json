@@ -1,0 +1,39 @@
+{
+  "name": "@content-collections/markdown",
+  "description": "Compile markdown to html as part of your content-collection transform function",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist",
+    "test": "vitest --run --coverage",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "rehype-raw": "^7.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "unified": "^11.0.4"
+  },
+  "peerDependencies": {
+    "@content-collections/core": "0.x",
+    "react": "^18.0.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@content-collections/core": "workspace:*",
+    "@vitest/coverage-v8": "^1.1.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.3.2",
+    "vitest": "^1.1.0"
+  }
+}

@@ -1,4 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { compileMarkdown } from "@content-collections/markdown"
 
 const characters = defineCollection({
   name: "characters",
@@ -10,6 +11,13 @@ const characters = defineCollection({
     species: z.string().min(1),
     source: z.string().min(1).url(),
   }),
+  transform: async (document, context) => {
+    const content = await compileMarkdown(context, document);
+    return {
+      ...document,
+      content,
+    };
+  }
 });
 
 export default defineConfig({

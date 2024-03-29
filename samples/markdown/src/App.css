@@ -1,0 +1,31 @@
+body {
+  padding: 1.5rem;
+  font-family: Inter, sans-serif;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+button {
+  border: 0;
+  background: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  color: blue;
+}
+
+button:hover {
+  text-decoration: underline;
+}
+
+main {
+  display: flex;
+  gap: 1rem;
+}
