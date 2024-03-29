@@ -87,7 +87,7 @@ export default function contentCollectionsPlugin(
     },
 
     async buildStart() {
-      if (!isEnabled) {
+      if (!builder) {
         return;
       }
       console.log("Start initial build");
@@ -96,7 +96,7 @@ export default function contentCollectionsPlugin(
     },
 
     async configureServer() {
-      if (!isEnabled) {
+      if (!builder) {
         return;
       }
       console.log("Start watching");
