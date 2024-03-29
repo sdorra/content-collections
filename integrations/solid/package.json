@@ -1,5 +1,6 @@
 {
   "name": "integrations-solid",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vinxi dev --port 5179",
