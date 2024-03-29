@@ -1,19 +1,17 @@
 {
   "name": "integrations-solid",
   "type": "module",
-  "version": "0.0.0",
-  "private": true,
   "scripts": {
     "dev": "vinxi dev --port 5179",
-    "disabled-test": "playwright test"
+    "test": "playwright test"
   },
   "dependencies": {
     "@content-collections/core": "0.3.1",
     "@content-collections/solid-start": "0.1.0",
     "@playwright/test": "^1.42.1",
-    "@solidjs/start": "^0.4.10",
-    "solid-js": "^1.8.11",
-    "vinxi": "^0.1.4"
+    "@solidjs/start": "^1.0.0-rc.0",
+    "solid-js": "^1.8.16",
+    "vinxi": "^0.3.10"
   },
   "engines": {
     "node": ">=18"
