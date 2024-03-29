@@ -73,6 +73,14 @@ async function compile(document: Document, options: Options = {}) {
     source: document.content,
     cwd: options.cwd,
     files,
+    esbuildOptions(options) {
+      if (!options.define) {
+        options.define = {};
+      }
+      const env = process.env.NODE_ENV ?? "production";
+      options.define["process.env.NODE_ENV"] = JSON.stringify(env);
+      return options;
+    },
     mdxOptions(mdxOptions) {
       mdxOptions.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
