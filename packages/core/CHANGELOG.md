@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.4.0
+
+### Minor Changes
+
+- [#21](https://github.com/sdorra/content-collections/pull/21) [`5cbfe55`](https://github.com/sdorra/content-collections/commit/5cbfe55b8b8ddb1bc5520e18a0a29501077dd8ca) Thanks [@sdorra](https://github.com/sdorra)! - Validate the resulting objects and ensure that they can be serialized to json
+
+### Patch Changes
+
+- [#18](https://github.com/sdorra/content-collections/pull/18) [`871f95e`](https://github.com/sdorra/content-collections/commit/871f95e9ce5c9f57063045285e1ce058764199eb) Thanks [@sdorra](https://github.com/sdorra)! - Fix synchronization for multiple collections with the same directory
+
 ## 0.3.1
 
 ### Patch Changes

@@ -9,8 +9,8 @@
     "test": "playwright test"
   },
   "devDependencies": {
-    "@content-collections/core": "0.3.1",
-    "@content-collections/vite": "0.2.0",
+    "@content-collections/core": "0.4.0",
+    "@content-collections/vite": "0.2.1",
     "@playwright/test": "^1.42.1",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.4.3",

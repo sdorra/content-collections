@@ -1,5 +1,14 @@
 # @content-collections/vite
 
+## 0.2.1
+
+### Patch Changes
+
+- [#22](https://github.com/sdorra/content-collections/pull/22) [`17d17b4`](https://github.com/sdorra/content-collections/commit/17d17b4461d7877ce2301ecbca426520e86b8445) Thanks [@sdorra](https://github.com/sdorra)! - Do not proceed if configResolved was not executed before buildStart or configureServer
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.1.1
+
 ## 0.2.0
 
 ### Minor Changes
