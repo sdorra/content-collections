@@ -10,7 +10,7 @@ export default function App() {
         {allCharacters.map((character) => (
           <li>
             <h2>{character.name}</h2>
-            <p>{character.content}</p>
+            <div innerHTML={character.content} />
           </li>
         ))}
       </ul>

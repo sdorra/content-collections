@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@content-collections/core": "0.4.0",
+    "@content-collections/markdown": "0.1.0",
     "@content-collections/vite": "0.2.1",
     "@playwright/test": "^1.42.1",
     "@sveltejs/adapter-auto": "^3.0.0",

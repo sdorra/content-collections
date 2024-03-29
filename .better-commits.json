@@ -111,6 +111,10 @@
         "label": "mdx"
       },
       {
+        "value": "markdown",
+        "label": "markdown"
+      },
+      {
         "value": "shared",
         "label": "shared"
       },

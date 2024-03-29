@@ -107,6 +107,34 @@ export default defineConfig({
 `,
   },
   {
+    name: "Markdown",
+    description: "Tranform markdown content to html",
+    code: /* ts */ `
+import { defineCollection, defineConfig } from "@content-collections/core";
+import { compileMarkdown } from "@content-collections/markdown";
+
+const posts = defineCollection({
+  name: "posts",
+  directory: "content",
+  include: "*.md",
+  schema: (z) => ({
+    title: z.string()
+  }),
+  transform: async (document, context) => {
+    const html = await compileMarkdown(context, document);
+    return {
+      ...document,
+      html,
+    };
+  },
+});
+
+export default defineConfig({
+  collections: [posts],
+});
+    `
+  },
+  {
     name: "MDX",
     description: "Show how to transform content with MDX",
     code: /* ts */ `
@@ -116,7 +144,7 @@ import { compileMDX } from "@content-collections/mdx";
 const posts = defineCollection({
   name: "posts",
   directory: "content",
-  include: "*.md",
+  include: "*.mdx",
   schema: (z) => ({
     title: z.string(),
     date: z.string(),

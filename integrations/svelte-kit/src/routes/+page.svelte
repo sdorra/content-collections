@@ -8,7 +8,7 @@
   {#each allCharacters as character}
     <li>
       <h2>{character.name}</h2>
-      <p>{character.content}</p>
+      <div>{@html character.content}</div>
     </li>
   {/each}
 </ul>
