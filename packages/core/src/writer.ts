@@ -76,7 +76,7 @@ async function createTypeDefinitionFile(
     return;
   }
 
-  const importPath = path.relative(directory, configuration.path);
+  const importPath = path.posix.join(...path.relative(directory, configuration.path).split(path.sep));
   let content = `import configuration from "${importPath}";
 import { GetTypeByName } from "@content-collections/core";
 `;
