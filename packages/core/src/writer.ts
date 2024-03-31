@@ -68,6 +68,14 @@ type TypeDefinitionFileConfiguration = Pick<
   collections: Array<Pick<TransformedCollection, "name" | "typeName">>;
 };
 
+function createImportPath(directory: string, target: string) {
+  let importPath = path.posix.join(...path.relative(directory, target).split(path.sep));
+  if (!importPath.startsWith(".")) {
+    importPath = "./" + importPath;
+  }
+  return importPath;
+}
+
 async function createTypeDefinitionFile(
   directory: string,
   configuration: TypeDefinitionFileConfiguration
@@ -76,7 +84,7 @@ async function createTypeDefinitionFile(
     return;
   }
 
-  const importPath = path.relative(directory, configuration.path);
+  const importPath = createImportPath(directory, configuration.path);
   let content = `import configuration from "${importPath}";
 import { GetTypeByName } from "@content-collections/core";
 `;
