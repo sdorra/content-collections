@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.4.1
+
+### Patch Changes
+
+- [`a2ee5db`](https://github.com/sdorra/content-collections/commit/a2ee5db541f684fad51f07440c9905159cc74bbc) Thanks [@Marviuz](https://github.com/Marviuz)! - Fix wrong import path on windows
+
 ## 0.4.0
 
 ### Minor Changes

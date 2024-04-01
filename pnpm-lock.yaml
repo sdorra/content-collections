@@ -33,7 +33,7 @@ importers:
         specifier: 0.1.2
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
     devDependencies:
       '@types/node':
@@ -55,7 +55,7 @@ importers:
   integrations/next:
     dependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.1.3
@@ -101,7 +101,7 @@ importers:
         specifier: ^1.4.1
         version: 1.4.1(@types/node@20.11.7)
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.1
@@ -165,7 +165,7 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/remix-vite':
         specifier: 0.1.1
@@ -219,7 +219,7 @@ importers:
   integrations/solid:
     dependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
@@ -243,7 +243,7 @@ importers:
   integrations/svelte-kit:
     devDependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
@@ -282,7 +282,7 @@ importers:
   integrations/vite:
     dependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.1
@@ -601,7 +601,7 @@ importers:
   samples/markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
@@ -651,7 +651,7 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/mdx':
         specifier: 0.1.3
@@ -684,7 +684,7 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.1
@@ -743,7 +743,7 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.4.0
+        specifier: 0.4.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.1
@@ -5779,7 +5779,7 @@ packages:
       std-env: 3.7.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.1(@types/node@20.11.30)
+      vitest: 1.1.1(@types/node@20.10.6)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -15227,7 +15227,7 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.1(typescript@5.3.3)
-      vite: 5.2.6(@types/node@20.11.7)
+      vite: 5.2.6(@types/node@20.11.30)
     transitivePeerDependencies:
       - supports-color
       - typescript
