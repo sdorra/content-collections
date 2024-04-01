@@ -488,8 +488,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.1(vitest@1.1.1)
       happy-dom:
-        specifier: ^14.0.0
-        version: 14.0.0
+        specifier: ^14.3.9
+        version: 14.3.9
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -504,7 +504,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.1.0
-        version: 1.1.1(@types/node@20.11.27)(happy-dom@14.0.0)
+        version: 1.1.1(@types/node@20.11.27)(happy-dom@14.3.9)
 
   packages/next:
     dependencies:
@@ -4997,7 +4997,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash: 4.17.21
       redent: 3.0.0
-      vitest: 1.1.1(@types/node@20.11.27)(happy-dom@14.0.0)
+      vitest: 1.1.1(@types/node@20.11.27)(happy-dom@14.3.9)
     dev: true
 
   /@testing-library/react@14.2.1(react-dom@18.2.0)(react@18.2.0):
@@ -9081,8 +9081,8 @@ packages:
       - uWebSockets.js
     dev: false
 
-  /happy-dom@14.0.0:
-    resolution: {integrity: sha512-XdxaqufN4QZs0WFuo7L4vGkKpj08gmpEpSMFxDtvYo4OipZLssz7VlavE03FuLabHBTJAWxcR6MlKyOQZM9e0w==}
+  /happy-dom@14.3.9:
+    resolution: {integrity: sha512-0kPQchwthekcYpYN8CvCiq+/z5bqFYDLbTxZ+yDLwT8AFRVJDFadShHRxp3VAZRy7a5isOZ1j/LzsU1dtAIZMQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
       entities: 4.5.0
@@ -15668,7 +15668,7 @@ packages:
       - terser
     dev: true
 
-  /vitest@1.1.1(@types/node@20.11.27)(happy-dom@14.0.0):
+  /vitest@1.1.1(@types/node@20.11.27)(happy-dom@14.3.9):
     resolution: {integrity: sha512-Ry2qs4UOu/KjpXVfOCfQkTnwSXYGrqTbBZxw6reIYEFjSy1QUARRg5pxiI5BEXy+kBVntxUYNMlq4Co+2vD3fQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -15704,7 +15704,7 @@ packages:
       chai: 4.3.10
       debug: 4.3.4
       execa: 8.0.1
-      happy-dom: 14.0.0
+      happy-dom: 14.3.9
       local-pkg: 0.5.0
       magic-string: 0.30.8
       pathe: 1.1.2
