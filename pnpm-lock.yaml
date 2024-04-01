@@ -882,8 +882,8 @@ importers:
         specifier: ^8
         version: 8.4.32
       shiki:
-        specifier: 1.2.0
-        version: 1.2.0
+        specifier: 1.2.3
+        version: 1.2.3
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.0
@@ -4832,6 +4832,10 @@ packages:
 
   /@shikijs/core@1.2.0:
     resolution: {integrity: sha512-OlFvx+nyr5C8zpcMBnSGir0YPD6K11uYhouqhNmm1qLiis4GA7SsGtu07r9gKS9omks8RtQqHrJL4S+lqWK01A==}
+    dev: true
+
+  /@shikijs/core@1.2.3:
+    resolution: {integrity: sha512-SM+aiQVaEK2P53dEcsvhq9+LJPr0rzwezHbMQhHaSrPN4OlOB4vp1qTdhVEKfMg6atdq8s9ZotWW/CSCzWftwg==}
     dev: true
 
   /@shikijs/rehype@1.2.0:
@@ -13423,6 +13427,12 @@ packages:
       '@shikijs/core': 1.2.0
     dev: true
 
+  /shiki@1.2.3:
+    resolution: {integrity: sha512-+v7lO5cJMeV2N2ySK4l+51YX3wTh5I49SLjAOs1ch1DbUfeEytU1Ac9KaZPoZJCVBGycDZ09OBQN5nbcPFc5FQ==}
+    dependencies:
+      '@shikijs/core': 1.2.3
+    dev: true
+
   /shikiji-core@0.9.19:
     resolution: {integrity: sha512-AFJu/vcNT21t0e6YrfadZ+9q86gvPum6iywRyt1OtIPjPFe25RQnYJyxHQPMLKCCWA992TPxmEmbNcOZCAJclw==}
     dev: false
@@ -15227,7 +15237,7 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.1(typescript@5.3.3)
-      vite: 5.2.6(@types/node@20.11.30)
+      vite: 5.2.6(@types/node@20.11.7)
     transitivePeerDependencies:
       - supports-color
       - typescript
