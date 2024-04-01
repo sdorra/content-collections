@@ -882,8 +882,8 @@ importers:
         specifier: ^8
         version: 8.4.32
       shiki:
-        specifier: 1.2.0
-        version: 1.2.0
+        specifier: 1.2.3
+        version: 1.2.3
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.0
@@ -4809,6 +4809,10 @@ packages:
 
   /@shikijs/core@1.2.0:
     resolution: {integrity: sha512-OlFvx+nyr5C8zpcMBnSGir0YPD6K11uYhouqhNmm1qLiis4GA7SsGtu07r9gKS9omks8RtQqHrJL4S+lqWK01A==}
+    dev: true
+
+  /@shikijs/core@1.2.3:
+    resolution: {integrity: sha512-SM+aiQVaEK2P53dEcsvhq9+LJPr0rzwezHbMQhHaSrPN4OlOB4vp1qTdhVEKfMg6atdq8s9ZotWW/CSCzWftwg==}
     dev: true
 
   /@shikijs/rehype@1.2.0:
@@ -13398,6 +13402,12 @@ packages:
     resolution: {integrity: sha512-xLhiTMOIUXCv5DqJ4I70GgQCtdlzsTqFLZWcMHHG3TAieBUbvEGthdrlPDlX4mL/Wszx9C6rEcxU6kMlg4YlxA==}
     dependencies:
       '@shikijs/core': 1.2.0
+    dev: true
+
+  /shiki@1.2.3:
+    resolution: {integrity: sha512-+v7lO5cJMeV2N2ySK4l+51YX3wTh5I49SLjAOs1ch1DbUfeEytU1Ac9KaZPoZJCVBGycDZ09OBQN5nbcPFc5FQ==}
+    dependencies:
+      '@shikijs/core': 1.2.3
     dev: true
 
   /shikiji-core@0.9.19:
