@@ -12,9 +12,7 @@ icon: solid
    - `@content-collections/core`
    - `@content-collections/solid-start`
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/solid-start
-   ```
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/solid-start"]} />
 
 1. Adjust your `tsconfig.json`:
 

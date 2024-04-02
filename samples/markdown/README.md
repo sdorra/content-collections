@@ -12,9 +12,7 @@ Let's see how we can use it.
 
 First we have to install the package `@content-collections/markdown` package.
 
-```sh
-pnpm add @content-collections/markdown
-```
+<PackageInstall devDependencies={true} packages={["@content-collections/markdown"]} />
 
 After installing the package, we can use the `compileMarkdown` function to compile the content of our document.
 

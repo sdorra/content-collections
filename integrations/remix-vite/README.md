@@ -12,9 +12,7 @@ icon: remix
    - `@content-collections/core`
    - `@content-collections/remix-vite`
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/remix-vite
-   ```
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/remix-vite"]} />
 
 1. Adjust your `tsconfig.json`:
 
@@ -22,10 +20,10 @@ icon: remix
    {
      "compilerOptions": {
        // ...
-      "paths": {
-        "~/*": ["./app/*"],
-        "content-collections": ["./.content-collections/generated"]
-      },
+       "paths": {
+         "~/*": ["./app/*"],
+         "content-collections": ["./.content-collections/generated"]
+       }
      }
    }
    ```
@@ -47,7 +45,6 @@ icon: remix
    ```
 
    Add the Content Collections plugin to your Vite config.
-
 
 1. Create a `content-collections.ts` file at the root of your project:
 

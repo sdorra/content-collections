@@ -12,9 +12,7 @@ icon: qwik
    - `@content-collections/core`
    - `@content-collections/vite`
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/vite
-   ```
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
 
 1. Adjust your `tsconfig.json`:
 

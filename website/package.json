@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-radio-group": "^1.1.3",
+    "@radix-ui/react-tabs": "^1.0.4",
     "clsx": "^2.1.0",
     "fathom-client": "^3.6.0",
     "framer-motion": "^11.0.3",
@@ -22,8 +23,8 @@
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
-    "@content-collections/next": "workspace:*",
     "@content-collections/mdx": "workspace:*",
+    "@content-collections/next": "workspace:*",
     "@shikijs/rehype": "1.2.0",
     "@shikijs/transformers": "1.2.0",
     "@tailwindcss/typography": "^0.5.10",

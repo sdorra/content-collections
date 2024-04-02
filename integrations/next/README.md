@@ -11,9 +11,7 @@ linkText: Next.js
    - `@content-collections/core`
    - `@content-collections/next`
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/next
-   ```
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/next"]} />
 
 1. Adjust your `tsconfig.json`:
 

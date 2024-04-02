@@ -12,9 +12,7 @@ linkText: CLI
    - `@content-collections/cli`
    - `concurrently`
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/cli concurrently
-   ```
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/cli", "concurrently"]} />
 
 1. Adjust your `tsconfig.json`:
 
@@ -48,7 +46,6 @@ linkText: CLI
    Next, we execute the `content-collections build` command prior to our regular `build` command.
 
    **Note:** Make sure to replace `build-scripts` with the appropriate command for your framework, such as `next` or `vite`.
-
 
 1. Create a `content-collections.ts` file at the root of your project:
 
