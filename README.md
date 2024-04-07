@@ -22,35 +22,16 @@ Transform your content into type-safe data collections. Eliminate the need for m
 
 ## Installation
 
-1. Install required packages:
+Content Collections offers a variety of adapters that seamlessly integrate with popular web frameworks. The installation process depends on the chosen adapter:
 
-   ```bash
-   pnpm add -D @content-collections/core @content-collections/cli concurrently
-   ```
+- [Next.js](https://www.content-collections.dev/docs/integrations/next)
+- [Qwik](https://www.content-collections.dev/docs/integrations/qwik)
+- [Remix (Vite)](https://www.content-collections.dev/docs/integrations/remix-vite)
+- [Solid Start](https://www.content-collections.dev/docs/integrations/solid)
+- [Svelte Kit](https://www.content-collections.dev/docs/integrations/svelte-kit)
+- [Vite](https://www.content-collections.dev/docs/integrations/vite)
 
-1. Add path alias to your `tsconfig.json`:
-
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
-
-1. Update your scripts in `package.json`:
-
-   ```json
-   {
-     "scripts": {
-       "dev": "concurrently 'content-collections watch' 'build-scripts dev'",
-       "build": "content-collections build && build-scripts build"
-     }
-   }
-   ```
+If your framework is not listed, you can still use Content Collections by using the [CLI](https://www.content-collections.dev/docs/integrations/cli). Please open a ticket if you want to see your framework listed.
 
 ## Usage
 
