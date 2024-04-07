@@ -89,7 +89,14 @@ If your framework is not listed, you can still use Content Collections by using 
    }
    ```
 
-For a more detailed guide, please refer to the [documentation](https://content-collections.dev/docs/guides/getting-started).
+   Please note that the example above shows only the very basics of Content Collections and it does not cover content transformation.
+   Content Collections does not transform content like markdown or mdx by default.
+   But it has packages which can do that for you:
+
+   - [@content-collections/markdown](https://www.content-collections.dev/docs/samples/markdown)
+   - [@content-collections/mdx](https://www.content-collections.dev/docs/samples/mdx)
+
+   If you want to see more examples and use cases, please refer to the [documentation](https://content-collections.dev/docs).
 
 ## Sponsors
 
