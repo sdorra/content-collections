@@ -25,7 +25,7 @@
     "@content-collections/core": "workspace:*",
     "@content-collections/mdx": "workspace:*",
     "@content-collections/next": "workspace:*",
-    "@shikijs/rehype": "1.2.0",
+    "@shikijs/rehype": "1.2.4",
     "@shikijs/transformers": "1.2.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20",
