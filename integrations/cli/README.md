@@ -35,7 +35,7 @@ linkText: CLI
    ```json
    {
      "scripts": {
-       "dev": "concurrently 'content-collections watch' 'build-scripts dev'",
+       "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
        "build": "content-collections build && build-scripts build"
      }
    }
