@@ -100,6 +100,8 @@ If your framework is not listed, you can still use Content Collections by using 
 
 ## Sponsors
 
+<div style="display:flex; gap: 2rem">
+
 <a href="https://supastarter.dev">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/sponsors/supastarter/dark.svg">
@@ -107,6 +109,12 @@ If your framework is not listed, you can still use Content Collections by using 
     <img alt="supastarter" src="./assets/sponsors/supastarter/light.svg" height="64">
   </picture>
 </a>
+
+<a href="https://cloudogu.com">
+  <img src="./assets/sponsors/cloudogu.png" alt="Cloudogu GmbH" height="64">
+</a>
+
+</div>
 
 ### [Become a sponsor](https://github.com/sponsors/sdorra)
 
