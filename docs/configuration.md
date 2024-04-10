@@ -1,0 +1,91 @@
+# Configuration
+
+Content Collections are configured using a single TypeScript file named `content-collections.ts` in the root of your project. The configuration file is a module that can define one or more collections.
+
+## Collections
+
+A collection defines how documents are read, validated, and transformed. Each collection can be created with the `defineCollection` function from `@content-collections/core` and receives an object with the following properties:
+
+-  `name` (required): The name of the collection. The name is used to identify the collection and must be unique across all collections.
+
+-  `directory` (required): The directory where the documents are stored. The directory must be relative to the root of the project.
+
+-  `includes` (required): A glob pattern or an array of glob patterns that define which files are included in the collection. The glob pattern is relative to the collection directory.
+  e.g.: `*.md`, `**/*.json`, `*.yaml`, `**/*.mdx`
+
+-  `parser` (optional): The parser used to read the documents. The parser must be one of the following values:
+  - `frontmatter`: Parses documents with frontmatter and content such as markdown or MDX.
+  - `json`: Parses JSON documents
+  - `yaml`: Parses YAML documents
+  The parser property is optional, and `frontmatter` is the default value.
+
+-  `typeName` (optional): The name of the generated TypeScript type. If the `typeName` property is not provided, the type name is generated from the collection name.
+
+-  `schema` (required): The `schema` property is a function that defines the document's structure. It takes a single argument, an instance of [zod](https://zod.dev/), and should return a zod schema object. You can adjust the structure using the `transform` function. If not provided, TypeScript infers the type from the shape, which should consist of JSON serializable types only (string, number, boolean, array, object). The resulting shape validates the collection's documents. When using the `frontmatter` parser, a `content` property of type `string` is automatically included in the shape. To validate content, you can explicitly add a `content` property to the shape.
+
+  Example:
+
+  ```ts
+  schema: (z) => ({
+    firstName: z.string(),
+    lastName: z.string(),
+    middleName: z.string().optional(),
+    age: z.number(),
+    email: z.string().email(),
+  })
+  ```
+
+-  `transform` (optional): The `transform` property is a function that transforms the document before it is saved to the collection. It takes two arguments: the document and a context object, and should return the transformed document. The "transform" function can be used to add computed properties, modify existing properties, or remove properties from the document. It can also fetch data from a remote server, transform markdown to HTML, or even join collections. The result type of the `transform` function defines the TypeScript type of the document. If the `transform` function is not provided, the document type is inferred from the schema. It can be synchronous or asynchronous. The `transform` function is powerful, which is why we dedicate a whole [documentation site](/docs/transform) to it.
+
+  Example:
+
+  ```ts
+  transform: (doc) => ({
+    ...doc,
+    fullName: `${doc.firstName} ${doc.lastName}`,
+  });
+  ```
+
+-  `onSuccess` (optional): The `onSuccess` property is a function that is called after all documents are saved to the collection. It takes a single argument, an array of documents. The `onSuccess` function can be used to index the documents or to log messages. It can be synchronous or asynchronous.
+
+  Example:
+
+  ```ts
+  onSuccess: (docs) => {
+    console.log(`generated collection with ${docs.length}`);
+  };
+  ```
+
+## Configuration object
+
+The configuration file is a module that has to export a configuration object as the default export. The configuration object can be created with the `defineConfig` function from `@content-collections/core` and receives an object with a property called collections which contains an array of collection objects.
+
+## Example
+
+```ts
+import { defineCollection, defineConfig } from "@content-collections/core";
+
+const authors = defineCollection({
+  name: "authors",
+  directory: "content/authors",
+  includes: "**/*.md",
+  schema: (z) => ({
+    firstName: z.string(),
+    lastName: z.string(),
+    middleName: z.string().optional(),
+    age: z.number(),
+    email: z.string().email(),
+  }),
+  transform: (doc) => ({
+    ...doc,
+    fullName: `${doc.firstName} ${doc.lastName}`,
+  }),
+  onSuccess: (docs) => {
+    console.log(`generated collection with ${docs.length}`);
+  },
+});
+
+export default defineConfig({
+  collections: [authors],
+});
+```
