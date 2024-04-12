@@ -1,4 +1,4 @@
-import { Sample, allIntegrations, allSamples } from "content-collections";
+import { Sample, allDocs, allIntegrations, allSamples } from "content-collections";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { createStackBlitzLink } from "@/lib/stackblitz";
@@ -71,6 +71,9 @@ function findPage(category: string, page: string) {
   if (category === "samples") {
     return allSamples.find((doc) => doc.name === page);
   }
+  if (category === "main") {
+    return allDocs.find((doc) => doc.name === page);
+  }
 }
 
 export function generateMetadata({
@@ -97,7 +100,12 @@ export function generateStaticParams() {
     page: doc.name,
   }));
 
-  return [...samples, ...integrations];
+  const docs = allDocs.map((doc) => ({
+    category: "main",
+    page: doc.name,
+  }));
+
+  return [...samples, ...integrations, ...docs];
 }
 
 export const dynamicParams = false;

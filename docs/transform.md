@@ -1,4 +1,6 @@
-# Transform
+---
+title: Transform
+---
 
 The `transform` function of a collection can be used to perform various tasks on the document before it is saved to the collection. It receives two arguments: the document, which matches the schema's shape, and a context object. The result of the `transform` function defines the TypeScript type of the document and should return an object that can be serialized to JSON. The function can be synchronous or asynchronous.
 
@@ -8,8 +10,8 @@ In Content Collections, the content of a document is just a string. One common u
 
 Various libraries available in the Node.js ecosystem can be used for transformation, with the only requirement being that the result is JSON serializable. However, there are specific helper packages designed for Content Collections:
 
--  [@content-collections/markdown](/docs/content/markdown) for converting markdown to HTML
--  [@content-collections/mdx](/docs/content/mdx) for converting MDX to JSX
+- [@content-collections/markdown](/docs/content/markdown) for converting markdown to HTML
+- [@content-collections/mdx](/docs/content/mdx) for converting MDX to JSX
 
 ## Caching
 
@@ -27,12 +29,42 @@ transform: async (doc, { cache }) => {
     ...doc,
     html,
   };
-}
+};
 ```
 
 In this example, the `markdownToHtml` function is only called if the content has changed.
 
 **Note**: Caching the compilation steps of `@content-collections/markdown` or `@content-collections/mdx` is unnecessary as they already utilize the same caching mechanism.
+
+## Access other collections
+
+The `transform` function can access other collections using the `documents` function of the `context` object. The function requires a collection reference as parameter and returns an array of documents for that collection. But keep in mind the returned document are not transformed, they have the shape as defined in the schema of the referenced collection.
+
+Example:
+
+```ts
+const authors = defineCollection({
+  // ...
+  schema: (z) => ({
+    ref: z.string(),
+    displayName: z.string()
+  }),
+});
+
+const posts = defineCollection({
+  // ...
+  transform: async (doc, { documents }) => {
+    const author = await documents(authors).find(
+      (a) => a.ref === doc.author
+    );
+    return {
+      ...doc,
+      author: author.displayName
+    };
+  },
+```
+
+For a complete example have a look at the [Join collections](#join-collections) example.
 
 ## Examples
 
@@ -44,26 +76,29 @@ Here are some common use cases of the `transform` function:
 transform: (doc) => {
   return {
     ...doc,
-    slug: doc.title.toLowerCase().replace(/ /g, '-'),
+    slug: doc.title.toLowerCase().replace(/ /g, "-"),
   };
-}
+};
 ```
 
 ### Fetch external data
 
 ```ts
 transform: async (author, { cache }) => {
-  const bio: string = await cache(`https://api.authors.com/bio/${author.username}`, async (url) => {
-    const response = await fetch(url);
-    const user = await response.json();
-    return user.bio;
-  });
+  const bio: string = await cache(
+    `https://api.authors.com/bio/${author.username}`,
+    async (url) => {
+      const response = await fetch(url);
+      const user = await response.json();
+      return user.bio;
+    }
+  );
 
   return {
     ...user,
     bio,
   };
-}
+};
 ```
 
 ### Get last modification date from Git
@@ -82,7 +117,7 @@ transform: async (doc, { cache }) => {
     ...doc,
     lastModified,
   };
-}
+};
 ```
 
 ### Join collections
@@ -115,7 +150,7 @@ const posts = defineCollection({
       .find((a) => a.ref === document.author);
     return {
       ...document,
-      author
+      author,
     };
   },
 });

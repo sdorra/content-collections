@@ -1,4 +1,8 @@
-import { allIntegrations, allSamples } from "@/.content-collections/generated";
+import {
+  allDocs,
+  allIntegrations,
+  allSamples,
+} from "@/.content-collections/generated";
 import { NavLink } from "./[category]/[page]/components/NavLink";
 import { NavSection } from "./[category]/[page]/components/NavSection";
 
@@ -15,6 +19,11 @@ export default function DocLayout({ children }: Props) {
             <NavLink title="Getting started" href="/docs">
               Getting started
             </NavLink>
+            {allDocs.map((doc) => (
+              <NavLink title={doc.title} key={doc.name} href={doc.href}>
+                {doc.linkText}
+              </NavLink>
+            ))}
           </NavSection>
           <NavSection title="Integrations">
             {allIntegrations.map((doc) => (

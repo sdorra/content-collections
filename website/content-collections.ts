@@ -72,6 +72,36 @@ const samples = defineCollection({
   },
 });
 
+const docs = defineCollection({
+  name: "docs",
+  directory: "../docs",
+  include: "**/*.md",
+  schema: (z) => ({
+    title: z.string(),
+    linkText: z.string().optional(),
+    description: z.string().optional(),
+  }),
+  transform: async (data, ctx) => {
+    const body = await compileMDX(ctx, data, mdxOptions);
+
+    let linkText = data.linkText;
+    if (!linkText) {
+      linkText = data.title;
+    }
+
+    const href = `/docs/main/${data._meta.path}`;
+
+    return {
+      title: data.title,
+      description: data.description,
+      linkText,
+      body,
+      href,
+      name: data._meta.path
+    };
+  },
+});
+
 export default defineConfig({
-  collections: [integrations, samples],
+  collections: [integrations, samples, docs],
 });
