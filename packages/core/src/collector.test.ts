@@ -181,6 +181,45 @@ describe("collector", () => {
 
       expect(collections).toHaveLength(2);
     });
+
+    it("should exclude file", async () => {
+      const [collection] = await collect([
+        {
+          directory: "./__tests__/sources/test/",
+          include: "*.md",
+          exclude: "002.md",
+          parser: "frontmatter",
+        },
+      ]);
+
+      expect(collection?.files).toHaveLength(1);
+    });
+
+    it("should exclude multiple files", async () => {
+      const [collection] = await collect([
+        {
+          directory: "./__tests__/sources/test/",
+          include: "*.md",
+          exclude: ["001.md", "002.md"],
+          parser: "frontmatter",
+        },
+      ]);
+
+      expect(collection?.files).toHaveLength(0);
+    });
+
+    it("should exclude files which matches glob", async () => {
+      const [collection] = await collect([
+        {
+          directory: "./__tests__/sources/test/",
+          include: "*.md",
+          exclude: "00?.md",
+          parser: "frontmatter",
+        },
+      ]);
+
+      expect(collection?.files).toHaveLength(0);
+    });
   });
 
   it("should treat dates as string", async () => {
@@ -197,4 +236,6 @@ describe("collector", () => {
 
     expect(typeof file.data.published).toBe("string");
   });
+
+
 });

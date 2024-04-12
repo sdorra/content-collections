@@ -65,6 +65,7 @@ export type CollectionRequest<
   transform?: (data: TSchema, context: Context) => TTransformResult;
   directory: string;
   include: string | string[];
+  exclude?: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 };
 
