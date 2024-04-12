@@ -67,12 +67,25 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
+  function createIgnorePattern<T extends FileCollection>(collection: T): Array<string> | undefined {
+    if (collection.exclude) {
+      if (Array.isArray(collection.exclude)) {
+        return collection.exclude;
+      } else {
+        return [collection.exclude];
+      }
+    }
+    return undefined;
+  }
+
   async function resolveCollection<T extends FileCollection>(collection: T) {
     const collectionDirectory = path.join(baseDirectory, collection.directory);
+
     const filePaths = await fg(collection.include, {
       cwd: collectionDirectory,
       onlyFiles: true,
       absolute: false,
+      ignore: createIgnorePattern(collection),
     });
     const promises = filePaths.map((filePath) =>
       collectFile(collection, filePath)

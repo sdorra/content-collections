@@ -13,7 +13,7 @@ export type CollectionFile = {
 
 export type FileCollection = Pick<
   AnyCollection,
-  "directory" | "include" | "parser"
+  "directory" | "include" | "exclude" | "parser"
 >;
 
 export type ResolvedCollection<T extends FileCollection> = T & {
