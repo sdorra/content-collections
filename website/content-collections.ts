@@ -75,7 +75,7 @@ const samples = defineCollection({
 const docs = defineCollection({
   name: "docs",
   directory: "../docs",
-  include: "**/*.md",
+  include: "**/*.mdx",
   schema: (z) => ({
     title: z.string(),
     linkText: z.string().optional(),
@@ -89,7 +89,8 @@ const docs = defineCollection({
       linkText = data.title;
     }
 
-    const href = `/docs/main/${data._meta.path}`;
+    const name = data._meta.path.replace(/^\d+-/, "");
+    const href = `/docs/main/${name}`;
 
     return {
       title: data.title,
@@ -97,7 +98,7 @@ const docs = defineCollection({
       linkText,
       body,
       href,
-      name: data._meta.path
+      name
     };
   },
 });
