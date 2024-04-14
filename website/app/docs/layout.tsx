@@ -1,10 +1,6 @@
-import {
-  allDocs,
-  allIntegrations,
-  allSamples,
-} from "@/.content-collections/generated";
-import { NavLink } from "./[category]/[page]/components/NavLink";
-import { NavSection } from "./[category]/[page]/components/NavSection";
+import { allDocs, allIntegrations, allSamples } from "content-collections";
+import { NavLink } from "./components/NavLink";
+import { NavSection } from "./components/NavSection";
 
 type Props = {
   children: React.ReactNode;
