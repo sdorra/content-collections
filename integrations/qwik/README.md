@@ -73,6 +73,8 @@ icon: qwik
    This file defines a collection named `posts` in the `src/posts` folder.
    The collection will include all markdown files (`**/*.md`) and the schema will validate the `title` and `summary` fields.
 
+   For more information about the configuration have a look at the [documentation](/docs/main/configuration).
+
 1. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
