@@ -1,0 +1,61 @@
+---
+title: Migrate from Contentlayer
+description: Migrate from Contentlayer to Content Collection
+linkText: Contentlayer
+order: 50
+---
+
+Content Collection was build as an alternative to the awesome [Contentlayer](https://contentlayer.dev/),
+you can read more [here](https://sdorra.dev/posts/2024-01-15-content-collections).
+If you are coming from Contentlayer, you can migrate easily to Content Collection.
+The concepts are similar, but there are some differences.
+
+## Fields
+
+Content Collections uses a [schema](/docs/main/configuration#collections) to define the fields of a collection.
+Computed fields can be added with the [transform](/docs/main/transform) function.
+
+## Content
+
+In contentlayer you have to define if a collection is of type `markdown` or `mdx`.
+Content Collections does not parse or compile the content of a file.
+The content is just a string.
+But it offers a [transform](/docs/main/transform) function,
+which can be used to transform the content before it is saved to the collection.
+Please have a look at the [transform documentation](/docs/main/transform#content) for more information.
+
+## \_raw vs \_meta
+
+In Contentlayer, you can access the `_raw` field with file details. In Content Collections, there's a similar field named `_meta` for file information. When transitioning from Contentlayer to Content Collections, use the transform function to include a `_raw` field mirroring Contentlayer's structure in the document. This way, you won't need to modify your application code.
+
+### Example
+
+```ts
+transform: (doc) => {
+  return {
+    ...doc,
+    _raw: {
+      sourceFilePath: doc._meta.filePath,
+      sourceFileName: doc._meta.fileName,
+      sourceFileDir: doc._meta.directory,
+      flattenedPath: doc._meta.path,
+      contentType: "mdx", // or markdown
+    },
+  };
+},
+```
+
+## \_id
+
+Each document in Contentlayer has a unique identifier called `_id`. Content Collections do not have an `id` field. The `_id` field in Contentlayer corresponds to the file path. By utilizing the transform function, we can assign the `filePath` from the `_meta` field as the `_id`.
+
+### Example
+
+```ts
+transform: (doc) => {
+  return {
+    ...doc,
+    _id: doc._meta.filePath,
+  };
+},
+```
