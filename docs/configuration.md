@@ -15,6 +15,8 @@ A collection defines how documents are read, validated, and transformed. Each co
 - `includes` (required): A glob pattern or an array of glob patterns that define which files are included in the collection. The glob pattern is relative to the collection directory.
   e.g.: `*.md`, `**/*.json`, `*.yaml`, `**/*.mdx`
 
+- `excludes` (optional): A glob pattern or an array of glob patterns that define which files are excluded from the collection. The glob pattern is relative to the collection directory.
+
 - `parser` (optional): The parser used to read the documents. The parser must be one of the following values:
 - `frontmatter`: Parses documents with frontmatter and content such as markdown or MDX.
 - `json`: Parses JSON documents
