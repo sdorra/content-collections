@@ -1,9 +1,31 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import rehypeSlug from "rehype-slug";
 import rehypeShiki from "@shikijs/rehype";
 import { Options, compileMDX } from "@content-collections/mdx";
+import { selectAll } from "hast-util-select";
+import { Root } from "hast";
+import GithubSlugger from "github-slugger";
+
+function liCodeSlug() {
+  return (tree: Root) => {
+    const slugger = new GithubSlugger();
+
+    selectAll("li p code:first-of-type", tree).forEach((node) => {
+      const children = node.children;
+      if (children.length === 1 && children[0].type === "text") {
+        const text = slugger.slug(children[0].value);
+        node.properties.id = text;
+      }
+    });
+  };
+}
 
 const mdxOptions: Options = {
-  rehypePlugins: [[rehypeShiki, { theme: "one-dark-pro" }]],
+  rehypePlugins: [
+    liCodeSlug,
+    rehypeSlug,
+    [rehypeShiki, { theme: "one-dark-pro" }],
+  ],
 };
 
 const integrations = defineCollection({
@@ -98,7 +120,7 @@ const docs = defineCollection({
       linkText,
       body,
       href,
-      name
+      name,
     };
   },
 });
