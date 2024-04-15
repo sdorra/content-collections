@@ -23,7 +23,7 @@
     "@playwright/test": "^1.43.0",
     "@remix-run/dev": "^2.8.1",
     "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
+    "@types/react-dom": "^18.2.25",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
