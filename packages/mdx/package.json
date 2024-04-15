@@ -39,7 +39,7 @@
     "@types/mdast": "^4.0.3",
     "@types/node": "^20.11.27",
     "@types/react": "^18.2.67",
-    "@types/react-dom": "^18.2.22",
+    "@types/react-dom": "^18.2.25",
     "@vitest/coverage-v8": "^1.4.0",
     "happy-dom": "^14.3.9",
     "react": "^18.2.0",
