@@ -23,7 +23,7 @@
     "postpack": "rm -f ./README.md"
   },
   "devDependencies": {
-    "@types/micromatch": "^4.0.6",
+    "@types/micromatch": "^4.0.7",
     "@types/node": "^20.9.0",
     "@types/pluralize": "^0.0.33",
     "@vitest/coverage-v8": "^1.4.0",
