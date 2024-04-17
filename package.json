@@ -21,7 +21,7 @@
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@commitlint/cli": "^19.2.1",
-    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/config-conventional": "^19.2.2",
     "husky": "^8.0.3",
     "turbo": "^1.12.4"
   }
