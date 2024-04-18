@@ -19,5 +19,10 @@ updates:
         patterns:
           - 'vitest'
           - '@vitest/*'
+      next:
+        patterns:
+          - 'next'
+          - '@next/*'
+          - 'eslint-config-next'
 
 
