@@ -43,6 +43,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: TypeCheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
       - name: Install Playwright Browsers
         run: pnpx playwright install --with-deps
 

@@ -15,6 +15,8 @@
   "scripts": {
     "commitlint": "commitlint --edit",
     "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
     "test": "turbo test"
   },
   "devDependencies": {
