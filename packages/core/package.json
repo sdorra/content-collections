@@ -33,7 +33,7 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@parcel/watcher": "^2.3.0",
+    "@parcel/watcher": "^2.4.1",
     "camelcase": "^8.0.0",
     "esbuild": "^0.19.5",
     "fast-glob": "^3.3.2",
