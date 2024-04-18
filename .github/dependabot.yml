@@ -15,4 +15,9 @@ updates:
         patterns:
           - 'shiki'
           - '@shikijs/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+
 
