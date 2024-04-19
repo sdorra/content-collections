@@ -14,7 +14,7 @@
     "clsx": "^2.1.0",
     "fathom-client": "^3.6.0",
     "framer-motion": "^11.0.3",
-    "lucide-react": "^0.308.0",
+    "lucide-react": "^0.372.0",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
