@@ -26,7 +26,7 @@
   "devDependencies": {
     "next": "^14.2.2",
     "tsup": "^7.2.0",
-    "typescript": "^5.3.2",
+    "typescript": "^5.4.5",
     "webpack": "^5.89.0",
     "@content-collections/core": "workspace:*"
   }
