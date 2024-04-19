@@ -35,7 +35,7 @@
   "dependencies": {
     "@parcel/watcher": "^2.3.0",
     "camelcase": "^8.0.0",
-    "esbuild": "^0.19.5",
+    "esbuild": "^0.20.2",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
     "micromatch": "^4.0.5",
