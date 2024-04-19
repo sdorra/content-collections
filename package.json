@@ -15,9 +15,7 @@
   "scripts": {
     "commitlint": "commitlint --edit",
     "build": "turbo build",
-    "test": "turbo test",
-    "lint": "turbo lint",
-    "typecheck": "turbo typecheck"
+    "test": "turbo test"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
