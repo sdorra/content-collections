@@ -27,7 +27,7 @@
     "@content-collections/next": "workspace:*",
     "@shikijs/rehype": "^1.3.0",
     "@shikijs/transformers": "^1.3.0",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
