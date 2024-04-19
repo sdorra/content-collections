@@ -19,6 +19,9 @@ updates:
         patterns:
           - 'vitest'
           - '@vitest/*'
+      commitlint:
+        patterns:
+          - '@commitlint/*'
       next:
         patterns:
           - 'next'
