@@ -24,5 +24,13 @@ updates:
           - 'next'
           - '@next/*'
           - 'eslint-config-next'
+      qwik:
+        patterns:
+          - '@builder.io/qwik'
+          - '@builder.io/qwik-*'
+          - 'eslint-plugin-qwik'
+      remix:
+        patterns:
+          - '@remix-run/*'
 
 
