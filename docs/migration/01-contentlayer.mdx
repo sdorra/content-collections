@@ -2,7 +2,6 @@
 title: Migrate from Contentlayer
 description: Migrate from Contentlayer to Content Collection
 linkText: Contentlayer
-order: 50
 ---
 
 Content Collection was build as an alternative to the awesome [Contentlayer](https://contentlayer.dev/),
@@ -12,17 +11,17 @@ The concepts are similar, but there are some differences.
 
 ## Fields
 
-Content Collections uses a [schema](/docs/main/configuration#schema) to define the fields of a collection.
-Computed fields can be added with the [transform](/docs/main/transform) function.
+Content Collections uses a [schema](/docs/configuration#schema) to define the fields of a collection.
+Computed fields can be added with the [transform](/docs/transform) function.
 
 ## Content
 
 In contentlayer you have to define if a collection is of type `markdown` or `mdx`.
 Content Collections does not parse or compile the content of a file.
 The content is just a string.
-But it offers a [transform](/docs/main/transform) function,
+But it offers a [transform](/docs/transform) function,
 which can be used to transform the content before it is saved to the collection.
-Please have a look at the [transform documentation](/docs/main/transform#content) for more information.
+Please have a look at the [transform documentation](/docs/transform#content) for more information.
 
 ## \_raw vs \_meta
 

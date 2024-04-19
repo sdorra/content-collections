@@ -39,7 +39,7 @@ A collection defines how documents are read, validated, and transformed. Each co
   });
   ```
 
-- `transform` (optional): The `transform` property is a function that transforms the document before it is saved to the collection. It takes two arguments: the document and a context object, and should return the transformed document. The "transform" function can be used to add computed properties, modify existing properties, or remove properties from the document. It can also fetch data from a remote server, transform markdown to HTML, or even join collections. The result type of the `transform` function defines the TypeScript type of the document. If the `transform` function is not provided, the document type is inferred from the schema. It can be synchronous or asynchronous. The `transform` function is powerful, which is why we dedicate a whole [documentation site](/docs/main/transform) to it.
+- `transform` (optional): The `transform` property is a function that transforms the document before it is saved to the collection. It takes two arguments: the document and a context object, and should return the transformed document. The "transform" function can be used to add computed properties, modify existing properties, or remove properties from the document. It can also fetch data from a remote server, transform markdown to HTML, or even join collections. The result type of the `transform` function defines the TypeScript type of the document. If the `transform` function is not provided, the document type is inferred from the schema. It can be synchronous or asynchronous. The `transform` function is powerful, which is why we dedicate a whole [documentation site](/docs/transform) to it.
 
   Example:
 

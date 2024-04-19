@@ -1,10 +1,15 @@
-import { allDocs, allIntegrations, allSamples } from "content-collections";
+import { Doc, allDocs } from "content-collections";
 import { NavLink } from "./components/NavLink";
 import { NavSection } from "./components/NavSection";
+import { docsTree, isLeadNode } from "@/lib/tree";
 
 type Props = {
   children: React.ReactNode;
 };
+
+function isDefined<T>(value: T | undefined): value is T {
+  return value !== undefined;
+}
 
 export default function DocLayout({ children }: Props) {
   return (
@@ -12,29 +17,31 @@ export default function DocLayout({ children }: Props) {
       <aside className="w-42 text-nowrap pl-10">
         <nav>
           <NavSection title="Docs">
-            <NavLink title="Getting started" href="/docs">
-              Getting started
-            </NavLink>
-            {allDocs.map((doc) => (
-              <NavLink title={doc.title} key={doc.name} href={doc.href}>
-                {doc.linkText}
-              </NavLink>
-            ))}
+            {docsTree.children
+              .filter(isLeadNode)
+              .map((node) => node.data)
+              .filter(isDefined)
+              .map((doc: Doc) => (
+                <NavLink key={doc.slug} title={doc.title} href={doc.href}>
+                  {doc.linkText}
+                </NavLink>
+              ))}
           </NavSection>
-          <NavSection title="Integrations">
-            {allIntegrations.map((doc) => (
-              <NavLink title={doc.title} key={doc.href} href={doc.href}>
-                {doc.linkText}
-              </NavLink>
+          {docsTree.children
+            .filter((node) => !isLeadNode(node))
+            .map((node) => (
+              <NavSection key={node.name} title={node.name}>
+                {node.children
+                  .filter(isLeadNode)
+                  .map((node) => node.data)
+                  .filter(isDefined)
+                  .map((doc: Doc) => (
+                    <NavLink key={doc.slug} title={doc.title} href={doc.href}>
+                      {doc.linkText}
+                    </NavLink>
+                  ))}
+              </NavSection>
             ))}
-          </NavSection>
-          <NavSection title="Samples">
-            {allSamples.map((doc) => (
-              <NavLink title={doc.title} key={doc.href} href={doc.href}>
-                {doc.linkText}
-              </NavLink>
-            ))}
-          </NavSection>
         </nav>
       </aside>
       {children}

@@ -94,6 +94,7 @@ const samples = defineCollection({
   },
 });
 
+
 const docs = defineCollection({
   name: "docs",
   directory: "../docs",
@@ -111,8 +112,12 @@ const docs = defineCollection({
       linkText = data.title;
     }
 
-    const name = data._meta.path.replace(/^\d+-/, "");
-    const href = `/docs/main/${name}`;
+    const parts = data._meta.path.split("/");
+    const lastPart = parts[parts.length - 1];
+    parts[parts.length - 1] = lastPart.replace(/^\d+-/, "");
+
+    const slug = parts.join("/");
+    const href = `/docs/${slug}`;
 
     return {
       title: data.title,
@@ -120,11 +125,11 @@ const docs = defineCollection({
       linkText,
       body,
       href,
-      name,
+      slug,
     };
   },
 });
 
 export default defineConfig({
-  collections: [integrations, samples, docs],
+  collections: [samples, integrations, docs],
 });
