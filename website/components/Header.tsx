@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReactNode } from "react";
 
 type ExternalLinkProps = {
   href: string;
@@ -51,10 +52,15 @@ function NavLink({ href, title, children }: NavLinkProps) {
   );
 }
 
-export function Header() {
+type Props = {
+  children?: ReactNode;
+};
+
+export function Header({ children }: Props) {
   return (
-    <header>
-      <nav className="px-4 py-2 max-w-5xl mx-auto">
+    <header className="px-4 sm:px-10 py-2 max-w-5xl mx-auto w-full flex">
+      {children}
+      <nav className="ml-auto">
         <ul className="flex gap-4 justify-end font-semibold">
           <NavLink href="/">Home</NavLink>
           <NavLink href="/docs" title="Documentation">

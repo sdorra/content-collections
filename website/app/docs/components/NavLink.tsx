@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useNavigation } from "./NavigationContext";
 
 type Props = {
   href: string;
@@ -12,6 +13,7 @@ type Props = {
 
 export function NavLink({ href, title, children }: Props) {
   const pathname = usePathname();
+  const handleNavigation = useNavigation();
   const isActive = pathname === href;
   return (
     <li
@@ -24,7 +26,11 @@ export function NavLink({ href, title, children }: Props) {
         }
       )}
     >
-      <Link className="block" href={href}>
+      <Link
+        className="block"
+        href={href}
+        onClick={() => handleNavigation(href)}
+      >
         {children}
       </Link>
     </li>
