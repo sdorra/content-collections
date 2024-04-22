@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*",
-    "clerc": "^0.42.2"
+    "clerc": "^0.44.0"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
