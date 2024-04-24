@@ -53,7 +53,7 @@ function Navigation() {
 export default function DocLayout({ children }: Props) {
   return (
     <>
-      <Header>
+      <Header fixed>
         <NavigationSheet>
           <SheetTrigger asChild>
             <button className="md:hidden hover:text-base-100">

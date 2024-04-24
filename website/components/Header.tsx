@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { FixedHeader } from "./FixedHeader";
 
 type ExternalLinkProps = {
   href: string;
@@ -53,12 +54,13 @@ function NavLink({ href, title, children }: NavLinkProps) {
 }
 
 type Props = {
+  fixed?: boolean;
   children?: ReactNode;
 };
 
-export function Header({ children }: Props) {
+export function Header({ fixed, children }: Props) {
   return (
-    <header className="px-4 sm:px-10 py-2 max-w-5xl mx-auto w-full flex">
+    <FixedHeader fixed={fixed}>
       {children}
       <nav className="ml-auto">
         <ul className="flex gap-4 justify-end font-semibold">
@@ -74,6 +76,6 @@ export function Header({ children }: Props) {
           </NavLink>
         </ul>
       </nav>
-    </header>
+    </FixedHeader>
   );
 }
