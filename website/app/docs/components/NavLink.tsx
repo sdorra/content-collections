@@ -8,13 +8,19 @@ import { useNavigation } from "./NavigationContext";
 type Props = {
   href: string;
   title: string;
+  matcher?: string;
   children: React.ReactNode;
 };
 
-export function NavLink({ href, title, children }: Props) {
+export function NavLink({ href, title, matcher, children }: Props) {
   const pathname = usePathname();
   const handleNavigation = useNavigation();
-  const isActive = pathname === href;
+
+  let isActive = pathname === href;
+  if (matcher) {
+    isActive = new RegExp(matcher).test(pathname);
+  }
+
   return (
     <li
       title={title}

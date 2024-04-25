@@ -1,8 +1,7 @@
 ---
-title: Qwik Integration
-description: Use Content Collections with Qwik
-linkText: Qwik
-icon: qwik
+title: Quickstart CLI
+description: Setup guide for the Content Collections CLI
+linkText: CLI
 ---
 
 1. Install required packages:
@@ -10,9 +9,10 @@ icon: qwik
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/vite`
+   - `@content-collections/cli`
+   - `concurrently`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/cli", "concurrently"]} />
 
 1. Adjust your `tsconfig.json`:
 
@@ -21,7 +21,6 @@ icon: qwik
      "compilerOptions": {
        // ...
        "paths": {
-         "~/*": ["./src/*"],
          "content-collections": ["./.content-collections/generated"]
        }
      }
@@ -29,26 +28,24 @@ icon: qwik
    ```
 
    We require a path alias for the generated files.
-   This is necessary because we will generate the files in the `.content-collections/generated` folder.
+   This is necessary because the CLI will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `vite.config.ts`:
+1. Add the content-collection cli to your `package.json` scripts:
 
-   ```ts
-   import { defineConfig, type UserConfig } from "vite";
-   import { qwikVite } from "@builder.io/qwik/optimizer";
-   import { qwikCity } from "@builder.io/qwik-city/vite";
-   import tsconfigPaths from "vite-tsconfig-paths";
-   import contentCollections from "@content-collections/vite";
-
-   export default defineConfig((): UserConfig => {
-     return {
-       plugins: [qwikCity(), qwikVite(), tsconfigPaths(), contentCollections()],
-       // ...
-     };
-   });
+   ```json
+   {
+     "scripts": {
+       "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
+       "build": "content-collections build && build-scripts build"
+     }
+   }
    ```
 
-   Add the Content Collections plugin to your Vite config.
+   First, we modify the `dev` script to simultaneously execute the `content-collections watch` command along with our regular `dev` command.
+
+   Next, we execute the `content-collections build` command prior to our regular `build` command.
+
+   **Note:** Make sure to replace `build-scripts` with the appropriate command for your framework, such as `next` or `vite`.
 
 1. Create a `content-collections.ts` file at the root of your project:
 
@@ -96,40 +93,7 @@ icon: qwik
 1. Usage in your code:
 
    ```tsx
-   import { component$ } from "@builder.io/qwik";
-   import type { DocumentHead } from "@builder.io/qwik-city";
-   import { allCharacters } from "content-collections";
-
-   export default component$(() => {
-     return (
-       <main>
-         <h1>Characters</h1>
-         <ul>
-           {allCharacters.map((character) => (
-             <li key={character.name}>
-               <h2>{character.name}</h2>
-               <ul>
-                 <li>Planet of origin: {character.origin}</li>
-                 <li>Species: {character.species}</li>
-               </ul>
-               <p>{character.content}</p>
-               <a href={character.source}>Source</a>
-             </li>
-           ))}
-         </ul>
-       </main>
-     );
-   });
-
-   export const head: DocumentHead = {
-     title: "Welcome to Qwik",
-     meta: [
-       {
-         name: "description",
-         content: "Qwik site description",
-       },
-     ],
-   };
+   import { allPosts } from "content-collections";
    ```
 
    Now you can just import the `allPosts` collection and use it in your code.

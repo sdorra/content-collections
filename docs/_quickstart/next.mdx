@@ -1,7 +1,7 @@
 ---
-title: Vite Integration
-description: Setup guide for the Content Collections Vite plugin
-linkText: Vite
+title: Quickstart Next.js
+description: Integrate Content Collections into your Next.js app
+linkText: Next.js
 ---
 
 1. Install required packages:
@@ -9,9 +9,9 @@ linkText: Vite
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/vite`
+   - `@content-collections/next`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/next"]} />
 
 1. Adjust your `tsconfig.json`:
 
@@ -20,6 +20,7 @@ linkText: Vite
      "compilerOptions": {
        // ...
        "paths": {
+         "@/*": ["./*"],
          "content-collections": ["./.content-collections/generated"]
        }
      }
@@ -29,18 +30,20 @@ linkText: Vite
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `vite.config.ts`:
+1. Modify your `next.config.js`:
 
-   ```ts
-   import { defineConfig } from "vite";
-   import contentCollections from "@content-collections/vite";
+   ```js
+   const { withContentCollections } = require("@content-collections/next");
 
-   export default defineConfig({
-    plugins: [/** other plugins */, contentCollections()],
-   });
+   /** @type {import('next').NextConfig} */
+   const nextConfig = {
+      // your next.js config
+   };
+
+   module.exports = withContentCollections(nextConfig);
    ```
 
-   Add the Content Collections plugin to your Vite config.
+   This will add content collections to the build of your next.js app.
 
 
 1. Create a `content-collections.ts` file at the root of your project:

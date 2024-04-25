@@ -1,5 +1,5 @@
 import { BrandIcon } from "@/components/BrandIcon";
-import { allIntegrations } from "content-collections";
+import { allQuickstarts } from "content-collections";
 import Link from "next/link";
 
 export default function DocsRoot() {
@@ -13,7 +13,7 @@ export default function DocsRoot() {
         </p>
       </div>
       <ul className="grid grid-cols-3 gap-10 mt-10 mx-auto max-w-lg">
-        {allIntegrations.map((doc) => (
+        {allQuickstarts.map((doc) => (
           <li key={doc.href}>
             <a
               href={doc.href}

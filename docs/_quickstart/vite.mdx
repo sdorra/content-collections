@@ -1,7 +1,7 @@
 ---
-title: Command Line Interface
-description: Setup guide for the Content Collections CLI
-linkText: CLI
+title: Quickstart Vite
+description: Setup guide for the Content Collections Vite plugin
+linkText: Vite
 ---
 
 1. Install required packages:
@@ -9,10 +9,9 @@ linkText: CLI
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/cli`
-   - `concurrently`
+   - `@content-collections/vite`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/cli", "concurrently"]} />
+   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
 
 1. Adjust your `tsconfig.json`:
 
@@ -28,24 +27,21 @@ linkText: CLI
    ```
 
    We require a path alias for the generated files.
-   This is necessary because the CLI will generate the files in the `.content-collections/generated` folder.
+   This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Add the content-collection cli to your `package.json` scripts:
+1. Modify your `vite.config.ts`:
 
-   ```json
-   {
-     "scripts": {
-       "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
-       "build": "content-collections build && build-scripts build"
-     }
-   }
+   ```ts
+   import { defineConfig } from "vite";
+   import contentCollections from "@content-collections/vite";
+
+   export default defineConfig({
+    plugins: [/** other plugins */, contentCollections()],
+   });
    ```
 
-   First, we modify the `dev` script to simultaneously execute the `content-collections watch` command along with our regular `dev` command.
+   Add the Content Collections plugin to your Vite config.
 
-   Next, we execute the `content-collections build` command prior to our regular `build` command.
-
-   **Note:** Make sure to replace `build-scripts` with the appropriate command for your framework, such as `next` or `vite`.
 
 1. Create a `content-collections.ts` file at the root of your project:
 
@@ -94,6 +90,21 @@ linkText: CLI
 
    ```tsx
    import { allPosts } from "content-collections";
+
+   export function Posts() {
+     return (
+       <ul>
+         {allPosts.map((post) => (
+           <li key={post._meta.path}>
+             <a href={`/posts/${post._meta.path}`}>
+               <h3>{post.title}</h3>
+               <p>{post.summary}</p>
+             </a>
+           </li>
+         ))}
+       </ul>
+     );
+   }
    ```
 
    Now you can just import the `allPosts` collection and use it in your code.

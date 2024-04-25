@@ -28,10 +28,10 @@ const mdxOptions: Options = {
   ],
 };
 
-const integrations = defineCollection({
-  name: "integrations",
-  directory: "../integrations",
-  include: "*/README.md",
+const quickstart = defineCollection({
+  name: "quickstart",
+  directory: "../docs/_quickstart",
+  include: "*.mdx",
   schema: (z) => ({
     title: z.string(),
     description: z.string().optional(),
@@ -45,8 +45,8 @@ const integrations = defineCollection({
     if (!linkText) {
       linkText = data.title;
     }
-    const href = `/docs/integrations/${data._meta.directory}`;
-    const name = data._meta.directory;
+    const href = `/docs/quickstart/${data._meta.path}`;
+    const name = data._meta.path;
     return {
       title: data.title,
       description: data.description,
@@ -99,6 +99,7 @@ const docs = defineCollection({
   name: "docs",
   directory: "../docs",
   include: "**/*.mdx",
+  exclude: "_*/**",
   schema: (z) => ({
     title: z.string(),
     linkText: z.string().optional(),
@@ -131,5 +132,5 @@ const docs = defineCollection({
 });
 
 export default defineConfig({
-  collections: [samples, integrations, docs],
+  collections: [samples, quickstart, docs],
 });
