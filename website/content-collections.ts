@@ -37,6 +37,7 @@ const quickstart = defineCollection({
     description: z.string().optional(),
     linkText: z.string().optional(),
     icon: z.string().optional(),
+    category: z.string(),
   }),
   transform: async (data, ctx) => {
     const body = await compileMDX(ctx, data, mdxOptions);
@@ -55,6 +56,7 @@ const quickstart = defineCollection({
       linkText,
       name,
       body,
+      category: data.category,
     };
   },
 });
