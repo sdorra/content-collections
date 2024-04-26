@@ -1,0 +1,100 @@
+---
+title: Next.js
+---
+
+The `@content-collections/next` package allows a seamless integration of Content Collections into your Next.js app. This package provides a Next.js plugin that will automatically generate the content collections and add them to the build process.
+
+<Notification type="warning">
+   The package currently does not work with TurboPack. We are working on a solution. In the meantime, you can use the [CLI adapter](/docs/adapter/cli) package instead of the Next.js adapter if you want to use TurboPack.
+</Notification>
+
+## Installation
+
+1. First, install the required packages:
+
+   We have to install the following packages:
+
+   - `@content-collections/core`
+   - `@content-collections/next`
+
+   <PackageInstall
+     devDependencies={true}
+     packages={["@content-collections/core", "@content-collections/next"]}
+   />
+
+1. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+
+   ```json
+   {
+     "compilerOptions": {
+       // ...
+       "paths": {
+         "@/*": ["./*"],
+         "content-collections": ["./.content-collections/generated"]
+       }
+     }
+   }
+   ```
+
+1. Now we can add the Content Collections plugin to the Next.js config:
+
+   ```js
+   const { withContentCollections } = require("@content-collections/next");
+
+   /** @type {import('next').NextConfig} */
+   const nextConfig = {
+     // your next.js config
+   };
+
+   module.exports = withContentCollections(nextConfig);
+   ```
+
+## API
+
+The package exports the following functions:
+
+- `createContentCollectionPlugin`: A function that creates the Next.js plugin for Content Collections.
+
+- `withContentCollections`: A functions which uses the `createContentCollectionPlugin` with a the default options.
+
+In most cases, you will only need to use the `withContentCollections` function.
+
+### `createContentCollectionPlugin`
+
+The function accepts one argument, an options object with the following properties. It then returns a function that takes the Next.js configuration object and provides a new configuration object with the Content Collections plugin included.
+
+- `configPath` (required): Specifies the path to the Content Collections configuration file.
+
+#### Example
+
+```js
+const { createContentCollectionPlugin } = require("@content-collections/next");
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // your next.js config
+};
+
+const withPlugin = createContentCollectionPlugin({
+  configPath: "./config/content-collections.config.ts",
+});
+
+module.exports = withPlugin(nextConfig);
+```
+
+### `withContentCollections`
+
+The function takes a single argument, a Next.js configuration object, and returns a new configuration object with the Content Collections plugin added.
+
+#### Example
+
+```js
+const { withContentCollections } = require("@content-collections/next");
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // your next.js config
+};
+
+module.exports = withContentCollections(nextConfig);
+```

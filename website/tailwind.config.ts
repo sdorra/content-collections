@@ -10,6 +10,11 @@ const config = {
       colors: {
         primary: colors.orange,
         base: colors.slate,
+
+        info: colors.sky,
+        warn: colors.yellow,
+        error: colors.red,
+        success: colors.green,
       },
     },
   },
