@@ -1,6 +1,10 @@
 ---
 title: React Markdown
 description: How to use Content Collections with React Markdown
+tags:
+- markdown
+- react
+- vite
 ---
 
 It is very easy to use Content Collections with React Markdown.

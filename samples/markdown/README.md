@@ -1,6 +1,10 @@
 ---
 title: Markdown
 description: Use Markdown files with Content Collections
+tags:
+- markdown
+- react
+- vite
 ---
 
 There are many ways to use markdown files with Content Collections.

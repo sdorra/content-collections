@@ -21,7 +21,11 @@ function Navigation() {
   return (
     <nav>
       <NavSection title="Docs">
-        <NavLink href="/docs" title="Quickstart" matcher="^(/docs/?|/docs/quickstart/.*)$">
+        <NavLink
+          href="/docs"
+          title="Quickstart"
+          matcher="^(/docs/?|/docs/quickstart/.*)$"
+        >
           Quickstart
         </NavLink>
         {docsTree.children
@@ -33,6 +37,13 @@ function Navigation() {
               {doc.linkText}
             </NavLink>
           ))}
+        <NavLink
+          href="/docs/samples"
+          title="Samples"
+          matcher="^/docs/samples/?.*$"
+        >
+          Samples
+        </NavLink>
       </NavSection>
       {docsTree.children
         .filter((node) => !isLeadNode(node))

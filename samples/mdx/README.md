@@ -3,6 +3,11 @@ title: MDX
 description: Use MDX files with Content Collections
 stackBlitz:
   file: content/001-hello-world.md
+tags:
+- mdx
+- markdown
+- react
+- next.js
 ---
 
 In order to use [MDX](https://mdxjs.com/) files with Content Collections, we have to transform the collected content.

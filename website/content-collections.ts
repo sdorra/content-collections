@@ -69,6 +69,7 @@ const samples = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     linkText: z.string().optional(),
+    tags: z.array(z.string()),
     stackBlitz: z
       .object({
         file: z.string(),
@@ -92,6 +93,7 @@ const samples = defineCollection({
       linkText,
       name,
       body,
+      tags: data.tags,
     };
   },
 });
