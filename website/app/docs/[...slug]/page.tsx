@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { MDXContent } from "@content-collections/mdx/react";
 import { PackageInstall } from "@/components/PackageInstall";
 import { Notification } from "@/components/Notification";
+import { DocContainer } from "@/components/DocContainer";
 
 type Props = {
   params: {
@@ -19,10 +20,10 @@ export default async function Page({ params: { slug } }: Props) {
 
   return (
     <div className="min-w-0">
-      <article className="prose prose-base prose-code:text-base hover:prose-a:decoration-primary-600 max-w-3xl prose-invert py-5 px-5 sm:px-10">
+      <DocContainer>
         <h1>{docPage.title}</h1>
         <MDXContent code={docPage.body} components={{ PackageInstall, Notification }} />
-      </article>
+      </DocContainer>
     </div>
   );
 }
