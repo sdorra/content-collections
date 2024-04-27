@@ -19,12 +19,14 @@ export default async function Page({ searchParams }: Props) {
     tags.every((tag) => sample.tags.includes(tag))
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   return (
-    <DocContainer className="has-[[data-pending]]:animate-pulse">
+    <DocContainer className="group">
       <h1>Samples</h1>
       <p>Filter by tag</p>
       <TagFilterPanel tags={tags} allTags={allTags} />
-      <ul>
+      <ul className="group-has-[[data-pending]]:animate-pulse">
         {filteredSamples.map((sample) => (
           <li key={sample.name}>
             <a href={`/docs/samples/${sample.name}`}>{sample.title}</a>

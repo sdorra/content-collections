@@ -3,6 +3,7 @@ title: Remix MDX Routes
 description: Use MDX routes with Remix and Content Collections
 tags:
 - mdx
+- markdown
 - react
 - remix
 ---
