@@ -11,6 +11,7 @@ type Props = {
   title?: string;
   children: ReactNode;
   prose?: boolean;
+  className?: string;
 };
 
 const icons = {
@@ -20,12 +21,13 @@ const icons = {
   error: XOctagon,
 };
 
-export const Notification = ({ title, children, type = "warning", prose = false}: Props) => {
+export const Notification = ({ title, children, className, type = "warning", prose = false}: Props) => {
   const Icon = icons[type];
   return (
     <div
       className={clsx(
         "rounded-md border-l-8 border-r border-t border-b p-5 shadow-md [&_a]:underline hover:[&_a]:decoration-2",
+        className,
         {
           "border-info-600 dark:border-info-500 hover:[&_a]:decoration-info-500": type === "info",
           "border-warn-600 dark:border-warn-500 hover:[&_a]:decoration-warn-500": type === "warning",

@@ -24,6 +24,8 @@ export function FixedHeader({ fixed, children }: Props) {
     };
   }, [fixed]);
 
+  // TODO: header is not centered
+
   return (
     <header
       className={clsx(
