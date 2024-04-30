@@ -4,13 +4,14 @@ import { ReactNode } from "react";
 
 export const types = ["info", "success", "warning", "error"] as const;
 
-type Type = typeof types[number];
+type Type = (typeof types)[number];
 
 type Props = {
   type?: Type;
   title?: string;
   children: ReactNode;
   prose?: boolean;
+  disableLinkStyle?: boolean;
   className?: string;
 };
 
@@ -21,19 +22,31 @@ const icons = {
   error: XOctagon,
 };
 
-export const Notification = ({ title, children, className, type = "warning", prose = false}: Props) => {
+export const Notification = ({
+  title,
+  children,
+  className,
+  disableLinkStyle,
+  type = "warning",
+  prose = false,
+}: Props) => {
   const Icon = icons[type];
   return (
     <div
       className={clsx(
-        "rounded-md border-l-8 border-r border-t border-b p-5 shadow-md [&_a]:underline hover:[&_a]:decoration-2",
+        "rounded-md border-l-8 border-r border-t border-b p-5 shadow-md",
         className,
         {
-          "border-info-600 dark:border-info-500 hover:[&_a]:decoration-info-500": type === "info",
-          "border-warn-600 dark:border-warn-500 hover:[&_a]:decoration-warn-500": type === "warning",
-          "border-error-600 dark:border-error-500 hover:[&_a]:decoration-error-500": type === "error",
-          "border-success-600 dark:border-success-500 hover:[&_a]:decoration-success-500": type === "success",
-          "not-prose": !prose
+          "[&_a]:underline hover:[&_a]:decoration-2": !disableLinkStyle,
+          "border-info-600 dark:border-info-500 hover:[&_a]:decoration-info-500":
+            type === "info",
+          "border-warn-600 dark:border-warn-500 hover:[&_a]:decoration-warn-500":
+            type === "warning",
+          "border-error-600 dark:border-error-500 hover:[&_a]:decoration-error-500":
+            type === "error",
+          "border-success-600 dark:border-success-500 hover:[&_a]:decoration-success-500":
+            type === "success",
+          "not-prose": !prose,
         }
       )}
     >
@@ -45,7 +58,9 @@ export const Notification = ({ title, children, className, type = "warning", pro
           "text-success-700 dark:text-success-500": type === "success",
         })}
       >
-        <div className="font-semibold first-letter:uppercase">{title ? title : type}</div>
+        <div className="font-semibold first-letter:uppercase">
+          {title ? title : type}
+        </div>
         <Icon />
       </div>
       {children}
