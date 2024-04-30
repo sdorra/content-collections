@@ -5,6 +5,7 @@ import { ExternalLink, Link } from "@/components/links";
 import { Notification } from "@/components/Notification";
 import { createStackBlitzLink } from "@/lib/stackblitz";
 import { GitHub, StackBlitz } from "@/components/icons";
+import UnstyledLink from "next/link";
 
 const allTags = allSamples.map((sample) => sample.tags).flat();
 
@@ -19,18 +20,20 @@ type SampleCardProps = {
 function SampleCard({ sample }: SampleCardProps) {
   return (
     <div className="flex flex-col border-base-400 p-2 rounded-md border-2 bg-base-200 text-base-800 hover:border-primary-400">
-      <h2 className="font-semibold text2xl">{sample.title}</h2>
-      <p className="flex-grow text-base-700">{sample.description}</p>
-      <ul className="flex gap-2 my-2">
-        {sample.tags.map((tag) => (
-          <li
-            key={tag}
-            className="border border-base-500 rounded-lg px-1 text-xs"
-          >
-            {tag}
-          </li>
-        ))}
-      </ul>
+      <UnstyledLink href={sample.href}>
+        <h2 className="font-semibold text2xl">{sample.title}</h2>
+        <p className="flex-grow text-base-700">{sample.description}</p>
+        <ul className="flex gap-2 my-2">
+          {sample.tags.map((tag) => (
+            <li
+              key={tag}
+              className="border border-base-500 rounded-lg px-1 text-xs"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
+      </UnstyledLink>
       <div className="flex justify-between">
         <Link href={sample.href}>Read more</Link>
         <div className="flex gap-2">
