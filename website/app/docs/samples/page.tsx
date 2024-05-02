@@ -6,6 +6,7 @@ import { Notification } from "@/components/Notification";
 import { createStackBlitzLink } from "@/lib/stackblitz";
 import { GitHub, StackBlitz } from "@/components/icons";
 import UnstyledLink from "next/link";
+import { BrandIcon } from "@/components/BrandIcon";
 
 const allTags = allSamples.map((sample) => sample.tags).flat();
 
@@ -19,10 +20,14 @@ type SampleCardProps = {
 
 function SampleCard({ sample }: SampleCardProps) {
   return (
-    <div className="flex flex-col border-base-400 p-2 rounded-md border-2 bg-base-200 text-base-800 hover:border-primary-400">
-      <UnstyledLink href={sample.href}>
-        <h2 className="font-semibold text2xl">{sample.title}</h2>
-        <p className="flex-grow text-base-700">{sample.description}</p>
+    <div className="flex flex-col p-2 bg-base-800 rounded-md border-2 border-base-600 hover:border-primary-400 relative">
+      <BrandIcon
+        icon={sample.adapter}
+        className="absolute size-6 top-2 right-2"
+      />
+      <UnstyledLink href={sample.href} className="flex-grow flex flex-col">
+        <h2 className="font-semibold text-xl text-base-100">{sample.title}</h2>
+        <p className="flex-grow text-sm">{sample.description}</p>
         <ul className="flex gap-2 my-2">
           {sample.tags.map((tag) => (
             <li
@@ -76,8 +81,11 @@ export default async function Page({ searchParams }: Props) {
       <TagFilterPanel tags={tags} allTags={allTags} />
       <ul className="not-prose group-has-[[data-pending]]:animate-pulse grid grid-cols-1 md:grid-cols-2 gap-2 mt-5">
         {filteredSamples.length === 0 && (
-          <Notification type="info" className="md:col-span-2">
-            No samples found for the selected tag combination.
+          <Notification type="warning" className="md:col-span-2">
+            <p>No samples found for the selected tag combination.</p>
+            <Link href="/docs/samples" className="mt-2">
+              Clear filters
+            </Link>
           </Notification>
         )}
         {filteredSamples.map((sample) => (

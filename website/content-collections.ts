@@ -67,9 +67,9 @@ const samples = defineCollection({
   include: "*/README.md",
   schema: (z) => ({
     title: z.string(),
-    description: z.string().optional(),
-    linkText: z.string().optional(),
+    description: z.string(),
     tags: z.array(z.string()),
+    adapter: z.string(),
     stackBlitz: z
       .object({
         file: z.string(),
@@ -78,19 +78,14 @@ const samples = defineCollection({
   }),
   transform: async (data, ctx) => {
     const body = await compileMDX(ctx, data, mdxOptions);
-
-    let linkText = data.linkText;
-    if (!linkText) {
-      linkText = data.title;
-    }
     const href = `/docs/samples/${data._meta.directory}`;
     const name = data._meta.directory;
     return {
       title: data.title,
       description: data.description,
       stackBlitz: data.stackBlitz,
+      adapter: data.adapter,
       href,
-      linkText,
       name,
       body,
       tags: data.tags,

@@ -5,6 +5,7 @@ tags:
 - markdown
 - react
 - vite
+adapter: vite
 ---
 
 There are many ways to use markdown files with Content Collections.

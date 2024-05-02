@@ -6,6 +6,7 @@ tags:
 - markdown
 - react
 - remix
+adapter: remix
 ---
 
 In remix there are several ways to define routes. For the sake of simplicity, we will use flat routes in this example, but it should be easy to adapt this example for directory routes.

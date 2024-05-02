@@ -8,6 +8,7 @@ tags:
 - markdown
 - react
 - next.js
+adapter: next
 ---
 
 In order to use [MDX](https://mdxjs.com/) files with Content Collections, we have to transform the collected content.
