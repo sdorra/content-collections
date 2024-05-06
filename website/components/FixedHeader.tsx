@@ -24,12 +24,10 @@ export function FixedHeader({ fixed, children }: Props) {
     };
   }, [fixed]);
 
-  // TODO: header is not centered
-
   return (
     <header
       className={clsx(
-        "px-4 h-10 sm:px-10 py-2 max-w-5xl mx-auto w-full flex transition-colors duration-500",
+        "px-4 h-10 sm:px-10 py-2 max-w-5xl mx-auto w-full flex transition-colors duration-500 inset-x-0",
         {
           "absolute": !fixed,
           "fixed md:absolute": fixed,
