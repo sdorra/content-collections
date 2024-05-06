@@ -10,7 +10,7 @@ export default async function Image() {
     new URL("/assets/fonts/inter/Inter-Bold.ttf", import.meta.url)
   ).then((res) => res.arrayBuffer());
 
-  const logo = await fetch(new URL("/assets/logo.png", import.meta.url)).then(
+  const logo = await fetch(new URL("/assets/logo_512x512.png", import.meta.url)).then(
     (res) => res.arrayBuffer()
   );
 
