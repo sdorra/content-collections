@@ -1,0 +1,22 @@
+{
+  "name": "samples-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "content-collections build",
+    "typecheck": "tsc",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "@content-collections/cli": "0.1.2",
+    "@content-collections/core": "0.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "18",
+    "tsx": "^4.1.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.6",
+    "vitest": "^1.5.0"
+  }
+}

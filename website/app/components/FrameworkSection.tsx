@@ -1,4 +1,4 @@
-import { allIntegrations } from "content-collections";
+import { allQuickstarts } from "content-collections";
 import { Content, Section, Title } from "./Section";
 import { BrandIcon } from "@/components/BrandIcon";
 import Link from "next/link";
@@ -19,17 +19,17 @@ export function FrameworkSection() {
           framework of choice.
         </p>
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-20 pt-10 mx-auto max-w-60 sm:max-w-xs md:max-w-lg justify-items-center">
-          {allIntegrations
-            .filter((integration) => integration.name !== "cli")
-            .map((integration) => (
-              <li key={integration.name}>
+          {allQuickstarts
+            .filter((quickstart) => quickstart.name !== "cli")
+            .map((quickstart) => (
+              <li key={quickstart.name}>
                 <Link
-                  title={integration.description}
-                  href={`/docs/integrations/${integration.name}`}
+                  title={quickstart.description}
+                  href={quickstart.href}
                   className="block rounded-md"
                 >
                   <BrandIcon
-                    icon={integration.icon || integration.name}
+                    icon={quickstart.icon || quickstart.name}
                     className={clsx(
                       "size-24 md:size-32",
                       "grayscale contrast-50",

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 import { Analytics } from "@/components/Analytics";
 import clsx from "clsx";
 
@@ -29,9 +29,7 @@ export default function RootLayout({
           inter.className
         )}
       >
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        {children}
         <Analytics />
       </body>
     </html>

@@ -1,5 +1,4 @@
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-//@ts-ignore
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import {
   BundledLanguage,
@@ -67,7 +66,9 @@ export async function codeToJsx(code: string | string[], options: Options) {
 
   return toJsxRuntime(tree, {
     Fragment,
+    // @ts-ignore typings are wrong
     jsx,
+    // @ts-ignore typings are wrong
     jsxs,
   });
 }

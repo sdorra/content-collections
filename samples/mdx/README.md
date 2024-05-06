@@ -3,6 +3,12 @@ title: MDX
 description: Use MDX files with Content Collections
 stackBlitz:
   file: content/001-hello-world.md
+tags:
+- mdx
+- markdown
+- react
+- next.js
+adapter: next
 ---
 
 In order to use [MDX](https://mdxjs.com/) files with Content Collections, we have to transform the collected content.
@@ -11,7 +17,9 @@ Let's see how we can use it.
 
 First we have to install the package `@content-collections/mdx` package.
 
-<PackageInstall devDependencies={true} packages={["@content-collections/mdx"]} />
+```sh
+pnpm add @content-collections/mdx
+```
 
 After installing the package, we can use the `compileMDX` function to compile the content of our document.
 

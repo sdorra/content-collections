@@ -8,6 +8,11 @@ const nextConfig = {
       destination: "/docs/",
       permanent: true,
     },
+    {
+      source: "/docs/integrations/:slug",
+      destination: "/docs/quickstart/:slug",
+      permanent: true,
+    }
   ])
 }
 

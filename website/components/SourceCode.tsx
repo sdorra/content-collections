@@ -1,6 +1,5 @@
 import { codeToHast } from "shiki";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-//@ts-ignore
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { transformerNotationHighlight } from "@shikijs/transformers";
 import { commentTransformer } from "./CommentTransformer";
@@ -46,5 +45,6 @@ export async function SourceCode({
     transformers,
   });
 
+  // @ts-ignore typings are wrong
   return toJsxRuntime(tree, { Fragment, jsx, jsxs });
 }

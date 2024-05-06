@@ -1,19 +1,18 @@
 import { BrandIcon } from "@/components/BrandIcon";
-import { allIntegrations } from "content-collections";
-import Link from "next/link";
+import { DocContainer } from "@/components/DocContainer";
+import { ExternalLink, Link } from "@/components/links";
+import { allQuickstarts } from "content-collections";
 
 export default function DocsRoot() {
   return (
-    <div className="w-full pl-10">
-      <div className="prose prose-base prose-invert">
-        <h1>Getting started</h1>
-        <p>
-          Content Collection support most of the major web frameworks. <br />
-          Choose the one you are using to get started.
-        </p>
-      </div>
-      <ul className="grid grid-cols-3 gap-10 mt-10 mx-auto max-w-lg">
-        {allIntegrations.map((doc) => (
+    <DocContainer>
+      <h1>Getting started</h1>
+      <p>
+        Content Collection support most of the major web frameworks. <br />
+        Choose the one you are using to get started.
+      </p>
+      <ul className="not-prose grid grid-cols-3 gap-10 mt-10 mx-auto max-w-lg">
+        {allQuickstarts.map((doc) => (
           <li key={doc.href}>
             <a
               href={doc.href}
@@ -26,23 +25,15 @@ export default function DocsRoot() {
           </li>
         ))}
       </ul>
-      <div className="prose prose-base prose-invert mt-10">
-        <p>
-          If your framework is not listed, you can still use Content Collections
-          by using the{" "}
-          <Link
-            className="hover:decoration-primary-600"
-            href="/docs/integrations/cli"
-          >
-            CLI
-          </Link>
-          . Please open a{" "}
-          <a href="https://github.com/sdorra/content-collections/issues">
-            ticket
-          </a>{" "}
-          if you want to see your framework listed.
-        </p>
-      </div>
-    </div>
+      <p>
+        If your framework is not listed, you can still use Content Collections
+        by using the <Link href="/docs/quickstart/cli">CLI</Link>. Please open
+        a{" "}
+        <ExternalLink href="https://github.com/sdorra/content-collections/issues">
+          ticket
+        </ExternalLink>{" "}
+        if you want to see your framework listed.
+      </p>
+    </DocContainer>
   );
 }

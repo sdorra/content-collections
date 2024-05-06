@@ -1,0 +1,129 @@
+---
+title: Markdown
+---
+
+There are various ways to utilize markdown files with Content Collections. One approach is using packages like [react-markdown](https://github.com/remarkjs/react-markdown) for runtime compilation. Another method involves using [remark](https://github.com/remarkjs/remark) for compilation during the build process. The `@content-collections/markdown` package streamlines remark's usage with Content Collections.
+
+This package is designed for integration into a [transform](/docs/transform) function. It converts plain markdown content into HTML, caching the HTML to avoid unnecessary recompilations and enhance the build speed.
+
+## Quickstart
+
+- Install the package:
+
+  <PackageInstall
+    devDependencies={true}
+    packages={["@content-collections/markdown"]}
+  />
+
+- Transform the markdown content to HTML:
+
+  ```ts
+  import { defineCollection, defineConfig } from "@content-collections/core";
+  import { compileMarkdown } from "@content-collections/markdown";
+
+  const posts = defineCollection({
+    name: "posts",
+    directory: "content",
+    include: "*.md",
+    schema: (z) => ({
+      title: z.string(),
+    }),
+    transform: async (document, context) => {
+      const html = await compileMarkdown(context, document);
+      return {
+        ...document,
+        html,
+      };
+    },
+  });
+
+  export default defineConfig({
+    collections: [posts],
+  });
+  ```
+
+- Use the generated html in your application.
+
+  {/* TODO use tabs for the examples */}
+  The following snippet shows an example with React.
+
+  ```tsx
+  import { allPosts } from "content-collections";
+
+  export default function App() {
+    return (
+      <main>
+        <h1>Posts</h1>
+        <ul>
+          {allPosts.map((post) => (
+            <li key={post._meta.path}>
+              <h2>{post.title}</h2>
+              <div dangerouslySetInnerHTML={{ __html: post.html }} />
+            </li>
+          ))}
+        </ul>
+      </main>
+    );
+  }
+  ```
+
+  And the next snippet shows an example with Svelte.
+
+  ```svelte
+  <script>
+    import { allPosts } from "content-collections";
+  </script>
+
+  <h1>Posts</h1>
+
+  <ul>
+    {#each allPosts as post}
+      <li>
+        <h2>{post.title}</h2>
+        <div>{@html post.html}</div>
+      </li>
+    {/each}
+  </ul>
+  ```
+
+  And the last snippet shows an example with Solid.
+
+  ```tsx
+  import { allPosts } from "content-collections";
+
+  export default function App() {
+    return (
+      <main>
+        <h1>Posts</h1>
+        <ul>
+          {allPosts.map((post) => (
+            <li>
+              <h2>{post.title}</h2>
+              <div innerHTML={post.html} />
+            </li>
+          ))}
+        </ul>
+      </main>
+    );
+  }
+  ```
+
+## API
+
+The package exports a single function, `compileMarkdown`, which takes two required arguments: the context object and the document and a third optional argument, the options object.
+
+The document must have a `content` field of the type `string` and should contain the markdown content. The document also needs to have the `_meta` field with the file information. In most uses cases the document which is passed to the transform function can be used directly.
+
+The context object is required to cache the compiled HTML. The context object is passed to the transform function and should be passed to the `compileMarkdown` function.
+
+The options object is optional and can be used to tweak the output of the compiled HTML. The options object can have the following properties:
+
+- `remarkPlugins` (optional): An array of remark plugins to use. The default value is an empty array.
+
+- `rehypePlugins` (optional): An array of rehype plugins to use. The default value is an empty array.
+
+- `allowDangerousHtml` (optional): A boolean to allow dangerous HTML. The default value is `false`.
+
+It is not neccessary to use plugins for frontmatter, because the frontmatter is already parsed by Content Collections.
+
+The `compileMarkdown` function returns a promise that resolves to a string with the compiled HTML.
