@@ -27,7 +27,7 @@ export default function DocsRoot() {
       </ul>
       <p>
         If your framework is not listed, you can still use Content Collections
-        by using the <Link href="/docs/integrations/cli">CLI</Link>. Please open
+        by using the <Link href="/docs/quickstart/cli">CLI</Link>. Please open
         a{" "}
         <ExternalLink href="https://github.com/sdorra/content-collections/issues">
           ticket

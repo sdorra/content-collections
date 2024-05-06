@@ -24,14 +24,14 @@ Transform your content into type-safe data collections. Eliminate the need for m
 
 Content Collections offers a variety of adapters that seamlessly integrate with popular web frameworks. The installation process depends on the chosen adapter:
 
-- [Next.js](https://www.content-collections.dev/docs/integrations/next)
-- [Qwik](https://www.content-collections.dev/docs/integrations/qwik)
-- [Remix (Vite)](https://www.content-collections.dev/docs/integrations/remix-vite)
-- [Solid Start](https://www.content-collections.dev/docs/integrations/solid)
-- [Svelte Kit](https://www.content-collections.dev/docs/integrations/svelte-kit)
-- [Vite](https://www.content-collections.dev/docs/integrations/vite)
+- [Next.js](https://www.content-collections.dev/docs/quickstart/next)
+- [Qwik](https://www.content-collections.dev/docs/quickstart/qwik)
+- [Remix (Vite)](https://www.content-collections.dev/docs/quickstart/remix-vite)
+- [Solid Start](https://www.content-collections.dev/docs/quickstart/solid)
+- [Svelte Kit](https://www.content-collections.dev/docs/quickstart/svelte-kit)
+- [Vite](https://www.content-collections.dev/docs/quickstart/vite)
 
-If your framework is not listed, you can still use Content Collections by using the [CLI](https://www.content-collections.dev/docs/integrations/cli). Please open a ticket if you want to see your framework listed.
+If your framework is not listed, you can still use Content Collections by using the [CLI](https://www.content-collections.dev/docs/quickstart/cli). Please open a ticket if you want to see your framework listed.
 
 ## Usage
 

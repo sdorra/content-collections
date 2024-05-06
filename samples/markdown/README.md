@@ -17,7 +17,9 @@ Let's see how we can use it.
 
 First we have to install the package `@content-collections/markdown` package.
 
-<PackageInstall devDependencies={true} packages={["@content-collections/markdown"]} />
+```sh
+pnpm add @content-collections/markdown
+```
 
 After installing the package, we can use the `compileMarkdown` function to compile the content of our document.
 

@@ -3,7 +3,7 @@ import { DocContainer } from "@/components/DocContainer";
 import { TagFilterPanel } from "./_components/TagFilterPanel";
 import { ExternalLink, Link } from "@/components/links";
 import { Notification } from "@/components/Notification";
-import { createStackBlitzLink } from "@/lib/stackblitz";
+import { createStackBlitzSampleLink } from "@/lib/stackblitz";
 import { GitHub, StackBlitz } from "@/components/icons";
 import UnstyledLink from "next/link";
 import { BrandIcon } from "@/components/BrandIcon";
@@ -49,8 +49,7 @@ function SampleCard({ sample }: SampleCardProps) {
             <GitHub />
           </ExternalLink>
           <ExternalLink
-            href={createStackBlitzLink(
-              "samples",
+            href={createStackBlitzSampleLink(
               sample.name,
               sample.stackBlitz
             )}

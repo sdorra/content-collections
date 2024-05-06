@@ -17,7 +17,9 @@ Let's see how we can use it.
 
 First we have to install the package `@content-collections/mdx` package.
 
-<PackageInstall devDependencies={true} packages={["@content-collections/mdx"]} />
+```sh
+pnpm add @content-collections/mdx
+```
 
 After installing the package, we can use the `compileMDX` function to compile the content of our document.
 

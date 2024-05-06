@@ -1,5 +1,5 @@
 {
-  "name": "integrations-qwik",
+  "name": "samples-qwik",
   "description": "App with Routing built-in ready to create your app",
   "engines": {
     "node": ">=15.0.0"

@@ -1,5 +1,5 @@
 {
-  "name": "integrations-remix-vite",
+  "name": "samples-remix-vite",
   "private": true,
   "sideEffects": false,
   "type": "module",

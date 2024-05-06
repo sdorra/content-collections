@@ -6,7 +6,7 @@ import { PackageInstall } from "@/components/PackageInstall";
 import { Notification } from "@/components/Notification";
 import { GitHub, StackBlitz } from "@/components/icons";
 import { ReactNode } from "react";
-import { createStackBlitzLink } from "@/lib/stackblitz";
+import { createStackBlitzSampleLink } from "@/lib/stackblitz";
 
 type Props = {
   params: {
@@ -57,8 +57,7 @@ export default async function Page({ params: { name } }: Props) {
               Github
             </TldrLink>
             <TldrLink
-              href={createStackBlitzLink(
-                "samples",
+              href={createStackBlitzSampleLink(
                 sample.name,
                 sample.stackBlitz
               )}
