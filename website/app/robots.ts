@@ -1,3 +1,4 @@
+import { FQDN } from "@/lib/env";
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -6,5 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
+    sitemap: `${FQDN}/sitemap.xml`,
   };
 }

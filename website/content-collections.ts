@@ -1,10 +1,21 @@
-import { defineCollection, defineConfig } from "@content-collections/core";
+import {
+  Context,
+  Meta,
+  defineCollection,
+  defineConfig,
+  Document,
+} from "@content-collections/core";
 import rehypeSlug from "rehype-slug";
 import rehypeShiki from "@shikijs/rehype";
 import { Options, compileMDX } from "@content-collections/mdx";
 import { selectAll } from "hast-util-select";
 import { Root } from "hast";
 import GithubSlugger from "github-slugger";
+import { exec as cpExec } from "node:child_process";
+import { promisify } from "node:util";
+import path from "node:path";
+
+const exec = promisify(cpExec);
 
 function liCodeSlug() {
   return (tree: Root) => {
@@ -18,6 +29,26 @@ function liCodeSlug() {
       }
     });
   };
+}
+
+async function lastModificationDate(ctx: Context, document: Document) {
+  return ctx.cache(
+    // TODO: this is a dirty hack to avoid cache key conflicts
+    // we should find a way which handles this automatically
+    { key: "_git_last_modified", ...document },
+    async (document) => {
+      const filePath = path.join(
+        ctx.collection.directory,
+        document._meta.filePath
+      );
+
+      const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
+      if (stdout) {
+        return new Date(stdout.trim()).toISOString();
+      }
+      return new Date().toISOString();
+    }
+  );
 }
 
 const mdxOptions: Options = {
@@ -57,6 +88,7 @@ const quickstart = defineCollection({
       name,
       body,
       category: data.category,
+      lastModified: await lastModificationDate(ctx, data),
     };
   },
 });
@@ -89,10 +121,10 @@ const samples = defineCollection({
       name,
       body,
       tags: data.tags,
+      lastModified: await lastModificationDate(ctx, data),
     };
   },
 });
-
 
 const docs = defineCollection({
   name: "docs",
@@ -126,6 +158,7 @@ const docs = defineCollection({
       body,
       href,
       slug,
+      lastModified: await lastModificationDate(ctx, data),
     };
   },
 });
