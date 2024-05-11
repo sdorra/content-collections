@@ -556,7 +556,7 @@ describe("transform", () => {
         };
       },
       directory: "tests",
-      include: "*.md"
+      include: "*.md",
     });
 
     const errors: Array<TransformError> = [];
@@ -583,7 +583,7 @@ describe("transform", () => {
         date: z.date(),
       }),
       directory: "tests",
-      include: "*.md"
+      include: "*.md",
     });
 
     const errors: Array<TransformError> = [];
@@ -600,5 +600,63 @@ describe("transform", () => {
       },
     ]);
     expect(errors[0]?.type).toBe("Result");
+  });
+
+  it("should pass the name of the collection to the context object", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: (doc, context) => {
+        return {
+          ...doc,
+          collectionName: context.collection.name,
+        };
+      },
+    });
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
+      {
+        ...posts,
+        files: [sampleOne],
+      },
+    ]);
+
+    expect(collection?.documents[0].document.collectionName).toBe("posts");
+  });
+
+  it("should pass the directory of the collection to the context object", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: (doc, context) => {
+        return {
+          ...doc,
+          collectionDirectory: context.collection.directory,
+        };
+      },
+    });
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
+      {
+        ...posts,
+        files: [sampleOne],
+      },
+    ]);
+
+    expect(collection?.documents[0].document.collectionDirectory).toBe("tests");
   });
 });

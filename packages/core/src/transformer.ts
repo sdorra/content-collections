@@ -125,6 +125,7 @@ export function createTransformer(
 
   function createContext(
     collections: Array<TransformedCollection>,
+    collection: TransformedCollection,
     cache: Cache
   ): Context {
     return {
@@ -137,6 +138,10 @@ export function createTransformer(
           );
         }
         return resolved.documents.map((doc) => doc.document);
+      },
+      collection: {
+        name: collection.name,
+        directory: collection.directory,
       },
       cache: cache.cacheFn,
     };
@@ -153,7 +158,7 @@ export function createTransformer(
           collection.name,
           doc.document._meta.path
         );
-        const context = createContext(collections, cache);
+        const context = createContext(collections, collection, cache);
         try {
           const document = await collection.transform(doc.document, context);
           docs.push({

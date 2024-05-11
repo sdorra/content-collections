@@ -46,6 +46,10 @@ export type Context = {
     collection: TCollection
   ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
   cache: CacheFn;
+  collection: {
+    name: string;
+    directory: string;
+  };
 };
 
 type Z = typeof z;
