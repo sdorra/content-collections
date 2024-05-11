@@ -45,7 +45,9 @@ export function createSynchronizer<T extends FileCollection>(
         };
       })
       .filter(({ collection, relativePath }) => {
-        return micromatch.isMatch(relativePath, collection.include);
+        return micromatch.isMatch(relativePath, collection.include, {
+          ignore: collection.exclude,
+        });
       });
   }
 

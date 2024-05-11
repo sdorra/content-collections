@@ -296,4 +296,26 @@ describe("synchronizer", () => {
     expect(one.files.length).toBe(0);
     expect(two.files.length).toBe(0);
   });
+
+  it("should not add file, if path is not in collection directory", async () => {
+    const collection = {
+      directory: "content",
+      include: "**/*.md",
+      exclude: "new.md",
+      files: [],
+    };
+
+    const synchronizer = createSynchronizer(
+      createCollectionFileReader({
+        data: {
+          content: "changed",
+        },
+        path: "new.md",
+      }),
+      [collection]
+    );
+    expect(await synchronizer.changed("content/new.md")).toBe(false);
+
+    expect(collection.files.length).toBe(0);
+  });
 });
