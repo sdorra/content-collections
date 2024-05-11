@@ -1,5 +1,17 @@
 # @content-collections/core
 
+## 0.5.0
+
+### Minor Changes
+
+- [`968c5f3`](https://github.com/sdorra/content-collections/commit/968c5f358385019f2ef4cd9dbf1209c27da03e96) Thanks [@sdorra](https://github.com/sdorra)! - expose collection name and directory as part of the context
+
+- [#47](https://github.com/sdorra/content-collections/pull/47) [`58e659b`](https://github.com/sdorra/content-collections/commit/58e659bef0f6604f4c3f991ae4d4c64c0350fc59) Thanks [@sdorra](https://github.com/sdorra)! - Add option to exclude files from collection
+
+### Patch Changes
+
+- [`7eed25d`](https://github.com/sdorra/content-collections/commit/7eed25de55622bf77c021e9d556bbe8d1d724a20) Thanks [@sdorra](https://github.com/sdorra)! - Export document type
+
 ## 0.4.1
 
 ### Patch Changes
