@@ -1,6 +1,6 @@
 export * from "./config";
 export * from "./builder";
-export type { GetTypeByName, Modification } from "./types";
+export type { GetTypeByName, Modification, Document } from "./types";
 
 export { TransformError } from "./transformer";
 export { CollectError } from "./collector";

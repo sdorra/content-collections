@@ -1,7 +1,11 @@
 import { ZodRawShape } from "zod";
-import { AnyCollection, AnyConfiguration, Collection } from "./config";
+import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
 
 export type Modification = "create" | "update" | "delete";
+
+export type Document = {
+  _meta: Meta;
+};
 
 export type CollectionFile = {
   data: {
