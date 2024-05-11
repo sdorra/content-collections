@@ -12,7 +12,7 @@
     "@content-collections/core": "0.4.1",
     "@content-collections/markdown": "0.1.0",
     "@content-collections/vite": "0.2.1",
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.0",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.4.3",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
