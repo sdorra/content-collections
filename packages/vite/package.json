@@ -21,7 +21,7 @@
   "devDependencies": {
     "@content-collections/core": "workspace:*",
     "@types/node": "20.x",
-    "tsup": "^7.2.0",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.6"
   },
