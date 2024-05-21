@@ -460,11 +460,11 @@ importers:
   samples/qwik:
     devDependencies:
       '@builder.io/qwik':
-        specifier: ^1.5.2
-        version: 1.5.3(@types/node@20.12.10)(undici@6.18.0)
+        specifier: ^1.5.4
+        version: 1.5.4(@types/node@20.12.10)(undici@6.18.0)
       '@builder.io/qwik-city':
-        specifier: ^1.5.2
-        version: 1.5.3(@types/node@20.12.10)
+        specifier: ^1.5.4
+        version: 1.5.4(@types/node@20.12.10)
       '@content-collections/core':
         specifier: 0.5.0
         version: link:../../packages/core
@@ -490,8 +490,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       eslint-plugin-qwik:
-        specifier: ^1.5.2
-        version: 1.5.3(eslint@8.57.0)
+        specifier: ^1.5.4
+        version: 1.5.4(eslint@8.57.0)
       prettier:
         specifier: ^3.2.4
         version: 3.2.5
@@ -1277,8 +1277,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@builder.io/qwik-city@1.5.3(@types/node@20.12.10):
-    resolution: {integrity: sha512-FuGG+JhguQRywJlGWTUFOOsnS9/40jReGm4EwWMpogqJdakmg0bwi9KZJgIk4JBLLz016hxX/WmKM/vjLFpiow==}
+  /@builder.io/qwik-city@1.5.4(@types/node@20.12.10):
+    resolution: {integrity: sha512-8zmEkVv2eBtLUGdntf3Ryd5GcvHvuMt1PiSu6wTpqYwUmZwWMfSqNsxuEE6+bndTcOKVAZNwvdvjQfcGE0peOQ==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     dependencies:
       '@mdx-js/mdx': 3.0.1
@@ -1302,8 +1302,8 @@ packages:
       - terser
     dev: true
 
-  /@builder.io/qwik@1.5.3(@types/node@20.12.10)(undici@6.18.0):
-    resolution: {integrity: sha512-X42mnWN2gWbTVqcT5X44+twqZyHOnMEL/MbJZGGJ5wmLkhNdDr4afHUKfhTuMVLXtKBinPjzC1pFYOeAhLEn9w==}
+  /@builder.io/qwik@1.5.4(@types/node@20.12.10)(undici@6.18.0):
+    resolution: {integrity: sha512-Ws/yHHbTkDE7wRMpYesrZzQ/RhAL/I55pvSfjTZxnARycWTaZNFDBeqM9iNv7/1mBjoA5lL0EUSxo2iQHRrM9A==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     hasBin: true
     peerDependencies:
@@ -7678,8 +7678,8 @@ packages:
       object.fromentries: 2.0.8
     dev: true
 
-  /eslint-plugin-qwik@1.5.3(eslint@8.57.0):
-    resolution: {integrity: sha512-NRpTZiXPVvpHn04tTR1j6REKz+/W5ytsBwsUJ0K8JxQAn6Yh3goclfV5c1fSMvHENCunXFkn+MpsIFHOn9PO7g==}
+  /eslint-plugin-qwik@1.5.4(eslint@8.57.0):
+    resolution: {integrity: sha512-NSkCCsommqEsahliCn4eorPeE9C/keFU1cbZynGPHR1Bk+bQlYDxKLszU/5qPmWIpCwfJdo4ly9Rd8Ca/fuunA==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     peerDependencies:
       eslint: ^8.57.0
