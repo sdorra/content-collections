@@ -1,4 +1,4 @@
-const { withcontentCollections } = require("@content-collections/next");
+const { withContentCollections } = require("@content-collections/next");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -16,4 +16,4 @@ const nextConfig = {
   ])
 }
 
-module.exports = withcontentCollections(nextConfig);
+module.exports = withContentCollections(nextConfig);
