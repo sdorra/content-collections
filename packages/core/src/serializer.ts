@@ -20,12 +20,13 @@ const jsonSchema: z.ZodType<Json> = z.lazy(() =>
 export type NotSerializableError =
   "The return type of the transform function must be an valid JSONObject, the following type is not valid:";
 
-export const extension = "json";
+export const extension = "js";
 
 export const serializableSchema = z.record(jsonSchema);
 
 export type Serializable = z.infer<typeof serializableSchema>;
 
 export function serialize(value: Array<unknown>): string {
-  return serializeJs(value, { space: 2, isJSON: true, unsafe: true });
+  const serializedValue = serializeJs(value, { space: 2, isJSON: true, unsafe: true });
+  return `export default ${serializedValue};`;
 }
