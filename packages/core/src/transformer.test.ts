@@ -72,7 +72,7 @@ const firstPost: CollectionFile = {
 
 const invalidPost: CollectionFile = {
   data: {
-    date: new Date(),
+    fn: () => {},
   },
   path: "first.md",
 };
@@ -543,7 +543,7 @@ describe("transform", () => {
     expect(collection?.documents).toHaveLength(0);
   });
 
-  it("should report an result error, if the transform result is not a valid JSON object", async () => {
+  it("should report an result error, if the transform result is not serializable", async () => {
     const posts = defineCollection({
       name: "posts",
       schema: (z) => ({
@@ -552,7 +552,7 @@ describe("transform", () => {
       transform: (doc) => {
         return {
           ...doc,
-          date: new Date(),
+          fn: () => {},
         };
       },
       directory: "tests",
@@ -575,12 +575,12 @@ describe("transform", () => {
     expect(errors[0]?.type).toBe("Result");
   });
 
-  it("should report an result error, if the schema result is not a valid JSON object", async () => {
+  it("should report an result error, if the schema result is not serializable", async () => {
     const posts = defineCollection({
       name: "posts",
       parser: "json",
       schema: (z) => ({
-        date: z.date(),
+        fn: z.function(),
       }),
       directory: "tests",
       include: "*.md",

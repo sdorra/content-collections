@@ -303,14 +303,14 @@ describe("types", () => {
     expect(person).toBeTruthy();
   });
 
-  it("should return invalid type if returned schema is not a valid json object", () => {
+  it("should return invalid type if returned schema is not serializable", () => {
     const collection = defineCollection({
       name: "person",
       directory: "./persons",
       include: "*.md",
       schema: (z) => ({
-        // date is not a valid json
-        date: z.date(),
+        // functions are not serializable
+        fn: z.function(),
       }),
     });
 
@@ -318,7 +318,7 @@ describe("types", () => {
     expect(collection.name).toBeDefined();
   });
 
-  it("should return invalid type if returned transform is not a valid json object", () => {
+  it("should return invalid type if returned transform is not serializable", () => {
     const collection = defineCollection({
       name: "person",
       directory: "./persons",
@@ -329,7 +329,7 @@ describe("types", () => {
       }),
       transform: (data) => {
         return {
-          date: new Date(data.date),
+          fn: () => {},
         };
       },
     });
