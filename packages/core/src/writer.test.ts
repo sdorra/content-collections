@@ -1,18 +1,16 @@
-import {
-  describe,
-  expect,
-  vitest,
-} from "vitest";
-import { createWriter } from "./writer";
+import { describe, expect, vitest } from "vitest";
+import { createDataFile, createWriter } from "./writer";
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { tmpdirTest } from "./__tests__/tmpdir";
+import { extension } from "./serializer";
 
 describe("writer", () => {
-  async function readJson(directory: string, filePath: string) {
-    const content = await fs.readFile(path.join(directory, filePath), "utf-8");
-    return JSON.parse(content);
+  async function readDataFile(directory: string, fileName: string) {
+    const filePath = path.join(directory, `${fileName}.${extension}`);
+    const dataFile = await import(filePath + `?x=${Date.now()}`);
+    return dataFile.default;
   }
 
   tmpdirTest("should write data files", async ({ tmpdir }) => {
@@ -50,22 +48,23 @@ describe("writer", () => {
     const writer = await createWriter(tmpdir);
     await writer.createDataFiles(collections);
 
-    const allTests = await readJson(tmpdir, "allTests.json");
+    const allTests = await readDataFile(tmpdir, "allTests");
     expect(allTests).toEqual(["one", "two", "three"]);
 
-    const allSamples = await readJson(tmpdir, "allSamples.json");
+    const allSamples = await readDataFile(tmpdir, "allSamples");
     expect(allSamples).toEqual(["four", "five", "six"]);
   });
 
+  function writeDataFile(directory: string, name: string, documents: Array<unknown>) {
+    return createDataFile(directory, {
+      name,
+      documents: documents.map((document) => ({ document })),
+    });
+  }
+
   tmpdirTest("should write javascript file", async ({ tmpdir }) => {
-    await fs.writeFile(
-      path.join(tmpdir, "allTests.json"),
-      JSON.stringify(["one", "two", "three"])
-    );
-    await fs.writeFile(
-      path.join(tmpdir, "allSamples.json"),
-      JSON.stringify(["four", "five", "six"])
-    );
+    await writeDataFile(tmpdir, "tests", ["one", "two", "three"]);
+    await writeDataFile(tmpdir, "samples", ["four", "five", "six"]);
 
     const collections = [
       {

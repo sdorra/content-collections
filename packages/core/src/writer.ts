@@ -12,7 +12,8 @@ function createArrayConstName(name: string) {
 
 type DataFileCollection = Pick<TransformedCollection, "name" | "documents">;
 
-async function createDataFile(
+// visible for testing
+export async function createDataFile(
   directory: string,
   collection: DataFileCollection
 ) {
