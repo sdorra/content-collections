@@ -6,7 +6,7 @@ import { basename, dirname, extname } from "node:path";
 import { z } from "zod";
 import { Parser, parsers } from "./parser";
 import { CacheManager, Cache } from "./cache";
-import { jsonObjectScheme } from "./json";
+import { serializableSchema } from "./serializer";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -190,7 +190,7 @@ export function createTransformer(
   async function validateDocuments(collection: AnyCollection, documents: Array<any>) {
     const docs = [];
     for (const doc of documents) {
-      let parsedData = await jsonObjectScheme.safeParseAsync(doc.document);
+      let parsedData = await serializableSchema.safeParseAsync(doc.document);
       if (parsedData.success) {
         docs.push(doc);
       } else {
