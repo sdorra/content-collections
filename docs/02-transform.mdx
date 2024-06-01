@@ -8,7 +8,7 @@ The `transform` function of a collection can be used to perform various tasks on
 
 In Content Collections, the content of a document is just a string. One common use case for the `transform` function is to transform this content, such as converting markdown to HTML. While the content can be used directly with libraries like [react-markdown](https://github.com/remarkjs/react-markdown), transforming the content during build time is often beneficial.
 
-Various libraries available in the Node.js ecosystem can be used for transformation, with the only requirement being that the result is JSON serializable. However, there are specific helper packages designed for Content Collections:
+Various libraries available in the Node.js ecosystem can be used for transformation, with the only requirement being that the result is [serializable](/docs/serialization). However, there are specific helper packages designed for Content Collections:
 
 - [@content-collections/markdown](/docs/content/markdown) for converting markdown to HTML
 - [@content-collections/mdx](/docs/content/mdx) for converting MDX to JSX

@@ -1,0 +1,17 @@
+---
+title: Serialization
+---
+
+The resulting document of a collection is serialized before being written to the file system. This process ensures the document can be stored in a file and later read back into memory. To serialize the document, the resulting object must be serializable, meaning it can only consist of the following types:
+
+* String
+* Number
+* Boolean
+* Null
+* Undefined
+* Date
+* Map
+* Set
+* BigInt
+* Array of serializable types
+* Object with serializable values
