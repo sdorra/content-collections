@@ -26,6 +26,7 @@
     "@types/micromatch": "^4.0.7",
     "@types/node": "^20.9.0",
     "@types/pluralize": "^0.0.33",
+    "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^1.5.0",
     "tsup": "^8.0.2",
     "tsx": "^4.1.1",
@@ -40,6 +41,7 @@
     "gray-matter": "^4.0.3",
     "micromatch": "^4.0.5",
     "pluralize": "^8.0.0",
+    "serialize-javascript": "^6.0.2",
     "yaml": "^2.4.1",
     "zod": "^3.22.5"
   }
