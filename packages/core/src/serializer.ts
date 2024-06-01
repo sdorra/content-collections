@@ -25,7 +25,7 @@ const schema: z.ZodType<SchemaType> = z.lazy(() =>
 
 export type NotSerializableError =
   `The return type of the transform function must be an object serializable object.
-See https://www.content-collections.dev/docs/transform#serializable for more information.
+See https://www.content-collections.dev/docs/serialization for more information.
 
 The following type is not valid:`;
 
