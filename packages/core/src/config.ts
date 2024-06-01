@@ -2,7 +2,7 @@ import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { generateTypeName } from "./utils";
 import { Parser, Parsers } from "./parser";
 import { CacheFn } from "./cache";
-import { JSONObject } from "./json";
+import { NotSerializableError, Serializable } from "./serializer";
 
 export type Meta = {
   filePath: string;
@@ -98,9 +98,6 @@ export type Collection<
 
 export type AnyCollection = Collection<any, ZodRawShape, Parser, any, any, any>;
 
-type NonJSONObjectError =
-  "The return type of the transform function must be an valid JSONObject, the following type is not valid:";
-
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
 
 type InvalidReturnType<TMessage extends string, TObject> = {
@@ -117,9 +114,9 @@ export function defineCollection<
   TDocument = [TTransformResult] extends [never]
     ? Schema<TParser, TShape>
     : Awaited<TTransformResult>,
-  TResult = TDocument extends JSONObject
+  TResult = TDocument extends Serializable
     ? Collection<TName, TShape, TParser, TSchema, TTransformResult, TDocument>
-    : InvalidReturnType<NonJSONObjectError, TDocument>,
+    : InvalidReturnType<NotSerializableError, TDocument>,
 >(
   collection: CollectionRequest<
     TName,
