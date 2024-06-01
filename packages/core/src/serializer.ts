@@ -1,4 +1,5 @@
 import z from "zod";
+import serializeJs from "serialize-javascript";
 
 const literalSchema = z.union([
   z.string(),
@@ -26,5 +27,5 @@ export const serializableSchema = z.record(jsonSchema);
 export type Serializable = z.infer<typeof serializableSchema>;
 
 export function serialize(value: Array<unknown>): string {
-  return JSON.stringify(value, null, 2);
+  return serializeJs(value, { space: 2, isJSON: true, unsafe: true });
 }
