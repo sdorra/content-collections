@@ -1,5 +1,11 @@
 # @content-collections/next
 
+## 0.2.0
+
+### Minor Changes
+
+- [#121](https://github.com/sdorra/content-collections/pull/121) [`370caac`](https://github.com/sdorra/content-collections/commit/370caac3c47e1f0c56116c950d67ea88b5692599) Thanks [@sdorra](https://github.com/sdorra)! - Support for turbopack
+
 ## 0.1.3
 
 ### Patch Changes
