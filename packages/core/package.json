@@ -22,6 +22,9 @@
     "prepack": "cp ../../README.md ./README.md",
     "postpack": "rm -f ./README.md"
   },
+  "peerDependencies": {
+    "typescript": "^5.0.2"
+  },
   "devDependencies": {
     "@types/micromatch": "^4.0.7",
     "@types/node": "^20.14.2",
