@@ -23,7 +23,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.21.4",
     "mdx-bundler": "^10.0.2",
     "unified": "^11.0.4"
   },
