@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.6.0
+
+### Minor Changes
+
+- [#125](https://github.com/sdorra/content-collections/pull/125) [`2a6186d`](https://github.com/sdorra/content-collections/commit/2a6186dd46f69eeb9f90c4b10743b0f5338ec39b) Thanks [@sdorra](https://github.com/sdorra)! - Allow Date, Map, Set and BigInt as data types
+
+### Patch Changes
+
+- [`414aad1`](https://github.com/sdorra/content-collections/commit/414aad15c5485f4e8b78d3f35f4b97eeffe5f875) Thanks [@sdorra](https://github.com/sdorra)! - Add typescript peer dependency to indicate that at least version 5.0.2 is required
+
 ## 0.5.0
 
 ### Minor Changes
