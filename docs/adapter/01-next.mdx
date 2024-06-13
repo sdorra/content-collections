@@ -45,6 +45,24 @@ The `@content-collections/next` package allows a seamless integration of Content
    module.exports = withContentCollections(nextConfig);
    ```
 
+   <Notification type="warning" prose>
+     Ensure that `withContentCollections` is the last plugin in the chain. This is important because the plugin returns a `Promise`, which is compatible with [Next.js](https://nextjs.org/docs/messages/promise-in-next-config#possible-ways-to-fix-it), but other plugins may not expect this behavior.
+
+     <Wrong>
+     ```ts
+     withNextIntl(withContentCollections(nextConfig));
+     ```
+     </Wrong>
+
+
+     <Correct>
+     ```ts
+     withContentCollections(withNextIntl(nextConfig));
+     ```
+     </Correct>
+
+   </Notification>
+
 ## API
 
 The package exports the following functions:

@@ -5,6 +5,7 @@ import { MDXContent } from "@content-collections/mdx/react";
 import { PackageInstall } from "@/components/PackageInstall";
 import { Notification } from "@/components/Notification";
 import { DocContainer } from "@/components/DocContainer";
+import { Correct, Wrong } from "@/components/RightOrWrong";
 
 type Props = {
   params: {
@@ -22,7 +23,10 @@ export default async function Page({ params: { slug } }: Props) {
     <div className="min-w-0">
       <DocContainer>
         <h1>{docPage.title}</h1>
-        <MDXContent code={docPage.body} components={{ PackageInstall, Notification }} />
+        <MDXContent
+          code={docPage.body}
+          components={{ PackageInstall, Notification, Correct, Wrong }}
+        />
       </DocContainer>
     </div>
   );

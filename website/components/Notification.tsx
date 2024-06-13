@@ -63,7 +63,9 @@ export const Notification = ({
         </div>
         <Icon />
       </div>
+      <div className="overflow-auto scrollbar-hide">
       {children}
+      </div>
     </div>
   );
 };
