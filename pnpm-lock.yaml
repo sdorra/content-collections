@@ -827,8 +827,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.1
       fathom-client:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^3.7.0
+        version: 3.7.0
       framer-motion:
         specifier: ^11.1.7
         version: 11.1.8(react-dom@18.3.1)(react@18.3.1)
@@ -8514,8 +8514,8 @@ packages:
     dependencies:
       reusify: 1.0.4
 
-  /fathom-client@3.6.0:
-    resolution: {integrity: sha512-/mrgmVvpw4HqDCcqUfPulERhONKgnJGL74RAxfqKDuRQ+7w9lKoTHMzqBWE7WNBvmsgZEthQWJFOWOEjv+T3gA==}
+  /fathom-client@3.7.0:
+    resolution: {integrity: sha512-lMEyR3lSThlkK69+f/16OEyuii743iJGcZ6aIUKT5qYH9lGi7ENTYwuxh5NWWYSO6qs57we01nLxncW8kegJlw==}
     dev: false
 
   /fault@2.0.1:
