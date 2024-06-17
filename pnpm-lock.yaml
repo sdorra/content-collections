@@ -861,11 +861,11 @@ importers:
         specifier: workspace:*
         version: link:../packages/next
       '@shikijs/rehype':
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^1.7.0
+        version: 1.7.0
       '@shikijs/transformers':
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^1.7.0
+        version: 1.7.0
       '@tailwindcss/typography':
         specifier: ^0.5.12
         version: 0.5.13(tailwindcss@3.4.3)
@@ -909,8 +909,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       shiki:
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^1.7.0
+        version: 1.7.0
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.3
@@ -5163,25 +5163,25 @@ packages:
     resolution: {integrity: sha512-hw437iINopmQuxWPSUEvqE56NCPsiU8N4AYtfHmJFckclktzK9YQJieD3XkDCDH4OjL+C7zgPUh73R/nrcHrqw==}
     dev: true
 
-  /@shikijs/core@1.6.3:
-    resolution: {integrity: sha512-QnJKHFUW95GnlJLJGP6QLx4M69HM0KlXk+R2Y8lr/x4nAx1Yb/lsuxq4XwybuUjTxbJk+BT0g/kvn0bcsjGGHg==}
+  /@shikijs/core@1.7.0:
+    resolution: {integrity: sha512-O6j27b7dGmJbR3mjwh/aHH8Ld+GQvA0OQsNO43wKWnqbAae3AYXrhFyScHGX8hXZD6vX2ngjzDFkZY5srtIJbQ==}
     dev: true
 
-  /@shikijs/rehype@1.6.3:
-    resolution: {integrity: sha512-724+2zopOy3pNDONss0mjblgos+hKKVoy4MmboIkDLds3ZKf4squv6bGHBGEjHxP+RIKe9Vmt2wwf3wSCS6/Pw==}
+  /@shikijs/rehype@1.7.0:
+    resolution: {integrity: sha512-PmjhKdud2FzdexQiU79XJqH3jp4X7vQkgjeMtJIhKNuO4Q1WnOL4ah6wJjmvr0ayOSrcAHaM3bYXGUqq9NKjsQ==}
     dependencies:
-      '@shikijs/transformers': 1.6.3
+      '@shikijs/transformers': 1.7.0
       '@types/hast': 3.0.4
       hast-util-to-string: 3.0.0
-      shiki: 1.6.3
+      shiki: 1.7.0
       unified: 11.0.4
       unist-util-visit: 5.0.0
     dev: true
 
-  /@shikijs/transformers@1.6.3:
-    resolution: {integrity: sha512-ptBuP/IIeqCzK3zZO/knFICZWs58uZWzbv7ND+bKOewe5NcCjZfSiMyzFwOyl23ewPJ1APjRBwLi6Asrodmmxw==}
+  /@shikijs/transformers@1.7.0:
+    resolution: {integrity: sha512-QX3TP+CS4yYLt4X4Dk7wT0MsC7yweTYHMAAKY+ay+uuR9yRdFae/h+hivny2O+YixJHfZl57xtiZfWSrHdyVhQ==}
     dependencies:
-      shiki: 1.6.3
+      shiki: 1.7.0
     dev: true
 
   /@sinclair/typebox@0.27.8:
@@ -13302,10 +13302,10 @@ packages:
     resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
     dev: true
 
-  /shiki@1.6.3:
-    resolution: {integrity: sha512-lE1/YGlzFY0hQSyEfsZj18xGrTWxyhFQkaiILALqTBZPbJeYFWpbUhlmTGPOupYB/qC+H6sV4UznJzcEh3WMHQ==}
+  /shiki@1.7.0:
+    resolution: {integrity: sha512-H5pMn4JA7ayx8H0qOz1k2qANq6mZVCMl1gKLK6kWIrv1s2Ial4EmD4s4jE8QB5Dw03d/oCQUxc24sotuyR5byA==}
     dependencies:
-      '@shikijs/core': 1.6.3
+      '@shikijs/core': 1.7.0
     dev: true
 
   /shikiji-core@0.9.19:
