@@ -1,9 +1,9 @@
 import { describe, expect } from "vitest";
-import { createCacheManager } from "./cache";
+import { createCacheDirectory, createCacheManager } from "./cache";
 import { tmpdirTest } from "./__tests__/tmpdir";
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { readdir } from "node:fs/promises";
+import { readdir, writeFile } from "node:fs/promises";
 
 describe("cacheManager", () => {
   tmpdirTest("should create cacheManager", async ({ tmpdir }) => {
@@ -145,4 +145,17 @@ describe("cacheManager", () => {
 
     expect(await readdir(dir)).toHaveLength(1);
   });
+
+  tmpdirTest(
+    "should not fail, if cache mapping is broken",
+    async ({ tmpdir }) => {
+      const cacheDir = await createCacheDirectory(tmpdir);
+      const mappingPath = path.join(cacheDir, "mapping.json");
+      await writeFile(mappingPath, "broken");
+
+      const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+      const cache = cacheManager.cache("collection", "file");
+      expect(await cache.cacheFn("input", () => "output")).toBe("output");
+    }
+  );
 });
