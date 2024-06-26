@@ -19,7 +19,8 @@ function createKey(config: string, input: unknown): string {
   );
 }
 
-async function createCacheDirectory(directory: string) {
+// @visibleForTesting
+export async function createCacheDirectory(directory: string) {
   const cacheDirectory = path.join(directory, ".content-collections", "cache");
   if (!existsSync(cacheDirectory)) {
     await mkdir(cacheDirectory, { recursive: true });
@@ -37,18 +38,26 @@ type Mapping = {
   };
 };
 
+async function readMapping(mappingPath: string): Promise<Mapping> {
+  if (existsSync(mappingPath)) {
+    try {
+      return JSON.parse(await readFile(mappingPath, "utf-8"));
+    } catch (e) {
+      console.error("Failed to parse the cache mapping. We will recreate the cache.");
+    }
+  }
+  return {};
+}
+
 export async function createCacheManager(
   baseDirectory: string,
   configChecksum: string
 ) {
   const cacheDirectory = await createCacheDirectory(baseDirectory);
 
-  let mapping: Mapping = {};
-
   const mappingPath = join(cacheDirectory, "mapping.json");
-  if (existsSync(mappingPath)) {
-    mapping = JSON.parse(await readFile(mappingPath, "utf-8"));
-  }
+
+  const mapping = await readMapping(mappingPath);
 
   async function flush() {
     await writeFile(mappingPath, JSON.stringify(mapping));
