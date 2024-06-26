@@ -20,7 +20,7 @@
   "devDependencies": {
     "@content-collections/core": "0.6.0",
     "@content-collections/remix-vite": "0.1.1",
-    "@playwright/test": "^1.44.0",
+    "@playwright/test": "^1.45.0",
     "@remix-run/dev": "^2.9.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
