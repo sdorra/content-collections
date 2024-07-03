@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="bg-base-800 bg-gradient-to-bl from-base-950 to-base-800 text-base-300 scroll-smooth"
+      className="bg-base-800 bg-fixed bg-gradient-to-bl from-base-950 to-base-800 text-base-300"
     >
       <body
         className={clsx(
