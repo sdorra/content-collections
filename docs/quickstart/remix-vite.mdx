@@ -1,8 +1,9 @@
 ---
-title: Quickstart CLI
-description: Setup guide for the Content Collections CLI
-linkText: CLI
-category: tools
+title: Remix (Vite)
+description: Content Collections integration for Remix (Vite)
+linkText: Quickstart Remix (Vite)
+icon: remix
+category: frameworks
 ---
 
 1. Install required packages:
@@ -10,18 +11,20 @@ category: tools
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/cli`
-   - `concurrently`
+   - `@content-collections/remix-vite`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/cli", "concurrently"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/remix-vite -D
+   ```
 
-1. Adjust your `tsconfig.json`:
+2. Adjust your `tsconfig.json`:
 
    ```json
    {
      "compilerOptions": {
        // ...
        "paths": {
+         "~/*": ["./app/*"],
          "content-collections": ["./.content-collections/generated"]
        }
      }
@@ -29,26 +32,25 @@ category: tools
    ```
 
    We require a path alias for the generated files.
-   This is necessary because the CLI will generate the files in the `.content-collections/generated` folder.
+   This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Add the content-collection cli to your `package.json` scripts:
+3. Modify your `vite.config.ts`:
 
-   ```json
-   {
-     "scripts": {
-       "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
-       "build": "content-collections build && build-scripts build"
-     }
-   }
+   ```ts
+   import { vitePlugin as remix } from "@remix-run/dev";
+   import { defineConfig } from "vite";
+   import tsconfigPaths from "vite-tsconfig-paths";
+   import contentCollections from "@content-collections/remix-vite";
+
+   export default defineConfig({
+     plugins: [remix(), tsconfigPaths(), contentCollections()],
+   });
    ```
 
-   First, we modify the `dev` script to simultaneously execute the `content-collections watch` command along with our regular `dev` command.
+   Add the Content Collections plugin to your Vite config.
+   For more details on the Remix adapter, refer to the [documentation](/docs/adapter/remix).
 
-   Next, we execute the `content-collections build` command prior to our regular `build` command.
-
-   **Note:** Make sure to replace `build-scripts` with the appropriate command for your framework, such as `next` or `vite`.
-
-1. Create a `content-collections.ts` file at the root of your project:
+4. Create a `content-collections.ts` file at the root of your project:
 
    ```ts
    import { defineCollection, defineConfig } from "@content-collections/core";
@@ -73,7 +75,7 @@ category: tools
 
    For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-1. Create your content files (e.g.: `src/posts/hello-world.md`):
+5. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
    ---
@@ -91,10 +93,25 @@ category: tools
    These files will be validated against the schema defined in the `content-collections.ts` file.
    If the files are valid, they will be automatically added to the `posts` collection.
 
-1. Usage in your code:
+6. Usage in your code:
 
    ```tsx
    import { allPosts } from "content-collections";
+
+   export function Posts() {
+     return (
+       <ul>
+         {allPosts.map((post) => (
+           <li key={post._meta.path}>
+             <a href={`/posts/${post._meta.path}`}>
+               <h3>{post.title}</h3>
+               <p>{post.summary}</p>
+             </a>
+           </li>
+         ))}
+       </ul>
+     );
+   }
    ```
 
    Now you can just import the `allPosts` collection and use it in your code.

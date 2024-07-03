@@ -1,18 +1,17 @@
 import {
-  Context,
+  type Context,
   defineCollection,
   defineConfig,
-  Document,
+  type Document,
 } from "@content-collections/core";
-import rehypeSlug from "rehype-slug";
-import rehypeShiki from "@shikijs/rehype";
-import { Options, compileMDX } from "@content-collections/mdx";
 import { selectAll } from "hast-util-select";
 import { Root } from "hast";
 import GithubSlugger from "github-slugger";
 import { exec as cpExec } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
+import { transformMDX } from "@fumadocs/content-collections/configuration";
+import { remarkInstall } from "fumadocs-docgen";
 
 const exec = promisify(cpExec);
 
@@ -38,7 +37,7 @@ async function lastModificationDate(ctx: Context, document: Document) {
     async (document) => {
       const filePath = path.join(
         ctx.collection.directory,
-        document._meta.filePath
+        document._meta.filePath,
       );
 
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -46,51 +45,9 @@ async function lastModificationDate(ctx: Context, document: Document) {
         return new Date(stdout.trim()).toISOString();
       }
       return new Date().toISOString();
-    }
+    },
   );
 }
-
-const mdxOptions: Options = {
-  rehypePlugins: [
-    liCodeSlug,
-    rehypeSlug,
-    [rehypeShiki, { theme: "one-dark-pro" }],
-  ],
-};
-
-const quickstart = defineCollection({
-  name: "quickstart",
-  directory: "../docs/_quickstart",
-  include: "*.mdx",
-  schema: (z) => ({
-    title: z.string(),
-    description: z.string().optional(),
-    linkText: z.string().optional(),
-    icon: z.string().optional(),
-    category: z.string(),
-  }),
-  transform: async (data, ctx) => {
-    const body = await compileMDX(ctx, data, mdxOptions);
-
-    let linkText = data.linkText;
-    if (!linkText) {
-      linkText = data.title;
-    }
-    const href = `/docs/quickstart/${data._meta.path}`;
-    const name = data._meta.path;
-    return {
-      title: data.title,
-      description: data.description,
-      icon: data.icon,
-      href,
-      linkText,
-      name,
-      body,
-      category: data.category,
-      lastModified: await lastModificationDate(ctx, data),
-    };
-  },
-});
 
 const samples = defineCollection({
   name: "samples",
@@ -108,7 +65,7 @@ const samples = defineCollection({
       .optional(),
   }),
   transform: async (data, ctx) => {
-    const body = await compileMDX(ctx, data, mdxOptions);
+    const { body } = await transformMDX(data, ctx);
     const href = `/docs/samples/${data._meta.directory}`;
     const name = data._meta.directory;
     return {
@@ -129,39 +86,49 @@ const docs = defineCollection({
   name: "docs",
   directory: "../docs",
   include: "**/*.mdx",
-  exclude: "_*/**",
   schema: (z) => ({
     title: z.string(),
-    linkText: z.string().optional(),
     description: z.string().optional(),
+    icon: z.string().optional(),
+    linkText: z.string().optional(),
+    full: z.boolean().optional(),
   }),
   transform: async (data, ctx) => {
-    const body = await compileMDX(ctx, data, mdxOptions);
-
-    let linkText = data.linkText;
-    if (!linkText) {
-      linkText = data.title;
-    }
-
-    const parts = data._meta.path.split("/");
-    const lastPart = parts[parts.length - 1];
-    parts[parts.length - 1] = lastPart.replace(/^\d+-/, "");
-
-    const slug = parts.join("/");
-    const href = `/docs/${slug}`;
+    // Fumadocs used a remark plugin to obtain data from `vfile`
+    // If the result is cached, the remark plugin won't be executed again
+    // and some fields will be missing.
+    //
+    // We cache the output directly to avoid this problem
+    const out = await ctx.cache(data, (input) =>
+      transformMDX(
+        input,
+        // avoid nested caching
+        { ...ctx, cache: async (input, fn) => fn(input) },
+        {
+          remarkPlugins: [remarkInstall],
+          rehypePlugins: [liCodeSlug],
+        },
+      ),
+    );
 
     return {
-      title: data.title,
-      description: data.description,
-      linkText,
-      body,
-      href,
-      slug,
       lastModified: await lastModificationDate(ctx, data),
+      ...out,
     };
   },
 });
 
+const metas = defineCollection({
+  name: "meta",
+  directory: "../docs",
+  include: "**/*.json",
+  schema: (z) => ({
+    title: z.string().optional(),
+    pages: z.array(z.string()).optional(),
+  }),
+  parser: "json",
+});
+
 export default defineConfig({
-  collections: [samples, quickstart, docs],
+  collections: [samples, docs, metas],
 });

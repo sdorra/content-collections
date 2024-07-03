@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "---Guide---",
+    "index",
+    "configuration",
+    "transform",
+    "serialization",
+    "usage",
+    "migration",
+    "---Quick Start---",
+    "...quickstart",
+    "---Adapter---",
+    "...adapter",
+    "---Content---",
+    "...content"
+  ]
+}

@@ -1,6 +1,5 @@
 import { Editor } from "@/components/Editor";
 import { codeToJsx } from "@/lib/codeToJsx";
-import { CheckCircle2 } from "lucide-react";
 import { HmrInAction } from "./HmrInAction";
 import { Content, Section, Title } from "./Section";
 
@@ -15,7 +14,7 @@ published: true
 function Preview() {
   return (
     <div className="absolute top-0 bottom-0 flex items-start md:items-center right-0">
-      <div className="bg-base-700/90 font-sans border border-base-400/50 rounded-md shadow-md p-5 w-72 md:w-96 flex flex-col">
+      <div className="text-foreground bg-background/60 backdrop-blur-lg font-sans border border-base-400/50 rounded-md shadow-md p-5 w-72 md:w-96 flex flex-col">
         <header className="font-bold text-2xl">Beautiful DX</header>
         <div className="flex-grow my-5 flex gap-1.5">
           <span>HMR for content is</span>
@@ -47,7 +46,7 @@ export async function HmrSection() {
         <div className="relative pt-24 pr-8 md:pt-0 lg:pr-0 my-10">
           <Editor className="max-w-3xl">
             {frontmatter}
-            <div className="mt-5 flex gap-1.5">
+            <div className="mt-5 flex gap-1.5 font-mono">
               <span>HMR for content is</span>
               <span id="hmr-source"></span>
             </div>

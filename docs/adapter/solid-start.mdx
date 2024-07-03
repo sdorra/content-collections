@@ -1,5 +1,6 @@
 ---
 title: Solid Start
+description: Use Content Collections with Solid Start
 ---
 
 The `@content-collections/solid-start` package enables easy integration of Content Collections into your SolidStart app. It includes a SolidStart plugin that automatically creates content collections and incorporates them into the build process.
@@ -13,9 +14,11 @@ The `@content-collections/solid-start` package enables easy integration of Conte
    - `@content-collections/core`
    - `@content-collections/solid-start`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/solid-start"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/solid-start -D
+   ```
 
-1. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+2. After installation, we have to add a path alias for the generated collections to the `tsconfig.json`:
 
    ```json
    {
@@ -29,7 +32,7 @@ The `@content-collections/solid-start` package enables easy integration of Conte
    }
    ```
 
-1. To enable the content collections plugin we have to add the plugin to the array of vite plugins in the (`app.config.ts`):
+3. To enable the content collections plugin we have to add the plugin to the array of vite plugins in the (`app.config.ts`):
 
    ```ts
    import { defineConfig } from "@solidjs/start/config";
@@ -45,4 +48,6 @@ The `@content-collections/solid-start` package enables easy integration of Conte
 
 The package exports a single function as the default export. The function takes a single argument, an object with the following properties:
 
-- `configPath` (optional): Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.
+### `configPath` (optional)
+
+Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.

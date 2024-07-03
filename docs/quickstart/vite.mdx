@@ -1,9 +1,8 @@
 ---
-title: Quickstart SolidStart
-description: Use Content Collections with SolidStart
-linkText: SolidStart
-icon: solid
-category: frameworks
+title: Vite
+description: Setup guide for the Content Collections Vite plugin
+linkText: Quickstart Vite
+category: tools
 ---
 
 1. Install required packages:
@@ -11,18 +10,19 @@ category: frameworks
    We have to install the following packages:
 
    - `@content-collections/core`
-   - `@content-collections/solid-start`
+   - `@content-collections/vite`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/solid-start"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/vite -D
+   ```
 
-1. Adjust your `tsconfig.json`:
+2. Adjust your `tsconfig.json`:
 
    ```json
    {
      "compilerOptions": {
        // ...
        "paths": {
-         "~/*": ["./src/*"],
          "content-collections": ["./.content-collections/generated"]
        }
      }
@@ -32,22 +32,21 @@ category: frameworks
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `app.config.ts`:
+3. Modify your `vite.config.ts`:
 
    ```ts
-   import { defineConfig } from "@solidjs/start/config";
-   import contentCollections from "@content-collections/solid-start";
+   import { defineConfig } from "vite";
+   import contentCollections from "@content-collections/vite";
+
    export default defineConfig({
-     vite: {
-       plugins: [contentCollections()],
-     },
+     plugins: [, /** other plugins */ contentCollections()],
    });
    ```
 
    Add the Content Collections plugin to your Vite config.
-   For more details on the SolidStart adapter, refer to the [documentation](/docs/adapter/solid-start)
+   For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
 
-1. Create a `content-collections.ts` file at the root of your project:
+4. Create a `content-collections.ts` file at the root of your project:
 
    ```ts
    import { defineCollection, defineConfig } from "@content-collections/core";
@@ -72,7 +71,7 @@ category: frameworks
 
    For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-1. Create your content files (e.g.: `src/posts/hello-world.md`):
+5. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
    ---
@@ -90,7 +89,7 @@ category: frameworks
    These files will be validated against the schema defined in the `content-collections.ts` file.
    If the files are valid, they will be automatically added to the `posts` collection.
 
-1. Usage in your code:
+6. Usage in your code:
 
    ```tsx
    import { allPosts } from "content-collections";
@@ -99,7 +98,7 @@ category: frameworks
      return (
        <ul>
          {allPosts.map((post) => (
-           <li>
+           <li key={post._meta.path}>
              <a href={`/posts/${post._meta.path}`}>
                <h3>{post.title}</h3>
                <p>{post.summary}</p>

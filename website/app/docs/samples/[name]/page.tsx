@@ -2,11 +2,11 @@ import { allSamples } from "content-collections";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { MDXContent } from "@content-collections/mdx/react";
-import { PackageInstall } from "@/components/PackageInstall";
-import { Notification } from "@/components/Notification";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 import { GitHub, StackBlitz } from "@/components/icons";
 import { ReactNode } from "react";
 import { createStackBlitzSampleLink } from "@/lib/stackblitz";
+import { Callout } from "fumadocs-ui/components/callout";
 
 type Props = {
   params: {
@@ -39,38 +39,28 @@ export default async function Page({ params: { name } }: Props) {
   }
 
   return (
-    <div className="min-w-0">
-      <article className="prose prose-base prose-code:text-base hover:prose-a:decoration-primary-600 max-w-3xl prose-invert py-5 px-5 sm:px-10">
-        <h1>{sample.title}</h1>
+    <article className="prose p-5 flex-1 sm:px-10">
+      <h1>{sample.title}</h1>
 
-        <Notification
-          type="info"
-          title="TL;DR"
-          className="mt-5"
-          disableLinkStyle
-        >
-          <div className=" flex items-center justify-center gap-4">
-            <TldrLink
-              href={`https://github.com/sdorra/content-collections/tree/main/samples/${sample.name}`}
-            >
-              <GitHub />
-              Github
-            </TldrLink>
-            <TldrLink
-              href={createStackBlitzSampleLink(
-                sample.name,
-                sample.stackBlitz
-              )}
-            >
-              <StackBlitz />
-              StackBlitz
-            </TldrLink>
-          </div>
-        </Notification>
+      <Callout type="info" title="TL;DR" className="mt-5 not-prose">
+        <div className=" flex items-center justify-center gap-4">
+          <TldrLink
+            href={`https://github.com/sdorra/content-collections/tree/main/samples/${sample.name}`}
+          >
+            <GitHub />
+            Github
+          </TldrLink>
+          <TldrLink
+            href={createStackBlitzSampleLink(sample.name, sample.stackBlitz)}
+          >
+            <StackBlitz />
+            StackBlitz
+          </TldrLink>
+        </div>
+      </Callout>
 
-        <MDXContent code={sample.body} components={{ PackageInstall }} />
-      </article>
-    </div>
+      <MDXContent code={sample.body} components={defaultMdxComponents} />
+    </article>
   );
 }
 

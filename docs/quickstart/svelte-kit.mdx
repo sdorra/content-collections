@@ -1,7 +1,7 @@
 ---
-title: Quickstart Svelte Kit
+title: Svelte Kit
 description: Integrate Content Collections into your Svelte Kit app
-linkText: Svelte Kit
+linkText: Quickstart Svelte Kit
 icon: svelte
 category: frameworks
 ---
@@ -13,9 +13,11 @@ category: frameworks
    - `@content-collections/core`
    - `@content-collections/vite`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/vite -D
+   ```
 
-1. Adjust your `svelte.config.js`:
+2. Adjust your `svelte.config.js`:
 
    ```js
    const config = {
@@ -23,16 +25,16 @@ category: frameworks
      kit: {
        // ...
        alias: {
-         "content-collections": "./.content-collections/generated"
-       }
-     }
+         "content-collections": "./.content-collections/generated",
+       },
+     },
    };
    ```
 
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `vite.config.ts`:
+3. Modify your `vite.config.ts`:
 
    ```ts
    import { sveltekit } from "@sveltejs/kit/vite";
@@ -47,8 +49,7 @@ category: frameworks
    Add the Content Collections plugin to your Vite config.
    For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
 
-
-1. Create a `content-collections.ts` file at the root of your project:
+4. Create a `content-collections.ts` file at the root of your project:
 
    ```ts
    import { defineCollection, defineConfig } from "@content-collections/core";
@@ -73,7 +74,7 @@ category: frameworks
 
    For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-1. Create your content files (e.g.: `src/posts/hello-world.md`):
+5. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
    ---
@@ -91,7 +92,7 @@ category: frameworks
    These files will be validated against the schema defined in the `content-collections.ts` file.
    If the files are valid, they will be automatically added to the `posts` collection.
 
-1. Usage in your code:
+6. Usage in your code:
 
    ```svelte
    <script>

@@ -1,8 +1,8 @@
-import { allQuickstarts } from "content-collections";
 import { Content, Section, Title } from "./Section";
 import { BrandIcon } from "@/components/BrandIcon";
 import Link from "next/link";
 import clsx from "clsx";
+import { getPages } from "@/app/source";
 
 export function FrameworkSection() {
   return (
@@ -19,17 +19,20 @@ export function FrameworkSection() {
           framework of choice.
         </p>
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-20 pt-10 mx-auto max-w-60 sm:max-w-xs md:max-w-lg justify-items-center">
-          {allQuickstarts
-            .filter((quickstart) => quickstart.name !== "cli")
-            .map((quickstart) => (
-              <li key={quickstart.name}>
+          {getPages()
+            .filter(
+              (docs) =>
+                docs.slugs[0] === "quickstart" && docs.slugs[1] !== "cli",
+            )
+            .map((docs) => (
+              <li key={docs.url}>
                 <Link
-                  title={quickstart.description}
-                  href={quickstart.href}
+                  title={docs.data.title}
+                  href={docs.url}
                   className="block rounded-md"
                 >
                   <BrandIcon
-                    icon={quickstart.icon || quickstart.name}
+                    icon={docs.data.icon ?? docs.slugs.at(-1) ?? ""}
                     className={clsx(
                       "size-24 md:size-32",
                       "grayscale contrast-50",
@@ -37,7 +40,7 @@ export function FrameworkSection() {
                       "active:grayscale-0 active:contrast-100",
                       "hover:drop-shadow-[0_25px_25px_rgb(255_255_255/0.15)]",
                       "active:drop-shadow-[0_25px_25px_rgb(255_255_255/0.15)]",
-                      "transition-all duration-500"
+                      "transition-all duration-500",
                     )}
                   />
                 </Link>

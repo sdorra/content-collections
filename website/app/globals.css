@@ -2,27 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-   html {
-    @apply scroll-smooth;
-  }
-
-  :focus-visible {
-    @apply focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-base-800 focus-visible:ring-offset-2 focus-visible:ring-primary-500;
-  }
-}
-
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* For IE, Edge and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
 .cursor {
   @apply border border-primary-500;
   animation: blink-caret 0.75s step-end infinite;
@@ -38,19 +17,14 @@
   }
 }
 
-.line-highlighting .line {
-  @apply opacity-50;
-}
-
-.line-highlighting .highlighted {
-  @apply bg-base-700/50 opacity-100;
-  transition: background-color 0.5s;
-  margin: 0 -24px;
-  padding: 0 24px;
-  width: calc(100% + 48px);
-  display: inline-block;
-}
-
 .Typewriter__cursor {
   @apply text-primary-500;
+}
+
+:root {
+  --primary: 25 99% 48%;
+}
+
+.dark {
+  --primary: 25 95% 53%;
 }

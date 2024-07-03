@@ -1,6 +1,7 @@
 import { FQDN } from "@/lib/env";
-import { allDocs, allQuickstarts, allSamples } from "content-collections";
+import { allSamples } from "content-collections";
 import { MetadataRoute } from "next";
+import { getPages } from "@/app/source";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -9,14 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       priority: 1,
     },
-    ...allQuickstarts.map((quickstart) => ({
-      url: `${FQDN}${quickstart.href}`,
-      lastModified: quickstart.lastModified,
-      priority: 0.8,
-    })),
-    ...allDocs.map((docPage) => ({
-      url: `${FQDN}${docPage.href}`,
-      lastModified: docPage.lastModified,
+    ...getPages().map((docPage) => ({
+      url: `${FQDN}${docPage.url}`,
+      lastModified: docPage.data.lastModified,
       priority: 0.7,
     })),
     ...allSamples.map((sample) => ({

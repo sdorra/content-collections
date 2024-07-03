@@ -1,7 +1,6 @@
 import { Editor } from "@/components/Editor";
 import { commentComponentTransformer } from "@/components/commentComponentTransformer";
 import { codeToJsx } from "@/lib/codeToJsx";
-import { CheckCircle2 } from "lucide-react";
 import { CodeMotion } from "./CodeMotion";
 import { Content, Section, Title } from "./Section";
 import { ExternalLink } from "@/components/links";
@@ -47,8 +46,8 @@ export async function ValidationSection() {
         log: false,
         removeFirstLine: true,
         removeLastLine: true,
-      })
-    )
+      }),
+    ),
   );
 
   const api = await codeToJsx(code, {

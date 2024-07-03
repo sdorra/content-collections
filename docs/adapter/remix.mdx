@@ -5,9 +5,9 @@ linkText: Remix
 
 To integrate Content Collections into your Remix app, you can use the `@content-collections/remix` package. This package provides a vite plugin to generate the content collections at build time.
 
-<Notification type="warning">
+<Callout type="warn" title="Careful">
   The Remix adapter is compatible exclusively with Remix Vite.
-</Notification>
+</Callout>
 
 ## Installation
 
@@ -18,12 +18,11 @@ To integrate Content Collections into your Remix app, you can use the `@content-
    - `@content-collections/core`
    - `@content-collections/remix-vite`
 
-   <PackageInstall
-     devDependencies={true}
-     packages={["@content-collections/core", "@content-collections/remix-vite"]}
-   />
+   ```package-install
+   npm i @content-collections/core @content-collections/remix-vite --save-dev
+   ```
 
-1. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
    ```json
    {
@@ -37,7 +36,7 @@ To integrate Content Collections into your Remix app, you can use the `@content-
    }
    ```
 
-1. Add the Content Collections plugin to the Vite config (`vite.config.ts`):
+3. Add the Content Collections plugin to the Vite config (`vite.config.ts`):
 
    ```ts
    import { vitePlugin as remix } from "@remix-run/dev";

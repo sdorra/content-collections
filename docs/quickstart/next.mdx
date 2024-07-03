@@ -1,7 +1,7 @@
 ---
-title: Quickstart Next.js
+title: Next.js
 description: Integrate Content Collections into your Next.js app
-linkText: Next.js
+linkText: Quickstart Next.js
 category: frameworks
 ---
 
@@ -12,9 +12,11 @@ category: frameworks
    - `@content-collections/core`
    - `@content-collections/next`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/next"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/next -D
+   ```
 
-1. Adjust your `tsconfig.json`:
+2. Adjust your `tsconfig.json`:
 
    ```json
    {
@@ -31,14 +33,14 @@ category: frameworks
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `next.config.js`:
+3. Modify your `next.config.js`:
 
    ```js
    const { withContentCollections } = require("@content-collections/next");
 
    /** @type {import('next').NextConfig} */
    const nextConfig = {
-      // your next.js config
+     // your next.js config
    };
 
    module.exports = withContentCollections(nextConfig);
@@ -47,8 +49,7 @@ category: frameworks
    This will add content collections to the build of your next.js app.
    For more details on the Next.js adapter, refer to the [documentation](/docs/adapter/next).
 
-
-1. Create a `content-collections.ts` file at the root of your project:
+4. Create a `content-collections.ts` file at the root of your project:
 
    ```ts
    import { defineCollection, defineConfig } from "@content-collections/core";
@@ -73,7 +74,7 @@ category: frameworks
 
    For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-1. Create your content files (e.g.: `src/posts/hello-world.md`):
+5. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
    ---
@@ -91,7 +92,7 @@ category: frameworks
    These files will be validated against the schema defined in the `content-collections.ts` file.
    If the files are valid, they will be automatically added to the `posts` collection.
 
-1. Usage in your code:
+6. Usage in your code:
 
    ```tsx
    import { allPosts } from "content-collections";

@@ -4,23 +4,22 @@ import { TypeSafeApiSection } from "./components/TypeSafeApiSection";
 import { ValidationSection } from "./components/ValidationSection";
 import { TransformationSection } from "./components/TransformationSection";
 import { FrameworkSection } from "./components/FrameworkSection";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { Main } from "@/components/Main";
+import { Footer } from "@/components/Footer";
+import { Layout } from "fumadocs-ui/layout";
+import { baseOptions } from "@/app/layout.config";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <Main>
+    <Layout {...baseOptions}>
+      <main className="mt-10 flex-grow text-muted-foreground">
         <Hero />
         <HmrSection />
         <TypeSafeApiSection />
         <ValidationSection />
         <TransformationSection />
         <FrameworkSection />
-      </Main>
+      </main>
       <Footer />
-    </>
+    </Layout>
   );
 }

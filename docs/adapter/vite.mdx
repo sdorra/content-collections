@@ -4,8 +4,9 @@ title: Vite
 
 The vite adapter can be used to integrate Content Collections into your Vite app. The adapter can be used regardless of the framework you are using with Vite.
 
-<Notification type="warning" prose>
-  If you are using a framework which uses vite under the hood, make sure that there is no specific adapter for that framework. If there is, you should use the specific adapter instead of the vite adapter.
+<Callout type="warn" title='Warning'>
+
+If you are using a framework which uses vite under the hood, make sure that there is no specific adapter for that framework. If there is, you should use the specific adapter instead of the vite adapter.
 
 For example if you are using one of the following frameworks, you should use the specific adapter for that framework:
 
@@ -17,7 +18,7 @@ If you are using a framework which has no specific adapter, you can use the vite
 - [SvelteKit](/docs/quickstart/svelte-kit)
 - [Qwik](/docs/quickstart/qwik)
 
-</Notification>
+</Callout>
 
 ## Installation
 
@@ -28,12 +29,11 @@ If you are using a framework which has no specific adapter, you can use the vite
    - `@content-collections/core`
    - `@content-collections/vite`
 
-   <PackageInstall
-     devDependencies={true}
-     packages={["@content-collections/core", "@content-collections/vite"]}
-   />
+   ```package-install
+   npm i @content-collections/core @content-collections/vite -D
+   ```
 
-1. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
    ```json
    {
@@ -46,7 +46,7 @@ If you are using a framework which has no specific adapter, you can use the vite
    }
    ```
 
-1. Install the Content Collections plugin in the `vite.config.ts`:
+3. Install the Content Collections plugin in the `vite.config.ts`:
 
    ```ts
    import { defineConfig } from "vite";
@@ -61,5 +61,10 @@ If you are using a framework which has no specific adapter, you can use the vite
 
 The package exports a single function as the default export. The function takes a single argument, an object with the following properties:
 
-- `configPath` (optional): Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.
-- `isEnabled` (optional): A function which takes the vite user config and returns a boolean value to enable or disable the plugin. This function is useful if you want to enable or disable the plugin based on the environment or other conditions.
+### `configPath` (optional)
+
+Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.
+
+### `isEnabled` (optional)
+
+A function which takes the vite user config and returns a boolean value to enable or disable the plugin. This function is useful if you want to enable or disable the plugin based on the environment or other conditions.

@@ -1,8 +1,9 @@
 ---
-title: Quickstart Vite
-description: Setup guide for the Content Collections Vite plugin
-linkText: Vite
-category: tools
+title: Qwik
+description: Use Content Collections with Qwik
+linkText: Quickstart Qwik
+icon: qwik
+category: frameworks
 ---
 
 1. Install required packages:
@@ -12,15 +13,18 @@ category: tools
    - `@content-collections/core`
    - `@content-collections/vite`
 
-   <PackageInstall devDependencies={true} packages={["@content-collections/core", "@content-collections/vite"]} />
+   ```package-install
+   npm i @content-collections/core @content-collections/vite -D
+   ```
 
-1. Adjust your `tsconfig.json`:
+2. Adjust your `tsconfig.json`:
 
    ```json
    {
      "compilerOptions": {
        // ...
        "paths": {
+         "~/*": ["./src/*"],
          "content-collections": ["./.content-collections/generated"]
        }
      }
@@ -30,22 +34,27 @@ category: tools
    We require a path alias for the generated files.
    This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-1. Modify your `vite.config.ts`:
+3. Modify your `vite.config.ts`:
 
    ```ts
-   import { defineConfig } from "vite";
+   import { defineConfig, type UserConfig } from "vite";
+   import { qwikVite } from "@builder.io/qwik/optimizer";
+   import { qwikCity } from "@builder.io/qwik-city/vite";
+   import tsconfigPaths from "vite-tsconfig-paths";
    import contentCollections from "@content-collections/vite";
 
-   export default defineConfig({
-    plugins: [/** other plugins */, contentCollections()],
+   export default defineConfig((): UserConfig => {
+     return {
+       plugins: [qwikCity(), qwikVite(), tsconfigPaths(), contentCollections()],
+       // ...
+     };
    });
    ```
 
    Add the Content Collections plugin to your Vite config.
    For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
 
-
-1. Create a `content-collections.ts` file at the root of your project:
+4. Create a `content-collections.ts` file at the root of your project:
 
    ```ts
    import { defineCollection, defineConfig } from "@content-collections/core";
@@ -70,7 +79,7 @@ category: tools
 
    For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-1. Create your content files (e.g.: `src/posts/hello-world.md`):
+5. Create your content files (e.g.: `src/posts/hello-world.md`):
 
    ```md
    ---
@@ -88,25 +97,43 @@ category: tools
    These files will be validated against the schema defined in the `content-collections.ts` file.
    If the files are valid, they will be automatically added to the `posts` collection.
 
-1. Usage in your code:
+6. Usage in your code:
 
    ```tsx
-   import { allPosts } from "content-collections";
+   import { component$ } from "@builder.io/qwik";
+   import type { DocumentHead } from "@builder.io/qwik-city";
+   import { allCharacters } from "content-collections";
 
-   export function Posts() {
+   export default component$(() => {
      return (
-       <ul>
-         {allPosts.map((post) => (
-           <li key={post._meta.path}>
-             <a href={`/posts/${post._meta.path}`}>
-               <h3>{post.title}</h3>
-               <p>{post.summary}</p>
-             </a>
-           </li>
-         ))}
-       </ul>
+       <main>
+         <h1>Characters</h1>
+         <ul>
+           {allCharacters.map((character) => (
+             <li key={character.name}>
+               <h2>{character.name}</h2>
+               <ul>
+                 <li>Planet of origin: {character.origin}</li>
+                 <li>Species: {character.species}</li>
+               </ul>
+               <p>{character.content}</p>
+               <a href={character.source}>Source</a>
+             </li>
+           ))}
+         </ul>
+       </main>
      );
-   }
+   });
+
+   export const head: DocumentHead = {
+     title: "Welcome to Qwik",
+     meta: [
+       {
+         name: "description",
+         content: "Qwik site description",
+       },
+     ],
+   };
    ```
 
    Now you can just import the `allPosts` collection and use it in your code.

@@ -15,12 +15,11 @@ The command line interface (CLI) can be used if no adapter is available for your
    - `@content-collections/next`
    - `concurrently`
 
-   <PackageInstall
-     devDependencies={true}
-     packages={["@content-collections/core", "@content-collections/cli", "concurrently" ]}
-   />
+   ```package-install
+   npm i @content-collections/core @content-collections/cli concurrently -D
+   ```
 
-1. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
    ```json
    {
@@ -32,7 +31,8 @@ The command line interface (CLI) can be used if no adapter is available for your
      }
    }
    ```
-1. Add the content-collection cli to your package.json scripts:
+
+3. Add the content-collection cli to your package.json scripts:
 
    ```json
    {
@@ -47,9 +47,10 @@ The command line interface (CLI) can be used if no adapter is available for your
 
    Next, we execute the content-collections build command prior to our regular build command.
 
-   <Notification type="info">
-      The `build-scripts` command is a placeholder for your actual build command. Replace it with the command you use to build your project.
-   </Notification>
+   <Callout type="info">
+     The `build-scripts` command is a placeholder for your actual build command.
+     Replace it with the command you use to build your project.
+   </Callout>
 
 ## Commands
 
@@ -59,14 +60,14 @@ The CLI provides the following commands:
 
 `content-collections watch` watches the configured paths for changes and updates the collections accordingly. This command is useful during development to keep the collections up to date. It is recommended to run this command in parallel to your dev server.
 
-#### Flags
-
-- `--config <path>`: Path to the configuration file. Defaults to `content-collections.ts`.
+| Flag              | Description                                                           |
+| ----------------- | --------------------------------------------------------------------- |
+| `--config <path>` | Path to the configuration file. Defaults to `content-collections.ts`. |
 
 ### Build
 
 `content-collections build` builds the collections and writes them to the file system. This command is useful for production builds.
 
-#### Flags
-
-- `--config <path>`: Path to the configuration file. Defaults to `content-collections.ts`.
+| Flag              | Description                                                           |
+| ----------------- | --------------------------------------------------------------------- |
+| `--config <path>` | Path to the configuration file. Defaults to `content-collections.ts`. |
