@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import { Analytics } from "@/components/Analytics";
 import clsx from "clsx";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className="bg-base-800 bg-gradient-to-bl from-base-950 to-base-800 text-base-300 scroll-smooth"
+    >
       <body
         className={clsx(
-          "bg-fixed bg-gradient-to-bl from-base-950 to-base-800 text-base-300",
           "min-h-svh flex flex-col",
           "selection:bg-primary-500 selection:text-white",
           inter.className
