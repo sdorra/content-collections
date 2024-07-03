@@ -1,6 +1,5 @@
 import {
   Context,
-  Meta,
   defineCollection,
   defineConfig,
   Document,
