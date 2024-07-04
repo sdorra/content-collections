@@ -6,7 +6,8 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import { GitHub, StackBlitz } from "@/components/icons";
 import { ReactNode } from "react";
 import { createStackBlitzSampleLink } from "@/lib/stackblitz";
-import { Callout } from "fumadocs-ui/components/callout";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
 type Props = {
   params: {
@@ -25,7 +26,7 @@ function TldrLink({ href, children }: TldrLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 border-info-600 border-2 rounded-md px-4 py-2 hover:bg-info-600 text-info-50"
+      className="inline-flex items-center font-medium gap-2 text-sm border-info-600 border-2 rounded-md px-4 py-2 transition-colors [&_svg]:size-4 text-info-50 hover:bg-info-600"
     >
       {children}
     </a>
@@ -39,11 +40,19 @@ export default async function Page({ params: { name } }: Props) {
   }
 
   return (
-    <article className="prose p-5 flex-1 sm:px-10">
-      <h1>{sample.title}</h1>
+    <main className="px-4 py-8 mx-auto w-full max-w-container">
+      <Link
+        href="/samples"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground mb-8 hover:text-accent-foreground"
+      >
+        <ChevronLeft className="size-4" />
+        Back to Templates
+      </Link>
+      <article className="prose">
+        <h1>{sample.title}</h1>
+        <p>{sample.description}</p>
 
-      <Callout type="info" title="TL;DR" className="mt-5 not-prose">
-        <div className=" flex items-center justify-center gap-4">
+        <div className="flex flex-row items-center gap-4 not-prose">
           <TldrLink
             href={`https://github.com/sdorra/content-collections/tree/main/samples/${sample.name}`}
           >
@@ -57,10 +66,10 @@ export default async function Page({ params: { name } }: Props) {
             StackBlitz
           </TldrLink>
         </div>
-      </Callout>
 
-      <MDXContent code={sample.body} components={defaultMdxComponents} />
-    </article>
+        <MDXContent code={sample.body} components={defaultMdxComponents} />
+      </article>
+    </main>
   );
 }
 

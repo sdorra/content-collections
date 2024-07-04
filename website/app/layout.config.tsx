@@ -1,7 +1,7 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layout";
 import LogoImage from "@/assets/logo.png";
 import Image from "next/image";
-import { Book } from "lucide-react";
+import { Book, BookTemplateIcon } from "lucide-react";
 
 export const baseOptions: BaseLayoutProps = {
   nav: {
@@ -20,6 +20,13 @@ export const baseOptions: BaseLayoutProps = {
       active: "none",
       text: "Documentation",
       icon: <Book />,
+    },
+    {
+      url: "/samples",
+      type: "main",
+      active: "nested-url",
+      text: "Templates",
+      icon: <BookTemplateIcon />,
     },
   ],
 };

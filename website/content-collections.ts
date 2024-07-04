@@ -66,7 +66,7 @@ const samples = defineCollection({
   }),
   transform: async (data, ctx) => {
     const { body } = await transformMDX(data, ctx);
-    const href = `/docs/samples/${data._meta.directory}`;
+    const href = `/samples/${data._meta.directory}`;
     const name = data._meta.directory;
     return {
       title: data.title,
