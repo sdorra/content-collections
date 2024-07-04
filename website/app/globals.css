@@ -28,3 +28,15 @@
 .dark {
   --primary: 25 95% 53%;
 }
+
+#nd-docs-layout {
+  max-width: 1600px;
+  @apply mx-auto w-full;
+}
+
+#nd-docs-layout::before {
+  content: "";
+  width: calc((100vw - 1600px) / 2);
+
+  @apply fixed left-0 inset-y-0 bg-card z-[-1];
+}
