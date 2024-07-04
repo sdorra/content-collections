@@ -1,7 +1,15 @@
 ---
 title: Quick Start
-description: Content Collection support most of the major web frameworks. Choose the one you are using to get started.
+description: Getting Started with Content Collections.
 ---
+
+## Introduction
+
+Content Collections transforms your content into type-safe data collections, providing useful utilities for data fetching and parsing.
+
+### Installation
+
+Content Collection supports most of the major web frameworks. Choose the one you are using to get started.
 
 <QuickStartList />
 
@@ -9,3 +17,42 @@ If your framework is not listed, you can still use Content Collections
 by using the [CLI](/docs/quickstart/cli). Please open
 a [ticket](https://github.com/sdorra/content-collections/issues)
 if you want to see your framework listed.
+
+### How it works?
+
+Content Collections works by generating an array of documents for each collection you define.
+Each document is a TypeScript object that represents a file in your project.
+
+The documents are generated from the files in the collection directory, all files must match the specified glob pattern.
+
+### How to use it?
+
+To use the generated documents in your project, you can import the generated files.
+Type information is available as TypeScript definitions.
+
+Refer to the [installation guide](#frameworks) for more information on how to set up the Content Collections for your framework.
+
+### What is a Collection?
+
+Once you have configured an import alias, you can import the generated files in your project with:
+
+```ts
+import { posts } from "content-collections";
+```
+
+The `posts` object is a collection, it contains an array of documents that you can use in your project.
+Each document has the shape defined in the collection configuration.
+You can access the properties of the document as you would with any other TypeScript object.
+
+Here is an example of how you can use the `posts` object in your project:
+
+```ts
+import { posts } from "content-collections";
+
+posts.forEach((post) => {
+  console.log(post.title);
+  console.log(post.summary);
+});
+```
+
+Each document has a `_meta` property (unless it has been removed in the `transform` function) that contains metadata about the document, such as the file path and the file name.

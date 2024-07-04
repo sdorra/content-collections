@@ -23,6 +23,11 @@ export default async function Page({
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsBody>
         <h1>{page.data.linkText ?? page.data.title}</h1>
+        {page.data.description ? (
+          <p className="text-muted-foreground text-sm pb-8 border-b">
+            {page.data.description}
+          </p>
+        ) : null}
         <MDXContent
           code={page.data.body}
           components={{
