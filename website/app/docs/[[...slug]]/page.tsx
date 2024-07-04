@@ -31,19 +31,9 @@ export default async function Page({
             Tab,
             Callout,
             Tabs,
-            QuickStartList: () => (
-              <Cards>
-                {getPages()
-                  .filter((page) => page.slugs[0] === "quickstart")
-                  .map((page) => (
-                    <Card
-                      key={page.url}
-                      title={page.data.title}
-                      href={page.url}
-                      description={page.data.description ?? ""}
-                    />
-                  ))}
-              </Cards>
+            QuickStartList,
+            InstallTabs: (props) => (
+              <Tabs id="package_install" persist {...props} />
             ),
             Correct,
             Wrong,
@@ -51,6 +41,23 @@ export default async function Page({
         />
       </DocsBody>
     </DocsPage>
+  );
+}
+
+function QuickStartList() {
+  return (
+    <Cards>
+      {getPages()
+        .filter((page) => page.slugs[0] === "quickstart")
+        .map((page) => (
+          <Card
+            key={page.url}
+            title={page.data.title}
+            href={page.url}
+            description={page.data.description ?? ""}
+          />
+        ))}
+    </Cards>
   );
 }
 

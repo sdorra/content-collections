@@ -11,7 +11,7 @@ import { exec as cpExec } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import { transformMDX } from "@fumadocs/content-collections/configuration";
-import { remarkInstall } from "fumadocs-docgen";
+import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
 
 const exec = promisify(cpExec);
 
@@ -105,7 +105,14 @@ const docs = defineCollection({
         // avoid nested caching
         { ...ctx, cache: async (input, fn) => fn(input) },
         {
-          remarkPlugins: [remarkInstall],
+          remarkPlugins: [
+            [
+              remarkInstall,
+              {
+                Tabs: "InstallTabs",
+              } satisfies RemarkInstallOptions,
+            ],
+          ],
           rehypePlugins: [liCodeSlug],
         },
       ),
