@@ -13,6 +13,16 @@ const nextConfig = {
       destination: "/docs/quickstart/:slug",
       permanent: true,
     },
+    {
+      source: "/docs/samples",
+      destination: "/samples",
+      permanent: true,
+    },
+    {
+      source: "/docs/samples/:slug",
+      destination: "/samples/:slug",
+      permanent: true,
+    }
   ],
 };
 
