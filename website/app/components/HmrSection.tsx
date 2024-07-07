@@ -20,7 +20,7 @@ function Preview() {
           <span>HMR for content is</span>
           <span id="hmr-target"></span>
         </div>
-        <footer className="self-end text-sm text-base-400">
+        <footer className="self-end text-sm text-base-500 dark:text-base-400">
           Sebastian Sdorra
         </footer>
       </div>

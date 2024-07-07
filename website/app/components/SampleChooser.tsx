@@ -25,9 +25,9 @@ export function SampleChooser({ value, onValueChange, samples }: Props) {
           key={idx}
           value={String(idx)}
           title={sample.description}
-          className="px-4 md:w-full py-2 hover:border-primary-300 shadow-md inline-flex gap-2 items-center text-xl rounded-md border-2 border-base-300 aria-checked:border-primary-600"
+          className="px-4 md:w-full py-2 dark:bg-base-950 bg-white dark:hover:bg-base-900 hover:border-primary-300 shadow-md inline-flex gap-2 items-center text-xl rounded-md border-2 border-base-300 aria-checked:border-primary-600"
         >
-          <div className="size-4 rounded-full bg-base-200 shadow-inner flex items-center justify-center">
+          <div className="size-4 rounded-full bg-base-200 border-base-300 border shadow-inner flex items-center justify-center">
             <RadioGroup.Indicator className="rounded-full size-3 bg-primary-600 block" />
           </div>
           <span className="font-bold text-nowrap">{sample.name}</span>
