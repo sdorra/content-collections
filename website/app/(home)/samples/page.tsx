@@ -24,9 +24,9 @@ export default function Page({
 
   return (
     <main className="container py-12">
-      <h1 className="font-bold text-3xl mb-4">Templates</h1>
+      <h1 className="font-bold text-3xl mb-4">Samples</h1>
       <p className="text-muted-foreground mb-4">
-        Some templates of Content Collections for you to get started.
+        Examples which demonstrates the usage of Content Collections.
       </p>
 
       <div className="flex flex-row gap-1.5 items-center flex-wrap pb-4 mb-8 border-b">
@@ -40,7 +40,7 @@ export default function Page({
               prefetch={false}
               className={cn(
                 "px-3 py-1.5 rounded-full bg-card border font-medium text-sm text-muted-foreground",
-                isActive && "text-primary-foreground bg-primary",
+                isActive && "text-primary-foreground bg-primary"
               )}
             >
               {tag}
@@ -52,8 +52,7 @@ export default function Page({
         {allSamples
           .filter(
             (sample) =>
-              tags.length === 0 ||
-              tags.some((tag) => sample.tags.includes(tag)),
+              tags.length === 0 || tags.some((tag) => sample.tags.includes(tag))
           )
           .map((sample) => (
             <Link
