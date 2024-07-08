@@ -809,7 +809,7 @@ importers:
   website:
     dependencies:
       '@fumadocs/content-collections':
-        specifier: ^1.0.0
+        specifier: ^1.0.3
         version: 1.0.3(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@12.4.1)
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
@@ -836,10 +836,10 @@ importers:
         specifier: ^11.2.11
         version: 11.2.11(react-dom@18.3.1)(react@18.3.1)
       fumadocs-core:
-        specifier: ^12.3.6
+        specifier: ^12.4.1
         version: 12.4.1(@types/react@18.3.3)(next@14.2.4)(react-dom@18.3.1)(react@18.3.1)
       fumadocs-docgen:
-        specifier: ^1.0.2
+        specifier: ^1.1.0
         version: 1.1.0(typescript@5.4.5)
       fumadocs-ui:
         specifier: ^12.3.6

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fumadocs/content-collections": "^1.0.0",
+    "@fumadocs/content-collections": "^1.0.3",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
@@ -18,8 +18,8 @@
     "clsx": "^2.1.0",
     "fathom-client": "^3.7.0",
     "framer-motion": "^11.2.11",
-    "fumadocs-core": "^12.3.6",
-    "fumadocs-docgen": "^1.0.2",
+    "fumadocs-core": "^12.4.1",
+    "fumadocs-docgen": "^1.1.0",
     "fumadocs-ui": "^12.3.6",
     "lucide-react": "^0.372.0",
     "next": "14.2.4",

@@ -65,7 +65,7 @@ const samples = defineCollection({
       .optional(),
   }),
   transform: async (data, ctx) => {
-    const { body } = await transformMDX(data, ctx);
+    const { body, structuredData } = await transformMDX(data, ctx);
     const href = `/samples/${data._meta.directory}`;
     const name = data._meta.directory;
     return {
@@ -78,6 +78,7 @@ const samples = defineCollection({
       body,
       tags: data.tags,
       lastModified: await lastModificationDate(ctx, data),
+      structuredData
     };
   },
 });
