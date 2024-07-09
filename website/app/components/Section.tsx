@@ -36,11 +36,11 @@ export function Title({ center, className, children }: TitleProps) {
   return (
     <h2
       className={cn(
-        "text-4xl font-bold mb-6 flex items-center text-slate-100",
+        "text-4xl font-bold mb-6 flex items-center text-foreground",
         {
           "md:justify-center": center,
         },
-        className
+        className,
       )}
     >
       <CheckCircle2 className="inline-block mr-2 size-8 text-primary-600 flex-shrink-0" />

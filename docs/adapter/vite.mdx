@@ -1,0 +1,70 @@
+---
+title: Vite
+---
+
+The vite adapter can be used to integrate Content Collections into your Vite app. The adapter can be used regardless of the framework you are using with Vite.
+
+<Callout type="warn" title='Warning'>
+
+If you are using a framework which uses vite under the hood, make sure that there is no specific adapter for that framework. If there is, you should use the specific adapter instead of the vite adapter.
+
+For example if you are using one of the following frameworks, you should use the specific adapter for that framework:
+
+- [Remix](/docs/adapter/remix)
+- [SolidStart](/docs/adapter/solid-start)
+
+If you are using a framework which has no specific adapter, you can use the vite adapter e.g.:
+
+- [SvelteKit](/docs/quickstart/svelte-kit)
+- [Qwik](/docs/quickstart/qwik)
+
+</Callout>
+
+## Installation
+
+1. Install the required packages:
+
+   We have to install the following packages:
+
+   - `@content-collections/core`
+   - `@content-collections/vite`
+
+   ```package-install
+   npm i @content-collections/core @content-collections/vite -D
+   ```
+
+2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+
+   ```json
+   {
+     "compilerOptions": {
+       // ...
+       "paths": {
+         "content-collections": ["./.content-collections/generated"]
+       }
+     }
+   }
+   ```
+
+3. Install the Content Collections plugin in the `vite.config.ts`:
+
+   ```ts
+   import { defineConfig } from "vite";
+   import contentCollections from "@content-collections/vite";
+
+   export default defineConfig({
+     plugins: [, /** other plugins */ contentCollections()],
+   });
+   ```
+
+## API
+
+The package exports a single function as the default export. The function takes a single argument, an object with the following properties:
+
+### `configPath` (optional)
+
+Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.
+
+### `isEnabled` (optional)
+
+A function which takes the vite user config and returns a boolean value to enable or disable the plugin. This function is useful if you want to enable or disable the plugin based on the environment or other conditions.

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Analytics } from "@/components/Analytics";
 import clsx from "clsx";
+import { RootProvider } from "fumadocs-ui/provider";
 
 import "./globals.css";
+import { Analytics } from "@/components/Analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,18 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className="bg-base-800 bg-fixed bg-gradient-to-bl from-base-950 to-base-800 text-base-300"
-    >
+    <html lang="en" suppressHydrationWarning>
       <body
         className={clsx(
           "min-h-svh flex flex-col",
           "selection:bg-primary-500 selection:text-white",
-          inter.className
+          inter.className,
         )}
       >
-        {children}
+        <RootProvider>{children}</RootProvider>
         <Analytics />
       </body>
     </html>

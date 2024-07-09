@@ -44,7 +44,10 @@ export async function codeToJsx(code: string | string[], options: Options) {
     meta: {
       tabindex: -1,
     },
-    theme: "one-dark-pro",
+    themes: {
+      light: "github-light",
+      dark: "github-dark",
+    }
   });
 
   if (options.type === "inline") {

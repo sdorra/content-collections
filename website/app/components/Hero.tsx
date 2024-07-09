@@ -29,7 +29,7 @@ export function Hero() {
   return (
     <header className="grid grid-cols-1 sm:grid-cols-[auto,1fr] gap-4 py-5 px-10 max-w-5xl mx-auto">
       <Logo className="md:row-span-3" />
-      <h1 className="text-4xl font-bold text-base-50 self-center">
+      <h1 className="text-4xl font-bold self-center text-foreground">
         Content Collections
       </h1>
       <p className="sm:col-span-2 md:col-span-1">
