@@ -79,8 +79,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2
       yaml:
-        specifier: ^2.4.1
-        version: 2.4.2
+        specifier: ^2.4.5
+        version: 2.4.5
       zod:
         specifier: ^3.22.5
         version: 3.23.6
@@ -13064,7 +13064,7 @@ packages:
     dependencies:
       lilconfig: 3.1.1
       postcss: 8.4.38
-      yaml: 2.4.2
+      yaml: 2.4.5
     dev: true
 
   /postcss-load-config@4.0.2(postcss@8.4.39):
@@ -13081,7 +13081,7 @@ packages:
     dependencies:
       lilconfig: 3.1.1
       postcss: 8.4.39
-      yaml: 2.4.2
+      yaml: 2.4.5
 
   /postcss-modules-extract-imports@3.1.0(postcss@8.4.38):
     resolution: {integrity: sha512-k3kNe0aNFQDAZGbin48pL2VNidTF0w4/eASDsxlyspobzU3wZQLOGj7L9gfRe0Jo9/4uud09DsjFNH7winGv8Q==}
@@ -13767,7 +13767,7 @@ packages:
       estree-util-value-to-estree: 3.1.1
       toml: 3.0.0
       unified: 11.0.5
-      yaml: 2.4.2
+      yaml: 2.4.5
 
   /remark-mdx@2.3.0:
     resolution: {integrity: sha512-g53hMkpM0I98MU266IzDFMrTD980gNF3BJnkyFcmN+dD873mQeD5rdMO3Y2X+x8umQfbSE0PcoEDl7ledSA+2g==}
@@ -16732,8 +16732,8 @@ packages:
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
-  /yaml@2.4.2:
-    resolution: {integrity: sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==}
+  /yaml@2.4.5:
+    resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
     engines: {node: '>= 14'}
     hasBin: true
 

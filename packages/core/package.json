@@ -45,7 +45,7 @@
     "micromatch": "^4.0.7",
     "pluralize": "^8.0.0",
     "serialize-javascript": "^6.0.2",
-    "yaml": "^2.4.1",
+    "yaml": "^2.4.5",
     "zod": "^3.22.5"
   }
 }
