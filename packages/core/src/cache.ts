@@ -43,7 +43,9 @@ async function readMapping(mappingPath: string): Promise<Mapping> {
     try {
       return JSON.parse(await readFile(mappingPath, "utf-8"));
     } catch (e) {
-      console.error("Failed to parse the cache mapping. We will recreate the cache.");
+      console.error(
+        "Failed to parse the cache mapping. We will recreate the cache."
+      );
     }
   }
   return {};
@@ -93,7 +95,13 @@ export async function createCacheManager(
 
       if (fileMapping?.includes(key) || newFileMapping.includes(key)) {
         if (existsSync(filePath)) {
-          return JSON.parse(await readFile(filePath, "utf-8"));
+          try {
+            return JSON.parse(await readFile(filePath, "utf-8"));
+          } catch (e) {
+            console.error(
+              "Failed to parse the cache file. We will recompute the value."
+            );
+          }
         }
       }
 
