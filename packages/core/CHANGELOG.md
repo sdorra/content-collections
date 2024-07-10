@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.6.1
+
+### Patch Changes
+
+- [#194](https://github.com/sdorra/content-collections/pull/194) [`befba40`](https://github.com/sdorra/content-collections/commit/befba40fce91130616fc16e11bc6ee149be90e8b) Thanks [@sdorra](https://github.com/sdorra)! - mark all packages as external
+
+- [#168](https://github.com/sdorra/content-collections/pull/168) [`a533052`](https://github.com/sdorra/content-collections/commit/a5330527ebe6ca6217ad2bbbb9a24c23785b7d89) Thanks [@sdorra](https://github.com/sdorra)! - #166 Start without cache, if the mapping.json could not be parsed.
+
 ## 0.6.0
 
 ### Minor Changes
