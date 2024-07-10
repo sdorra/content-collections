@@ -46,8 +46,21 @@ function resolveCacheDir(config: string, options: Options) {
   return path.join(path.dirname(config), ".content-collections", "cache");
 }
 
+const externalPackagesPlugin = (configPath: string): esbuild.Plugin => ({
+  name: "external-packages",
+  setup: (build) => {
+    const filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/;
+    build.onResolve({ filter }, ({ path }) => {
+      const external = !path.includes(configPath);
+      return { path, external };
+    });
+  },
+});
+
 async function compile(configurationPath: string, outfile: string) {
-  const plugins: Array<esbuild.Plugin> = [];
+  const plugins: Array<esbuild.Plugin> = [
+    externalPackagesPlugin(configurationPath),
+  ];
   if (process.env.NODE_ENV === "test") {
     plugins.push(importPathPlugin);
   }
@@ -55,10 +68,6 @@ async function compile(configurationPath: string, outfile: string) {
   await esbuild.build({
     entryPoints: [configurationPath],
     packages: "external",
-    external: [
-      ...Object.keys(packageJson.dependencies),
-      "@content-collections/*",
-    ],
     bundle: true,
     platform: "node",
     format: "esm",
