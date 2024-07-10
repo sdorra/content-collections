@@ -158,4 +158,31 @@ describe("cacheManager", () => {
       expect(await cache.cacheFn("input", () => "output")).toBe("output");
     }
   );
+
+  tmpdirTest(
+    "should not fail, if cached value is broken",
+    async ({ tmpdir }) => {
+      const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+      const cache = cacheManager.cache("collection", "file");
+
+      await cache.cacheFn("input", () => "cached value");
+
+      const cacheDir = path.join(
+        await createCacheDirectory(tmpdir),
+        "collection",
+        "file"
+      );
+
+      const [file] = await readdir(cacheDir);
+      if (!file) {
+        throw new Error("No file found");
+      }
+
+      const cacheFile = path.join(cacheDir, file);
+      await writeFile(cacheFile, "broken");
+
+      const value = await cache.cacheFn("input", () => "new computed value");
+      expect(value).toBe("new computed value");
+    }
+  );
 });
