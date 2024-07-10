@@ -496,8 +496,8 @@ importers:
         specifier: ^1.5.7
         version: 1.5.7(eslint@8.57.0)
       prettier:
-        specifier: ^3.2.4
-        version: 3.2.5
+        specifier: ^3.3.2
+        version: 3.3.2
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -13212,8 +13212,8 @@ packages:
     hasBin: true
     dev: true
 
-  /prettier@3.2.5:
-    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+  /prettier@3.3.2:
+    resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
