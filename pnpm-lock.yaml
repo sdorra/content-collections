@@ -563,8 +563,8 @@ importers:
         specifier: ^2.9.2
         version: 2.9.2(typescript@5.4.5)
       isbot:
-        specifier: ^4.1.0
-        version: 4.4.0
+        specifier: ^5.1.12
+        version: 5.1.12
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -645,8 +645,8 @@ importers:
         specifier: ^2.9.2
         version: 2.9.2(typescript@5.4.5)
       isbot:
-        specifier: ^4.1.0
-        version: 4.4.0
+        specifier: ^5.1.12
+        version: 5.1.12
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -10544,8 +10544,8 @@ packages:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
     dev: true
 
-  /isbot@4.4.0:
-    resolution: {integrity: sha512-8ZvOWUA68kyJO4hHJdWjyreq7TYNWTS9y15IzeqVdKxR9pPr3P/3r9AHcoIv9M0Rllkao5qWz2v1lmcyKIVCzQ==}
+  /isbot@5.1.12:
+    resolution: {integrity: sha512-Igy8nbj3Yn/XgYboRFTixH5ccUBvNPA89ek2zx3jCcBYkDkEnuFs0RkT36EPag5OFd2nLlK7u4uzG5AXfXR46w==}
     engines: {node: '>=18'}
     dev: false
 
