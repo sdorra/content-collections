@@ -4,6 +4,11 @@ import { Parser, Parsers } from "./parser";
 import { CacheFn } from "./cache";
 import { NotSerializableError, Serializable } from "./serializer";
 
+// Export all zod types to fix type errors,
+// if declaration is set to true in tsconfig.json.
+// @see https://github.com/microsoft/TypeScript/issues/42873
+export type * from "zod";
+
 export type Meta = {
   filePath: string;
   fileName: string;
