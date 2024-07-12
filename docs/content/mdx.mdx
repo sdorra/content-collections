@@ -53,7 +53,7 @@ export default function App() {
         {allPosts.map((post) => (
           <li key={post._meta.path}>
             <h2>{post.title}</h2>
-            <MDXContent code={post.content} />
+            <MDXContent code={post.mdx} />
           </li>
         ))}
       </ul>
