@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.6.2
+
+### Patch Changes
+
+- [#195](https://github.com/sdorra/content-collections/pull/195) [`c4c9044`](https://github.com/sdorra/content-collections/commit/c4c904423c9b1f6c4d862cb77c12add1eb7e7156) Thanks [@sdorra](https://github.com/sdorra)! - Do now show type errors on defineConfig, if declaration is set to true in the tsconfig.
+
 ## 0.6.1
 
 ### Patch Changes
