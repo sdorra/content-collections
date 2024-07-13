@@ -7,42 +7,54 @@ The `@content-collections/solid-start` package enables easy integration of Conte
 
 ## Installation
 
-1. Install required packages:
+<div className="steps">
+<div className="step">
 
-   We have to install the following packages:
+Install required packages:
 
-   - `@content-collections/core`
-   - `@content-collections/solid-start`
+We have to install the following packages:
 
-   ```package-install
-   npm i @content-collections/core @content-collections/solid-start -D
-   ```
+- `@content-collections/core`
+- `@content-collections/solid-start`
 
-2. After installation, we have to add a path alias for the generated collections to the `tsconfig.json`:
+```package-install
+npm i @content-collections/core @content-collections/solid-start -D
+```
 
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "~/*": ["./src/*"],
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
+</div>
+<div className="step">
 
-3. To enable the content collections plugin we have to add the plugin to the array of vite plugins in the (`app.config.ts`):
+After installation, we have to add a path alias for the generated collections to the `tsconfig.json`:
 
-   ```ts
-   import { defineConfig } from "@solidjs/start/config";
-   import contentCollections from "@content-collections/solid-start";
-   export default defineConfig({
-     vite: {
-       plugins: [contentCollections()],
-     },
-   });
-   ```
+```json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "~/*": ["./src/*"],
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
+```
+
+</div>
+<div className="step">
+
+To enable the content collections plugin we have to add the plugin to the array of vite plugins in the (`app.config.ts`):
+
+```ts
+import { defineConfig } from "@solidjs/start/config";
+import contentCollections from "@content-collections/solid-start";
+export default defineConfig({
+  vite: {
+    plugins: [contentCollections()],
+  },
+});
+```
+
+</div>
+</div>
 
 ## API
 

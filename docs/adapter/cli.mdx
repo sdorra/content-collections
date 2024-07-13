@@ -7,50 +7,62 @@ The command line interface (CLI) can be used if no adapter is available for your
 
 ## Installation
 
-1. First, install the required packages:
+<div className="steps">
+<div className="step">
 
-   We have to install the following packages:
+First, install the required packages:
 
-   - `@content-collections/core`
-   - `@content-collections/next`
-   - `concurrently`
+We have to install the following packages:
 
-   ```package-install
-   npm i @content-collections/core @content-collections/cli concurrently -D
-   ```
+- `@content-collections/core`
+- `@content-collections/next`
+- `concurrently`
 
-2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+```package-install
+npm i @content-collections/core @content-collections/cli concurrently -D
+```
 
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
+</div>
+<div className="step">
 
-3. Add the content-collection cli to your package.json scripts:
+After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
-   ```json
-   {
-     "scripts": {
-       "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
-       "build": "content-collections build && build-scripts build"
-     }
-   }
-   ```
+```json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
+```
 
-   First, we modify the dev script to simultaneously execute the content-collections watch command along with our regular dev command.
+</div>
+<div className="step">
 
-   Next, we execute the content-collections build command prior to our regular build command.
+Add the content-collection cli to your package.json scripts:
 
-   <Callout type="info">
-     The `build-scripts` command is a placeholder for your actual build command.
-     Replace it with the command you use to build your project.
-   </Callout>
+```json
+{
+  "scripts": {
+    "dev": "concurrently \"content-collections watch\" \"build-scripts dev\"",
+    "build": "content-collections build && build-scripts build"
+  }
+}
+```
+
+First, we modify the dev script to simultaneously execute the content-collections watch command along with our regular dev command.
+
+Next, we execute the content-collections build command prior to our regular build command.
+
+<Callout type="info">
+  The `build-scripts` command is a placeholder for your actual build command.
+  Replace it with the command you use to build your project.
+</Callout>
+
+</div>
+</div>
 
 ## Commands
 

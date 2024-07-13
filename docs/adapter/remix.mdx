@@ -11,46 +11,60 @@ To integrate Content Collections into your Remix app, you can use the `@content-
 
 ## Installation
 
-1. Install required packages:
+<div className="steps">
+<div className="step">
 
-   We have to install the following packages:
+Install required packages:
 
-   - `@content-collections/core`
-   - `@content-collections/remix-vite`
+We have to install the following packages:
 
-   ```package-install
-   npm i @content-collections/core @content-collections/remix-vite --save-dev
-   ```
+- `@content-collections/core`
+- `@content-collections/remix-vite`
 
-2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+```package-install
+npm i @content-collections/core @content-collections/remix-vite --save-dev
+```
 
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "~/*": ["./app/*"],
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
+</div>
+<div className="step">
 
-3. Add the Content Collections plugin to the Vite config (`vite.config.ts`):
+After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
-   ```ts
-   import { vitePlugin as remix } from "@remix-run/dev";
-   import { defineConfig } from "vite";
-   import tsconfigPaths from "vite-tsconfig-paths";
-   import contentCollections from "@content-collections/vite";
+```json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "~/*": ["./app/*"],
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
+```
 
-   export default defineConfig({
-     plugins: [remix(), tsconfigPaths(), contentCollections()],
-   });
-   ```
+</div>
+<div className="step">
+
+Add the Content Collections plugin to the Vite config (`vite.config.ts`):
+
+```ts
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import contentCollections from "@content-collections/vite";
+
+export default defineConfig({
+  plugins: [remix(), tsconfigPaths(), contentCollections()],
+});
+```
+
+</div>
+</div>
 
 ## API
 
 The package exports a single function as the default export. The function takes a single argument, an object with the following properties:
 
-- `configPath` (optional): Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.
+### `configPath` (optional)
+
+Specifies the path to the Content Collections configuration file. Defaults to `content-collections.ts`.

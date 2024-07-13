@@ -6,136 +6,157 @@ icon: qwik
 category: frameworks
 ---
 
-1. Install required packages:
+<div className="steps">
+<div className="step">
 
-   We have to install the following packages:
+Install required packages:
 
-   - `@content-collections/core`
-   - `@content-collections/vite`
+We have to install the following packages:
 
-   ```package-install
-   npm i @content-collections/core @content-collections/vite -D
-   ```
+- `@content-collections/core`
+- `@content-collections/vite`
 
-2. Adjust your `tsconfig.json`:
+```package-install
+npm i @content-collections/core @content-collections/vite -D
+```
 
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "~/*": ["./src/*"],
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
+</div>
+<div className="step">
 
-   We require a path alias for the generated files.
-   This is necessary because we will generate the files in the `.content-collections/generated` folder.
+Adjust your `tsconfig.json`:
 
-3. Modify your `vite.config.ts`:
+```json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "~/*": ["./src/*"],
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
+```
 
-   ```ts
-   import { defineConfig, type UserConfig } from "vite";
-   import { qwikVite } from "@builder.io/qwik/optimizer";
-   import { qwikCity } from "@builder.io/qwik-city/vite";
-   import tsconfigPaths from "vite-tsconfig-paths";
-   import contentCollections from "@content-collections/vite";
+We require a path alias for the generated files.
+This is necessary because we will generate the files in the `.content-collections/generated` folder.
 
-   export default defineConfig((): UserConfig => {
-     return {
-       plugins: [qwikCity(), qwikVite(), tsconfigPaths(), contentCollections()],
-       // ...
-     };
-   });
-   ```
+</div>
+<div className="step">
 
-   Add the Content Collections plugin to your Vite config.
-   For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
+Modify your `vite.config.ts`:
 
-4. Create a `content-collections.ts` file at the root of your project:
+```ts
+import { defineConfig, type UserConfig } from "vite";
+import { qwikVite } from "@builder.io/qwik/optimizer";
+import { qwikCity } from "@builder.io/qwik-city/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import contentCollections from "@content-collections/vite";
 
-   ```ts
-   import { defineCollection, defineConfig } from "@content-collections/core";
+export default defineConfig((): UserConfig => {
+  return {
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), contentCollections()],
+    // ...
+  };
+});
+```
 
-   const posts = defineCollection({
-     name: "posts",
-     directory: "src/posts",
-     include: "**/*.md",
-     schema: (z) => ({
-       title: z.string(),
-       summary: z.string(),
-     }),
-   });
+Add the Content Collections plugin to your Vite config.
+For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
 
-   export default defineConfig({
-     collections: [posts],
-   });
-   ```
+</div>
+<div className="step">
 
-   This file defines a collection named `posts` in the `src/posts` folder.
-   The collection will include all markdown files (`**/*.md`) and the schema will validate the `title` and `summary` fields.
+Create a `content-collections.ts` file at the root of your project:
 
-   For more information about the configuration have a look at the [documentation](/docs/configuration).
+```ts
+import { defineCollection, defineConfig } from "@content-collections/core";
 
-5. Create your content files (e.g.: `src/posts/hello-world.md`):
+const posts = defineCollection({
+  name: "posts",
+  directory: "src/posts",
+  include: "**/*.md",
+  schema: (z) => ({
+    title: z.string(),
+    summary: z.string(),
+  }),
+});
 
-   ```md
-   ---
-   title: "Hello world"
-   summary: "This is my first post!"
-   ---
+export default defineConfig({
+  collections: [posts],
+});
+```
 
-   # Hello world
+This file defines a collection named `posts` in the `src/posts` folder.
+The collection will include all markdown files (`**/*.md`) and the schema will validate the `title` and `summary` fields.
 
-   This is my first post!
-   ... rest of the content
-   ```
+For more information about the configuration have a look at the [documentation](/docs/configuration).
 
-   You can create unlimited content files.
-   These files will be validated against the schema defined in the `content-collections.ts` file.
-   If the files are valid, they will be automatically added to the `posts` collection.
+</div>
+<div className="step">
 
-6. Usage in your code:
+Create your content files (e.g.: `src/posts/hello-world.md`):
 
-   ```tsx
-   import { component$ } from "@builder.io/qwik";
-   import type { DocumentHead } from "@builder.io/qwik-city";
-   import { allCharacters } from "content-collections";
+```md
+---
+title: "Hello world"
+summary: "This is my first post!"
+---
 
-   export default component$(() => {
-     return (
-       <main>
-         <h1>Characters</h1>
-         <ul>
-           {allCharacters.map((character) => (
-             <li key={character.name}>
-               <h2>{character.name}</h2>
-               <ul>
-                 <li>Planet of origin: {character.origin}</li>
-                 <li>Species: {character.species}</li>
-               </ul>
-               <p>{character.content}</p>
-               <a href={character.source}>Source</a>
-             </li>
-           ))}
-         </ul>
-       </main>
-     );
-   });
+# Hello world
 
-   export const head: DocumentHead = {
-     title: "Welcome to Qwik",
-     meta: [
-       {
-         name: "description",
-         content: "Qwik site description",
-       },
-     ],
-   };
-   ```
+This is my first post!
+... rest of the content
+```
 
-   Now you can just import the `allPosts` collection and use it in your code.
-   The `allPosts` collection will contain all posts that are valid.
-   The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
+You can create unlimited content files.
+These files will be validated against the schema defined in the `content-collections.ts` file.
+If the files are valid, they will be automatically added to the `posts` collection.
+
+</div>
+<div className="step">
+
+Usage in your code:
+
+```tsx
+import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { allCharacters } from "content-collections";
+
+export default component$(() => {
+  return (
+    <main>
+      <h1>Characters</h1>
+      <ul>
+        {allCharacters.map((character) => (
+          <li key={character.name}>
+            <h2>{character.name}</h2>
+            <ul>
+              <li>Planet of origin: {character.origin}</li>
+              <li>Species: {character.species}</li>
+            </ul>
+            <p>{character.content}</p>
+            <a href={character.source}>Source</a>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+});
+
+export const head: DocumentHead = {
+  title: "Welcome to Qwik",
+  meta: [
+    {
+      name: "description",
+      content: "Qwik site description",
+    },
+  ],
+};
+```
+
+Now you can just import the `allPosts` collection and use it in your code.
+The `allPosts` collection will contain all posts that are valid.
+The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
+
+</div>
+</div>

@@ -22,40 +22,52 @@ If you are using a framework which has no specific adapter, you can use the vite
 
 ## Installation
 
-1. Install the required packages:
+<div className="steps">
+<div className="step">
 
-   We have to install the following packages:
+Install the required packages:
 
-   - `@content-collections/core`
-   - `@content-collections/vite`
+We have to install the following packages:
 
-   ```package-install
-   npm i @content-collections/core @content-collections/vite -D
-   ```
+- `@content-collections/core`
+- `@content-collections/vite`
 
-2. After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
+```package-install
+npm i @content-collections/core @content-collections/vite -D
+```
 
-   ```json
-   {
-     "compilerOptions": {
-       // ...
-       "paths": {
-         "content-collections": ["./.content-collections/generated"]
-       }
-     }
-   }
-   ```
+</div>
+<div className="step">
 
-3. Install the Content Collections plugin in the `vite.config.ts`:
+After installation we have to add a path alias for the generated collections to the `tsconfig.json`:
 
-   ```ts
-   import { defineConfig } from "vite";
-   import contentCollections from "@content-collections/vite";
+```json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
+```
 
-   export default defineConfig({
-     plugins: [, /** other plugins */ contentCollections()],
-   });
-   ```
+</div>
+<div className="step">
+
+Install the Content Collections plugin in the `vite.config.ts`:
+
+```ts
+import { defineConfig } from "vite";
+import contentCollections from "@content-collections/vite";
+
+export default defineConfig({
+  plugins: [, /** other plugins */ contentCollections()],
+});
+```
+
+</div>
+</div>
 
 ## API
 

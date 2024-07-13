@@ -37,19 +37,19 @@ Refer to the [installation guide](#frameworks) for more information on how to se
 Once you have configured an import alias, you can import the generated files in your project with:
 
 ```ts
-import { posts } from "content-collections";
+import { allPosts } from "content-collections";
 ```
 
-The `posts` object is a collection, it contains an array of documents that you can use in your project.
+The `allPosts` object is a collection, it contains an array of documents that you can use in your project.
 Each document has the shape defined in the collection configuration.
 You can access the properties of the document as you would with any other TypeScript object.
 
-Here is an example of how you can use the `posts` object in your project:
+Here is an example of how you can use the `allPosts` object in your project:
 
 ```ts
-import { posts } from "content-collections";
+import { allPosts } from "content-collections";
 
-posts.forEach((post) => {
+allPosts.forEach((post) => {
   console.log(post.title);
   console.log(post.summary);
 });
