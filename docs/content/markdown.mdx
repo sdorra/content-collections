@@ -8,11 +8,17 @@ This package is designed for integration into a [transform](/docs/transform) fun
 
 ## Quickstart
 
+<div className="steps">
+<div className="step">
+
 Install the package:
 
 ```package-install
 npm i @content-collections/markdown -D
 ```
+
+</div>
+<div className="step">
 
 Transform the markdown content to HTML:
 
@@ -41,10 +47,13 @@ export default defineConfig({
 });
 ```
 
+</div>
+<div className="step">
+
 Use the generated html in your application.
 
-{/* TODO use tabs for the examples */}
-The following snippet shows an example with React.
+<Tabs items={['React', 'Svelte', 'Solid']}>
+<Tab value="React">
 
 ```tsx
 import { allPosts } from "content-collections";
@@ -66,7 +75,8 @@ export default function App() {
 }
 ```
 
-And the next snippet shows an example with Svelte.
+</Tab>
+<Tab value="Svelte">
 
 ```svelte
 <script>
@@ -85,7 +95,8 @@ And the next snippet shows an example with Svelte.
 </ul>
 ```
 
-And the last snippet shows an example with Solid.
+</Tab>
+<Tab value="Solid">
 
 ```tsx
 import { allPosts } from "content-collections";
@@ -106,6 +117,12 @@ export default function App() {
   );
 }
 ```
+
+</Tab>
+</Tabs>
+
+</div>
+</div>
 
 ## API
 
