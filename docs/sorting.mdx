@@ -1,0 +1,31 @@
+---
+title: Sorting
+---
+
+Content Collections does not offer a built-in way to sort collections. This is because it is challenging to define a universal API for sorting that fits all use cases. Implementing a single sorting method would limit the flexibility to sort collections differently in various parts of the application.
+
+However, you can easily sort the collections in your own code. For example, you can create a file called `sorted.ts` with the following content:
+
+```ts
+import { allPosts } from "content-collections";
+
+export const postsSortedByDate = allPosts.toSorted(
+  (a, b) => b.date.getTime() - a.date.getTime()
+);
+```
+
+Then, you can import the sorted collection from this file instead of directly from `content-collections`.
+
+```ts
+import { postsSortedByDate } from "./sorted";
+
+// Do something with the sorted posts
+```
+
+This approach allows you to sort your collections in any way you prefer.
+
+<Callout>
+
+For more information, refer to [Issue #169](https://github.com/sdorra/content-collections/issues/169).
+
+</Callout>

@@ -5,6 +5,7 @@
     "configuration",
     "transform",
     "serialization",
+    "sorting",
     "migration",
     "---Quick Start---",
     "...quickstart",
