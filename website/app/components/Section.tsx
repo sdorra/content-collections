@@ -40,7 +40,7 @@ export function Title({ center, className, children }: TitleProps) {
         {
           "md:justify-center": center,
         },
-        className,
+        className
       )}
     >
       <CheckCircle2 className="inline-block mr-2 size-8 text-primary-600 flex-shrink-0" />
@@ -53,7 +53,7 @@ function BackgroundGrid() {
   return (
     <svg
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full text-base-500/40 [mask-image:radial-gradient(black,transparent)]"
+      className="absolute inset-0 h-full w-full text-base-500/30 dark:text-base-500/40 [mask-image:radial-gradient(black,transparent)]"
     >
       <defs>
         <pattern
