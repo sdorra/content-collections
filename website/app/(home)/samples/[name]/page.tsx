@@ -46,7 +46,7 @@ export default async function Page({ params: { name } }: Props) {
         className="inline-flex items-center gap-1 text-sm text-muted-foreground mb-8 hover:text-accent-foreground"
       >
         <ChevronLeft className="size-4" />
-        Back to Templates
+        Back to Samples
       </Link>
       <article className="prose">
         <h1>{sample.title}</h1>
