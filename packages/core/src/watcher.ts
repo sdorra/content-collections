@@ -1,6 +1,7 @@
 import * as watcher from "@parcel/watcher";
 import { Modification } from "./types";
 import { Emitter } from "./events";
+import { removeChildPaths } from "./utils";
 
 export type WatcherEvents = {
   "watcher:file-changed": {
@@ -42,7 +43,7 @@ export async function createWatcher(
   };
 
   const subscriptions = await Promise.all(
-    paths.map((path) => watcher.subscribe(path, onChange))
+    removeChildPaths(paths).map((path) => watcher.subscribe(path, onChange))
   );
 
   return {
@@ -54,3 +55,5 @@ export async function createWatcher(
     },
   };
 }
+
+export type Watcher = Awaited<ReturnType<typeof createWatcher>>;
