@@ -6,9 +6,7 @@ import { Events, createEmitter } from "./events";
 import { tmpdirTest } from "./__tests__/tmpdir";
 import path from "node:path";
 
-const isEnabled = process.env.ENABLE_WATCHER_TESTS === "true";
-
-describe.runIf(isEnabled)("watcher", () => {
+describe("watcher", () => {
   const events: Array<string> = [];
   let build = false;
 
