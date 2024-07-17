@@ -842,8 +842,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(typescript@5.4.5)
       fumadocs-ui:
-        specifier: ^12.3.6
-        version: 12.4.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)(tailwindcss@3.4.4)
+        specifier: ^12.5.3
+        version: 12.5.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)(tailwindcss@3.4.4)
       lucide-react:
         specifier: ^0.372.0
         version: 0.372.0(react@18.3.1)
@@ -4192,7 +4192,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.24.7
+      '@babel/runtime': 7.24.8
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-context': 1.0.1(@types/react@18.3.3)(react@18.3.1)
@@ -4570,7 +4570,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.24.7
+      '@babel/runtime': 7.24.8
       '@radix-ui/react-slot': 1.0.2(@types/react@18.3.3)(react@18.3.1)
       '@types/react': 18.3.3
       '@types/react-dom': 18.3.0
@@ -5690,6 +5690,17 @@ packages:
       '@types/hast': 3.0.4
       hast-util-to-string: 3.0.0
       shiki: 1.10.1
+      unified: 11.0.5
+      unist-util-visit: 5.0.0
+    dev: false
+
+  /@shikijs/rehype@1.10.3:
+    resolution: {integrity: sha512-ghLPkqtx+AEL3LNTR8YpVJroAuiGvZZv+2u2CUB5rw5l4gsJ/2SycrC7s3Hpe+5qMuVXDAq/xImFQyhB0nQpuw==}
+    dependencies:
+      '@shikijs/transformers': 1.10.3
+      '@types/hast': 3.0.4
+      hast-util-to-string: 3.0.0
+      shiki: 1.10.3
       unified: 11.0.5
       unist-util-visit: 5.0.0
     dev: false
@@ -9345,6 +9356,36 @@ packages:
       - supports-color
     dev: false
 
+  /fumadocs-core@12.5.3(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-Pirr/gEHn+/0EkWycai27krCtyrI1XXrnqcUj6AkUKpDGVnHACe7dxFfHGaEXW3qFvzmHrFL/NgBWASRf/8zWQ==}
+    peerDependencies:
+      next: '>= 14.1.0'
+      react: '>= 18'
+      react-dom: '>= 18'
+    dependencies:
+      '@formatjs/intl-localematcher': 0.5.4
+      '@shikijs/rehype': 1.10.3
+      '@shikijs/transformers': 1.10.3
+      flexsearch: 0.7.21
+      github-slugger: 2.0.0
+      negotiator: 0.6.3
+      next: 14.2.5(@playwright/test@1.45.0)(react-dom@18.3.1)(react@18.3.1)
+      npm-to-yarn: 2.2.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-remove-scroll: 2.5.10(@types/react@18.3.3)(react@18.3.1)
+      remark: 15.0.1
+      remark-gfm: 4.0.0
+      remark-mdx: 3.0.1
+      scroll-into-view-if-needed: 3.1.0
+      shiki: 1.10.3
+      swr: 2.2.5(react@18.3.1)
+      unist-util-visit: 5.0.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - supports-color
+    dev: false
+
   /fumadocs-docgen@1.1.0(typescript@5.4.5):
     resolution: {integrity: sha512-476elxwVBUnZV9LeTomGS0Tt37gNI7IRfLHl0V8sWBzEowgQ63f9sVFWFwQljoVKYTCIPP5ic5k/XVW0LkGMhw==}
     dependencies:
@@ -9373,8 +9414,8 @@ packages:
       - supports-color
     dev: false
 
-  /fumadocs-ui@12.4.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)(tailwindcss@3.4.4):
-    resolution: {integrity: sha512-FaakbxqEwqMbjfomk+ybs+cwJWo6NDeFDYDHMCCxar0M8fkfgOX2S8tQ+n+VHV5U0VVAarE5w2fSO1rCA9p1MA==}
+  /fumadocs-ui@12.5.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)(tailwindcss@3.4.4):
+    resolution: {integrity: sha512-FRYa/uZcbcGHdiGF0c3DGgHQUJ4liTW9r0k5oxOdWoel3uuMJvhmNu2jkrfg5n7Q1i84WK7vDYu2yCY2X46S6g==}
     peerDependencies:
       next: '>= 14.1.0'
       react: '>= 18'
@@ -9390,14 +9431,15 @@ packages:
       '@tailwindcss/typography': 0.5.13(tailwindcss@3.4.4)
       class-variance-authority: 0.7.0
       cmdk: 1.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
-      fumadocs-core: 12.4.1(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)
-      lucide-react: 0.400.0(react@18.3.1)
+      fumadocs-core: 12.5.3(@types/react@18.3.3)(next@14.2.5)(react-dom@18.3.1)(react@18.3.1)
+      lucide-react: 0.408.0(react@18.3.1)
       next: 14.2.5(@playwright/test@1.45.0)(react-dom@18.3.1)(react@18.3.1)
       next-themes: 0.3.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-medium-image-zoom: 5.2.5(react-dom@18.3.1)(react@18.3.1)
-      tailwind-merge: 2.3.0
+      react-medium-image-zoom: 5.2.8(react-dom@18.3.1)(react@18.3.1)
+      swr: 2.2.5(react@18.3.1)
+      tailwind-merge: 2.4.0
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -10969,8 +11011,8 @@ packages:
       react: 18.3.1
     dev: false
 
-  /lucide-react@0.400.0(react@18.3.1):
-    resolution: {integrity: sha512-rpp7pFHh3Xd93KHixNgB0SqThMHpYNzsGUu69UaQbSZ75Q/J3m5t6EhKyMT3m4w2WOxmJ2mY0tD3vebnXqQryQ==}
+  /lucide-react@0.408.0(react@18.3.1):
+    resolution: {integrity: sha512-8kETAAeWmOvtGIr7HPHm51DXoxlfkNncQ5FZWXR+abX8saQwMYXANWIkUstaYtcKSo/imOe/q+tVFA8ANzdSVA==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
@@ -13386,8 +13428,8 @@ packages:
       - supports-color
     dev: false
 
-  /react-medium-image-zoom@5.2.5(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-q8C++zcjZ5VMo3siCR4XaO6NMHo+zuykLbzAo2suQNScYA/MIbGOWhD1v2a4gKDV2zQZGinCiefYVe1oRAVKjQ==}
+  /react-medium-image-zoom@5.2.8(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-ivnubZi/2GQcMTneQy5gjLxEQLenKu081844qqZ7/JvLxSh5YPF1TLq7s+5rc54dKa0jjPT8Zm2tiC0Sda6eIA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -14825,6 +14867,10 @@ packages:
     resolution: {integrity: sha512-vkYrLpIP+lgR0tQCG6AP7zZXCTLc1Lnv/CCRT3BqJ9CZ3ui2++GPaGb1x/ILsINIMSYqqvrpqjUFsMNLlW99EA==}
     dependencies:
       '@babel/runtime': 7.24.5
+    dev: false
+
+  /tailwind-merge@2.4.0:
+    resolution: {integrity: sha512-49AwoOQNKdqKPd9CViyH5wJoSKsCDjUlzL8DxuGp3P1FsGY36NJDAa18jLZcaHAUUuTj+JB8IAo8zWgBNvBF7A==}
     dev: false
 
   /tailwindcss-animate@1.0.7(tailwindcss@3.4.4):
