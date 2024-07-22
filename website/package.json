@@ -21,7 +21,7 @@
     "fumadocs-core": "^12.4.1",
     "fumadocs-docgen": "^1.1.0",
     "fumadocs-ui": "^12.5.3",
-    "lucide-react": "^0.372.0",
+    "lucide-react": "^0.414.0",
     "next": "14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
