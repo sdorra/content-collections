@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.6.3
+
+### Patch Changes
+
+- [#224](https://github.com/sdorra/content-collections/pull/224) [`a1c42c1`](https://github.com/sdorra/content-collections/commit/a1c42c10fe2081b9a9b6019fce69f9cd99ef3514) Thanks [@sdorra](https://github.com/sdorra)! - Fix frontmatter parsing in certain situations on Windows.
+
 ## 0.6.2
 
 ### Patch Changes
