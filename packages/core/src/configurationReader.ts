@@ -5,6 +5,7 @@ import packageJson from "../package.json";
 import { AnyCollection } from "./config";
 import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { createExternalsPlugin } from "./externals";
 
 export type ErrorType = "Read" | "Compile";
 
@@ -46,20 +47,10 @@ function resolveCacheDir(config: string, options: Options) {
   return path.join(path.dirname(config), ".content-collections", "cache");
 }
 
-const externalPackagesPlugin = (configPath: string): esbuild.Plugin => ({
-  name: "external-packages",
-  setup: (build) => {
-    const filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/;
-    build.onResolve({ filter }, ({ path }) => {
-      const external = !path.includes(configPath);
-      return { path, external };
-    });
-  },
-});
 
 async function compile(configurationPath: string, outfile: string) {
   const plugins: Array<esbuild.Plugin> = [
-    externalPackagesPlugin(configurationPath),
+    createExternalsPlugin(configurationPath),
   ];
   if (process.env.NODE_ENV === "test") {
     plugins.push(importPathPlugin);
