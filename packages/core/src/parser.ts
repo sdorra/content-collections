@@ -4,11 +4,15 @@ import { parse, stringify } from "yaml";
 export type Parsers = typeof parsers;
 export type Parser = keyof typeof parsers;
 
+function parseYaml(content: string) {
+  return parse(content.trim());
+}
+
 function frontmatterParser(fileContent: string) {
   const { data, content } = matter(fileContent, {
     engines: {
       yaml: {
-        parse,
+        parse: parseYaml,
         stringify,
       },
     },
@@ -31,6 +35,6 @@ export const parsers = {
   },
   yaml: {
     hasContent: false,
-    parse,
+    parse: parseYaml,
   },
 } as const;
