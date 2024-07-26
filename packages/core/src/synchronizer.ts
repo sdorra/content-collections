@@ -27,8 +27,8 @@ export function createSynchronizer<T extends FileCollection>(
     const resolvedFilePath = path.resolve(filePath);
 
     let relativePath = resolvedFilePath.slice(resolvedCollectionPath.length);
-    if (relativePath.startsWith("/")) {
-      relativePath = relativePath.slice(1);
+    if (relativePath.startsWith(path.sep)) {
+      relativePath = relativePath.slice(path.sep.length);
     }
     return relativePath;
   }
