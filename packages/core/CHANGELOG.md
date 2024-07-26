@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.6.4
+
+### Patch Changes
+
+- [#228](https://github.com/sdorra/content-collections/pull/228) [`8dc1da0`](https://github.com/sdorra/content-collections/commit/8dc1da0481d52a39f04fc6d153b945a8865eb6fe) Thanks [@sdorra](https://github.com/sdorra)! - Fixed watch on windows
+
 ## 0.6.3
 
 ### Patch Changes
