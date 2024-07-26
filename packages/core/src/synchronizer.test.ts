@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vitest } from "vitest";
 import { createSynchronizer } from "./synchronizer";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 
@@ -318,4 +318,79 @@ describe("synchronizer", () => {
 
     expect(collection.files.length).toBe(0);
   });
+
+  describe("posix", () => {
+
+    it("should add a new file", async () => {
+
+      vitest.mock("node:path", async (importOriginal) => {
+        const origin = await importOriginal<typeof import("node:path")>();
+        return {
+          default: {
+            ...origin,
+            sep: origin.posix.sep,
+            resolve: origin.posix.resolve,
+          },
+        };
+      });
+
+      const collection = {
+        directory: "content",
+        include: "**/*.md",
+        files: [],
+      };
+
+      const synchronizer = createSynchronizer(
+        createCollectionFileReader({
+          data: {
+            content: "changed",
+          },
+          path: "new.md",
+        }),
+        [collection]
+      );
+      expect(await synchronizer.changed("content/new.md")).toBe(true);
+
+      expect(collection.files.length).toBe(1);
+    });
+
+  });
+
+  describe("windows", () => {
+
+    it("should add a new file", async () => {
+
+      vitest.mock("node:path", async (importOriginal) => {
+        const origin = await importOriginal<typeof import("node:path")>();
+        return {
+          default: {
+            ...origin,
+            sep: origin.win32.sep,
+            resolve: origin.win32.resolve,
+          },
+        };
+      });
+
+      const collection = {
+        directory: "content",
+        include: "**/*.md",
+        files: [],
+      };
+
+      const synchronizer = createSynchronizer(
+        createCollectionFileReader({
+          data: {
+            content: "changed",
+          },
+          path: "new.md",
+        }),
+        [collection]
+      );
+      expect(await synchronizer.changed("content\\new.md")).toBe(true);
+
+      expect(collection.files.length).toBe(1);
+    });
+
+  });
+
 });
