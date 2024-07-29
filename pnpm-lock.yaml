@@ -809,8 +809,8 @@ importers:
   website:
     dependencies:
       '@fumadocs/content-collections':
-        specifier: ^1.0.3
-        version: 1.0.3(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@12.4.1)
+        specifier: ^1.1.0
+        version: 1.1.0(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@12.4.1)
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -3114,8 +3114,8 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@fumadocs/content-collections@1.0.3(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@12.4.1):
-    resolution: {integrity: sha512-FFpsiLHoyUv/aMdoRyt7BuHEXjb8K8e4vZ9wBhQ/BzshelmhRR+oAs4j70kj3AFrO5uhiY1CQgEATKkB43P/lg==}
+  /@fumadocs/content-collections@1.1.0(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@12.4.1):
+    resolution: {integrity: sha512-DlVZGC58gQrARx3uffMp1sBWqal0SEvHkpiAQXCB/5V15yeZtzFnQ46JVgnIIZA0/Dl69lxsF6T91omfPKo1sQ==}
     peerDependencies:
       '@content-collections/core': 0.x.x
       '@content-collections/mdx': 0.x.x
