@@ -25,7 +25,7 @@
     "next": "14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "shiki": "^1.11.0",
+    "shiki": "^1.12.0",
     "tailwind-merge": "^2.2.2",
     "typewriter-effect": "^2.21.0"
   },
@@ -33,7 +33,7 @@
     "@content-collections/core": "workspace:*",
     "@content-collections/mdx": "workspace:*",
     "@content-collections/next": "workspace:*",
-    "@shikijs/transformers": "^1.11.0",
+    "@shikijs/transformers": "^1.12.0",
     "@tailwindcss/typography": "^0.5.12",
     "@types/hast": "^3.0.4",
     "@types/node": "^20",
