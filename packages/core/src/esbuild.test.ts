@@ -3,17 +3,17 @@ import { tmpdirTest } from "./__tests__/tmpdir";
 import path from "node:path";
 import { compile } from "./esbuild";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { copyFile, readFile } from "node:fs/promises";
 import bundleRequire from "bundle-require";
+
+type Params = {
+  tsConfig?: unknown;
+};
 
 const params = vi.hoisted(() => {
   return {
-    skipTsConfigWithDirectory: false,
     tsConfig: undefined,
-  } as {
-    skipTsConfigWithDirectory: boolean;
-    tsConfig: any;
-  };
+  } as Params;
 });
 
 vi.mock("bundle-require", async (importOriginal) => {
@@ -25,9 +25,6 @@ vi.mock("bundle-require", async (importOriginal) => {
         return params.tsConfig;
       }
       if (directory) {
-        if (params.skipTsConfigWithDirectory) {
-          return;
-        }
         return orig.loadTsConfig(directory);
       }
       return orig.loadTsConfig();
@@ -37,7 +34,6 @@ vi.mock("bundle-require", async (importOriginal) => {
 
 describe("esbuild", () => {
   afterEach(() => {
-    params.skipTsConfigWithDirectory = false;
     params.tsConfig = undefined;
   });
 
@@ -93,9 +89,15 @@ describe("esbuild", () => {
   tmpdirTest(
     "should use loadTsConfig without parameters",
     async ({ tmpdir }) => {
-      params.skipTsConfigWithDirectory = true;
-      const output = await compileAndImportFile(tmpdir, "simple");
-      expect(output).toBe("hello world");
+      const source = path.join(__dirname, "__tests__", "esbuild", "simple.ts");
+      const target = path.join(tmpdir, "simple.ts");
+      await copyFile(source, target);
+
+      const config = path.join(tmpdir, "config.mjs");
+      await compile(target, config);
+
+      const mod = await import(config);
+      expect(mod.default).toBe("hello world");
     }
   );
 
@@ -110,8 +112,7 @@ describe("esbuild", () => {
 
   tmpdirTest("should use empty paths", async ({ tmpdir }) => {
     params.tsConfig = {
-      data: {
-      },
+      data: {},
     };
     const output = await compileAndImportFile(tmpdir, "simple");
     expect(output).toBe("hello world");

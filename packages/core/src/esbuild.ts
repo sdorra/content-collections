@@ -13,6 +13,10 @@ function tsconfigResolvePaths(configPath: string) {
   return tsconfig?.data?.compilerOptions?.paths || {};
 }
 
+// we treat every package (everything starting . or ..) as external
+// except for typescript aliases we led esbuild to resolve them,
+// but if the alias is dynamic import we treat it as external as well.
+
 function createExternalsPlugin(configPath: string): Plugin {
   const resolvedPaths = tsconfigResolvePaths(configPath);
   const resolvePatterns = tsconfigPathsToRegExp(resolvedPaths);
