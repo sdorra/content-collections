@@ -1,10 +1,9 @@
-import * as esbuild from "esbuild";
 import fs from "node:fs/promises";
 import path from "node:path";
-import packageJson from "../package.json";
 import { AnyCollection } from "./config";
 import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { compile } from "./esbuild";
 
 export type ErrorType = "Read" | "Compile";
 
@@ -23,14 +22,6 @@ export type InternalConfiguration = {
   generateTypes?: boolean;
 };
 
-const importPathPlugin: esbuild.Plugin = {
-  name: "import-path",
-  setup(build) {
-    build.onResolve({ filter: /^\@content-collections\/core$/ }, () => {
-      return { path: path.join(__dirname, "index.ts"), external: true };
-    });
-  },
-};
 
 export type Options = {
   configName: string;
@@ -46,35 +37,6 @@ function resolveCacheDir(config: string, options: Options) {
   return path.join(path.dirname(config), ".content-collections", "cache");
 }
 
-const externalPackagesPlugin = (configPath: string): esbuild.Plugin => ({
-  name: "external-packages",
-  setup: (build) => {
-    const filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/;
-    build.onResolve({ filter }, ({ path }) => {
-      const external = !path.includes(configPath);
-      return { path, external };
-    });
-  },
-});
-
-async function compile(configurationPath: string, outfile: string) {
-  const plugins: Array<esbuild.Plugin> = [
-    externalPackagesPlugin(configurationPath),
-  ];
-  if (process.env.NODE_ENV === "test") {
-    plugins.push(importPathPlugin);
-  }
-
-  await esbuild.build({
-    entryPoints: [configurationPath],
-    packages: "external",
-    bundle: true,
-    platform: "node",
-    format: "esm",
-    plugins,
-    outfile,
-  });
-}
 
 // errorHandler does not make sense here:
 // because if the configuration is invalid, the program should exit
