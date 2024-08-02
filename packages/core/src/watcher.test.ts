@@ -6,6 +6,36 @@ import { Events, createEmitter } from "./events";
 import { tmpdirTest } from "./__tests__/tmpdir";
 import path from "node:path";
 
+import * as watcherImpl from "@parcel/watcher";
+import { set } from "zod";
+
+type Params = {
+  subscribeError?: Error;
+};
+
+const params = vi.hoisted(() => {
+  return {
+    subscribeError: undefined,
+  } as Params;
+});
+
+vi.mock("@parcel/watcher", async (importOriginal) => {
+  const orig = await importOriginal<typeof watcherImpl>();
+  return {
+    ...orig,
+    subscribe: async (
+      path: string,
+      callback: watcherImpl.SubscribeCallback
+    ) => {
+      if (params.subscribeError) {
+        callback(params.subscribeError, []);
+      } else {
+        return orig.subscribe(path, callback);
+      }
+    },
+  };
+});
+
 describe("watcher", () => {
   const events: Array<string> = [];
   let build = false;
@@ -42,6 +72,7 @@ describe("watcher", () => {
     emitter = createEmitter<Events>();
     events.length = 0;
     build = false;
+    params.subscribeError = undefined;
   });
 
   const mkdir = async (baseDirectory: string, pathName: string) => {
@@ -52,7 +83,7 @@ describe("watcher", () => {
   };
 
   tmpdirTest("should not build", async ({ tmpdir }) => {
-    const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+    const watcher = await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
 
     await watcher.unsubscribe();
 
@@ -60,7 +91,7 @@ describe("watcher", () => {
   });
 
   tmpdirTest("should not build for untracked file", async ({ tmpdir }) => {
-    const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+    const watcher = await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
 
     // we create one file and wait for the event
     // because we receive often a event for the directory
@@ -78,7 +109,7 @@ describe("watcher", () => {
   });
 
   tmpdirTest("should emit create event", async ({ tmpdir }) => {
-    const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+    const watcher = await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
     await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
     await vi.waitUntil(() => findEvent("create", tmpdir, "foo"));
@@ -90,7 +121,7 @@ describe("watcher", () => {
   });
 
   tmpdirTest("should emit update event", async ({ tmpdir }) => {
-    const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+    const watcher = await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
 
     await fs.writeFile(path.join(tmpdir, "foo"), "foo", "utf-8");
     await vi.waitUntil(() => findEvent("create", tmpdir, "foo"), 2000);
@@ -107,7 +138,7 @@ describe("watcher", () => {
   tmpdirTest("should emit delete event", async ({ tmpdir }) => {
     await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
-    const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+    const watcher = await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
     await fs.rm(path.join(tmpdir, "foo"));
 
     await vi.waitUntil(() => findEvent("delete", tmpdir, "foo"));
@@ -124,7 +155,13 @@ describe("watcher", () => {
       const one = await mkdir(tmpdir, "one");
       const two = await mkdir(tmpdir, "two");
 
-      const watcher = await createWatcher(emitter, [one, two], syncFn, buildFn);
+      const watcher = await createWatcher(
+        emitter,
+        [],
+        [one, two],
+        syncFn,
+        buildFn
+      );
       await fs.writeFile(path.join(one, "foo"), "foo");
       await fs.writeFile(path.join(two, "bar"), "bar");
 
@@ -146,7 +183,13 @@ describe("watcher", () => {
       const foo = await mkdir(tmpdir, "foo");
       const bar = await mkdir(tmpdir, "bar");
 
-      const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+      const watcher = await createWatcher(
+        emitter,
+        [],
+        [tmpdir],
+        syncFn,
+        buildFn
+      );
       await fs.writeFile(path.join(foo, "baz"), "baz");
       await fs.writeFile(path.join(bar, "qux"), "qux");
 
@@ -170,7 +213,13 @@ describe("watcher", () => {
         localEvents.push(`${modification}:${filePath}`)
       );
 
-      const watcher = await createWatcher(emitter, [tmpdir], syncFn, buildFn);
+      const watcher = await createWatcher(
+        emitter,
+        [],
+        [tmpdir],
+        syncFn,
+        buildFn
+      );
       await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
       await vi.waitUntil(() => findEvent("create", tmpdir, "foo", localEvents));
@@ -178,6 +227,71 @@ describe("watcher", () => {
       await watcher.unsubscribe();
 
       expect(findEvent("create", tmpdir, "foo", localEvents)).toBeTruthy();
+    }
+  );
+
+  tmpdirTest("should emit an error, if subscribe fails", async ({ tmpdir }) => {
+    params.subscribeError = new Error("subscribe error");
+
+    const localEvents: Array<string> = [];
+    emitter.on("watcher:subscribe-error", ({ paths, error }) => {
+      localEvents.push(`${error.message}:${paths.join(",")}`);
+    });
+
+    await createWatcher(emitter, [], [tmpdir], syncFn, buildFn);
+
+    await vi.waitUntil(() => localEvents.length > 0);
+
+    expect(localEvents[0]).toBe(`subscribe error:${tmpdir}`);
+  });
+
+  tmpdirTest(
+    "should emit config change event to event emitter",
+    async ({ tmpdir }) => {
+      const localEvents: Array<string> = [];
+      emitter.on("watcher:config-changed", ({ modification, filePath }) =>
+        localEvents.push(`${modification}:${filePath}`)
+      );
+
+      const config = path.join(tmpdir, "config.ts");
+
+      const watcher = await createWatcher(
+        emitter,
+        [config],
+        [],
+        syncFn,
+        buildFn
+      );
+      await fs.writeFile(config, "foo");
+      await vi.waitUntil(() => findEvent("create", tmpdir, "config.ts", localEvents));
+      await watcher.unsubscribe();
+
+      expect(findEvent("create", tmpdir, "config.ts", localEvents)).toBeTruthy();
+    }
+  );
+
+  tmpdirTest(
+    "should build after config change",
+    async ({ tmpdir }) => {
+      const localEvents: Array<string> = [];
+      emitter.on("watcher:config-changed", ({ modification, filePath }) =>
+        localEvents.push(`${modification}:${filePath}`)
+      );
+
+      const config = path.join(tmpdir, "config.ts");
+
+      const watcher = await createWatcher(
+        emitter,
+        [config],
+        [],
+        syncFn,
+        buildFn
+      );
+      await fs.writeFile(config, "foo");
+      await vi.waitUntil(() => findEvent("create", tmpdir, "config.ts", localEvents));
+      await watcher.unsubscribe();
+
+      expect(build).toBe(true);
     }
   );
 });

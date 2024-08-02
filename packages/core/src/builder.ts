@@ -12,10 +12,15 @@ import { isDefined } from "./utils";
 import { createSynchronizer } from "./synchronizer";
 import path from "node:path";
 import { createWatcher, Watcher } from "./watcher";
-import { Emitter, Events, createEmitter } from "./events";
+import { type Emitter, createEmitter } from "./events";
 import { createCacheManager } from "./cache";
 
 export type BuilderEvents = {
+  "builder:created": {
+    createdAt: number;
+    configurationPath:  string;
+    outputDirectory: string;
+  };
   "builder:start": {
     startedAt: number;
   };
@@ -23,7 +28,6 @@ export type BuilderEvents = {
     startedAt: number;
     endedAt: number;
   };
-  "builder:config-changed": {};
 };
 
 type Options = ConfigurationOptions & {
@@ -37,58 +41,70 @@ function resolveOutputDir(baseDirectory: string, options: Options) {
   return path.join(baseDirectory, ".content-collections", "generated");
 }
 
+type InternalBuilder = Awaited<ReturnType<typeof createInternalBuilder>>;
+
 export async function createBuilder(
   configurationPath: string,
   options: Options = {
     configName: defaultConfigName,
-  }
+  },
+  emitter: Emitter = createEmitter()
 ) {
-  const emitter = createEmitter<Events>();
-
   const readConfiguration = createConfigurationReader();
   const baseDirectory = path.dirname(configurationPath);
   const directory = resolveOutputDir(baseDirectory, options);
 
-  let internalBuilder = await createInternalBuilder(
-    emitter,
-    baseDirectory,
-    directory,
-    await readConfiguration(configurationPath, options)
-  );
+  emitter.emit("builder:created", {
+    createdAt: Date.now(),
+    configurationPath,
+    outputDirectory: directory,
+  });
 
-  let watcher: Watcher | undefined = undefined;
+  let internalBuilder: InternalBuilder | null = null;
+  let watcher: Watcher | null = null;
 
-  emitter.on("builder:config-changed", async () => {
+  const build = async () => {
+    const builder = await useBuilder();
+    return builder.build();
+  };
 
-    await watcher?.unsubscribe();
+  const useBuilder = async () => {
+    if (internalBuilder === null) {
+      internalBuilder = await createInternalBuilder(
+        emitter,
+        baseDirectory,
+        directory,
+        await readConfiguration(configurationPath, options),
+        build
+      );
 
-    internalBuilder = await createInternalBuilder(
-      emitter,
-      baseDirectory,
-      directory,
-      await readConfiguration(configurationPath, options)
-    );
-
-    if (watcher) {
-      watcher = await internalBuilder.watch();
+      if (watcher) {
+        watcher = await internalBuilder.watch();
+      }
     }
+    return internalBuilder;
+  };
 
-    await internalBuilder.build();
+  emitter.on("watcher:config-changed", () => {
+    watcher?.unsubscribe();
+    internalBuilder = null;
   });
 
   return {
-    build: () => internalBuilder.build(),
-    sync: (modification: Modification, filePath: string) =>
-      internalBuilder.sync(modification, filePath),
+    build,
+    sync: async (modification: Modification, filePath: string) => {
+      if (!internalBuilder) {
+        return false;
+      }
+      const builder = await useBuilder();
+      return builder.sync(modification, filePath);
+    },
+
     watch: async () => {
-      watcher = await internalBuilder.watch();
+      const builder = await useBuilder();
+      watcher = await builder.watch();
 
       return {
-        // TODO: find a better way for the test
-        get paths() {
-          // @ts-ignore - workaround to fix text
-          return watcher?.paths;
-        },
         unsubscribe: async () => {
           if (watcher) {
             await watcher.unsubscribe();
@@ -104,9 +120,9 @@ export async function createInternalBuilder(
   emitter: Emitter,
   baseDirectory: string,
   directory: string,
-  configuration: InternalConfiguration
+  configuration: InternalConfiguration,
+  buildFn: () => Promise<void>
 ) {
-  // TODO: we should not collect files before the user has a chance to register listeners
   const collector = createCollector(emitter, baseDirectory);
   const writer = await createWriter(directory);
 
@@ -126,15 +142,10 @@ export async function createInternalBuilder(
     baseDirectory,
     configuration.checksum
   );
+
   const transform = createTransformer(emitter, cacheManager);
 
   async function sync(modification: Modification, filePath: string) {
-    // check if filepath is the configuration file
-    if (path.resolve(filePath) === path.resolve(configuration.path)) {
-      emitter.emit("builder:config-changed", {});
-      return false;
-    }
-
     if (modification === "delete") {
       return synchronizer.deleted(filePath);
     }
@@ -168,8 +179,9 @@ export async function createInternalBuilder(
     const paths = resolved.map((collection) =>
       path.join(baseDirectory, collection.directory)
     );
-    const watcher = await createWatcher(emitter, paths, sync, build);
-    return watcher;
+    // TODO: what about imported parts of configuration?
+    const configPaths = [configuration.path];
+    return await createWatcher(emitter, configPaths, paths, sync, buildFn);
   }
 
   return {

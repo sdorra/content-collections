@@ -3,20 +3,7 @@ import { createBuilder as origCreateBuilder } from "./builder";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { Emitter } from "./events";
-
-// we mock the watcher module, because it causes problems in some situations
-// we test the watcher module separately
-vi.mock("./watcher", async () => {
-  return {
-    createWatcher: async (_: Emitter, paths: Array<string>) => {
-      return {
-        paths,
-        unsubscribe: async () => {},
-      };
-    },
-  };
-});
+import { createEmitter, type Emitter } from "./events";
 
 describe("builder", () => {
   afterEach(async () => {
@@ -42,6 +29,36 @@ describe("builder", () => {
       outputDir,
     };
   }
+
+  it("should create builder with the default output directory", async () => {
+    const configPath = path.join(__dirname, "__tests__", "config.002.ts");
+    const emitter: Emitter = createEmitter();
+
+    const events: Array<{
+      outputDirectory: string;
+    }> = [];
+    emitter.on("builder:created", (event) => {
+      events.push(event);
+    });
+
+    await origCreateBuilder(
+      configPath,
+      {
+        configName: "default-config.mjs",
+      },
+      emitter
+    );
+
+    await vi.waitUntil(() => events.length > 0);
+
+    const event = events[0]
+    if (!event) {
+      throw new Error("Event is undefined");
+    }
+    expect(event.outputDirectory).toBe(
+      path.join(__dirname, "__tests__", ".content-collections", "generated")
+    );
+  });
 
   describe("build", () => {
     it("should build", async () => {
@@ -93,6 +110,8 @@ describe("builder", () => {
 
       expect(events).toEqual(["builder:start", "builder:end"]);
     });
+
+    it("should resolve to default output directory", async () => {});
   });
 
   describe("sync", () => {
@@ -157,9 +176,50 @@ describe("builder", () => {
 
       expect(allPosts.length).toBe(0);
     });
+
+    it("should return false on sync without previous build", async () => {
+      const builder = await origCreateBuilder(path.join("tmp", "config.ts"), {
+        configName: "sync.no.build.ts",
+        cacheDir: path.join("tmp", "cache"),
+        outputDir: path.join("tmp", "output-no-build"),
+      });
+
+      const newFile = path.join("tmp", "sources", "posts", "second.md");
+      await fs.writeFile(newFile, "---\ntitle: Second\n---\nSecond post");
+
+      expect(await builder.sync("create", newFile)).toBe(false);
+    });
   });
 
   describe("watch", () => {
+    const watcherOptions = vi.hoisted(() => ({
+      paths: [] as Array<string>,
+      configPaths: [] as Array<string>,
+    }));
+
+    // we mock the watcher module, because it causes problems in some situations
+    // we test the watcher module separately
+    vi.mock("./watcher", async () => {
+      return {
+        createWatcher: async (
+          _: Emitter,
+          configPaths: Array<string>,
+          paths: Array<string>
+        ) => {
+          watcherOptions.paths = paths;
+          watcherOptions.configPaths = configPaths;
+          return {
+            unsubscribe: vi.fn(),
+          };
+        },
+      };
+    });
+
+    beforeEach(() => {
+      watcherOptions.paths = [];
+      watcherOptions.configPaths = [];
+    });
+
     it("should return watcher", async () => {
       const { builder } = await createBuilder("config.002");
 
@@ -170,11 +230,99 @@ describe("builder", () => {
     it("should pass the collection directories to the watcher", async () => {
       const { builder } = await createBuilder("config.002");
 
-      const watcher = await builder.watch();
-      // @ts-ignore our mock returns a watcher with a paths property
-      expect(watcher.paths).toEqual([
+      await builder.watch();
+
+      expect(watcherOptions.paths).toEqual([
         path.join(__dirname, "__tests__", "sources", "posts"),
       ]);
-    })
+    });
+
+    it("should pass the configuration paths to the watcher", async () => {
+      const { builder } = await createBuilder("config.002");
+
+      const watcher = await builder.watch();
+      await watcher.unsubscribe();
+
+      expect(watcherOptions.configPaths).toEqual([
+        path.join(__dirname, "__tests__", "config.002.ts"),
+      ]);
+    });
+
+    it("should recompile the configuration after the configuration has changed", async () => {
+      const configPath = path.join(__dirname, "__tests__", "config.002.ts");
+      const outputDir = path.join(
+        __dirname,
+        "__tests__",
+        ".content-collections",
+        "generated-config-rebuild-on-config-change"
+      );
+
+      const emitter = createEmitter();
+
+      const builder = await origCreateBuilder(
+        configPath,
+        {
+          configName: "rebuild-on-change.mjs",
+          outputDir,
+        },
+        emitter
+      );
+
+      await builder.build();
+
+      const compiledConfiguration = path.join(
+        __dirname,
+        "__tests__",
+        ".content-collections",
+        "cache",
+        "rebuild-on-change.mjs"
+      );
+
+      const { mtimeMs } = await fs.lstat(compiledConfiguration);
+
+      emitter.emit("watcher:config-changed", {
+        filePath: configPath,
+        modification: "create",
+      });
+
+      await builder.build();
+
+      const { mtimeMs: newMtimeMs } = await fs.lstat(compiledConfiguration);
+
+      expect(newMtimeMs).toBeGreaterThan(mtimeMs);
+    });
+
+    it("should reconnect watcher after configuration has changed", async () => {
+      const configPath = path.join(__dirname, "__tests__", "config.002.ts");
+      const outputDir = path.join(
+        __dirname,
+        "__tests__",
+        ".content-collections",
+        "reconnect-watcher-on-config-change"
+      );
+
+      const emitter = createEmitter();
+
+      const builder = await origCreateBuilder(
+        configPath,
+        {
+          configName: "reconnect-watcher-on-config-change.mjs",
+          outputDir,
+        },
+        emitter
+      );
+
+      await builder.build();
+      const watcher = await builder.watch();
+
+      emitter.emit("watcher:config-changed", {
+        filePath: configPath,
+        modification: "create",
+      });
+
+      await builder.build();
+
+      await watcher.unsubscribe();
+    });
   });
 });
