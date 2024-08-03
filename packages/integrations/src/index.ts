@@ -25,9 +25,9 @@ export function configureLogging(builder: Builder) {
   builder.on("watcher:file-changed", (event) => {
     const relativePath = path.relative(process.cwd(), event.filePath);
     if (event.modification === "delete") {
-      console.log("... file deleted", relativePath);
+      console.log("... file", relativePath, "deleted");
     } else {
-      console.log("... file changed", relativePath);
+      console.log("... file", relativePath, "changed");
     }
   });
 
