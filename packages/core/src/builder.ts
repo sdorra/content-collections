@@ -2,6 +2,7 @@ import {
   createConfigurationReader,
   Options as ConfigurationOptions,
   defaultConfigName,
+  InternalConfiguration,
 } from "./configurationReader";
 import { createCollector } from "./collector";
 import { Modification } from "./types";
@@ -10,11 +11,16 @@ import { createTransformer } from "./transformer";
 import { isDefined } from "./utils";
 import { createSynchronizer } from "./synchronizer";
 import path from "node:path";
-import { createWatcher } from "./watcher";
-import { Events, createEmitter } from "./events";
+import { createWatcher, Watcher } from "./watcher";
+import { type Emitter, createEmitter } from "./events";
 import { createCacheManager } from "./cache";
 
 export type BuilderEvents = {
+  "builder:created": {
+    createdAt: number;
+    configurationPath: string;
+    outputDirectory: string;
+  };
   "builder:start": {
     startedAt: number;
   };
@@ -35,20 +41,88 @@ function resolveOutputDir(baseDirectory: string, options: Options) {
   return path.join(baseDirectory, ".content-collections", "generated");
 }
 
+type InternalBuilder = Awaited<ReturnType<typeof createInternalBuilder>>;
+
 export async function createBuilder(
   configurationPath: string,
   options: Options = {
     configName: defaultConfigName,
-  }
+  },
+  emitter: Emitter = createEmitter()
 ) {
-  const emitter = createEmitter<Events>();
-
   const readConfiguration = createConfigurationReader();
-  const configuration = await readConfiguration(configurationPath, options);
   const baseDirectory = path.dirname(configurationPath);
   const directory = resolveOutputDir(baseDirectory, options);
 
-  // TODO: we should not collect files before the user has a chance to register listeners
+  emitter.emit("builder:created", {
+    createdAt: Date.now(),
+    configurationPath,
+    outputDirectory: directory,
+  });
+
+  let internalBuilder: InternalBuilder | null = null;
+  let watcher: Watcher | null = null;
+
+  const build = async () => {
+    const builder = await useBuilder();
+    return builder.build();
+  };
+
+  const useBuilder = async () => {
+    if (internalBuilder === null) {
+      internalBuilder = await createInternalBuilder(
+        emitter,
+        baseDirectory,
+        directory,
+        await readConfiguration(configurationPath, options),
+        build
+      );
+
+      if (watcher) {
+        watcher = await internalBuilder.watch();
+      }
+    }
+    return internalBuilder;
+  };
+
+  emitter.on("watcher:config-changed", () => {
+    watcher?.unsubscribe();
+    internalBuilder = null;
+  });
+
+  return {
+    build,
+    sync: async (modification: Modification, filePath: string) => {
+      if (!internalBuilder) {
+        return false;
+      }
+      const builder = await useBuilder();
+      return builder.sync(modification, filePath);
+    },
+
+    watch: async () => {
+      const builder = await useBuilder();
+      watcher = await builder.watch();
+
+      return {
+        unsubscribe: async () => {
+          if (watcher) {
+            await watcher.unsubscribe();
+          }
+        },
+      };
+    },
+    on: emitter.on,
+  };
+}
+
+export async function createInternalBuilder(
+  emitter: Emitter,
+  baseDirectory: string,
+  directory: string,
+  configuration: InternalConfiguration,
+  buildFn: () => Promise<void>
+) {
   const collector = createCollector(emitter, baseDirectory);
   const writer = await createWriter(directory);
 
@@ -64,7 +138,11 @@ export async function createBuilder(
     baseDirectory
   );
 
-  const cacheManager = await createCacheManager(baseDirectory, configuration.checksum);
+  const cacheManager = await createCacheManager(
+    baseDirectory,
+    configuration.checksum
+  );
+
   const transform = createTransformer(emitter, cacheManager);
 
   async function sync(modification: Modification, filePath: string) {
@@ -101,15 +179,19 @@ export async function createBuilder(
     const paths = resolved.map((collection) =>
       path.join(baseDirectory, collection.directory)
     );
-    const watcher = await createWatcher(emitter, paths, sync, build);
-    return watcher;
+    return await createWatcher(
+      emitter,
+      configuration.inputPaths,
+      paths,
+      sync,
+      buildFn
+    );
   }
 
   return {
     sync,
     build,
     watch,
-    on: emitter.on,
   };
 }
 

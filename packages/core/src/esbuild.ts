@@ -53,7 +53,7 @@ export async function compile(configurationPath: string, outfile: string) {
     plugins.push(importPathPlugin);
   }
 
-  await build({
+  const result = await build({
     entryPoints: [configurationPath],
     packages: "external",
     bundle: true,
@@ -61,5 +61,8 @@ export async function compile(configurationPath: string, outfile: string) {
     format: "esm",
     plugins,
     outfile,
+    metafile: true,
   });
+
+  return Object.keys(result.metafile.inputs);
 }

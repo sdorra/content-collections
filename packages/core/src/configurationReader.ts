@@ -18,10 +18,10 @@ export class ConfigurationError extends Error {
 export type InternalConfiguration = {
   collections: Array<AnyCollection>;
   path: string;
+  inputPaths: Array<string>;
   checksum: string;
   generateTypes?: boolean;
 };
-
 
 export type Options = {
   configName: string;
@@ -36,7 +36,6 @@ function resolveCacheDir(config: string, options: Options) {
   }
   return path.join(path.dirname(config), ".content-collections", "cache");
 }
-
 
 // errorHandler does not make sense here:
 // because if the configuration is invalid, the program should exit
@@ -61,28 +60,29 @@ export function createConfigurationReader() {
     const outfile = path.join(cacheDir, options.configName);
 
     try {
-      await compile(configurationPath, outfile);
+      const configurationPaths = await compile(configurationPath, outfile);
+
+      const module = await import(
+        `file://${path.resolve(outfile)}?x=${Date.now()}`
+      );
+
+      const hash = createHash("sha256");
+      hash.update(await fs.readFile(outfile, "utf-8"));
+      const checksum = hash.digest("hex");
+
+      return {
+        ...module.default,
+        path: configurationPath,
+        inputPaths: configurationPaths,
+        generateTypes: true,
+        checksum,
+      };
     } catch (error) {
       throw new ConfigurationError(
         "Compile",
         `configuration file ${configurationPath} is invalid: ${error}`
       );
     }
-
-    const module = await import(
-      `file://${path.resolve(outfile)}?x=${Date.now()}`
-    );
-
-    const hash = createHash("sha256");
-    hash.update(await fs.readFile(outfile, "utf-8"));
-    const checksum = hash.digest("hex");
-
-    return {
-      ...module.default,
-      path: configurationPath,
-      generateTypes: true,
-      checksum,
-    };
   };
 }
 

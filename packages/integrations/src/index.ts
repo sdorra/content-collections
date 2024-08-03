@@ -14,6 +14,8 @@ export function configureLogging(builder: Builder) {
     );
   });
 
+  builder.on("watcher:config-changed", () => console.log("... config changed"));
+
   builder.on("watcher:file-changed", (event) => {
     const relativePath = path.relative(process.cwd(), event.filePath);
     if (event.modification === "delete") {

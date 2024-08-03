@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateTypeName, isDefined } from "./utils";
+import { generateTypeName, isDefined, removeChildPaths } from "./utils";
 
 describe("generateTypeName", () => {
 
@@ -43,6 +43,40 @@ describe("isDefined", () => {
     const values = [1, 2, undefined, 3, null];
     const defined = values.filter(isDefined);
     expect(defined).toEqual([1, 2, 3]);
+  });
+
+});
+
+describe("removeChildPaths", () => {
+
+  it("should remove a/b", () => {
+    const paths = ["a", "a/b"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a"]);
+  });
+
+  it("should remove a/b and a/b/c", () => {
+    const paths = ["a", "a/b", "a/b/c"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a"]);
+  });
+
+  it("should remove a/b and a/c", () => {
+    const paths = ["a", "a/b", "a/c"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a"]);
+  });
+
+  it("should keep b", () => {
+    const paths = ["a", "b"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a", "b"]);
+  });
+
+  it("should keep a and b", () => {
+    const paths = ["a", "a/b", "b"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a", "b"]);
   });
 
 });
