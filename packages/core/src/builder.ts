@@ -18,7 +18,7 @@ import { createCacheManager } from "./cache";
 export type BuilderEvents = {
   "builder:created": {
     createdAt: number;
-    configurationPath:  string;
+    configurationPath: string;
     outputDirectory: string;
   };
   "builder:start": {
@@ -179,9 +179,13 @@ export async function createInternalBuilder(
     const paths = resolved.map((collection) =>
       path.join(baseDirectory, collection.directory)
     );
-    // TODO: what about imported parts of configuration?
-    const configPaths = [configuration.path];
-    return await createWatcher(emitter, configPaths, paths, sync, buildFn);
+    return await createWatcher(
+      emitter,
+      configuration.inputPaths,
+      paths,
+      sync,
+      buildFn
+    );
   }
 
   return {

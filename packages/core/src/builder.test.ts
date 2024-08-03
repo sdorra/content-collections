@@ -244,7 +244,7 @@ describe("builder", () => {
       await watcher.unsubscribe();
 
       expect(watcherOptions.configPaths).toEqual([
-        path.join(__dirname, "__tests__", "config.002.ts"),
+        path.join("src", "__tests__", "config.002.ts"),
       ]);
     });
 

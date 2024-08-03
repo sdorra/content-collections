@@ -117,4 +117,22 @@ describe("esbuild", () => {
     const output = await compileAndImportFile(tmpdir, "simple");
     expect(output).toBe("hello world");
   });
+
+  tmpdirTest("should return configuration path", async ({ tmpdir }) => {
+    const configPath = path.join(__dirname, "__tests__", "esbuild", "simple.ts");
+    const output = path.join(tmpdir, "out.mjs");
+
+    const paths = await compile(configPath, output);
+    expect(paths.map(p => path.resolve(p))).toEqual([configPath]);
+  });
+
+  tmpdirTest("should return configuration and imported path", async ({ tmpdir }) => {
+    const directory = path.join(__dirname, "__tests__", "esbuild");
+    const configPath = path.join(directory, "internal.ts");
+    const imported = path.join(directory, "simple.ts");
+    const output = path.join(tmpdir, "out.mjs");
+
+    const paths = await compile(configPath, output);
+    expect(paths.map(p => path.resolve(p))).toEqual([imported, configPath]);
+  });
 });
