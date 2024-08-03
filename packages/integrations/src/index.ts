@@ -9,7 +9,13 @@ export function configureLogging(builder: Builder) {
 
   builder.on("builder:end", (event) => {
     console.log(
-      "... finished build in",
+      "... finished build of",
+      event.stats.collections,
+      event.stats.collections === 1 ? "collection" : "collections",
+      "and",
+      event.stats.documents,
+      event.stats.documents === 1 ? "document" : "documents",
+      "in",
       event.endedAt - event.startedAt + "ms"
     );
   });

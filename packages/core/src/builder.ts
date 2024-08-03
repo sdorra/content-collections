@@ -27,6 +27,10 @@ export type BuilderEvents = {
   "builder:end": {
     startedAt: number;
     endedAt: number;
+    stats: {
+      collections: number;
+      documents: number;
+    },
   };
 };
 
@@ -169,9 +173,19 @@ export async function createInternalBuilder(
 
     await Promise.all(pendingOnSuccess.filter(isDefined));
 
+    const stats = collections.reduce((acc, collection) => {
+      acc.collections++;
+      acc.documents += collection.documents.length;
+      return acc;
+    }, {
+      collections: 0,
+      documents: 0
+    });
+
     emitter.emit("builder:end", {
       startedAt,
       endedAt: Date.now(),
+      stats
     });
   }
 

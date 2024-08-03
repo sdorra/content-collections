@@ -3,7 +3,7 @@ import { createBuilder as origCreateBuilder } from "./builder";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { createEmitter, type Emitter } from "./events";
+import { createEmitter, Events, type Emitter } from "./events";
 
 describe("builder", () => {
   afterEach(async () => {
@@ -111,7 +111,25 @@ describe("builder", () => {
       expect(events).toEqual(["builder:start", "builder:end"]);
     });
 
-    it("should resolve to default output directory", async () => {});
+    it("should report some statistics on build:end", async () => {
+      const { builder } = await createBuilder("config.002");
+      const events: Array<Events["builder:end"]> = [];
+
+      builder.on("builder:end", (event) => {
+        events.push(event);
+      });
+
+      await builder.build();
+
+      const event = events[0];
+      if (!event) {
+        throw new Error("Event is undefined");
+      }
+
+      expect(event.stats).toBeDefined();
+      expect(event.stats.collections).toBe(1);
+      expect(event.stats.documents).toBe(1);
+    });
   });
 
   describe("sync", () => {
