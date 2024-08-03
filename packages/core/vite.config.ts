@@ -13,5 +13,8 @@ export default defineConfig({
     coverage: {
       exclude: excludes
     },
+    poolMatchGlobs: [
+      ["**/watcher.test.ts", "forks"],
+    ],
   },
 });
