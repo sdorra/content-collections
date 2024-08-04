@@ -120,7 +120,7 @@ export async function createBuilder(
   };
 }
 
-export async function createInternalBuilder(
+async function createInternalBuilder(
   emitter: Emitter,
   baseDirectory: string,
   directory: string,
