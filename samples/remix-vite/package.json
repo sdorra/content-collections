@@ -18,7 +18,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@content-collections/core": "0.6.4",
+    "@content-collections/core": "0.7.0",
     "@content-collections/remix-vite": "0.1.1",
     "@playwright/test": "^1.45.0",
     "@remix-run/dev": "^2.10.3",

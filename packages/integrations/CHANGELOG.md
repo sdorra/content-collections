@@ -1,5 +1,17 @@
 # @content-collections/integrations
 
+## 0.2.0
+
+### Minor Changes
+
+- [#200](https://github.com/sdorra/content-collections/pull/200) [`207a3de`](https://github.com/sdorra/content-collections/commit/207a3deaa95e34902c262ed8abc6320880b43dc2) Thanks [@sdorra](https://github.com/sdorra)! - Rebuild on configuration changes
+
+- [`a1dd55b`](https://github.com/sdorra/content-collections/commit/a1dd55bcfe198487de40402284d907b977eedcec) Thanks [@sdorra](https://github.com/sdorra)! - Add count of collections and documents to build output
+
+### Patch Changes
+
+- [`2af05da`](https://github.com/sdorra/content-collections/commit/2af05da080720c16a02565cac9228d1ebcd9f649) Thanks [@sdorra](https://github.com/sdorra)! - Fix console output of file-changed event
+
 ## 0.1.1
 
 ### Patch Changes

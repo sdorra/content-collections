@@ -318,10 +318,10 @@ importers:
   samples/cli:
     dependencies:
       '@content-collections/cli':
-        specifier: 0.1.2
+        specifier: 0.1.3
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
     devDependencies:
       '@types/node':
@@ -343,13 +343,13 @@ importers:
   samples/markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -393,13 +393,13 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/mdx':
         specifier: 0.1.3
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/next
       '@playwright/test':
         specifier: ^1.45.0
@@ -426,10 +426,10 @@ importers:
   samples/next:
     dependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/next
       next:
         specifier: 14.2.5
@@ -472,10 +472,10 @@ importers:
         specifier: ^1.7.1
         version: 1.7.1(@types/node@20.14.9)
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       '@playwright/test':
         specifier: ^1.45.0
@@ -517,10 +517,10 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -576,10 +576,10 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       '@mdx-js/rollup':
         specifier: ^3.0.1
@@ -658,7 +658,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/remix-vite':
         specifier: 0.1.1
@@ -712,7 +712,7 @@ importers:
   samples/solid:
     dependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
@@ -736,13 +736,13 @@ importers:
   samples/svelte-kit:
     devDependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.0
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       '@playwright/test':
         specifier: ^1.45.0
@@ -775,10 +775,10 @@ importers:
   samples/vite:
     dependencies:
       '@content-collections/core':
-        specifier: 0.6.4
+        specifier: 0.7.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0

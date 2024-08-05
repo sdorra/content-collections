@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/next",
   "description": "Use content-collection with Next.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",

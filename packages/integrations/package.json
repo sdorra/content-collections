@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/integrations",
   "description": "Utils for integrating Content Collections with other tools",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",

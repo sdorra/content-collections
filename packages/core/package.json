@@ -1,6 +1,6 @@
 {
   "name": "@content-collections/core",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",

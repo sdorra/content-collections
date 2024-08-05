@@ -1,5 +1,17 @@
 # @content-collections/core
 
+## 0.7.0
+
+### Minor Changes
+
+- [#200](https://github.com/sdorra/content-collections/pull/200) [`207a3de`](https://github.com/sdorra/content-collections/commit/207a3deaa95e34902c262ed8abc6320880b43dc2) Thanks [@sdorra](https://github.com/sdorra)! - Rebuild on configuration changes
+
+- [`a1dd55b`](https://github.com/sdorra/content-collections/commit/a1dd55bcfe198487de40402284d907b977eedcec) Thanks [@sdorra](https://github.com/sdorra)! - Add count of collections and documents to build output
+
+### Patch Changes
+
+- [#237](https://github.com/sdorra/content-collections/pull/237) [`53efa50`](https://github.com/sdorra/content-collections/commit/53efa508125816e02b4d50e01241e021a67564a1) Thanks [@sdorra](https://github.com/sdorra)! - Fix usage of typescript aliases in configuration
+
 ## 0.6.4
 
 ### Patch Changes

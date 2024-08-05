@@ -7,7 +7,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.6.4",
+    "@content-collections/core": "0.7.0",
     "@content-collections/markdown": "0.1.0",
     "@content-collections/solid-start": "0.1.1",
     "@playwright/test": "^1.45.0",
