@@ -15,7 +15,7 @@
     "test": "playwright test"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.7.1",
+    "@builder.io/qwik": "^1.7.3",
     "@builder.io/qwik-city": "^1.7.1",
     "@content-collections/core": "0.6.4",
     "@content-collections/vite": "0.2.1",
