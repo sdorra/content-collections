@@ -28,7 +28,7 @@ Content Collections offers a variety of adapters that seamlessly integrate with 
 - [Qwik](https://www.content-collections.dev/docs/quickstart/qwik)
 - [Remix (Vite)](https://www.content-collections.dev/docs/quickstart/remix-vite)
 - [Solid Start](https://www.content-collections.dev/docs/quickstart/solid)
-- [Svelte Kit](https://www.content-collections.dev/docs/quickstart/svelte-kit)
+- [SvelteKit](https://www.content-collections.dev/docs/quickstart/svelte-kit)
 - [Vite](https://www.content-collections.dev/docs/quickstart/vite)
 
 If your framework is not listed, you can still use Content Collections by using the [CLI](https://www.content-collections.dev/docs/quickstart/cli). Please open a ticket if you want to see your framework listed.
