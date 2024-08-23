@@ -35,5 +35,9 @@ updates:
       remix:
         patterns:
           - '@remix-run/*'
+      fumadocs:
+        patterns:
+          - '@fumadocs/*'
+          - 'fumadocs-*'
 
 
