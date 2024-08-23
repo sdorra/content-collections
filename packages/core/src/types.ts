@@ -45,3 +45,8 @@ export type GetTypeByName<
   TName extends keyof CollectionByName<TConfiguration>,
   TCollection = CollectionByName<TConfiguration>[TName],
 > = TCollection extends AnyCollection ? GetDocument<TCollection> : never;
+
+
+export type MakeRequired<T, K extends keyof T> = {
+  [P in K]-?: T[P];
+} & Omit<T, K>;

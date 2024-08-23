@@ -33,7 +33,7 @@
     "@vitest/coverage-v8": "^1.5.0",
     "tsup": "^8.0.2",
     "tsx": "^4.1.1",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.4",
     "vitest": "^1.5.0"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
     "micromatch": "^4.0.7",
+    "p-limit": "^6.1.0",
     "pluralize": "^8.0.0",
     "serialize-javascript": "^6.0.2",
     "yaml": "^2.4.5",

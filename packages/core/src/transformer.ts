@@ -1,4 +1,4 @@
-import { CollectionFile } from "./types";
+import { CollectionFile, MakeRequired } from "./types";
 import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
@@ -7,6 +7,8 @@ import { z } from "zod";
 import { Parser, parsers } from "./parser";
 import { CacheManager, Cache } from "./cache";
 import { serializableSchema } from "./serializer";
+import os from "node:os";
+import pLimit from "p-limit";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -147,47 +149,61 @@ export function createTransformer(
     };
   }
 
+  async function transformDocument(
+    collections: Array<TransformedCollection>,
+    collection: TransformedCollection,
+    transform: (data: any, context: Context) => any,
+    doc: any
+  ) {
+    const cache = cacheManager.cache(collection.name, doc.document._meta.path);
+    const context = createContext(collections, collection, cache);
+    try {
+      const document = await transform(doc.document, context);
+      await cache.tidyUp();
+      return {
+        ...doc,
+        document,
+      };
+    } catch (error) {
+      if (error instanceof TransformError) {
+        emitter.emit("transformer:error", {
+          collection,
+          error,
+        });
+      } else {
+        emitter.emit("transformer:error", {
+          collection,
+          error: new TransformError("Transform", String(error)),
+        });
+      }
+    }
+  }
+
   async function transformCollection(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection
   ) {
-    if (collection.transform) {
-      const docs = [];
-      for (const doc of collection.documents) {
-        const cache = cacheManager.cache(
-          collection.name,
-          doc.document._meta.path
-        );
-        const context = createContext(collections, collection, cache);
-        try {
-          const document = await collection.transform(doc.document, context);
-          docs.push({
-            ...doc,
-            document,
-          });
-          await cache.tidyUp();
-        } catch (error) {
-          if (error instanceof TransformError) {
-            emitter.emit("transformer:error", {
-              collection,
-              error,
-            });
-          } else {
-            emitter.emit("transformer:error", {
-              collection,
-              error: new TransformError("Transform", String(error)),
-            });
-          }
-        }
-      }
+    const transform = collection.transform;
+    if (transform) {
+      const limit = pLimit(os.cpus().length);
+
+      const docs = collection.documents.map((doc) =>
+        limit(() => transformDocument(collections, collection, transform, doc))
+      );
+
+      const transformed = await Promise.all(docs);
       await cacheManager.flush();
-      return docs;
+      // document might be undefined if an error occurred
+      return transformed.filter(isDefined);
     }
 
     return collection.documents;
   }
 
-  async function validateDocuments(collection: AnyCollection, documents: Array<any>) {
+  async function validateDocuments(
+    collection: AnyCollection,
+    documents: Array<any>
+  ) {
     const docs = [];
     for (const doc of documents) {
       let parsedData = await serializableSchema.safeParseAsync(doc.document);

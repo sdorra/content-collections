@@ -1,7 +1,6 @@
 import camelcase from "camelcase";
 import pluralize from "pluralize";
 import { CollectionFile } from "./types";
-import path from "node:path";
 
 export function generateTypeName(name: string) {
   const singularName = pluralize.singular(name);
