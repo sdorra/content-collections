@@ -43,5 +43,5 @@ jobs:
         run: pnpm build
 
       - name: Deploy preview release
-        run: pnpx pkg-pr-new publish
+        run: pnpx pkg-pr-new publish './packages/*'
 
