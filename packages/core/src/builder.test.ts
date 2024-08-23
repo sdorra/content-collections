@@ -1,346 +1,348 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { createBuilder as origCreateBuilder } from "./builder";
+import { describe, it, expect, beforeEach, afterEach, vi, Mock } from "vitest";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { createEmitter, Events, type Emitter } from "./events";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import * as build from "./build";
+import * as watcher from "./watcher";
+import {
+  ConfigurationReloadError,
+  createBuilder as origCreateBuilder,
+} from "./builder";
+import exp from "node:constants";
 
-describe("builder", () => {
-  afterEach(async () => {
-    if (existsSync("tmp")) {
-      await fs.rm("tmp", { recursive: true });
-    }
-  });
+vi.mock("./build", async (importOriginal) => {
+  const orig = await importOriginal<typeof build>();
+  return {
+    ...orig,
+    build: vi.fn(),
+  };
+});
 
-  async function createBuilder(name: string) {
-    const configPath = path.join(__dirname, "__tests__", name + ".ts");
-    const outputDir = path.join(
-      __dirname,
-      "__tests__",
-      ".content-collections",
-      "generated-" + name
-    );
-    const builder = await origCreateBuilder(configPath, {
-      configName: name + ".mjs",
-      outputDir,
-    });
-    return {
-      builder,
-      outputDir,
-    };
-  }
+vi.mock("./watcher", async (importOriginal) => {
+  const orig = await importOriginal<typeof watcher>();
+  const unsubscribe = vi.fn();
+  return {
+    ...orig,
+    unsubscribe,
+    createWatcher: vi.fn(() => ({
+      unsubscribe,
+    })),
+  };
+});
 
-  it("should create builder with the default output directory", async () => {
-    const configPath = path.join(__dirname, "__tests__", "config.002.ts");
-    const emitter: Emitter = createEmitter();
+const baseDirectory = path.join(__dirname, "__tests__");
 
-    const events: Array<{
-      outputDirectory: string;
-    }> = [];
+let emitter: Emitter = createEmitter();
+
+beforeEach(() => {
+  emitter = createEmitter();
+});
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
+function doCreateBuilder(tmpdir: string, configName: string) {
+  const configuration = path.join(baseDirectory, configName);
+
+  // TODO: rename back to createBuilder
+  return origCreateBuilder(
+    configuration,
+    {
+      configName: "default-config.mjs",
+      outputDir: tmpdir,
+    },
+    emitter
+  );
+}
+
+describe("build", () => {
+  it("should create builder with the defaults", async () => {
+    const now = Date.now();
+
+    const events: Array<Events["builder:created"]> = [];
+
     emitter.on("builder:created", (event) => {
       events.push(event);
     });
 
-    await origCreateBuilder(
-      configPath,
+    const configuration = path.join(baseDirectory, "config.002.ts");
+
+    // TODO: rename back to createBuilder
+    await origCreateBuilder(configuration, undefined, emitter);
+
+    expect(events.length).toBe(1);
+
+    const event = events[0];
+    if (!event) {
+      throw new Error("Event is undefined");
+    }
+
+    expect(event.createdAt).toBeGreaterThanOrEqual(now);
+    expect(event.configurationPath).toBe(configuration);
+    expect(event.outputDirectory).toBe(
+      path.join(baseDirectory, ".content-collections", "generated")
+    );
+  });
+
+  tmpdirTest("should delegate builder.build to ./build", async ({ tmpdir }) => {
+    // TODO: rename back to createBuilder
+    const builder = await origCreateBuilder(
+      path.join(baseDirectory, "config.002.ts"),
       {
         configName: "default-config.mjs",
+        outputDir: tmpdir,
       },
       emitter
     );
 
-    await vi.waitUntil(() => events.length > 0);
+    await builder.build();
 
-    const event = events[0]
+    expect(build.build).toBeCalled();
+  });
+});
+
+describe("sync", () => {
+  tmpdirTest("should rebuild on file change", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
+
+    await builder.build();
+    expect(build.build).toBeCalledTimes(1);
+
+    const synced = await builder.sync(
+      "create",
+      path.join(baseDirectory, "sources", "posts", "first.md")
+    );
+    expect(synced).toBe(true);
+
+    expect(build.build).toBeCalledTimes(2);
+  });
+
+  tmpdirTest("should rebuild on file deletion", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
+
+    await builder.build();
+    expect(build.build).toBeCalledTimes(1);
+
+    const synced = await builder.sync(
+      "delete",
+      path.join(baseDirectory, "sources", "posts", "first.md")
+    );
+    expect(synced).toBe(true);
+
+    expect(build.build).toBeCalledTimes(2);
+  });
+
+  tmpdirTest("should emit watcher:file-changed event", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
+
+    const events: Array<Events["watcher:file-changed"]> = [];
+    emitter.on("watcher:file-changed", (event) => {
+      events.push(event);
+    });
+
+    await builder.build();
+
+    const filePath = path.join(baseDirectory, "sources", "posts", "first.md");
+    await builder.sync("create", filePath);
+
+    expect(events.length).toBe(1);
+
+    const [event] = events;
     if (!event) {
       throw new Error("Event is undefined");
     }
-    expect(event.outputDirectory).toBe(
-      path.join(__dirname, "__tests__", ".content-collections", "generated")
-    );
+
+    expect(event.filePath).toBe(filePath);
+    expect(event.modification).toBe("create");
   });
 
-  describe("build", () => {
-    it("should build", async () => {
-      const { builder, outputDir } = await createBuilder("config.002");
-      await builder.build();
+  tmpdirTest("should not rebuild on unknown file", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      const { allPosts } = await import(path.resolve(outputDir, "index.js"));
-      expect(allPosts.length).toBe(1);
-    });
+    await builder.build();
+    expect(build.build).toBeCalledTimes(1);
 
-    it("should call onSuccess", async () => {
-      const { builder, outputDir } = await createBuilder("config.004");
-      await builder.build();
+    const synced = await builder.sync("create", "unknown.md");
+    expect(synced).toBe(false);
 
-      const { allPosts, allAuthors } = await import(
-        path.resolve(outputDir, "index.js")
-      );
+    expect(build.build).toBeCalledTimes(1);
+  });
 
-      expect(allPosts.length).toBe(1);
-      const postsLength = await fs.readFile(
-        path.join("tmp", "posts.length"),
-        "utf-8"
-      );
-      expect(postsLength).toBe("1");
+  tmpdirTest(
+    "should not emit watcher:file-changed event on unknown file",
+    async ({ tmpdir }) => {
+      const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      expect(allAuthors.length).toBe(1);
-      const authorsLength = await fs.readFile(
-        path.join("tmp", "authors.length"),
-        "utf-8"
-      );
-      expect(authorsLength).toBe("1");
-    });
-
-    it("should emit build:start and build:end", async () => {
-      const { builder } = await createBuilder("config.002");
-      const events: Array<string> = [];
-
-      builder.on("builder:start", (event) => {
-        events.push("builder:start");
-        expect(event.startedAt).toBeDefined();
-      });
-      builder.on("builder:end", (event) => {
-        events.push("builder:end");
-        expect(event.startedAt).toBeDefined();
-        expect(event.endedAt).toBeDefined();
-      });
-
-      await builder.build();
-
-      expect(events).toEqual(["builder:start", "builder:end"]);
-    });
-
-    it("should report some statistics on build:end", async () => {
-      const { builder } = await createBuilder("config.002");
-      const events: Array<Events["builder:end"]> = [];
-
-      builder.on("builder:end", (event) => {
+      const events: Array<Events["watcher:file-changed"]> = [];
+      emitter.on("watcher:file-changed", (event) => {
         events.push(event);
       });
 
       await builder.build();
 
-      const event = events[0];
-      if (!event) {
-        throw new Error("Event is undefined");
-      }
+      await builder.sync("create", "unknown.md");
 
-      expect(event.stats).toBeDefined();
-      expect(event.stats.collections).toBe(1);
-      expect(event.stats.documents).toBe(1);
-    });
+      expect(events.length).toBe(0);
+    }
+  );
+
+  tmpdirTest("should rebuild on file creation", async ({ tmpdir }) => {
+    const sourceConfigurationPath = path.join(baseDirectory, "config.002.ts");
+    const targetConfigurationPath = path.join(tmpdir, "config.002.ts");
+
+    await fs.copyFile(sourceConfigurationPath, targetConfigurationPath);
+
+    const targetDir = path.join(tmpdir, "sources", "posts");
+    await fs.mkdir(targetDir, { recursive: true });
+
+    await fs.copyFile(
+      path.join(baseDirectory, "sources", "posts", "first.md"),
+      path.join(targetDir, "second.md")
+    );
+
+    const builder = await origCreateBuilder(
+      targetConfigurationPath,
+      {
+        configName: "default-config.mjs",
+        outputDir: tmpdir,
+      },
+      emitter
+    );
+
+    await builder.build();
+    expect(build.build).toBeCalledTimes(1);
+
+    const synced = await builder.sync(
+      "create",
+      path.join(targetDir, "second.md")
+    );
+    expect(synced).toBe(true);
+
+    expect(build.build).toBeCalledTimes(2);
   });
 
-  describe("sync", () => {
-    beforeEach(async () => {
-      const sourceDir = path.join("tmp", "sources", "posts");
-      if (!existsSync(sourceDir)) {
-        await fs.mkdir(sourceDir, { recursive: true });
-      }
+  tmpdirTest(
+    "should build on file change without prior build",
+    async ({ tmpdir }) => {
+      const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      const configPath = path.join(__dirname, "__tests__", "config.002.ts");
-      await fs.copyFile(configPath, path.join("tmp", "config.ts"));
-      await fs.copyFile(
-        path.join(__dirname, "__tests__", "sources", "posts", "first.md"),
-        path.join(sourceDir, "first.md")
+      const synced = await builder.sync(
+        "create",
+        path.join(baseDirectory, "sources", "posts", "first.md")
       );
-    });
-
-    it("should sync new files", async () => {
-      const builder = await origCreateBuilder(path.join("tmp", "config.ts"), {
-        configName: "sync.new.file.ts",
-        cacheDir: path.join("tmp", "cache"),
-        outputDir: path.join("tmp", "output-new"),
-      });
-
-      await builder.build();
-
-      const newFile = path.join("tmp", "sources", "posts", "second.md");
-      await fs.writeFile(newFile, "---\ntitle: Second\n---\nSecond post");
-
-      const synced = await builder.sync("create", newFile);
       expect(synced).toBe(true);
 
-      await builder.build();
+      expect(build.build).toBeCalledTimes(1);
+    }
+  );
 
-      const { allPosts } = await import(
-        path.resolve("tmp", "output-new", "index.js")
-      );
+  tmpdirTest("should build on configuration change", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      expect(allPosts.length).toBe(2);
-    });
+    const synced = await builder.sync(
+      "update",
+      path.join(baseDirectory, "config.002.ts")
+    );
+    expect(synced).toBe(true);
 
-    it("should sync deleted files", async () => {
-      const builder = await origCreateBuilder(path.join("tmp", "config.ts"), {
-        configName: "sync.rm.file.ts",
-        cacheDir: path.join("tmp", "cache"),
-        outputDir: path.join("tmp", "output-rm"),
-      });
-
-      await builder.build();
-
-      const rmFile = path.join("tmp", "sources", "posts", "first.md");
-      await fs.rm(rmFile);
-
-      const synced = await builder.sync("delete", rmFile);
-      expect(synced).toBe(true);
-
-      await builder.build();
-
-      const { allPosts } = await import(
-        path.resolve("tmp", "output-rm", "index.js")
-      );
-
-      expect(allPosts.length).toBe(0);
-    });
-
-    it("should return false on sync without previous build", async () => {
-      const builder = await origCreateBuilder(path.join("tmp", "config.ts"), {
-        configName: "sync.no.build.ts",
-        cacheDir: path.join("tmp", "cache"),
-        outputDir: path.join("tmp", "output-no-build"),
-      });
-
-      const newFile = path.join("tmp", "sources", "posts", "second.md");
-      await fs.writeFile(newFile, "---\ntitle: Second\n---\nSecond post");
-
-      expect(await builder.sync("create", newFile)).toBe(false);
-    });
+    expect(build.build).toBeCalledTimes(1);
   });
 
-  describe("watch", () => {
-    const watcherOptions = vi.hoisted(() => ({
-      paths: [] as Array<string>,
-      configPaths: [] as Array<string>,
-    }));
+  tmpdirTest("should emit watcher:config-changed event", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-    // we mock the watcher module, because it causes problems in some situations
-    // we test the watcher module separately
-    vi.mock("./watcher", async () => {
-      return {
-        createWatcher: async (
-          _: Emitter,
-          configPaths: Array<string>,
-          paths: Array<string>
-        ) => {
-          watcherOptions.paths = paths;
-          watcherOptions.configPaths = configPaths;
-          return {
-            unsubscribe: vi.fn(),
-          };
-        },
-      };
+    const configurationPath = path.join(baseDirectory, "config.002.ts");
+
+    const events: Array<Events["watcher:config-changed"]> = [];
+    emitter.on("watcher:config-changed", (event) => {
+      events.push(event);
     });
 
-    beforeEach(() => {
-      watcherOptions.paths = [];
-      watcherOptions.configPaths = [];
+    await builder.build();
+
+    await builder.sync("update", configurationPath);
+
+    expect(events.length).toBe(1);
+
+    const [event] = events;
+    if (!event) {
+      throw new Error("Event is undefined");
+    }
+
+    expect(event.filePath).toBe(configurationPath);
+    expect(event.modification).toBe("update");
+  });
+
+  tmpdirTest("should emit watcher:config-error event", async ({ tmpdir }) => {
+    const sourceConfigurationPath = path.join(baseDirectory, "config.002.ts");
+    const targetConfigurationPath = path.join(tmpdir, "config.002.ts");
+
+    await fs.copyFile(sourceConfigurationPath, targetConfigurationPath);
+
+    const builder = await origCreateBuilder(
+      targetConfigurationPath,
+      {
+        configName: "default-config.mjs",
+        outputDir: tmpdir,
+      },
+      emitter
+    );
+
+    const events: Array<Events["watcher:config-reload-error"]> = [];
+    emitter.on("watcher:config-reload-error", (event) => {
+      events.push(event);
     });
 
-    it("should return watcher", async () => {
-      const { builder } = await createBuilder("config.002");
+    await fs.writeFile(targetConfigurationPath, "invalid configuration");
 
-      const watcher = await builder.watch();
-      expect(watcher).toBeTruthy();
-    });
+    const synced = await builder.sync("update", targetConfigurationPath);
+    expect(synced).toBe(false);
+    expect(events.length).toBe(1);
 
-    it("should pass the collection directories to the watcher", async () => {
-      const { builder } = await createBuilder("config.002");
+    const [event] = events;
+    if (!event) {
+      throw new Error("Event is undefined");
+    }
+
+    expect(event.configurationPath).toBe(targetConfigurationPath);
+    expect(event.error).toBeInstanceOf(ConfigurationReloadError);
+  });
+
+  tmpdirTest(
+    "should reconnect watcher after configuration change",
+    async ({ tmpdir }) => {
+      const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
       await builder.watch();
+      expect(watcher.createWatcher).toBeCalledTimes(1);
 
-      expect(watcherOptions.paths).toEqual([
-        path.join(__dirname, "__tests__", "sources", "posts"),
-      ]);
-    });
+      await builder.sync("update", path.join(baseDirectory, "config.002.ts"));
 
-    it("should pass the configuration paths to the watcher", async () => {
-      const { builder } = await createBuilder("config.002");
+      expect(watcher.createWatcher).toBeCalledTimes(2);
+    }
+  );
+});
 
-      const watcher = await builder.watch();
-      await watcher.unsubscribe();
+describe("watch", () => {
+  tmpdirTest("should delegate to watcher", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      expect(watcherOptions.configPaths).toEqual([
-        path.join("src", "__tests__", "config.002.ts"),
-      ]);
-    });
+    await builder.watch();
 
-    it("should recompile the configuration after the configuration has changed", async () => {
-      const configPath = path.join(__dirname, "__tests__", "config.002.ts");
-      const outputDir = path.join(
-        __dirname,
-        "__tests__",
-        ".content-collections",
-        "generated-config-rebuild-on-config-change"
-      );
+    expect(watcher.createWatcher).toBeCalled();
+  });
 
-      const emitter = createEmitter();
+  tmpdirTest("should delegate unsubscribe to wrapped watcher", async ({ tmpdir }) => {
+    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-      const builder = await origCreateBuilder(
-        configPath,
-        {
-          configName: "rebuild-on-change.mjs",
-          outputDir,
-        },
-        emitter
-      );
+    const w = await builder.watch();
 
-      await builder.build();
+    await w.unsubscribe();
 
-      const compiledConfiguration = path.join(
-        __dirname,
-        "__tests__",
-        ".content-collections",
-        "cache",
-        "rebuild-on-change.mjs"
-      );
-
-      const { mtimeMs } = await fs.lstat(compiledConfiguration);
-
-      emitter.emit("watcher:config-changed", {
-        filePath: configPath,
-        modification: "create",
-      });
-
-      await builder.build();
-
-      const { mtimeMs: newMtimeMs } = await fs.lstat(compiledConfiguration);
-
-      expect(newMtimeMs).toBeGreaterThan(mtimeMs);
-    });
-
-    it("should reconnect watcher after configuration has changed", async () => {
-      const configPath = path.join(__dirname, "__tests__", "config.002.ts");
-      const outputDir = path.join(
-        __dirname,
-        "__tests__",
-        ".content-collections",
-        "reconnect-watcher-on-config-change"
-      );
-
-      const emitter = createEmitter();
-
-      const builder = await origCreateBuilder(
-        configPath,
-        {
-          configName: "reconnect-watcher-on-config-change.mjs",
-          outputDir,
-        },
-        emitter
-      );
-
-      await builder.build();
-      const watcher = await builder.watch();
-
-      emitter.emit("watcher:config-changed", {
-        filePath: configPath,
-        modification: "create",
-      });
-
-      await builder.build();
-
-      await watcher.unsubscribe();
-    });
+    // @ts-expect-error unsubscribe is only available in the mock
+    expect(watcher.unsubscribe).toBeCalledTimes(1);
   });
 });

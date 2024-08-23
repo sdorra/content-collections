@@ -2,35 +2,34 @@ import {
   createConfigurationReader,
   Options as ConfigurationOptions,
   defaultConfigName,
-  InternalConfiguration,
 } from "./configurationReader";
-import { createCollector } from "./collector";
 import { Modification } from "./types";
-import { createWriter } from "./writer";
-import { createTransformer } from "./transformer";
-import { isDefined } from "./utils";
-import { createSynchronizer } from "./synchronizer";
 import path from "node:path";
 import { createWatcher, Watcher } from "./watcher";
 import { type Emitter, createEmitter } from "./events";
-import { createCacheManager } from "./cache";
+import { createBuildContext, build, BuildEvents } from "./build";
 
-export type BuilderEvents = {
+// TODO: get rid of namespaces at all
+export type BuilderEvents = BuildEvents & {
   "builder:created": {
     createdAt: number;
     configurationPath: string;
     outputDirectory: string;
   };
-  "builder:start": {
-    startedAt: number;
+  // events namespaced with watcher for backward compatibility
+
+  // TODO: rename to document-changed
+  "watcher:file-changed": {
+    filePath: string;
+    modification: Modification;
   };
-  "builder:end": {
-    startedAt: number;
-    endedAt: number;
-    stats: {
-      collections: number;
-      documents: number;
-    },
+  "watcher:config-changed": {
+    filePath: string;
+    modification: Modification;
+  };
+  "watcher:config-reload-error": {
+    error: Error;
+    configurationPath: string;
   };
 };
 
@@ -45,7 +44,11 @@ function resolveOutputDir(baseDirectory: string, options: Options) {
   return path.join(baseDirectory, ".content-collections", "generated");
 }
 
-type InternalBuilder = Awaited<ReturnType<typeof createInternalBuilder>>;
+export class ConfigurationReloadError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
 
 export async function createBuilder(
   configurationPath: string,
@@ -56,156 +59,112 @@ export async function createBuilder(
 ) {
   const readConfiguration = createConfigurationReader();
   const baseDirectory = path.dirname(configurationPath);
-  const directory = resolveOutputDir(baseDirectory, options);
+  const outputDirectory = resolveOutputDir(baseDirectory, options);
 
   emitter.emit("builder:created", {
     createdAt: Date.now(),
     configurationPath,
-    outputDirectory: directory,
+    outputDirectory: outputDirectory,
   });
 
-  let internalBuilder: InternalBuilder | null = null;
+  let configuration = await readConfiguration(configurationPath, options);
+
   let watcher: Watcher | null = null;
-
-  const build = async () => {
-    const builder = await useBuilder();
-    return builder.build();
-  };
-
-  const useBuilder = async () => {
-    if (internalBuilder === null) {
-      internalBuilder = await createInternalBuilder(
-        emitter,
-        baseDirectory,
-        directory,
-        await readConfiguration(configurationPath, options),
-        build
-      );
-
-      if (watcher) {
-        watcher = await internalBuilder.watch();
-      }
-    }
-    return internalBuilder;
-  };
-
-  emitter.on("watcher:config-changed", () => {
-    watcher?.unsubscribe();
-    internalBuilder = null;
-  });
-
-  return {
-    build,
-    sync: async (modification: Modification, filePath: string) => {
-      if (!internalBuilder) {
-        return false;
-      }
-      const builder = await useBuilder();
-      return builder.sync(modification, filePath);
-    },
-
-    watch: async () => {
-      const builder = await useBuilder();
-      watcher = await builder.watch();
-
-      return {
-        unsubscribe: async () => {
-          if (watcher) {
-            await watcher.unsubscribe();
-          }
-        },
-      };
-    },
-    on: emitter.on,
-  };
-}
-
-async function createInternalBuilder(
-  emitter: Emitter,
-  baseDirectory: string,
-  directory: string,
-  configuration: InternalConfiguration,
-  buildFn: () => Promise<void>
-) {
-  const collector = createCollector(emitter, baseDirectory);
-  const writer = await createWriter(directory);
-
-  const [resolved] = await Promise.all([
-    collector.collect(configuration.collections),
-    writer.createJavaScriptFile(configuration),
-    writer.createTypeDefinitionFile(configuration),
-  ]);
-
-  const synchronizer = createSynchronizer(
-    collector.collectFile,
-    resolved,
-    baseDirectory
-  );
-
-  const cacheManager = await createCacheManager(
+  let context = await createBuildContext({
+    emitter,
     baseDirectory,
-    configuration.checksum
-  );
-
-  const transform = createTransformer(emitter, cacheManager);
+    outputDirectory,
+    configuration,
+  });
 
   async function sync(modification: Modification, filePath: string) {
-    if (modification === "delete") {
-      return synchronizer.deleted(filePath);
+    if (configuration.inputPaths.includes(filePath)) {
+      if (await onConfigurationChange()) {
+        emitter.emit("watcher:config-changed", {
+          filePath,
+          modification,
+        });
+
+        await build(context);
+        return true;
+      }
+    } else {
+      if (await onFileChange(modification, filePath)) {
+        emitter.emit("watcher:file-changed", {
+          filePath,
+          modification,
+        });
+
+        await build(context);
+        return true;
+      }
     }
-    return synchronizer.changed(filePath);
+    return false;
   }
 
-  async function build() {
-    const startedAt = Date.now();
-    emitter.emit("builder:start", {
-      startedAt,
+  async function onConfigurationChange() {
+    try {
+      configuration = await readConfiguration(configurationPath, options);
+    } catch (error) {
+      emitter.emit("watcher:config-reload-error", {
+        error: new ConfigurationReloadError(
+          `Failed to reload configuration: ${error}`
+        ),
+        configurationPath,
+      });
+      return false;
+    }
+
+    if (watcher) {
+      await watcher.unsubscribe();
+    }
+
+    context = await createBuildContext({
+      emitter,
+      baseDirectory,
+      outputDirectory,
+      configuration,
     });
 
-    const collections = await transform(resolved);
-    await writer.createDataFiles(collections);
-
-    const pendingOnSuccess = collections
-      .filter((collection) => Boolean(collection.onSuccess))
-      .map((collection) =>
-        collection.onSuccess?.(collection.documents.map((doc) => doc.document))
+    if (watcher) {
+      watcher = await createWatcher(
+        emitter,
+        baseDirectory,
+        configuration,
+        sync
       );
+    }
 
-    await Promise.all(pendingOnSuccess.filter(isDefined));
+    return true;
+  }
 
-    const stats = collections.reduce((acc, collection) => {
-      acc.collections++;
-      acc.documents += collection.documents.length;
-      return acc;
-    }, {
-      collections: 0,
-      documents: 0
-    });
+  async function onFileChange(modification: Modification, filePath: string) {
+    const { synchronizer } = context;
 
-    emitter.emit("builder:end", {
-      startedAt,
-      endedAt: Date.now(),
-      stats
-    });
+    if (modification === "delete") {
+      return synchronizer.deleted(filePath);
+    } else {
+      return synchronizer.changed(filePath);
+    }
   }
 
   async function watch() {
-    const paths = resolved.map((collection) =>
-      path.join(baseDirectory, collection.directory)
-    );
-    return await createWatcher(
-      emitter,
-      configuration.inputPaths,
-      paths,
-      sync,
-      buildFn
-    );
+    watcher = await createWatcher(emitter, baseDirectory, configuration, sync);
+
+    return {
+      unsubscribe: async () => {
+        if (watcher) {
+          await watcher.unsubscribe();
+        }
+      },
+    };
   }
 
   return {
+    build: () => build(context),
     sync,
-    build,
     watch,
+    on: emitter.on,
   };
 }
 

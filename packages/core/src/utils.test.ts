@@ -79,4 +79,10 @@ describe("removeChildPaths", () => {
     expect(filtered).toEqual(["a", "b"]);
   });
 
+  it("should remove duplicates", () => {
+    const paths = ["a", "b", "a"];
+    const filtered = removeChildPaths(paths);
+    expect(filtered).toEqual(["a", "b"]);
+  });
+
 });

@@ -1,37 +1,39 @@
 import * as watcher from "@parcel/watcher";
 import { Modification } from "./types";
 import { Emitter } from "./events";
-import { removeChildPaths } from "./utils";
-import { dirname, resolve } from "node:path";
+import { isDefined, removeChildPaths } from "./utils";
+import path, { dirname, resolve } from "node:path";
 
 export type WatcherEvents = {
-  // TODO: rename to document-changed
-  "watcher:file-changed": {
-    filePath: string;
-    modification: Modification;
-  };
-  "watcher:config-changed": {
-    filePath: string;
-    modification: Modification;
-  };
   "watcher:subscribe-error": {
     paths: Array<string>;
     error: Error;
   };
+  "watcher:subscribed": {
+    paths: Array<string>;
+  };
+  "watcher:unsubscribed": {
+    paths: Array<string>;
+  };
 };
 
-type SyncFn = (modification: Modification, path: string) => Promise<boolean>;
-type BuildFn = () => Promise<void>;
+type SyncFn = (modification: Modification, path: string) => Promise<unknown>;
+
+type WatchableCollection = {
+  directory: string;
+};
+
+type WatcherConfiguration = {
+  inputPaths: Array<string>;
+  collections: Array<WatchableCollection>;
+};
 
 export async function createWatcher(
   emitter: Emitter,
-  configPaths: Array<string>,
-  paths: Array<string>,
-  sync: SyncFn,
-  build: BuildFn
+  baseDirectory: string,
+  configuration: WatcherConfiguration,
+  sync: SyncFn
 ) {
-  const resolvedConfigPaths = configPaths.map((p) => resolve(p));
-
   const onChange: watcher.SubscribeCallback = async (error, events) => {
     if (error) {
       emitter.emit("watcher:subscribe-error", {
@@ -41,41 +43,39 @@ export async function createWatcher(
       return;
     }
 
-    let rebuild = false;
-
     for (const event of events) {
-      if (resolvedConfigPaths.includes(event.path)) {
-        emitter.emit("watcher:config-changed", {
-          filePath: event.path,
-          modification: event.type,
-        });
-        rebuild = true;
-      } else if (await sync(event.type, event.path)) {
-        emitter.emit("watcher:file-changed", {
-          filePath: event.path,
-          modification: event.type,
-        });
-        rebuild = true;
-      }
-    }
-
-    if (rebuild) {
-      await build();
+      await sync(event.type, event.path);
     }
   };
 
-  const subscriptions = await Promise.all(
-    removeChildPaths([
-      ...paths.map((p) => resolve(p)),
-      ...resolvedConfigPaths.map(dirname),
-    ]).flatMap((path) => watcher.subscribe(path, onChange))
-  );
+  const paths = removeChildPaths([
+    ...configuration.collections
+      .map((collection) => path.join(baseDirectory, collection.directory))
+      .map((p) => resolve(p)),
+    ...configuration.inputPaths.map((p) => dirname(p)),
+  ]);
+
+  const subscriptions = (
+    await Promise.all(paths.map((path) => watcher.subscribe(path, onChange)))
+  ).filter(isDefined); // in case of an subscription error, subscribe will return undefined
+
+  emitter.emit("watcher:subscribed", {
+    paths,
+  });
 
   return {
     unsubscribe: async () => {
+      if (!subscriptions || subscriptions.length === 0) {
+        return;
+      }
+
       await Promise.all(
         subscriptions.map((subscription) => subscription.unsubscribe())
       );
+
+      emitter.emit("watcher:unsubscribed", {
+        paths,
+      });
       return;
     },
   };

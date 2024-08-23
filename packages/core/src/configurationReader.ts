@@ -73,7 +73,7 @@ export function createConfigurationReader() {
       return {
         ...module.default,
         path: configurationPath,
-        inputPaths: configurationPaths,
+        inputPaths: configurationPaths.map((p) => path.resolve(p)),
         generateTypes: true,
         checksum,
       };

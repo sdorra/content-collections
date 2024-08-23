@@ -17,12 +17,16 @@ export function orderByPath(a: CollectionFile, b: CollectionFile) {
 }
 
 export function removeChildPaths(paths: Array<string>) {
-  return paths.filter((path) => {
-    return !paths.some((otherPath) => {
-      if (path === otherPath) {
-        return false;
-      }
-      return path.startsWith(otherPath);
-    });
-  });
+  return Array.from(
+    new Set(
+      paths.filter((path) => {
+        return !paths.some((otherPath) => {
+          if (path === otherPath) {
+            return false;
+          }
+          return path.startsWith(otherPath);
+        });
+      })
+    )
+  );
 }
