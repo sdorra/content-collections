@@ -1,0 +1,47 @@
+name: Preview Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Create Preview Release
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build cli
+        run: pnpm build --filter=@content-collections/cli
+
+      - name: Install cli binary
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy preview release
+        run: pnpx pkg-pr-new publish
+
