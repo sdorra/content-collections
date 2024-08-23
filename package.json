@@ -27,7 +27,7 @@
     "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^19.2.2",
     "husky": "^9.0.11",
-    "turbo": "^2.0.9"
+    "turbo": "^2.0.14"
   },
   "packageManager": "pnpm@8.15.8"
 }
