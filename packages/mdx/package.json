@@ -40,12 +40,12 @@
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^1.5.0",
+    "@vitest/coverage-v8": "^2.0.5",
     "happy-dom": "^14.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
-    "vitest": "^1.5.0"
+    "vitest": "^2.0.5"
   }
 }
