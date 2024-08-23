@@ -21,7 +21,7 @@
     "@content-collections/core": "0.6.4",
     "@content-collections/vite": "0.2.1",
     "@mdx-js/rollup": "^3.0.1",
-    "@playwright/test": "^1.45.0",
+    "@playwright/test": "^1.46.1",
     "@remix-run/dev": "^2.10.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
