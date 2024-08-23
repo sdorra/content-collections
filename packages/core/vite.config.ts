@@ -1,16 +1,15 @@
 import { defineConfig } from "vitest/config";
 
 const excludes = [
-  "**/node_modules/**",
-  "**/tmp/**",
-  "**/.content-collections/**",
   "**/__tests__/**",
   "**/types.ts",
+  "**/*.test.ts",
 ];
 
 export default defineConfig({
   test: {
     coverage: {
+      include: ["src/**/*.ts"],
       exclude: excludes
     },
     poolMatchGlobs: [
