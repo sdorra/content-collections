@@ -32,8 +32,9 @@ jobs:
         run: pnpm install
 
       - name: Create Release Pull Request or Publish to npm
-        # https://github.com/changesets/action
-        uses: changesets/action@v1
+        # Use forked version of changesets/action to workaround:
+        # - https://github.com/changesets/action/issues/192
+        uses: sdorra/changesets-action@v1
         with:
           version: pnpm version-packages
           publish: pnpm release
