@@ -866,8 +866,8 @@ importers:
         specifier: ^1.14.1
         version: 1.14.1
       tailwind-merge:
-        specifier: ^2.2.2
-        version: 2.3.0
+        specifier: ^2.5.2
+        version: 2.5.2
       typewriter-effect:
         specifier: ^2.21.0
         version: 2.21.0(react-dom@18.3.1)(react@18.3.1)
@@ -14672,12 +14672,6 @@ packages:
   /system-architecture@0.1.0:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
     engines: {node: '>=18'}
-    dev: false
-
-  /tailwind-merge@2.3.0:
-    resolution: {integrity: sha512-vkYrLpIP+lgR0tQCG6AP7zZXCTLc1Lnv/CCRT3BqJ9CZ3ui2++GPaGb1x/ILsINIMSYqqvrpqjUFsMNLlW99EA==}
-    dependencies:
-      '@babel/runtime': 7.24.5
     dev: false
 
   /tailwind-merge@2.5.2:
