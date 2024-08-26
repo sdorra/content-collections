@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/micromatch": "^4.0.9",
-    "@types/node": "^20.14.9",
+    "@types/node": "^22.5.0",
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^2.0.5",
