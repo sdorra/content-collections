@@ -7,7 +7,7 @@ export default function remixContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
-      if (config.base === "/_server") {
+      if (config.base === "/_build") {
         return true;
       }
       return false;
