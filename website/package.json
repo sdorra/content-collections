@@ -34,7 +34,7 @@
     "@content-collections/mdx": "workspace:*",
     "@content-collections/next": "workspace:*",
     "@shikijs/transformers": "^1.14.1",
-    "@tailwindcss/typography": "^0.5.12",
+    "@tailwindcss/typography": "^0.5.14",
     "@types/hast": "^3.0.4",
     "@types/node": "^20",
     "@types/react": "^18.3.3",
