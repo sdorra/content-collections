@@ -7,10 +7,8 @@ export default function remixContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
-      if (config.base === "/_server") {
-        return true;
-      }
-      return false;
+      // @ts-ignore router is an solid-start internal property
+      return config.router?.name === "ssr";
     },
   });
 
