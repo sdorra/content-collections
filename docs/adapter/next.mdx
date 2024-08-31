@@ -43,6 +43,22 @@ After installation we have to add a path alias for the generated collections to 
 
 Now we can add the Content Collections plugin to the Next.js config:
 
+<Tabs groupId="typof-next-config" items={["next.config.mjs", "next.config.js", "next.config.ts"]} persist>
+<Tab value="next.config.mjs">
+
+```js
+import { withContentCollections } from "@content-collections/next";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // your next.js config
+};
+
+export default withContentCollections(nextConfig);
+```
+</Tab>
+<Tab value="next.config.js">
+
 ```js
 const { withContentCollections } = require("@content-collections/next");
 
@@ -53,6 +69,21 @@ const nextConfig = {
 
 module.exports = withContentCollections(nextConfig);
 ```
+</Tab>
+<Tab value="next.config.ts">
+
+```ts
+import type { NextConfig } from "next";
+import { withContentCollections } from "@content-collections/next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default withContentCollections(nextConfig);
+```
+</Tab>
+</Tabs>
 
 <Callout type="warn" title="Warning">
 
@@ -104,7 +135,7 @@ The function accepts one argument, an options object with the following properti
 #### Example
 
 ```js
-const { createContentCollectionPlugin } = require("@content-collections/next");
+import { createContentCollectionPlugin } from "@content-collections/next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -115,7 +146,7 @@ const withPlugin = createContentCollectionPlugin({
   configPath: "./config/content-collections.config.ts",
 });
 
-module.exports = withPlugin(nextConfig);
+export default withPlugin(nextConfig);
 ```
 
 ### `withContentCollections`
@@ -125,12 +156,12 @@ The function takes a single argument, a Next.js configuration object, and return
 #### Example
 
 ```js
-const { withContentCollections } = require("@content-collections/next");
+import { withContentCollections } from "@content-collections/next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // your next.js config
 };
 
-module.exports = withContentCollections(nextConfig);
+export default withContentCollections(nextConfig);
 ```

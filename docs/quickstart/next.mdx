@@ -42,7 +42,23 @@ This is necessary because we will generate the files in the `.content-collection
 </div>
 <div className="step">
 
-Modify your `next.config.js`:
+Modify your Next.js configuration:
+
+<Tabs groupId="typof-next-config" items={["next.config.mjs", "next.config.js", "next.config.ts"]} persist>
+<Tab value="next.config.mjs">
+
+```js
+import { withContentCollections } from "@content-collections/next";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // your next.js config
+};
+
+export default withContentCollections(nextConfig);
+```
+</Tab>
+<Tab value="next.config.js">
 
 ```js
 const { withContentCollections } = require("@content-collections/next");
@@ -54,6 +70,21 @@ const nextConfig = {
 
 module.exports = withContentCollections(nextConfig);
 ```
+</Tab>
+<Tab value="next.config.ts">
+
+```ts
+import type { NextConfig } from "next";
+import { withContentCollections } from "@content-collections/next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default withContentCollections(nextConfig);
+```
+</Tab>
+</Tabs>
 
 This will add content collections to the build of your next.js app.
 For more details on the Next.js adapter, refer to the [documentation](/docs/adapter/next).
