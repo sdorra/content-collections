@@ -7,6 +7,7 @@ export default function remixContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
+      // @ts-ignore router is an solid-start internal property
       return config.router?.name === "ssr";
     },
   });
