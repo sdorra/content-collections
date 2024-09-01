@@ -1,4 +1,4 @@
-import micromatch from "micromatch";
+import picomatch from "picomatch";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 import path from "node:path";
 import { orderByPath } from "./utils";
@@ -45,7 +45,7 @@ export function createSynchronizer<T extends FileCollection>(
         };
       })
       .filter(({ collection, relativePath }) => {
-        return micromatch.isMatch(relativePath, collection.include, {
+        return picomatch.isMatch(relativePath, collection.include, {
           ignore: collection.exclude,
         });
       });
