@@ -24,7 +24,7 @@
     "@types/node": "^20.14.9",
     "tsup": "^8.0.2",
     "tsx": "^4.1.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   },
   "peerDependencies": {
     "@content-collections/core": "0.x"
