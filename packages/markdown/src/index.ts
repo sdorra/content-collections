@@ -44,10 +44,19 @@ async function compile(document: Document, options?: Options) {
   return String(html);
 }
 
+// Remove all unnecessary keys from the document
+// and return a new object containing only the keys
+// that should trigger a regeneration if changed.
+function createCacheKey(document: Document): Document {
+  const { content, _meta } = document;
+  return { content, _meta };
+}
+
 export function compileMarkdown(
   { cache }: Pick<Context, "cache">,
   document: Document,
   options?: Options
 ) {
-  return cache(document, (doc) => compile(doc, options));
+  const cacheKey = createCacheKey(document);
+  return cache(cacheKey, (doc) => compile(doc, options));
 }

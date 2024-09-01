@@ -10,7 +10,7 @@ type Document = {
   content: string;
 };
 
-type FileAppender = ReturnType<typeof createFileAppender>
+type FileAppender = ReturnType<typeof createFileAppender>;
 
 export type Options = {
   cwd?: string;
@@ -19,11 +19,19 @@ export type Options = {
   rehypePlugins?: Pluggable[];
 };
 
-async function appendFile(files: Record<string, string>, importPath: string, filePath: string) {
+async function appendFile(
+  files: Record<string, string>,
+  importPath: string,
+  filePath: string
+) {
   files[importPath] = await fs.readFile(filePath, "utf-8");
 }
 
-async function appendDirectory(files: Record<string, string>, importPathPrefix: string, directoryPath: string) {
+async function appendDirectory(
+  files: Record<string, string>,
+  importPathPrefix: string,
+  directoryPath: string
+) {
   if (!existsSync(directoryPath)) {
     return;
   }
@@ -35,7 +43,10 @@ async function appendDirectory(files: Record<string, string>, importPathPrefix: 
   }
 }
 
-function createFileAppender(tasks: Promise<void>[], files: Record<string, string>) {
+function createFileAppender(
+  tasks: Promise<void>[],
+  files: Record<string, string>
+) {
   return {
     content: (importPath: string, content: string) => {
       files[importPath] = content;
@@ -82,9 +93,7 @@ async function compile(document: Document, options: Options = {}) {
       return options;
     },
     mdxOptions(mdxOptions) {
-      mdxOptions.rehypePlugins = [
-        ...(options.rehypePlugins ?? []),
-      ];
+      mdxOptions.rehypePlugins = [...(options.rehypePlugins ?? [])];
 
       mdxOptions.remarkPlugins = [
         addMetaToVFile(document._meta),
@@ -97,10 +106,19 @@ async function compile(document: Document, options: Options = {}) {
   return code;
 }
 
+// Remove all unnecessary keys from the document
+// and return a new object containing only the keys
+// that should trigger a regeneration if changed.
+function createCacheKey(document: Document): Document {
+  const { content, _meta } = document;
+  return { content, _meta };
+}
+
 export function compileMDX(
   { cache }: Pick<Context, "cache">,
   document: Document,
   options?: Options
 ) {
-  return cache(document, (doc) => compile(doc, options));
+  const cacheKey = createCacheKey(document);
+  return cache(cacheKey, (doc) => compile(doc, options));
 }

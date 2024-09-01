@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { compileMarkdown } from ".";
 import { Context, Meta } from "@content-collections/core";
 
@@ -111,5 +111,26 @@ describe("markdown", () => {
     );
 
     expect(html).toBe("<h1>Hello <strong>World</strong>!</h1>");
+  });
+
+  it("should only use required props for caching", async () => {
+    const cacheFn = vitest.fn();
+
+    const doc = {
+      title: "Hello World",
+      content: "# hello world",
+      _meta: sampleMeta,
+    };
+
+    await compileMarkdown({ cache: cacheFn }, doc);
+
+    const call = cacheFn.mock.calls[0];
+    if (!call) {
+      throw new Error("cache function was not called");
+    }
+
+    const [input] = call;
+
+    expect(Object.keys(input)).toEqual(["content", "_meta"]);
   });
 });

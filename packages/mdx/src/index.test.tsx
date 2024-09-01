@@ -1,8 +1,11 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vitest } from "vitest";
 import { Options, compileMDX } from ".";
 import { Context, Meta } from "@content-collections/core";
 import { MDXContent, useMDXComponent } from "./react/server";
-import { useMDXComponent as useClientMDXComponent, MDXContent as MDXClientContent } from "./react/client";
+import {
+  useMDXComponent as useClientMDXComponent,
+  MDXContent as MDXClientContent,
+} from "./react/client";
 import { cleanup, render, renderHook, screen } from "@testing-library/react";
 import { Pluggable, Transformer } from "unified";
 import { Node, Parent } from "mdast";
@@ -29,7 +32,7 @@ describe("MDX tests", () => {
       { cache },
       {
         content,
-        _meta: sampleMeta
+        _meta: sampleMeta,
       },
       options
     );
@@ -155,7 +158,7 @@ describe("MDX tests", () => {
       { cache },
       {
         content: "<HelloWorld />",
-        _meta: sampleMeta
+        _meta: sampleMeta,
       }
     );
 
@@ -212,5 +215,26 @@ describe("/react (client)", () => {
     render(<MDXClientContent code={code} />);
 
     expect(screen.getByRole("heading")).toHaveTextContent("Hello World!");
+  });
+
+  it("should only use required props for caching", async () => {
+    const cacheFn = vitest.fn();
+
+    const doc = {
+      title: "Hello World",
+      content: "# hello world",
+      _meta: sampleMeta,
+    };
+
+    await compileMDX({ cache: cacheFn }, doc);
+
+    const call = cacheFn.mock.calls[0];
+    if (!call) {
+      throw new Error("cache function was not called");
+    }
+
+    const [input] = call;
+
+    expect(Object.keys(input)).toEqual(["content", "_meta"]);
   });
 });
