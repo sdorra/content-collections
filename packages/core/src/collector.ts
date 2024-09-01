@@ -1,4 +1,4 @@
-import fg from "fast-glob";
+import { glob } from "tinyglobby";
 import { readFile } from "fs/promises";
 import path from "path";
 import { isDefined, orderByPath } from "./utils";
@@ -81,7 +81,9 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
   async function resolveCollection<T extends FileCollection>(collection: T) {
     const collectionDirectory = path.join(baseDirectory, collection.directory);
 
-    const filePaths = await fg(collection.include, {
+    const include = Array.isArray(collection.include) ? collection.include : [collection.include];
+
+    const filePaths = await glob(include, {
       cwd: collectionDirectory,
       onlyFiles: true,
       absolute: false,

@@ -26,8 +26,8 @@
     "typescript": "^5.0.2"
   },
   "devDependencies": {
-    "@types/micromatch": "^4.0.9",
     "@types/node": "^20.14.9",
+    "@types/picomatch": "^3.0.1",
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^2.0.5",
@@ -41,12 +41,12 @@
     "bundle-require": "^5.0.0",
     "camelcase": "^8.0.0",
     "esbuild": "^0.21.4",
-    "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
-    "micromatch": "^4.0.8",
     "p-limit": "^6.1.0",
+    "picomatch": "^4.0.2",
     "pluralize": "^8.0.0",
     "serialize-javascript": "^6.0.2",
+    "tinyglobby": "^0.2.5",
     "yaml": "^2.4.5",
     "zod": "^3.23.8"
   }
