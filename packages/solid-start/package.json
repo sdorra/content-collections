@@ -21,7 +21,7 @@
     "@content-collections/vite": "workspace:*",
     "@types/node": "20.x",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.4",
     "vite": "^5.3.2"
   },
   "peerDependencies": {
