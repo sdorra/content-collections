@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - '**'
+  pull_request_target:
+    types:
+      - labeled
+      - unlabeled
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'preview-release')
     name: Create Preview Release
     timeout-minutes: 15
     runs-on: ubuntu-latest
