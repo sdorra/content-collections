@@ -19,7 +19,7 @@
     "@content-collections/core": "workspace:*",
     "@content-collections/integrations": "workspace:*",
     "@content-collections/vite": "workspace:*",
-    "@types/node": "20.x",
+    "@types/node": "22.x",
     "tsup": "^8.0.2",
     "typescript": "^5.5.4",
     "vite": "^5.3.2"
