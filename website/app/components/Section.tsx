@@ -13,7 +13,7 @@ type SectionProps = Props & {
 
 export function Section({ backgroundGrid, className, children }: SectionProps) {
   return (
-    <section className={cn("p-10 relative", className)}>
+    <section className={cn("p-5 sm:p-10 relative", className)}>
       {backgroundGrid ? <BackgroundGrid /> : null}
       {children}
     </section>
