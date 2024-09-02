@@ -46,7 +46,7 @@ export type Schema<
   _meta: Meta;
 };
 
-export type Context<TSchema> = {
+export type Context<TSchema = unknown> = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection
   ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
