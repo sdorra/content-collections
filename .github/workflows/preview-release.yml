@@ -23,10 +23,18 @@ jobs:
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
-      - name: Check out code
+      - name: Check out code (push or pull_request)
+        if: github.event_name != 'pull_request_target'
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      - name: Check out code (label change)
+        if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - uses: pnpm/action-setup@v3
         with:
