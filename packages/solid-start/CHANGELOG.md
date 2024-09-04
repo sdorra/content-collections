@@ -1,5 +1,11 @@
 # @content-collections/solid-start
 
+## 0.1.2
+
+### Patch Changes
+
+- [#269](https://github.com/sdorra/content-collections/pull/269) [`6e9d41f`](https://github.com/sdorra/content-collections/commit/6e9d41f364022bbd3ee50e1734b11de8428627f2) Thanks [@oscartbeaumont](https://github.com/oscartbeaumont)! - Fix build of solid-start apps, by generating the collections on the ssr phase instead of the server-fns phase.
+
 ## 0.1.1
 
 ### Patch Changes
