@@ -36,6 +36,27 @@ In this example, the `markdownToHtml` function is only called if the content has
 
 **Note**: Caching the compilation steps of `@content-collections/markdown` or `@content-collections/mdx` is unnecessary as they already utilize the same caching mechanism.
 
+## Access sibling documents
+
+Since version 0.7.0, it is possible to access other documents of the same collection by using the `documents` function of the `collection` object, which is part of the `context` object. The function is asynchronous, requires no parameters, and returns an array of all documents of the collection. The documents are not transformed; they have the shape as defined in the schema of the collection.
+
+Example:
+
+```ts
+const posts = defineCollection({
+  // ...
+  transform: async (doc, {collection}) => {
+    const docs = await collection.documents();
+    const idx = docs.findIndex(d => doc._meta.filePath === d._meta.filePath);
+    return {
+      ...doc,
+      prev: idx > 0 ? docs[idx - 1] : null,
+      next: idx < docs.length - 1 ? docs[idx + 1] : null,
+    };
+  },
+});
+```
+
 ## Access other collections
 
 The `transform` function can access other collections using the `documents` function of the `context` object. The function requires a collection reference as parameter and returns an array of documents for that collection. But keep in mind the returned document are not transformed, they have the shape as defined in the schema of the referenced collection.
@@ -65,6 +86,10 @@ const posts = defineCollection({
 ```
 
 For a complete example have a look at the [Join collections](#join-collections) example.
+
+<Callout type="warn">
+  It is not possible to access documents of the same collection with the `documents` function. Use the `collection.documents` function instead. Please refer to [Access sibling documents](#access-sibling-documents) for more information.
+</Callout>
 
 ## Examples
 

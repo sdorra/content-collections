@@ -659,4 +659,36 @@ describe("transform", () => {
 
     expect(collection?.documents[0].document.collectionDirectory).toBe("tests");
   });
+
+  it("should access documents of the same collection", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: (z) => ({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: async (doc, context) => {
+        const docs = await context.collection.documents();
+        return {
+          ...doc,
+          docs
+        };
+      },
+    });
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager
+    )([
+      {
+        ...posts,
+        files: [sampleOne, sampleTwo],
+      },
+    ]);
+
+    expect(collection?.documents[0].document.docs).toHaveLength(2);
+    expect(collection?.documents[0].document.docs[0].name).toBe("One");
+    expect(collection?.documents[0].document.docs[1].name).toBe("Two");
+  });
 });

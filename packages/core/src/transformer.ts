@@ -1,4 +1,4 @@
-import { CollectionFile, MakeRequired } from "./types";
+import { CollectionFile } from "./types";
 import { AnyCollection, Context } from "./config";
 import { isDefined } from "./utils";
 import { Emitter } from "./events";
@@ -129,7 +129,7 @@ export function createTransformer(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
     cache: Cache
-  ): Context {
+  ): Context<unknown> {
     return {
       documents: (collection) => {
         const resolved = collections.find((c) => c.name === collection.name);
@@ -144,6 +144,9 @@ export function createTransformer(
       collection: {
         name: collection.name,
         directory: collection.directory,
+        documents: async () => {
+          return collection.documents.map((doc) => doc.document);
+        },
       },
       cache: cache.cacheFn,
     };
@@ -152,7 +155,7 @@ export function createTransformer(
   async function transformDocument(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
-    transform: (data: any, context: Context) => any,
+    transform: (data: any, context: Context<unknown>) => any,
     doc: any
   ) {
     const cache = cacheManager.cache(collection.name, doc.document._meta.path);

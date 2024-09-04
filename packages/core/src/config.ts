@@ -46,7 +46,7 @@ export type Schema<
   _meta: Meta;
 };
 
-export type Context = {
+export type Context<TSchema = unknown> = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection
   ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
@@ -54,6 +54,7 @@ export type Context = {
   collection: {
     name: string;
     directory: string;
+    documents: () => Promise<Array<TSchema>>;
   };
 };
 
@@ -71,7 +72,7 @@ export type CollectionRequest<
   parser?: TParser;
   typeName?: string;
   schema: (z: Z) => TShape;
-  transform?: (data: TSchema, context: Context) => TTransformResult;
+  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
   directory: string;
   include: string | string[];
   exclude?: string | string[];
