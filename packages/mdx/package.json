@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "esbuild": "^0.21.4",
-    "mdx-bundler": "^10.0.2",
+    "mdx-bundler": "^10.0.3",
     "unified": "^11.0.5"
   },
   "peerDependencies": {

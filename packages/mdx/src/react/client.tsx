@@ -1,4 +1,4 @@
-import { MDXContentProps, getMDXComponent } from "mdx-bundler/client";
+import { MDXContentProps, getMDXComponent } from "mdx-bundler/client/index.js";
 import { useMemo } from "react";
 
 export function useMDXComponent(
