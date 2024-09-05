@@ -1,0 +1,230 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/** more resets */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/** design tokens */
+
+:root {
+  color-scheme: light dark;
+
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-background: light-dark(#f9fafb, #111827);
+  --color-border: light-dark(#d1d5db, #374151);
+  --color-text-muted: light-dark(#4b5563, #9ca3af);
+  --color-text: light-dark(#374151, #d1d5db);
+  --color-heading: light-dark(#111827, #f9fafb);
+  --color-link: light-dark(#111827, #f9fafb);
+
+  --color-background-accent: light-dark(#f0fdfa, #042f2e);
+  --color-primary: #14b8a6;
+}
+
+/** main layout */
+
+html, body {
+  background-color: var(--color-background);
+  scroll-behavior: smooth;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  padding: 2.5rem;
+  color: var(--color-text);
+  font-family: var(--font);
+}
+
+nav {
+  margin-top: 1rem;
+}
+
+main {
+  margin-top: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+h3 {
+  color: var(--color-heading);
+}
+
+body > header {
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--color-text);
+  }
+}
+
+body > footer {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a, body > footer a {
+  color: var(--color-link);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
+
+  &:hover {
+    text-decoration-color: var(--color-primary);
+  }
+}
+
+/** overview **/
+
+.posts {
+  margin-top: 1rem;
+  max-width: 65ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  a {
+    border: 2px solid var(--color-border);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    &:hover {
+      background-color: var(--color-background-accent);
+      border-color: var(--color-primary);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+
+      h3 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 600;
+      }
+
+      time {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+/** detail **/
+
+.post {
+  margin-top: 1rem;
+  max-width: 65ch;
+
+  header h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.content {
+  font-size: 1rem;
+  line-height: 1.75;
+
+  p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3333333;
+  }
+}
