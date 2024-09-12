@@ -878,8 +878,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       shiki:
-        specifier: ^1.16.1
-        version: 1.16.1
+        specifier: ^1.17.4
+        version: 1.17.4
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -897,8 +897,8 @@ importers:
         specifier: workspace:*
         version: link:../packages/next
       '@shikijs/transformers':
-        specifier: ^1.16.1
-        version: 1.16.1
+        specifier: ^1.17.4
+        version: 1.17.4
       '@tailwindcss/typography':
         specifier: ^0.5.14
         version: 0.5.14(tailwindcss@3.4.4)
@@ -5707,11 +5707,27 @@ packages:
       '@types/hast': 3.0.4
     dev: false
 
-  /@shikijs/core@1.16.1:
-    resolution: {integrity: sha512-aI0hBtw+a6KsJp2jcD4YuQqKpeCbURMZbhHVozDknJpm+KJqeMRkEnfBC8BaKE/5XC+uofPgCLsa/TkTk0Ba0w==}
+  /@shikijs/core@1.17.4:
+    resolution: {integrity: sha512-d2RqLWGJDPGThosjMs472B+NLVRUbQSAez/UV9d9rKE/zLbSmPQ73me308ofPSALKwUv2RkuX8umkIdl97boig==}
     dependencies:
-      '@shikijs/vscode-textmate': 9.2.0
+      '@shikijs/engine-javascript': 1.17.4
+      '@shikijs/engine-oniguruma': 1.17.4
+      '@shikijs/types': 1.17.4
+      '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
+      hast-util-to-html: 9.0.2
+
+  /@shikijs/engine-javascript@1.17.4:
+    resolution: {integrity: sha512-qWulwA32cbvVxdthAB1w4DIeXn2+HC1Q5rO0KChnVkFA9xzmy2VH1W3CvmMGEyXo0GjQerovhREcxZh1FlgJ1A==}
+    dependencies:
+      '@shikijs/types': 1.17.4
+      oniguruma-to-js: 0.4.0
+
+  /@shikijs/engine-oniguruma@1.17.4:
+    resolution: {integrity: sha512-7yLBEwkwrr3zYF17tJk56SXHl+0GIMeb0dSKW9jxOsYPfjIU+19nHogURpr5r9Ey03m73i3pj2cthqj5Ui8MNg==}
+    dependencies:
+      '@shikijs/types': 1.17.4
+      '@shikijs/vscode-textmate': 9.2.2
 
   /@shikijs/rehype@1.14.1:
     resolution: {integrity: sha512-52L8RZ8eJ4t7jWk5jAl5fh5whAmseL5TJezZuWogC6GH5X0JZhWxPxk2+Dg3tH/Ga3447HdzAzEVGkJmXX3o3A==}
@@ -5730,13 +5746,19 @@ packages:
       shiki: 1.14.1
     dev: false
 
-  /@shikijs/transformers@1.16.1:
-    resolution: {integrity: sha512-mfbe4YMov+1eyIBU3F6BtaPmLgDkRQaVse8xsBlKTVAcNF3cbZMRCyUz2N6gJOMKLJiv9T5gapBPbRxrDMuoxA==}
+  /@shikijs/transformers@1.17.4:
+    resolution: {integrity: sha512-WdCcVx9EPXNi8x6ZWGC129IoboFHBzoeHuXrbxLP1L8cK8ApCh9QSawACj+8PxDFX6p5yzWJ/GUpPvmfv/lS3w==}
     dependencies:
-      shiki: 1.16.1
+      shiki: 1.17.4
 
-  /@shikijs/vscode-textmate@9.2.0:
-    resolution: {integrity: sha512-5FinaOp6Vdh/dl4/yaOTh0ZeKch+rYS8DUb38V3GMKYVkdqzxw53lViRKUYkVILRiVQT7dcPC7VvAKOR73zVtQ==}
+  /@shikijs/types@1.17.4:
+    resolution: {integrity: sha512-gh2PuD5wmqVlWWIyCpLpmVyl0PuN8IEBc86Mvj89g6LiEsqFOsCCdvk6znd0spRu+0y78aP0PA8mQV58RA3igA==}
+    dependencies:
+      '@shikijs/vscode-textmate': 9.2.2
+      '@types/hast': 3.0.4
+
+  /@shikijs/vscode-textmate@9.2.2:
+    resolution: {integrity: sha512-TMp15K+GGYrWlZM8+Lnj9EaHEFmOen0WJBrfa17hF7taDOYthuPPV0GWzfd/9iMij0akS/8Yw2ikquH7uVi/fg==}
 
   /@sindresorhus/merge-streams@2.3.0:
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
@@ -6145,12 +6167,12 @@ packages:
       '@typescript-eslint/type-utils': 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       '@typescript-eslint/utils': 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 6.21.0
-      debug: 4.3.6
+      debug: 4.3.4
       eslint: 8.57.0
       graphemer: 1.4.0
       ignore: 5.3.1
       natural-compare: 1.4.0
-      semver: 7.6.3
+      semver: 7.6.0
       ts-api-utils: 1.3.0(typescript@5.4.5)
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -6200,7 +6222,7 @@ packages:
       '@typescript-eslint/types': 6.21.0
       '@typescript-eslint/typescript-estree': 6.21.0(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 6.21.0
-      debug: 4.3.6
+      debug: 4.3.4
       eslint: 8.57.0
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -9582,7 +9604,7 @@ packages:
     dependencies:
       '@formatjs/intl-localematcher': 0.5.4
       '@shikijs/rehype': 1.14.1
-      '@shikijs/transformers': 1.16.1
+      '@shikijs/transformers': 1.17.4
       flexsearch: 0.7.21
       github-slugger: 2.0.0
       image-size: 1.1.1
@@ -9596,7 +9618,7 @@ packages:
       remark-gfm: 4.0.0
       remark-mdx: 3.0.1
       scroll-into-view-if-needed: 3.1.0
-      shiki: 1.16.1
+      shiki: 1.17.4
       swr: 2.2.5(react@18.3.1)
       unist-util-visit: 5.0.0
     transitivePeerDependencies:
@@ -10160,6 +10182,21 @@ packages:
       zwitch: 2.0.4
     dev: false
 
+  /hast-util-to-html@9.0.2:
+    resolution: {integrity: sha512-RP5wNpj5nm1Z8cloDv4Sl4RS8jH5HYa0v93YB6Wb4poEzgMo/dAAL0KcT4974dCjcNG5pkLqTImeFHHCwwfY3g==}
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/unist': 3.0.2
+      ccount: 2.0.1
+      comma-separated-tokens: 2.0.3
+      hast-util-whitespace: 3.0.0
+      html-void-elements: 3.0.0
+      mdast-util-to-hast: 13.1.0
+      property-information: 6.5.0
+      space-separated-tokens: 2.0.2
+      stringify-entities: 4.0.4
+      zwitch: 2.0.4
+
   /hast-util-to-jsx-runtime@2.3.0:
     resolution: {integrity: sha512-H/y0+IWPdsLLS738P8tDnrQ8Z+dj12zQQ6WC11TIM21C8WFVoIxcqWXf2H3hiTVZjF1AWqoimGwrTWecWrnmRQ==}
     dependencies:
@@ -10250,7 +10287,6 @@ packages:
 
   /html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
-    dev: false
 
   /http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
@@ -12949,6 +12985,11 @@ packages:
     dependencies:
       mimic-fn: 4.0.0
 
+  /oniguruma-to-js@0.4.0:
+    resolution: {integrity: sha512-GwNFPQygkpDjO9MOr54Rqi01dGS+h9VAS//Qxz9lTN5B09CxqiIc7rydvdV+Ex2Z8Vk+zqfHH7hU6ePn8uf+Mg==}
+    dependencies:
+      regex: 4.3.2
+
   /open@8.4.2:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
@@ -13974,6 +14015,9 @@ packages:
   /regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
+  /regex@4.3.2:
+    resolution: {integrity: sha512-kK/AA3A9K6q2js89+VMymcboLOlF5lZRCYJv3gzszXFHBr6kO6qLGzbm+UIugBEV8SMMKCTR59txoY6ctRHYVw==}
+
   /regexp.prototype.flags@1.5.2:
     resolution: {integrity: sha512-NcDiDkTLuPR+++OCKB0nWafEmhg/Da8aUPLPMQbK+bxKKCm1/S5he+AqYa4PlMCVBalb4/yxIRub6qkEx5yJbw==}
     engines: {node: '>= 0.4'}
@@ -14563,11 +14607,14 @@ packages:
       '@types/hast': 3.0.4
     dev: false
 
-  /shiki@1.16.1:
-    resolution: {integrity: sha512-tCJIMaxDVB1mEIJ5TvfZU7kCPB5eo9fli5+21Olc/bmyv+w8kye3JOp+LZRmGkAyT71hrkefQhTiY+o9mBikRQ==}
+  /shiki@1.17.4:
+    resolution: {integrity: sha512-cuezOGFn2AA9b+ItofDOB6/ap3AosrgV7Wqxeo9c5L4Df0+HtiGt0WlBrM4gtWK5cR96+5Ef17syu4FDL9/Acg==}
     dependencies:
-      '@shikijs/core': 1.16.1
-      '@shikijs/vscode-textmate': 9.2.0
+      '@shikijs/core': 1.17.4
+      '@shikijs/engine-javascript': 1.17.4
+      '@shikijs/engine-oniguruma': 1.17.4
+      '@shikijs/types': 1.17.4
+      '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
 
   /shikiji-core@0.9.19:
