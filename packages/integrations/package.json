@@ -19,7 +19,7 @@
   "devDependencies": {
     "@content-collections/core": "workspace:*",
     "@types/node": "20",
-    "tsup": "^8.0.2",
+    "tsup": "^8.2.4",
     "typescript": "^5.5.4"
   },
   "peerDependencies": {

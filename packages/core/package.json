@@ -31,7 +31,7 @@
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^2.0.5",
-    "tsup": "^8.0.2",
+    "tsup": "^8.2.4",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
