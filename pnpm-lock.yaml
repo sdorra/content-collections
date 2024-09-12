@@ -20,6 +20,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.4.1
         version: 19.4.1
+      '@playwright/test':
+        specifier: ^1.47.0
+        version: 1.47.0
       husky:
         specifier: ^9.0.11
         version: 9.0.11
@@ -240,7 +243,7 @@ importers:
         version: link:../core
       next:
         specifier: ^14.2.7
-        version: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(typescript@5.5.4)
@@ -361,9 +364,6 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
@@ -387,7 +387,7 @@ importers:
     dependencies:
       next:
         specifier: 14.2.7
-        version: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -404,9 +404,6 @@ importers:
       '@content-collections/next':
         specifier: 0.2.1
         version: link:../../packages/next
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/node':
         specifier: ^20
         version: 20.12.10
@@ -436,7 +433,7 @@ importers:
         version: link:../../packages/next
       next:
         specifier: 14.2.7
-        version: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -444,9 +441,6 @@ importers:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/node':
         specifier: ^20
         version: 20.12.10
@@ -480,9 +474,6 @@ importers:
       '@content-collections/vite':
         specifier: 0.2.2
         version: link:../../packages/vite
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/eslint':
         specifier: ^8.56.7
         version: 8.56.10
@@ -535,9 +526,6 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.3.1)
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
@@ -587,9 +575,6 @@ importers:
       '@mdx-js/rollup':
         specifier: ^3.0.1
         version: 3.0.1(rollup@4.21.2)
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@remix-run/dev':
         specifier: ^2.11.2
         version: 2.11.2(@remix-run/react@2.11.2)(@remix-run/serve@2.11.2)(@types/node@20.14.9)(typescript@5.5.4)(vite@5.3.3)
@@ -666,9 +651,6 @@ importers:
       '@content-collections/remix-vite':
         specifier: 0.1.1
         version: link:../../packages/remix-vite
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@remix-run/dev':
         specifier: ^2.11.2
         version: 2.11.2(@remix-run/react@2.11.2)(@remix-run/serve@2.11.2)(@types/node@20.14.9)(typescript@5.5.4)(vite@5.3.3)
@@ -723,9 +705,6 @@ importers:
       '@content-collections/solid-start':
         specifier: 0.1.2
         version: link:../../packages/solid-start
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@solidjs/start':
         specifier: ^1.0.0-rc.0
         version: 1.0.0-rc.1(solid-js@1.8.17)(vinxi@0.4.1)(vite@5.4.2)
@@ -747,9 +726,6 @@ importers:
       '@content-collections/vite':
         specifier: 0.2.2
         version: link:../../packages/vite
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@sveltejs/adapter-auto':
         specifier: ^3.2.2
         version: 3.2.2(@sveltejs/kit@2.5.18)
@@ -790,9 +766,6 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
@@ -855,7 +828,7 @@ importers:
         version: 0.414.0(react@18.3.1)
       next:
         specifier: 14.2.7
-        version: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -3804,12 +3777,12 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@playwright/test@1.46.1:
-    resolution: {integrity: sha512-Fq6SwLujA/DOIvNC2EL/SojJnkKf/rAwJ//APpJJHRyMi1PdKrY3Az+4XNQ51N4RTbItbIByQ0jgd1tayq1aeA==}
+  /@playwright/test@1.47.0:
+    resolution: {integrity: sha512-SgAdlSwYVpToI4e/IH19IHHWvoijAYH5hu2MWSXptRypLSnzj51PcGD+rsOXFayde4P9ZLi+loXVwArg6IUkCA==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      playwright: 1.46.1
+      playwright: 1.47.0
 
   /@polka/url@1.0.0-next.25:
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
@@ -9335,7 +9308,7 @@ packages:
       github-slugger: 2.0.0
       image-size: 1.1.1
       negotiator: 0.6.3
-      next: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+      next: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       npm-to-yarn: 2.2.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9399,7 +9372,7 @@ packages:
       cmdk: 1.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
       fumadocs-core: 13.3.2(@types/react@18.3.3)(next@14.2.7)(react-dom@18.3.1)(react@18.3.1)
       lucide-react: 0.428.0(react@18.3.1)
-      next: 14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+      next: 14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
       next-themes: 0.3.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -12291,7 +12264,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /next@14.2.7(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1):
+  /next@14.2.7(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-4Qy2aK0LwH4eQiSvQWyKuC7JXE13bIopEQesWE0c/P3uuNRnZCQanI0vsrMLmUQJLAto+A+/8+sve2hd+BQuOQ==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -12310,7 +12283,7 @@ packages:
         optional: true
     dependencies:
       '@next/env': 14.2.7
-      '@playwright/test': 1.46.1
+      '@playwright/test': 1.47.0
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
       caniuse-lite: 1.0.30001616
@@ -13033,17 +13006,17 @@ packages:
       mlly: 1.7.0
       pathe: 1.1.2
 
-  /playwright-core@1.46.1:
-    resolution: {integrity: sha512-h9LqIQaAv+CYvWzsZ+h3RsrqCStkBHlgo6/TJlFst3cOTlLghBQlJwPOZKQJTKNaD3QIB7aAVQ+gfWbN3NXB7A==}
+  /playwright-core@1.47.0:
+    resolution: {integrity: sha512-1DyHT8OqkcfCkYUD9zzUTfg7EfTd+6a8MkD/NWOvjo0u/SCNd5YmY/lJwFvUZOxJbWNds+ei7ic2+R/cRz/PDg==}
     engines: {node: '>=18'}
     hasBin: true
 
-  /playwright@1.46.1:
-    resolution: {integrity: sha512-oPcr1yqoXLCkgKtD5eNUPLiN40rYEM39odNpIb6VE6S7/15gJmA1NzVv6zJYusV0e7tzvkU/utBFNa/Kpxmwng==}
+  /playwright@1.47.0:
+    resolution: {integrity: sha512-jOWiRq2pdNAX/mwLiwFYnPHpEZ4rM+fRSQpRHwEwZlP2PUANvL3+aJOF/bvISMhFD30rqMxUB4RJx9aQbfh4Ww==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      playwright-core: 1.46.1
+      playwright-core: 1.47.0
     optionalDependencies:
       fsevents: 2.3.2
 

@@ -44,7 +44,7 @@ jobs:
         run: pnpm build
 
       - name: Install Playwright Browsers
-        run: pnpx playwright install --with-deps
+        run: pnpm playwright install --with-deps
 
       - name: Test
         run: pnpm test
