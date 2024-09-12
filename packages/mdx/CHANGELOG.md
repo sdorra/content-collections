@@ -1,5 +1,11 @@
 # @content-collections/mdx
 
+## 0.1.5
+
+### Patch Changes
+
+- [`7e3376d`](https://github.com/sdorra/content-collections/commit/7e3376d4faaa9150798f0b25870946bc5ae7ee66) Thanks [@sdorra](https://github.com/sdorra)! - #277 Fix directory import error on next.js pages router
+
 ## 0.1.4
 
 ### Patch Changes
