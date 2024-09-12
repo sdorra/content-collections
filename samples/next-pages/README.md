@@ -1,10 +1,10 @@
 ---
-title: Next.js
-description: Using content-collections with Next.js App Router
+title: Next.js Pages
+description: Using content-collections with Next.js Pages Router
 tags:
   - next.js
   - react
-  - rsc
+  - mdx
 adapter: next
 ---
 
