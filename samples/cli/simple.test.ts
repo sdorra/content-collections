@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
 import { allPosts } from "content-collections";
+import { describe, expect, it } from "vitest";
 
 describe("simple", () => {
   it("should collect two posts", () => {

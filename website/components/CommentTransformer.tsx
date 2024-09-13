@@ -1,6 +1,5 @@
 import { ShikiTransformer } from "shiki";
 import { TsPrompt } from "./TsPrompt";
-import { cn } from "@/lib/utils";
 
 type ValueElement = {
   value: string;

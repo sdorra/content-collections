@@ -13,7 +13,7 @@ type SectionProps = Props & {
 
 export function Section({ backgroundGrid, className, children }: SectionProps) {
   return (
-    <section className={cn("p-5 sm:p-10 relative", className)}>
+    <section className={cn("relative p-5 sm:p-10", className)}>
       {backgroundGrid ? <BackgroundGrid /> : null}
       {children}
     </section>
@@ -22,7 +22,7 @@ export function Section({ backgroundGrid, className, children }: SectionProps) {
 
 export function Content({ className, children }: Props) {
   return (
-    <div className={cn("relative max-w-5xl mx-auto", className)}>
+    <div className={cn("relative mx-auto max-w-5xl", className)}>
       {children}
     </div>
   );
@@ -36,14 +36,14 @@ export function Title({ center, className, children }: TitleProps) {
   return (
     <h2
       className={cn(
-        "text-4xl font-bold mb-6 flex items-center text-foreground",
+        "text-foreground mb-6 flex items-center text-4xl font-bold",
         {
           "md:justify-center": center,
         },
-        className
+        className,
       )}
     >
-      <CheckCircle2 className="inline-block mr-2 size-8 text-primary-600 flex-shrink-0" />
+      <CheckCircle2 className="text-primary-600 mr-2 inline-block size-8 flex-shrink-0" />
       <span>{children}</span>
     </h2>
   );
@@ -53,7 +53,7 @@ function BackgroundGrid() {
   return (
     <svg
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full text-base-500/30 dark:text-base-500/40 [mask-image:radial-gradient(black,transparent)]"
+      className="text-base-500/30 dark:text-base-500/40 absolute inset-0 h-full w-full [mask-image:radial-gradient(black,transparent)]"
     >
       <defs>
         <pattern

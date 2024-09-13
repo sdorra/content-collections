@@ -1,14 +1,14 @@
-import { describe, expect, it, beforeEach, vitest } from "vitest";
-import { Options, compileMDX } from ".";
 import { Context, Meta } from "@content-collections/core";
-import { MDXContent, useMDXComponent } from "./react/server";
-import {
-  useMDXComponent as useClientMDXComponent,
-  MDXContent as MDXClientContent,
-} from "./react/client";
 import { cleanup, render, renderHook, screen } from "@testing-library/react";
-import { Pluggable, Transformer } from "unified";
 import { Node, Parent } from "mdast";
+import { Pluggable, Transformer } from "unified";
+import { beforeEach, describe, expect, it, vitest } from "vitest";
+import { Options, compileMDX } from ".";
+import {
+  MDXContent as MDXClientContent,
+  useMDXComponent as useClientMDXComponent,
+} from "./react/client";
+import { MDXContent, useMDXComponent } from "./react/server";
 
 type Cache = Context["cache"];
 
@@ -34,7 +34,7 @@ describe("MDX tests", () => {
         content,
         _meta: sampleMeta,
       },
-      options
+      options,
     );
 
     return <MDXContent code={mdx} />;
@@ -56,10 +56,10 @@ describe("MDX tests", () => {
         files: (appender) => {
           appender.content(
             "./HelloWorld",
-            "export default function HelloWorld() { return <h1>Hello World!</h1> }"
+            "export default function HelloWorld() { return <h1>Hello World!</h1> }",
           );
         },
-      }
+      },
     );
 
     render(content);
@@ -77,7 +77,7 @@ describe("MDX tests", () => {
         files: (appender) => {
           appender.file("./HelloWorld", "./src/__tests__/HelloWorld.tsx");
         },
-      }
+      },
     );
 
     render(content);
@@ -97,7 +97,7 @@ describe("MDX tests", () => {
         files: (appender) => {
           appender.directory("./", "./src/__tests__");
         },
-      }
+      },
     );
 
     render(content);
@@ -159,7 +159,7 @@ describe("MDX tests", () => {
       {
         content: "<HelloWorld />",
         _meta: sampleMeta,
-      }
+      },
     );
 
     function HelloWorld() {
@@ -191,7 +191,7 @@ describe("/react (client)", () => {
           path: "/post",
         },
       },
-      options
+      options,
     );
   }
 
@@ -199,7 +199,7 @@ describe("/react (client)", () => {
     const content = await mdx("# Memoize");
 
     const { result, rerender } = renderHook(() =>
-      useClientMDXComponent(content)
+      useClientMDXComponent(content),
     );
 
     const first = result.current;

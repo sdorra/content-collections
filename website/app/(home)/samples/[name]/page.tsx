@@ -1,13 +1,13 @@
-import { allSamples } from "content-collections";
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
-import { MDXContent } from "@content-collections/mdx/react";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 import { GitHub, StackBlitz } from "@/components/icons";
-import { ReactNode } from "react";
 import { createStackBlitzSampleLink } from "@/lib/stackblitz";
-import Link from "next/link";
+import { MDXContent } from "@content-collections/mdx/react";
+import { allSamples } from "content-collections";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 import { ChevronLeft } from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ReactNode } from "react";
 
 type Props = {
   params: {
@@ -26,7 +26,7 @@ function TldrLink({ href, children }: TldrLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center font-medium gap-2 text-sm border-info-600 border-2 rounded-md px-4 py-2 transition-colors [&_svg]:size-4 dark:text-info-50 hover:text-info-50 hover:bg-info-600"
+      className="border-info-600 dark:text-info-50 hover:text-info-50 hover:bg-info-600 inline-flex items-center gap-2 rounded-md border-2 px-4 py-2 text-sm font-medium transition-colors [&_svg]:size-4"
     >
       {children}
     </a>
@@ -40,10 +40,10 @@ export default async function Page({ params: { name } }: Props) {
   }
 
   return (
-    <main className="px-4 py-8 mx-auto w-full max-w-container">
+    <main className="max-w-container mx-auto w-full px-4 py-8">
       <Link
         href="/samples"
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground mb-8 hover:text-accent-foreground"
+        className="text-muted-foreground hover:text-accent-foreground mb-8 inline-flex items-center gap-1 text-sm"
       >
         <ChevronLeft className="size-4" />
         Back to Samples
@@ -52,7 +52,7 @@ export default async function Page({ params: { name } }: Props) {
         <h1>{sample.title}</h1>
         <p>{sample.description}</p>
 
-        <div className="flex flex-row items-center gap-4 not-prose">
+        <div className="not-prose flex flex-row items-center gap-4">
           <TldrLink
             href={`https://github.com/sdorra/content-collections/tree/main/samples/${sample.name}`}
           >

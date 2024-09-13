@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createCollector } from "./collector";
 import { Events, createEmitter } from "./events";
 import { FileCollection } from "./types";
@@ -20,10 +20,7 @@ describe("collector", () => {
     it("should collect file", async () => {
       const { collectFile } = createCollector(emitter, __dirname);
 
-      const file = await collectFile(
-        sampleCollection,
-        "test/001.md"
-      );
+      const file = await collectFile(sampleCollection, "test/001.md");
 
       if (!file) {
         throw new Error("File not found");
@@ -41,7 +38,7 @@ describe("collector", () => {
       const { collectFile } = createCollector(emitter);
 
       await expect(
-        collectFile(sampleCollection, "test/notfound.md")
+        collectFile(sampleCollection, "test/notfound.md"),
       ).rejects.toThrow("no such file or directory");
     });
 
@@ -52,10 +49,7 @@ describe("collector", () => {
       });
 
       const { collectFile } = createCollector(emitter, __dirname);
-      const file = await collectFile(
-        sampleCollection,
-        "test/notfound.md"
-      );
+      const file = await collectFile(sampleCollection, "test/notfound.md");
       expect(file).toBeNull();
     });
 
@@ -68,7 +62,7 @@ describe("collector", () => {
       const { collectFile } = createCollector(emitter, __dirname);
       const file = await collectFile(
         sampleCollection,
-        "test/broken-frontmatter"
+        "test/broken-frontmatter",
       );
       expect(file).toBeNull();
     });
@@ -225,10 +219,7 @@ describe("collector", () => {
   it("should treat dates as string", async () => {
     const { collectFile } = createCollector(emitter, __dirname);
 
-    const file = await collectFile(
-      sampleCollection,
-      "books/hgttg.md"
-    );
+    const file = await collectFile(sampleCollection, "books/hgttg.md");
 
     if (!file) {
       throw new Error("File not found");
@@ -236,6 +227,4 @@ describe("collector", () => {
 
     expect(typeof file.data.published).toBe("string");
   });
-
-
 });

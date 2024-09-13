@@ -1,5 +1,5 @@
+import { loadTsConfig, match, tsconfigPathsToRegExp } from "bundle-require";
 import { Plugin, build } from "esbuild";
-import { match, loadTsConfig, tsconfigPathsToRegExp } from "bundle-require";
 import { dirname, join } from "node:path";
 
 // the code to handle tsconfig paths is inspired by the awesome tsup project

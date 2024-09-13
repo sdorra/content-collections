@@ -1,14 +1,14 @@
 import { getPage, getPages } from "@/app/source";
-import type { Metadata } from "next";
-import { DocsPage, DocsBody } from "fumadocs-ui/page";
-import { notFound } from "next/navigation";
-import { MDXContent } from "@content-collections/mdx/react";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 import { Notification } from "@/components/Notification";
 import { Correct, Wrong } from "@/components/RightOrWrong";
+import { MDXContent } from "@content-collections/mdx/react";
+import { Callout } from "fumadocs-ui/components/callout";
 import { Card, Cards } from "fumadocs-ui/components/card";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { Callout } from "fumadocs-ui/components/callout";
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import { DocsBody, DocsPage } from "fumadocs-ui/page";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -24,7 +24,7 @@ export default async function Page({
       <DocsBody>
         <h1>{page.data.linkText ?? page.data.title}</h1>
         {page.data.description ? (
-          <p className="text-muted-foreground text-sm pb-8 border-b">
+          <p className="text-muted-foreground border-b pb-8 text-sm">
             {page.data.description}
           </p>
         ) : null}

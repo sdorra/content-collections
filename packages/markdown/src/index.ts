@@ -1,8 +1,8 @@
 import { Context, Meta } from "@content-collections/core";
+import rehypeRaw from "rehype-raw";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw";
 import { Pluggable, Transformer, unified } from "unified";
 
 type Document = {
@@ -30,7 +30,9 @@ async function compile(document: Document, options?: Options) {
     builder.use(options.remarkPlugins);
   }
 
-  builder.use(remarkRehype, { allowDangerousHtml: options?.allowDangerousHtml });
+  builder.use(remarkRehype, {
+    allowDangerousHtml: options?.allowDangerousHtml,
+  });
   if (options?.allowDangerousHtml) {
     builder.use(rehypeRaw);
   }
@@ -55,7 +57,7 @@ function createCacheKey(document: Document): Document {
 export function compileMarkdown(
   { cache }: Pick<Context, "cache">,
   document: Document,
-  options?: Options
+  options?: Options,
 ) {
   const cacheKey = createCacheKey(document);
   return cache(cacheKey, (doc) => compile(doc, options));

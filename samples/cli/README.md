@@ -11,6 +11,5 @@ The configuration `content-collections.ts` shows advanced schema validation and 
 
 For more information, refer to the following resources:
 
-* [CLI Quick Start](https://www.content-collections.dev/docs/quickstart/cli)
-* [CLI adapter documentation](https://www.content-collections.dev/docs/adapter/cli/)
-
+- [CLI Quick Start](https://www.content-collections.dev/docs/quickstart/cli)
+- [CLI adapter documentation](https://www.content-collections.dev/docs/adapter/cli/)

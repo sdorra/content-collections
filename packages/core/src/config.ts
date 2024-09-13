@@ -1,8 +1,8 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
-import { generateTypeName } from "./utils";
-import { Parser, Parsers } from "./parser";
 import { CacheFn } from "./cache";
+import { Parser, Parsers } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
+import { generateTypeName } from "./utils";
 
 // Export all zod types to fix type errors,
 // if declaration is set to true in tsconfig.json.
@@ -48,7 +48,7 @@ export type Schema<
 
 export type Context<TSchema = unknown> = {
   documents<TCollection extends AnyCollection>(
-    collection: TCollection
+    collection: TCollection,
   ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
   cache: CacheFn;
   collection: {
@@ -131,7 +131,7 @@ export function defineCollection<
     TSchema,
     TTransformResult,
     TDocument
-  >
+  >,
 ): TResult {
   let typeName = collection.typeName;
   if (!typeName) {
@@ -159,7 +159,7 @@ export type Configuration<TCollections extends Array<AnyCollection>> = {
 export type AnyConfiguration = Configuration<Array<AnyCollection>>;
 
 export function defineConfig<TConfig extends AnyConfiguration>(
-  config: TConfig
+  config: TConfig,
 ) {
   return config;
 }

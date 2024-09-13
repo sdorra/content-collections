@@ -11,14 +11,14 @@ export function Editor({ className, children }: Props) {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-[#24292E] rounded-md shadow-md border dark:border-base-600/50 overflow-x-scroll scrollbar-hide",
-        className
+        "dark:border-base-600/50 scrollbar-hide overflow-x-scroll rounded-md border bg-white shadow-md dark:bg-[#24292E]",
+        className,
       )}
     >
-      <header className="border-b dark:border-b-base-600/50 flex gap-1 rounded-t-md p-2">
-        <Circle className="text-rose-500 fill-current size-3" />
-        <Circle className="text-amber-500 fill-current size-3" />
-        <Circle className="text-emerald-500 fill-current size-3" />
+      <header className="dark:border-b-base-600/50 flex gap-1 rounded-t-md border-b p-2">
+        <Circle className="size-3 fill-current text-rose-500" />
+        <Circle className="size-3 fill-current text-amber-500" />
+        <Circle className="size-3 fill-current text-emerald-500" />
       </header>
       <div className="p-5">{children}</div>
     </div>

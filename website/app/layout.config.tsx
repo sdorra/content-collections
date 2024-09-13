@@ -1,7 +1,7 @@
-import type { DocsLayoutProps } from "fumadocs-ui/layout";
 import LogoImage from "@/assets/logo.png";
-import Image from "next/image";
+import type { DocsLayoutProps } from "fumadocs-ui/layout";
 import { Book, SwatchBook } from "lucide-react";
+import Image from "next/image";
 
 export const baseOptions: Partial<DocsLayoutProps> = {
   nav: {

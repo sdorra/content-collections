@@ -1,13 +1,13 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { createEmitter, Emitter, Events } from "./events";
-import path from "node:path";
-import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { InternalConfiguration } from "./configurationReader";
-import { build, createBuildContext } from "./build";
-import { tmpdirTest } from "./__tests__/tmpdir";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { beforeEach, describe, expect, it } from "vitest";
 import z from "zod";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import { build, createBuildContext } from "./build";
 import { AnyCollection } from "./config";
+import { InternalConfiguration } from "./configurationReader";
+import { createEmitter, Emitter, Events } from "./events";
 
 describe("createBuildContext", () => {
   it("should create a build context", async () => {
@@ -113,7 +113,7 @@ describe("build", () => {
       await fs.writeFile(
         path.join(tmpdir, filename),
         JSON.stringify(documents.length),
-        "utf-8"
+        "utf-8",
       );
     };
   }
@@ -145,14 +145,14 @@ describe("build", () => {
     expect(allPosts.length).toBe(1);
     const postsLength = await fs.readFile(
       path.join(tmpdir, "posts.length"),
-      "utf-8"
+      "utf-8",
     );
     expect(postsLength).toBe("1");
 
     expect(allAuthors.length).toBe(1);
     const authorsLength = await fs.readFile(
       path.join(tmpdir, "authors.length"),
-      "utf-8"
+      "utf-8",
     );
     expect(authorsLength).toBe("1");
   });
@@ -194,7 +194,7 @@ describe("build", () => {
       expect(event.stats).toBeDefined();
       expect(event.stats.collections).toBe(2);
       expect(event.stats.documents).toBe(2);
-    }
+    },
   );
 
   tmpdirTest("should create type definition file", async ({ tmpdir }) => {
@@ -202,7 +202,7 @@ describe("build", () => {
 
     const typeDefinition = await fs.readFile(
       path.join(tmpdir, "index.d.ts"),
-      "utf-8"
+      "utf-8",
     );
 
     expect(typeDefinition).toContain("export type Post ");
@@ -211,7 +211,6 @@ describe("build", () => {
   tmpdirTest("should not create type definition file", async ({ tmpdir }) => {
     const configuration = createConfiguration(tmpdir, posts);
     configuration.generateTypes = false;
-
 
     const context = await createBuildContext({
       emitter,
@@ -237,7 +236,6 @@ describe("build", () => {
   tmpdirTest("should create data files", async ({ tmpdir }) => {
     await doBuild(tmpdir, posts, authors);
 
-
     const allPosts = existsSync(path.join(tmpdir, "allPosts.js"));
     expect(allPosts).toBe(true);
 
@@ -252,5 +250,4 @@ describe("build", () => {
     const exists = existsSync(path.join(output, "index.js"));
     expect(exists).toBe(true);
   });
-
 });

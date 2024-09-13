@@ -1,11 +1,11 @@
-import { test } from "vitest";
-import os from "node:os";
 import fs from "node:fs/promises";
-import path, { resolve } from "node:path";
+import os from "node:os";
+import path from "node:path";
+import { test } from "vitest";
 
 interface TmpDirFixture {
   tmpdir: string;
-};
+}
 
 export const tmpdirTest = test.extend<TmpDirFixture>({
   tmpdir: async ({}, use) => {

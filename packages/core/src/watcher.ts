@@ -1,8 +1,8 @@
 import * as watcher from "@parcel/watcher";
-import { Modification } from "./types";
-import { Emitter } from "./events";
-import { isDefined, removeChildPaths } from "./utils";
 import path, { dirname, resolve } from "node:path";
+import { Emitter } from "./events";
+import { Modification } from "./types";
+import { isDefined, removeChildPaths } from "./utils";
 
 export type WatcherEvents = {
   "watcher:subscribe-error": {
@@ -32,7 +32,7 @@ export async function createWatcher(
   emitter: Emitter,
   baseDirectory: string,
   configuration: WatcherConfiguration,
-  sync: SyncFn
+  sync: SyncFn,
 ) {
   const onChange: watcher.SubscribeCallback = async (error, events) => {
     if (error) {
@@ -70,7 +70,7 @@ export async function createWatcher(
       }
 
       await Promise.all(
-        subscriptions.map((subscription) => subscription.unsubscribe())
+        subscriptions.map((subscription) => subscription.unsubscribe()),
       );
 
       emitter.emit("watcher:unsubscribed", {

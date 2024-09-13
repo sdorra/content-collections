@@ -11,5 +11,5 @@ Use `@content-collections/vite` to integrate content-collections into your QwikC
 
 For more information, refer to the following resources:
 
-* [QwikCity Quick Start](https://www.content-collections.dev/docs/quickstart/qwik)
-* [Vite adapter documentation](https://www.content-collections.dev/docs/adapter/vite/)
+- [QwikCity Quick Start](https://www.content-collections.dev/docs/quickstart/qwik)
+- [Vite adapter documentation](https://www.content-collections.dev/docs/adapter/vite/)

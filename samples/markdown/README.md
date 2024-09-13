@@ -2,9 +2,9 @@
 title: Markdown
 description: Use Markdown files with Content Collections
 tags:
-- markdown
-- react
-- vite
+  - markdown
+  - react
+  - vite
 adapter: vite
 ---
 
@@ -13,7 +13,6 @@ We can use packages like [react-markdown](https://github.com/remarkjs/react-mark
 Or we can use [remark](https://github.com/remarkjs/remark) to compile the files at build time.
 The package `@content-collections/markdown` simplifies the usage of remark with Content Collections.
 Let's see how we can use it.
-
 
 First we have to install the package `@content-collections/markdown` package.
 
@@ -32,7 +31,7 @@ const posts = defineCollection({
   directory: "content",
   include: "*.md",
   schema: (z) => ({
-    title: z.string()
+    title: z.string(),
   }),
   transform: async (document, context) => {
     const html = await compileMarkdown(context, document);
@@ -110,7 +109,6 @@ export default function App() {
     </main>
   );
 }
-
 ```
 
 And that's it!

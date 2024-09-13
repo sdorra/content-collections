@@ -47,7 +47,7 @@ export async function codeToJsx(code: string | string[], options: Options) {
     themes: {
       light: "github-light",
       dark: "github-dark",
-    }
+    },
   });
 
   if (options.type === "inline") {

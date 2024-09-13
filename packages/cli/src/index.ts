@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { Clerc, helpPlugin, versionPlugin, completionsPlugin } from "clerc";
+import { Clerc, completionsPlugin, helpPlugin, versionPlugin } from "clerc";
+import packageJson from "../package.json" assert { type: "json" };
 import build from "./commands/build.js";
 import watch from "./commands/watch.js";
-import packageJson from "../package.json" assert { type: "json" };
 
 const name = "content-collections";
 if (!packageJson.bin[name]) {

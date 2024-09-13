@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -13,6 +13,6 @@ test("should navigate to character detail page", async ({ page }) => {
   await page.getByRole("link", { name: "Arthur Dent" }).click();
   await expect(page).toHaveURL("/characters/arthur");
   await expect(
-    page.getByRole("heading", { name: "Arthur Dent" })
+    page.getByRole("heading", { name: "Arthur Dent" }),
   ).toBeVisible();
 });

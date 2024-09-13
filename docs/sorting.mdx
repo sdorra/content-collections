@@ -10,7 +10,7 @@ However, you can easily sort the collections in your own code. For example, you 
 import { allPosts } from "content-collections";
 
 export const postsSortedByDate = allPosts.toSorted(
-  (a, b) => b.date.getTime() - a.date.getTime()
+  (a, b) => b.date.getTime() - a.date.getTime(),
 );
 ```
 

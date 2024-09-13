@@ -16,9 +16,7 @@ export default function Index() {
       <ul>
         {allCharacters.map((character) => (
           <li key={character.slug}>
-            <Link to={`/characters/${character.slug}`}>
-              {character.name}
-            </Link>
+            <Link to={`/characters/${character.slug}`}>{character.name}</Link>
           </li>
         ))}
       </ul>

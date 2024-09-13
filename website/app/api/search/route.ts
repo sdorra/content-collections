@@ -8,7 +8,7 @@ function createIndexes() {
     structuredData: page.data.structuredData,
     id: page.url,
     url: page.url,
-  }))
+  }));
 
   const sampleIndexes = allSamples.map((sample) => ({
     title: sample.title,

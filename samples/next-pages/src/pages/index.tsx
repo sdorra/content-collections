@@ -1,7 +1,7 @@
 import { allPosts } from "content-collections";
+import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import Metadata from "../components/Metadata";
-import { InferGetStaticPropsType } from "next";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

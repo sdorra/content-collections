@@ -14,21 +14,21 @@ export function TagFilterPanel({ tags, allTags }: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  console.log({tags});
+  console.log({ tags });
 
   return (
-    <div className="flex flex-row gap-1.5 items-center flex-wrap pb-4 mb-8 border-b">
+    <div className="mb-8 flex flex-row flex-wrap items-center gap-1.5 border-b pb-4">
       {Array.from(new Set(allTags)).map((tag) => (
         <label
           key={tag}
           className={clsx(
-            "px-3 py-1.5 rounded-full bg-card border font-medium text-sm text-muted-foreground cursor-pointer",
+            "bg-card text-muted-foreground cursor-pointer rounded-full border px-3 py-1.5 text-sm font-medium",
             {
               "hover:bg-base-100 hover:border-primary-300 dark:hover:bg-base-800":
                 !optimisticTags.includes(tag),
               "text-primary-foreground bg-primary":
                 optimisticTags.includes(tag),
-            }
+            },
           )}
         >
           <input
@@ -43,7 +43,7 @@ export function TagFilterPanel({ tags, allTags }: Props) {
                 : optimisticTags.filter((tag) => tag !== name);
 
               let newParams = new URLSearchParams(
-                newTags.map((t) => ["tag", t])
+                newTags.map((t) => ["tag", t]),
               );
 
               startTransition(() => {

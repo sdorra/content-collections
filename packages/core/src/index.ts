@@ -1,8 +1,8 @@
-export * from "./config";
 export * from "./builder";
-export type { GetTypeByName, Modification, Document } from "./types";
+export * from "./config";
+export type { Document, GetTypeByName, Modification } from "./types";
 
-export { TransformError } from "./transformer";
 export { CollectError } from "./collector";
 export { ConfigurationError } from "./configurationReader";
-export { type Watcher } from "./watcher"
+export { TransformError } from "./transformer";
+export { type Watcher } from "./watcher";

@@ -27,12 +27,12 @@ export function FixedHeader({ fixed, children }: Props) {
   return (
     <header
       className={clsx(
-        "px-4 h-10 sm:px-10 py-2 max-w-5xl mx-auto w-full flex transition-colors duration-500 inset-x-0",
+        "inset-x-0 mx-auto flex h-10 w-full max-w-5xl px-4 py-2 transition-colors duration-500 sm:px-10",
         {
-          "absolute": !fixed,
+          absolute: !fixed,
           "fixed md:absolute": fixed,
           "bg-slate-900/80 md:bg-transparent": fixed && isScrolled,
-        }
+        },
       )}
     >
       {children}

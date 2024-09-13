@@ -1,9 +1,9 @@
 import { Editor } from "@/components/Editor";
 import { commentComponentTransformer } from "@/components/commentComponentTransformer";
+import { ExternalLink } from "@/components/links";
 import { codeToJsx } from "@/lib/codeToJsx";
 import { CodeMotion } from "./CodeMotion";
 import { Content, Section, Title } from "./Section";
-import { ExternalLink } from "@/components/links";
 
 const code = `const samples = defineCollection({
   name: "samples",
@@ -62,8 +62,8 @@ export async function ValidationSection() {
 
   return (
     <Section>
-      <Content className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
-        <Editor className="order-2 md:order-none h-[23rem]">{api}</Editor>
+      <Content className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+        <Editor className="order-2 h-[23rem] md:order-none">{api}</Editor>
         <div className="flex flex-col gap-5">
           <Title>Powerful Validation</Title>
           <p>

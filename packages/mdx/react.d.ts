@@ -1,2 +1,2 @@
-import { useMDXComponent, MDXContent } from "./dist/react/client.ts";
-export { useMDXComponent, MDXContent };
+import { MDXContent, useMDXComponent } from "./dist/react/client.ts";
+export { MDXContent, useMDXComponent };

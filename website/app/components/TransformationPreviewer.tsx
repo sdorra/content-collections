@@ -1,8 +1,8 @@
 "use client";
 
 import { Editor } from "@/components/Editor";
-import { SampleChooser } from "./SampleChooser";
 import { useState } from "react";
+import { SampleChooser } from "./SampleChooser";
 
 type Sample = {
   name: string;
@@ -17,13 +17,15 @@ type Props = {
 export function TransformationPreviewer({ samples }: Props) {
   const [selectedSample, setSelectedSample] = useState("0");
   return (
-    <div className="flex flex-col md:flex-row items-start justify-start mt-10 gap-5">
+    <div className="mt-10 flex flex-col items-start justify-start gap-5 md:flex-row">
       <SampleChooser
         samples={samples}
         value={selectedSample}
         onValueChange={setSelectedSample}
       />
-      <Editor className="min-w-0 w-full">{samples[Number(selectedSample)].code}</Editor>
+      <Editor className="w-full min-w-0">
+        {samples[Number(selectedSample)].code}
+      </Editor>
     </div>
   );
 }

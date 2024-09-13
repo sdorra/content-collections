@@ -1,8 +1,8 @@
-import { Plugin } from "vite";
 import contentCollectionsPlugin, { Options } from "@content-collections/vite";
+import { Plugin } from "vite";
 
 export default function remixContentCollectionsPlugin(
-  options?: Partial<Omit<Options, "isEnabled">>
+  options?: Partial<Omit<Options, "isEnabled">>,
 ): Plugin {
   const plugin = contentCollectionsPlugin({
     ...(options || {}),

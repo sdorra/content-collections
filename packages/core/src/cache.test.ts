@@ -1,9 +1,9 @@
-import { describe, expect } from "vitest";
-import { createCacheDirectory, createCacheManager } from "./cache";
-import { tmpdirTest } from "./__tests__/tmpdir";
-import path from "node:path";
 import { existsSync } from "node:fs";
 import { readdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { describe, expect } from "vitest";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import { createCacheDirectory, createCacheManager } from "./cache";
 
 describe("cacheManager", () => {
   tmpdirTest("should create cacheManager", async ({ tmpdir }) => {
@@ -25,7 +25,7 @@ describe("cacheManager", () => {
       ".content-collections",
       "cache",
       "collection",
-      "file"
+      "file",
     );
     expect(existsSync(dir)).toBe(false);
   });
@@ -39,7 +39,7 @@ describe("cacheManager", () => {
       ".content-collections",
       "cache",
       "collection",
-      "file"
+      "file",
     );
     expect(existsSync(dir)).toBe(true);
   });
@@ -117,7 +117,7 @@ describe("cacheManager", () => {
       cache = cacheManager.cache("collection", "file");
 
       expect(await cache.cacheFn("i-1", inc)).toBe(2);
-    }
+    },
   );
 
   tmpdirTest("should tidy up", async ({ tmpdir }) => {
@@ -132,7 +132,7 @@ describe("cacheManager", () => {
       ".content-collections",
       "cache",
       "collection",
-      "file"
+      "file",
     );
 
     const files = await readdir(dir);
@@ -156,7 +156,7 @@ describe("cacheManager", () => {
       const cacheManager = await createCacheManager(tmpdir, "configChecksum");
       const cache = cacheManager.cache("collection", "file");
       expect(await cache.cacheFn("input", () => "output")).toBe("output");
-    }
+    },
   );
 
   tmpdirTest(
@@ -170,7 +170,7 @@ describe("cacheManager", () => {
       const cacheDir = path.join(
         await createCacheDirectory(tmpdir),
         "collection",
-        "file"
+        "file",
       );
 
       const [file] = await readdir(cacheDir);
@@ -183,6 +183,6 @@ describe("cacheManager", () => {
 
       const value = await cache.cacheFn("input", () => "new computed value");
       expect(value).toBe("new computed value");
-    }
+    },
   );
 });

@@ -11,7 +11,7 @@ const defaultOptions: Options = {
 
 export function createContentCollectionPlugin(pluginOptions: Options) {
   return async (
-    nextConfig: Partial<NextConfig> | Promise<Partial<NextConfig>> = {}
+    nextConfig: Partial<NextConfig> | Promise<Partial<NextConfig>> = {},
   ): Promise<Partial<NextConfig>> => {
     const [command] = process.argv
       .slice(2)

@@ -21,6 +21,6 @@
     "baseUrl": ".",
     "paths": {
       "@alias": ["../simple"]
-    },
-  },
+    }
+  }
 }

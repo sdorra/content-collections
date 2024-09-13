@@ -19,9 +19,9 @@
     "types": ["node", "vite/client"],
     "paths": {
       "~/*": ["./src/*"],
-      "content-collections": ["./.content-collections/generated"],
-    },
+      "content-collections": ["./.content-collections/generated"]
+    }
   },
   "files": ["./.eslintrc.cjs"],
-  "include": ["src", "./*.d.ts", "./*.config.ts"],
+  "include": ["src", "./*.d.ts", "./*.config.ts"]
 }

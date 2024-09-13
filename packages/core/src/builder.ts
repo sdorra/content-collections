@@ -1,13 +1,13 @@
+import path from "node:path";
+import { build, BuildEvents, createBuildContext } from "./build";
 import {
-  createConfigurationReader,
   Options as ConfigurationOptions,
+  createConfigurationReader,
   defaultConfigName,
 } from "./configurationReader";
-import { Modification } from "./types";
-import path from "node:path";
-import { createWatcher, Watcher } from "./watcher";
 import { type Emitter, createEmitter } from "./events";
-import { createBuildContext, build, BuildEvents } from "./build";
+import { Modification } from "./types";
+import { createWatcher, Watcher } from "./watcher";
 
 // TODO: get rid of namespaces at all
 export type BuilderEvents = BuildEvents & {
@@ -55,7 +55,7 @@ export async function createBuilder(
   options: Options = {
     configName: defaultConfigName,
   },
-  emitter: Emitter = createEmitter()
+  emitter: Emitter = createEmitter(),
 ) {
   const readConfiguration = createConfigurationReader();
   const baseDirectory = path.dirname(configurationPath);
@@ -108,7 +108,7 @@ export async function createBuilder(
     } catch (error) {
       emitter.emit("watcher:config-reload-error", {
         error: new ConfigurationReloadError(
-          `Failed to reload configuration: ${error}`
+          `Failed to reload configuration: ${error}`,
         ),
         configurationPath,
       });
@@ -131,7 +131,7 @@ export async function createBuilder(
         emitter,
         baseDirectory,
         configuration,
-        sync
+        sync,
       );
     }
 

@@ -1,7 +1,7 @@
+import { getPages } from "@/app/source";
 import { FQDN } from "@/lib/env";
 import { allSamples } from "content-collections";
 import { MetadataRoute } from "next";
-import { getPages } from "@/app/source";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

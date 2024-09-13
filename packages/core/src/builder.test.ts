@@ -1,16 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach, vi, Mock } from "vitest";
-import path from "node:path";
-import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { createEmitter, Events, type Emitter } from "./events";
+import path from "node:path";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { tmpdirTest } from "./__tests__/tmpdir";
 import * as build from "./build";
-import * as watcher from "./watcher";
 import {
   ConfigurationReloadError,
   createBuilder as origCreateBuilder,
 } from "./builder";
-import exp from "node:constants";
+import { createEmitter, Events, type Emitter } from "./events";
+import * as watcher from "./watcher";
 
 vi.mock("./build", async (importOriginal) => {
   const orig = await importOriginal<typeof build>();
@@ -54,7 +52,7 @@ function doCreateBuilder(tmpdir: string, configName: string) {
       configName: "default-config.mjs",
       outputDir: tmpdir,
     },
-    emitter
+    emitter,
   );
 }
 
@@ -83,7 +81,7 @@ describe("build", () => {
     expect(event.createdAt).toBeGreaterThanOrEqual(now);
     expect(event.configurationPath).toBe(configuration);
     expect(event.outputDirectory).toBe(
-      path.join(baseDirectory, ".content-collections", "generated")
+      path.join(baseDirectory, ".content-collections", "generated"),
     );
   });
 
@@ -95,7 +93,7 @@ describe("build", () => {
         configName: "default-config.mjs",
         outputDir: tmpdir,
       },
-      emitter
+      emitter,
     );
 
     await builder.build();
@@ -113,7 +111,7 @@ describe("sync", () => {
 
     const synced = await builder.sync(
       "create",
-      path.join(baseDirectory, "sources", "posts", "first.md")
+      path.join(baseDirectory, "sources", "posts", "first.md"),
     );
     expect(synced).toBe(true);
 
@@ -128,7 +126,7 @@ describe("sync", () => {
 
     const synced = await builder.sync(
       "delete",
-      path.join(baseDirectory, "sources", "posts", "first.md")
+      path.join(baseDirectory, "sources", "posts", "first.md"),
     );
     expect(synced).toBe(true);
 
@@ -186,7 +184,7 @@ describe("sync", () => {
       await builder.sync("create", "unknown.md");
 
       expect(events.length).toBe(0);
-    }
+    },
   );
 
   tmpdirTest("should rebuild on file creation", async ({ tmpdir }) => {
@@ -200,7 +198,7 @@ describe("sync", () => {
 
     await fs.copyFile(
       path.join(baseDirectory, "sources", "posts", "first.md"),
-      path.join(targetDir, "second.md")
+      path.join(targetDir, "second.md"),
     );
 
     const builder = await origCreateBuilder(
@@ -209,7 +207,7 @@ describe("sync", () => {
         configName: "default-config.mjs",
         outputDir: tmpdir,
       },
-      emitter
+      emitter,
     );
 
     await builder.build();
@@ -217,7 +215,7 @@ describe("sync", () => {
 
     const synced = await builder.sync(
       "create",
-      path.join(targetDir, "second.md")
+      path.join(targetDir, "second.md"),
     );
     expect(synced).toBe(true);
 
@@ -231,12 +229,12 @@ describe("sync", () => {
 
       const synced = await builder.sync(
         "create",
-        path.join(baseDirectory, "sources", "posts", "first.md")
+        path.join(baseDirectory, "sources", "posts", "first.md"),
       );
       expect(synced).toBe(true);
 
       expect(build.build).toBeCalledTimes(1);
-    }
+    },
   );
 
   tmpdirTest("should build on configuration change", async ({ tmpdir }) => {
@@ -244,7 +242,7 @@ describe("sync", () => {
 
     const synced = await builder.sync(
       "update",
-      path.join(baseDirectory, "config.002.ts")
+      path.join(baseDirectory, "config.002.ts"),
     );
     expect(synced).toBe(true);
 
@@ -288,7 +286,7 @@ describe("sync", () => {
         configName: "default-config.mjs",
         outputDir: tmpdir,
       },
-      emitter
+      emitter,
     );
 
     const events: Array<Events["watcher:config-reload-error"]> = [];
@@ -322,7 +320,7 @@ describe("sync", () => {
       await builder.sync("update", path.join(baseDirectory, "config.002.ts"));
 
       expect(watcher.createWatcher).toBeCalledTimes(2);
-    }
+    },
   );
 });
 
@@ -335,14 +333,17 @@ describe("watch", () => {
     expect(watcher.createWatcher).toBeCalled();
   });
 
-  tmpdirTest("should delegate unsubscribe to wrapped watcher", async ({ tmpdir }) => {
-    const builder = await doCreateBuilder(tmpdir, "config.002.ts");
+  tmpdirTest(
+    "should delegate unsubscribe to wrapped watcher",
+    async ({ tmpdir }) => {
+      const builder = await doCreateBuilder(tmpdir, "config.002.ts");
 
-    const w = await builder.watch();
+      const w = await builder.watch();
 
-    await w.unsubscribe();
+      await w.unsubscribe();
 
-    // @ts-expect-error unsubscribe is only available in the mock
-    expect(watcher.unsubscribe).toBeCalledTimes(1);
-  });
+      // @ts-expect-error unsubscribe is only available in the mock
+      expect(watcher.unsubscribe).toBeCalledTimes(1);
+    },
+  );
 });

@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { type TypewriterClass } from "typewriter-effect";
 // @ts-ignore types are not available
 import Typewriter from "typewriter-effect/dist/core";
-import { useEffect } from "react";
 
 function mustFind(id: string): HTMLElement {
   const el = document.getElementById(id);

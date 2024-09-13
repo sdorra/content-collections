@@ -20,7 +20,7 @@ const posts = defineCollection({
     fs.writeFileSync(
       "tmp/posts.length",
       JSON.stringify(documents.length),
-      "utf-8"
+      "utf-8",
     );
   },
 });
@@ -37,7 +37,7 @@ const authors = defineCollection({
     fs.writeFileSync(
       "tmp/authors.length",
       JSON.stringify(documents.length),
-      "utf-8"
+      "utf-8",
     );
   },
 });

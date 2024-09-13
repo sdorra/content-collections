@@ -1,11 +1,11 @@
-import { describe, expect, vi, beforeEach, afterEach } from "vitest";
-import fs from "node:fs/promises";
-import { createWatcher as createOrigWatcher, Watcher } from "./watcher";
-import { Modification } from "./types";
-import { Events, createEmitter } from "./events";
-import { tmpdirTest } from "./__tests__/tmpdir";
-import path from "node:path";
 import * as watcherImpl from "@parcel/watcher";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { afterEach, beforeEach, describe, expect, vi } from "vitest";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import { createEmitter, Events } from "./events";
+import { Modification } from "./types";
+import { createWatcher as createOrigWatcher, Watcher } from "./watcher";
 
 type Params = {
   subscribeError?: Error;
@@ -23,7 +23,7 @@ vi.mock("@parcel/watcher", async (importOriginal) => {
     ...orig,
     subscribe: async (
       path: string,
-      callback: watcherImpl.SubscribeCallback
+      callback: watcherImpl.SubscribeCallback,
     ) => {
       if (params.subscribeError) {
         callback(params.subscribeError, []);
@@ -45,12 +45,12 @@ describe("watcher", () => {
     type: string,
     baseDirectory: string,
     pathName: string,
-    eventArray = events
+    eventArray = events,
   ) {
     return eventArray.find(
       (event) =>
         event.startsWith(`${type}:`) &&
-        event.endsWith(path.join(baseDirectory, pathName))
+        event.endsWith(path.join(baseDirectory, pathName)),
     );
   }
 
@@ -90,91 +90,117 @@ describe("watcher", () => {
       subscriptions.push(...paths);
     });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "one" },
-        { directory: "two" },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "one" }, { directory: "two" }],
+      },
+      syncFn,
+    );
 
     expect(subscriptions).toEqual([one, two]);
   });
 
-  tmpdirTest("should not subscribe to child directories", async ({ tmpdir }) => {
-    await mkdir(tmpdir, "one");
+  tmpdirTest(
+    "should not subscribe to child directories",
+    async ({ tmpdir }) => {
+      await mkdir(tmpdir, "one");
 
-    const subscriptions: Array<string> = [];
-    emitter.on("watcher:subscribed", ({ paths }) => {
-      subscriptions.push(...paths);
-    });
+      const subscriptions: Array<string> = [];
+      emitter.on("watcher:subscribed", ({ paths }) => {
+        subscriptions.push(...paths);
+      });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-        { directory: "one" },
-      ],
-    }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [],
+          collections: [{ directory: "." }, { directory: "one" }],
+        },
+        syncFn,
+      );
 
-    expect(subscriptions).toEqual([tmpdir]);
-  });
+      expect(subscriptions).toEqual([tmpdir]);
+    },
+  );
 
-  tmpdirTest("should not subscribe to duplicate directories", async ({ tmpdir }) => {
-    await mkdir(tmpdir, "one");
+  tmpdirTest(
+    "should not subscribe to duplicate directories",
+    async ({ tmpdir }) => {
+      await mkdir(tmpdir, "one");
 
-    const subscriptions: Array<string> = [];
-    emitter.on("watcher:subscribed", ({ paths }) => {
-      subscriptions.push(...paths);
-    });
+      const subscriptions: Array<string> = [];
+      emitter.on("watcher:subscribed", ({ paths }) => {
+        subscriptions.push(...paths);
+      });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "one" },
-        { directory: "one" },
-      ],
-    }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [],
+          collections: [{ directory: "one" }, { directory: "one" }],
+        },
+        syncFn,
+      );
 
-    expect(subscriptions).toEqual([path.join(tmpdir, "one")]);
-  });
+      expect(subscriptions).toEqual([path.join(tmpdir, "one")]);
+    },
+  );
 
-  tmpdirTest("should subscribe to configuration directory", async ({ tmpdir }) => {
-    const configDir = await mkdir(tmpdir, "config");
-    const configFile = path.join(configDir, "config.ts");
+  tmpdirTest(
+    "should subscribe to configuration directory",
+    async ({ tmpdir }) => {
+      const configDir = await mkdir(tmpdir, "config");
+      const configFile = path.join(configDir, "config.ts");
 
-    const subscriptions: Array<string> = [];
-    emitter.on("watcher:subscribed", ({ paths }) => {
-      subscriptions.push(...paths);
-    });
+      const subscriptions: Array<string> = [];
+      emitter.on("watcher:subscribed", ({ paths }) => {
+        subscriptions.push(...paths);
+      });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [configFile],
-      collections: [],
-    }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [configFile],
+          collections: [],
+        },
+        syncFn,
+      );
 
-    expect(subscriptions).toEqual([configDir]);
-  });
+      expect(subscriptions).toEqual([configDir]);
+    },
+  );
 
-  tmpdirTest("should subscribe to configuration and collection directories", async ({ tmpdir }) => {
-    const configDir = await mkdir(tmpdir, "config");
-    const configFile = path.join(configDir, "config.ts");
-    const one = await mkdir(tmpdir, "one");
+  tmpdirTest(
+    "should subscribe to configuration and collection directories",
+    async ({ tmpdir }) => {
+      const configDir = await mkdir(tmpdir, "config");
+      const configFile = path.join(configDir, "config.ts");
+      const one = await mkdir(tmpdir, "one");
 
-    const subscriptions: Array<string> = [];
-    emitter.on("watcher:subscribed", ({ paths }) => {
-      subscriptions.push(...paths);
-    });
+      const subscriptions: Array<string> = [];
+      emitter.on("watcher:subscribed", ({ paths }) => {
+        subscriptions.push(...paths);
+      });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [configFile],
-      collections: [
-        { directory: "one" },
-      ],
-    }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [configFile],
+          collections: [{ directory: "one" }],
+        },
+        syncFn,
+      );
 
-    expect(subscriptions).toEqual([one, configDir]);
-  });
+      expect(subscriptions).toEqual([one, configDir]);
+    },
+  );
 
   tmpdirTest("should subscribe to parent directories", async ({ tmpdir }) => {
     const configFile = path.join(tmpdir, "config.ts");
@@ -185,23 +211,29 @@ describe("watcher", () => {
       subscriptions.push(...paths);
     });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [configFile],
-      collections: [
-        { directory: "one" },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [configFile],
+        collections: [{ directory: "one" }],
+      },
+      syncFn,
+    );
 
     expect(subscriptions).toEqual([tmpdir]);
   });
 
   tmpdirTest("should sync create event", async ({ tmpdir }) => {
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
@@ -211,12 +243,15 @@ describe("watcher", () => {
   });
 
   tmpdirTest("should sync update event", async ({ tmpdir }) => {
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await fs.writeFile(path.join(tmpdir, "foo"), "foo", "utf-8");
     await vi.waitUntil(() => findEvent("create", tmpdir, "foo"), 2000);
@@ -224,19 +259,21 @@ describe("watcher", () => {
     await fs.writeFile(path.join(tmpdir, "foo"), "bar", "utf-8");
     await vi.waitUntil(() => findEvent("update", tmpdir, "foo"), 2000);
 
-
     expect(findEvent("update", tmpdir, "foo")).toBeTruthy();
   });
 
   tmpdirTest("should sync delete event", async ({ tmpdir }) => {
     await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await fs.rm(path.join(tmpdir, "foo"));
 
@@ -251,24 +288,27 @@ describe("watcher", () => {
       const one = await mkdir(tmpdir, "one");
       const two = await mkdir(tmpdir, "two");
 
-      await createWatcher(emitter, tmpdir, {
-        inputPaths: [],
-        collections: [
-          { directory: "one" },
-          { directory: "two" },
-        ],
-      }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [],
+          collections: [{ directory: "one" }, { directory: "two" }],
+        },
+        syncFn,
+      );
 
       await fs.writeFile(path.join(one, "foo"), "foo");
       await fs.writeFile(path.join(two, "bar"), "bar");
 
       await vi.waitUntil(
-        () => findEvent("create", one, "foo") && findEvent("create", two, "bar")
+        () =>
+          findEvent("create", one, "foo") && findEvent("create", two, "bar"),
       );
 
       expect(findEvent("create", one, "foo")).toBeTruthy();
       expect(findEvent("create", two, "bar")).toBeTruthy();
-    }
+    },
   );
 
   tmpdirTest(
@@ -277,23 +317,27 @@ describe("watcher", () => {
       const foo = await mkdir(tmpdir, "foo");
       const bar = await mkdir(tmpdir, "bar");
 
-      await createWatcher(emitter, tmpdir, {
-        inputPaths: [],
-        collections: [
-          { directory: "." },
-        ],
-      }, syncFn);
+      await createWatcher(
+        emitter,
+        tmpdir,
+        {
+          inputPaths: [],
+          collections: [{ directory: "." }],
+        },
+        syncFn,
+      );
 
       await fs.writeFile(path.join(foo, "baz"), "baz");
       await fs.writeFile(path.join(bar, "qux"), "qux");
 
       await vi.waitUntil(
-        () => findEvent("create", foo, "baz") && findEvent("create", bar, "qux")
+        () =>
+          findEvent("create", foo, "baz") && findEvent("create", bar, "qux"),
       );
 
       expect(findEvent("create", foo, "baz")).toBeTruthy();
       expect(findEvent("create", bar, "qux")).toBeTruthy();
-    }
+    },
   );
 
   tmpdirTest("should emit an error, if subscribe fails", async ({ tmpdir }) => {
@@ -304,12 +348,15 @@ describe("watcher", () => {
       localEvents.push(`${error.message}:${paths.join(",")}`);
     });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await vi.waitUntil(() => localEvents.length > 0);
 
@@ -317,13 +364,15 @@ describe("watcher", () => {
   });
 
   tmpdirTest("should not sync events after unsubscribe", async ({ tmpdir }) => {
-
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await watcher?.unsubscribe();
 
@@ -341,9 +390,7 @@ describe("watcher", () => {
   tmpdirTest("should sync events after resubscribe", async ({ tmpdir }) => {
     const config = {
       inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
+      collections: [{ directory: "." }],
     };
 
     await createWatcher(emitter, tmpdir, config, syncFn);
@@ -357,24 +404,25 @@ describe("watcher", () => {
     expect(findEvent("create", tmpdir, "baz")).toBeTruthy();
   });
 
-  tmpdirTest("should emit unsubscribe event", async ({tmpdir}) => {
+  tmpdirTest("should emit unsubscribe event", async ({ tmpdir }) => {
     const localEvents: Array<string> = [];
     emitter.on("watcher:unsubscribed", ({ paths }) => {
       localEvents.push(`unsubscribed:${paths.join(",")}`);
     });
 
-    await createWatcher(emitter, tmpdir, {
-      inputPaths: [],
-      collections: [
-        { directory: "." },
-      ],
-    }, syncFn);
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
 
     await watcher?.unsubscribe();
 
     await vi.waitUntil(() => localEvents.length > 0);
     expect(localEvents[0]).toBe(`unsubscribed:${tmpdir}`);
-
   });
-
 });
