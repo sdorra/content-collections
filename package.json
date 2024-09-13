@@ -26,9 +26,11 @@
     "@changesets/cli": "^2.27.5",
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",
+    "@content-collections/prettier-config": "workspace:*",
+    "@playwright/test": "^1.47.0",
     "husky": "^9.0.11",
-    "turbo": "^2.0.14",
-    "@playwright/test": "^1.47.0"
+    "turbo": "^2.0.14"
   },
+  "prettier": "@content-collections/prettier-config",
   "packageManager": "pnpm@8.15.8"
 }
