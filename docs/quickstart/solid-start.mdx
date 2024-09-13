@@ -144,5 +144,11 @@ Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
 
+<Callout type="warn">
+The snippet above will load all posts, including their content, on the client.
+If you have a lot of posts or the content is large, you should consider loading the data on the server.
+For an example of how to do this, have a look at the [SolidStart Sample](http://localhost:3000/samples/solid).
+</Callout>
+
 </div>
 </div>

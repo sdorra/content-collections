@@ -1,19 +1,12 @@
-// @refresh reload
-import { allCharacters } from "content-collections";
-import "./app.css";
+import "@content-collections/sample-theme/sample.css";
+import { Router } from "@solidjs/router";
+import { FileRoutes } from "@solidjs/start/router";
+import { Suspense } from "solid-js";
 
 export default function App() {
   return (
-    <main>
-      <h1>Characters</h1>
-      <ul>
-        {allCharacters.map((character) => (
-          <li>
-            <h2>{character.name}</h2>
-            <div innerHTML={character.content} />
-          </li>
-        ))}
-      </ul>
-    </main>
+    <Router root={(props) => <Suspense>{props.children}</Suspense>}>
+      <FileRoutes />
+    </Router>
   );
 }
