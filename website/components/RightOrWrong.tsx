@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { Ban, CheckCircle } from "lucide-react";
 
 type Props = {
@@ -8,7 +7,7 @@ type Props = {
 export function Right({ children }: Props) {
   return (
     <RightOrWrong
-      icon={<CheckCircle className="size-6 text-success-600" />}
+      icon={<CheckCircle className="text-success-600 size-6" />}
       title="Correct"
     >
       {children}
@@ -21,7 +20,7 @@ export const Correct = Right;
 export function Wrong({ children }: Props) {
   return (
     <RightOrWrong
-      icon={<Ban className="size-6 text-error-600" />}
+      icon={<Ban className="text-error-600 size-6" />}
       title="Wrong"
     >
       {children}

@@ -1,7 +1,7 @@
-import type { Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
-import animatePlugin from "tailwindcss-animate";
 import { createPreset } from "fumadocs-ui/tailwind-plugin";
+import type { Config } from "tailwindcss";
+import animatePlugin from "tailwindcss-animate";
+import colors from "tailwindcss/colors";
 
 const config = {
   darkMode: "class",

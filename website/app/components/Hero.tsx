@@ -1,6 +1,6 @@
-import Image from "next/image";
 import LogoImage from "@/assets/logo.png";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { GettingStartedButton } from "./GettingStartedButton";
 
 type LogoProps = {
@@ -13,12 +13,12 @@ function Logo({ className }: LogoProps) {
       <Image
         src={LogoImage}
         alt=""
-        className="absolute top-10 -left-8 size-20 md:size-64 blur-3xl"
+        className="absolute -left-8 top-10 size-20 blur-3xl md:size-64"
       />
       <Image
         src={LogoImage}
         alt="The logo of Content-Collection: A stack of books."
-        className="size-20 md:size-64 relative"
+        className="relative size-20 md:size-64"
         priority
       />
     </div>
@@ -27,9 +27,9 @@ function Logo({ className }: LogoProps) {
 
 export function Hero() {
   return (
-    <header className="grid grid-cols-1 sm:grid-cols-[auto,1fr] gap-4 py-5 px-10 max-w-5xl mx-auto">
+    <header className="mx-auto grid max-w-5xl grid-cols-1 gap-4 px-10 py-5 sm:grid-cols-[auto,1fr]">
       <Logo className="md:row-span-3" />
-      <h1 className="text-4xl font-bold self-center text-foreground">
+      <h1 className="text-foreground self-center text-4xl font-bold">
         Content Collections
       </h1>
       <p className="sm:col-span-2 md:col-span-1">
@@ -38,7 +38,7 @@ export function Hero() {
         started. With built-in validation, you can ensure the accuracy of your
         data. Plus, you can preprocess your data before it enters your app.
       </p>
-      <div className="sm:col-span-2 md:col-span-1 mt-5">
+      <div className="mt-5 sm:col-span-2 md:col-span-1">
         <GettingStartedButton />
       </div>
     </header>

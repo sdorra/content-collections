@@ -1,7 +1,7 @@
-import { allPosts } from "content-collections";
-import { MDXContent } from "@content-collections/mdx/react";
-import { GetServerSidePropsContext, InferGetStaticPropsType } from "next";
 import Metadata from "@/src/components/Metadata";
+import { MDXContent } from "@content-collections/mdx/react";
+import { allPosts } from "content-collections";
+import { GetServerSidePropsContext, InferGetStaticPropsType } from "next";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

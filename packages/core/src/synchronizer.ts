@@ -1,23 +1,23 @@
+import path from "node:path";
 import picomatch from "picomatch";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
-import path from "node:path";
 import { orderByPath } from "./utils";
 
 type CollectionFileReader<T extends FileCollection> = (
   collection: T,
-  filePath: string
+  filePath: string,
 ) => Promise<CollectionFile | null>;
 
 export function createSynchronizer<T extends FileCollection>(
   readCollectionFile: CollectionFileReader<T>,
   collections: Array<ResolvedCollection<T>>,
-  baseDirectory: string = "."
+  baseDirectory: string = ".",
 ) {
   function findCollections(filePath: string) {
     const resolvedFilePath = path.resolve(filePath);
     return collections.filter((collection) => {
       return resolvedFilePath.startsWith(
-        path.resolve(baseDirectory, collection.directory)
+        path.resolve(baseDirectory, collection.directory),
       );
     });
   }
@@ -61,7 +61,7 @@ export function createSynchronizer<T extends FileCollection>(
     let changed = false;
     for (const { collection, relativePath } of resolvedCollections) {
       const index = collection.files.findIndex(
-        (file) => file.path === relativePath
+        (file) => file.path === relativePath,
       );
       const deleted = collection.files.splice(index, 1);
 
@@ -83,7 +83,7 @@ export function createSynchronizer<T extends FileCollection>(
 
     for (const { collection, relativePath } of resolvedCollections) {
       const index = collection.files.findIndex(
-        (file) => file.path === relativePath
+        (file) => file.path === relativePath,
       );
 
       const file = await readCollectionFile(collection, relativePath);

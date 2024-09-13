@@ -1,14 +1,14 @@
-import { CollectionFile } from "./types";
-import { AnyCollection, Context } from "./config";
-import { isDefined } from "./utils";
-import { Emitter } from "./events";
-import { basename, dirname, extname } from "node:path";
-import { z } from "zod";
-import { Parser, parsers } from "./parser";
-import { CacheManager, Cache } from "./cache";
-import { serializableSchema } from "./serializer";
 import os from "node:os";
+import { basename, dirname, extname } from "node:path";
 import pLimit from "p-limit";
+import { z } from "zod";
+import { Cache, CacheManager } from "./cache";
+import { AnyCollection, Context } from "./config";
+import { Emitter } from "./events";
+import { Parser, parsers } from "./parser";
+import { serializableSchema } from "./serializer";
+import { CollectionFile } from "./types";
+import { isDefined } from "./utils";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
@@ -59,7 +59,7 @@ function createPath(path: string, ext: string) {
 
 export function createTransformer(
   emitter: Emitter,
-  cacheManager: CacheManager
+  cacheManager: CacheManager,
 ) {
   function createSchema(parserName: Parser, schema: z.ZodRawShape) {
     const parser = parsers[parserName];
@@ -74,7 +74,7 @@ export function createTransformer(
 
   async function parseFile(
     collection: AnyCollection,
-    file: CollectionFile
+    file: CollectionFile,
   ): Promise<ParsedFile | null> {
     const { data, path } = file;
 
@@ -114,10 +114,10 @@ export function createTransformer(
   }
 
   async function parseCollection(
-    collection: ResolvedCollection
+    collection: ResolvedCollection,
   ): Promise<TransformedCollection> {
     const promises = collection.files.map((file) =>
-      parseFile(collection, file)
+      parseFile(collection, file),
     );
     return {
       ...collection,
@@ -128,7 +128,7 @@ export function createTransformer(
   function createContext(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
-    cache: Cache
+    cache: Cache,
   ): Context<unknown> {
     return {
       documents: (collection) => {
@@ -136,7 +136,7 @@ export function createTransformer(
         if (!resolved) {
           throw new TransformError(
             "Configuration",
-            `Collection ${collection.name} not found, do you have registered it in your configuration?`
+            `Collection ${collection.name} not found, do you have registered it in your configuration?`,
           );
         }
         return resolved.documents.map((doc) => doc.document);
@@ -156,7 +156,7 @@ export function createTransformer(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
     transform: (data: any, context: Context<unknown>) => any,
-    doc: any
+    doc: any,
   ) {
     const cache = cacheManager.cache(collection.name, doc.document._meta.path);
     const context = createContext(collections, collection, cache);
@@ -184,14 +184,14 @@ export function createTransformer(
 
   async function transformCollection(
     collections: Array<TransformedCollection>,
-    collection: TransformedCollection
+    collection: TransformedCollection,
   ) {
     const transform = collection.transform;
     if (transform) {
       const limit = pLimit(os.cpus().length);
 
       const docs = collection.documents.map((doc) =>
-        limit(() => transformDocument(collections, collection, transform, doc))
+        limit(() => transformDocument(collections, collection, transform, doc)),
       );
 
       const transformed = await Promise.all(docs);
@@ -205,7 +205,7 @@ export function createTransformer(
 
   async function validateDocuments(
     collection: AnyCollection,
-    documents: Array<any>
+    documents: Array<any>,
   ) {
     const docs = [];
     for (const doc of documents) {
@@ -225,7 +225,7 @@ export function createTransformer(
 
   return async (untransformedCollections: Array<ResolvedCollection>) => {
     const promises = untransformedCollections.map((collection) =>
-      parseCollection(collection)
+      parseCollection(collection),
     );
     const collections = await Promise.all(promises);
 

@@ -1,8 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { generateTypeName, isDefined, removeChildPaths } from "./utils";
 
 describe("generateTypeName", () => {
-
   it("should return same as collection name", () => {
     const typeName = generateTypeName("Post");
     expect(typeName).toBe("Post");
@@ -22,11 +21,9 @@ describe("generateTypeName", () => {
     const typeName = generateTypeName("posts");
     expect(typeName).toBe("Post");
   });
-
 });
 
 describe("isDefined", () => {
-
   it("should filter null values", () => {
     const values = [1, 2, null, 3, null];
     const defined = values.filter(isDefined);
@@ -44,11 +41,9 @@ describe("isDefined", () => {
     const defined = values.filter(isDefined);
     expect(defined).toEqual([1, 2, 3]);
   });
-
 });
 
 describe("removeChildPaths", () => {
-
   it("should remove a/b", () => {
     const paths = ["a", "a/b"];
     const filtered = removeChildPaths(paths);
@@ -84,5 +79,4 @@ describe("removeChildPaths", () => {
     const filtered = removeChildPaths(paths);
     expect(filtered).toEqual(["a", "b"]);
   });
-
 });

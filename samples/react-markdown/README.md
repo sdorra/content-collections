@@ -2,9 +2,9 @@
 title: React Markdown
 description: How to use Content Collections with React Markdown
 tags:
-- markdown
-- react
-- vite
+  - markdown
+  - react
+  - vite
 adapter: vite
 ---
 

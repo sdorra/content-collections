@@ -1,4 +1,4 @@
-import { describe, it, expect, vitest } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { createSynchronizer } from "./synchronizer";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
 
@@ -31,7 +31,7 @@ describe("synchronizer", () => {
         },
         path: "new.md",
       }),
-      [collection]
+      [collection],
     );
     expect(await synchronizer.changed("content/new.md")).toBe(true);
 
@@ -65,7 +65,7 @@ describe("synchronizer", () => {
         },
         path: "a.md",
       }),
-      [collection]
+      [collection],
     );
     expect(await synchronizer.changed("content/a.md")).toBe(true);
 
@@ -117,7 +117,7 @@ describe("synchronizer", () => {
         },
         path: "new.md",
       }),
-      [collection]
+      [collection],
     );
 
     expect(await synchronizer.changed("content/new.md")).toBe(true);
@@ -138,7 +138,7 @@ describe("synchronizer", () => {
         },
         path: "other/new.md",
       }),
-      [collection]
+      [collection],
     );
     expect(await synchronizer.changed("other/new.md")).toBe(false);
 
@@ -159,7 +159,7 @@ describe("synchronizer", () => {
         },
         path: "content/new.html",
       }),
-      [collection]
+      [collection],
     );
     expect(await synchronizer.changed("content/new.html")).toBe(false);
 
@@ -250,7 +250,7 @@ describe("synchronizer", () => {
         },
         path: "new.md",
       }),
-      [one, two]
+      [one, two],
     );
     expect(await synchronizer.changed("content/new.md")).toBe(true);
 
@@ -312,7 +312,7 @@ describe("synchronizer", () => {
         },
         path: "new.md",
       }),
-      [collection]
+      [collection],
     );
     expect(await synchronizer.changed("content/new.md")).toBe(false);
 
@@ -320,9 +320,7 @@ describe("synchronizer", () => {
   });
 
   describe("posix", () => {
-
     it("should add a new file", async () => {
-
       vitest.mock("node:path", async (importOriginal) => {
         const origin = await importOriginal<typeof import("node:path")>();
         return {
@@ -347,19 +345,16 @@ describe("synchronizer", () => {
           },
           path: "new.md",
         }),
-        [collection]
+        [collection],
       );
       expect(await synchronizer.changed("content/new.md")).toBe(true);
 
       expect(collection.files.length).toBe(1);
     });
-
   });
 
   describe("windows", () => {
-
     it("should add a new file", async () => {
-
       vitest.mock("node:path", async (importOriginal) => {
         const origin = await importOriginal<typeof import("node:path")>();
         return {
@@ -384,13 +379,11 @@ describe("synchronizer", () => {
           },
           path: "new.md",
         }),
-        [collection]
+        [collection],
       );
       expect(await synchronizer.changed("content\\new.md")).toBe(true);
 
       expect(collection.files.length).toBe(1);
     });
-
   });
-
 });

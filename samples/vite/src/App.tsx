@@ -1,4 +1,4 @@
-import {  allCharacters } from "content-collections";
+import { allCharacters } from "content-collections";
 
 export default function App() {
   return (

@@ -1,8 +1,8 @@
+import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { AnyCollection } from "./config";
-import { existsSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { compile } from "./esbuild";
 
 export type ErrorType = "Read" | "Compile";
@@ -45,12 +45,12 @@ export function createConfigurationReader() {
     configurationPath: string,
     options: Options = {
       configName: defaultConfigName,
-    }
+    },
   ): Promise<InternalConfiguration> => {
     if (!existsSync(configurationPath)) {
       throw new ConfigurationError(
         "Read",
-        `configuration file ${configurationPath} does not exist`
+        `configuration file ${configurationPath} does not exist`,
       );
     }
 
@@ -80,7 +80,7 @@ export function createConfigurationReader() {
     } catch (error) {
       throw new ConfigurationError(
         "Compile",
-        `configuration file ${configurationPath} is invalid: ${error}`
+        `configuration file ${configurationPath} is invalid: ${error}`,
       );
     }
   };

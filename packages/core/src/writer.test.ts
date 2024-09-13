@@ -1,10 +1,10 @@
-import { describe, expect, vitest } from "vitest";
-import { createDataFile, createWriter } from "./writer";
-import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
 import path from "node:path";
+import { describe, expect, vitest } from "vitest";
 import { tmpdirTest } from "./__tests__/tmpdir";
 import { extension } from "./serializer";
+import { createDataFile, createWriter } from "./writer";
 
 describe("writer", () => {
   async function readDataFile(directory: string, fileName: string) {
@@ -55,7 +55,11 @@ describe("writer", () => {
     expect(allSamples).toEqual(["four", "five", "six"]);
   });
 
-  function writeDataFile(directory: string, name: string, documents: Array<unknown>) {
+  function writeDataFile(
+    directory: string,
+    name: string,
+    documents: Array<unknown>,
+  ) {
     return createDataFile(directory, {
       name,
       documents: documents.map((document) => ({ document })),
@@ -158,12 +162,12 @@ describe("writer", () => {
 
         const content = await fs.readFile(
           path.join(tmpdir, "index.d.ts"),
-          "utf-8"
+          "utf-8",
         );
         expect(content).toContain(
-          'import configuration from "./sub/config.ts";'
+          'import configuration from "./sub/config.ts";',
         );
-      }
+      },
     );
 
     tmpdirTest(
@@ -196,12 +200,12 @@ describe("writer", () => {
 
         const content = await fs.readFile(
           path.join(tmpdir, "index.d.ts"),
-          "utf-8"
+          "utf-8",
         );
         expect(content).toContain(
-          'import configuration from "./sub/config.ts";'
+          'import configuration from "./sub/config.ts";',
         );
-      }
+      },
     );
   });
 });

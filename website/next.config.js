@@ -22,7 +22,7 @@ const nextConfig = {
       source: "/docs/samples/:slug",
       destination: "/samples/:slug",
       permanent: true,
-    }
+    },
   ],
 };
 

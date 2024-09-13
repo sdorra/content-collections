@@ -7,7 +7,7 @@ type LinkProps = Parameters<typeof NextLink>[0];
 export function Link({ className, children, ...props }: LinkProps) {
   return (
     <NextLink
-      className={clsx("underline hover:decoration-primary-600", className)}
+      className={clsx("hover:decoration-primary-600 underline", className)}
       {...props}
     >
       {children}
@@ -27,7 +27,7 @@ export function ExternalLink({
 }: ExternalLinkProps) {
   return (
     <a
-      className={clsx("underline hover:decoration-primary-600", className)}
+      className={clsx("hover:decoration-primary-600 underline", className)}
       target="_blank"
       rel="noreferrer"
       {...props}

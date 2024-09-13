@@ -1,7 +1,7 @@
 import { Builder, createBuilder } from "@content-collections/core";
-import { Plugin, UserConfig } from "vite";
-import path from "node:path";
 import { configureLogging } from "@content-collections/integrations";
+import path from "node:path";
+import { Plugin, UserConfig } from "vite";
 
 export type Options = {
   configPath: string;
@@ -20,7 +20,7 @@ function resolveConfigPath(root: string, configPath: string) {
 }
 
 export default function contentCollectionsPlugin(
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ): Plugin {
   const pluginOptions = { ...defaultOptions, ...options };
 
@@ -39,12 +39,12 @@ export default function contentCollectionsPlugin(
 
       let configPath = resolveConfigPath(
         config.root || process.cwd(),
-        pluginOptions.configPath
+        pluginOptions.configPath,
       );
 
       const directory = path.resolve(
         path.dirname(configPath),
-        "./.content-collections/generated"
+        "./.content-collections/generated",
       );
 
       const configPatch: Partial<UserConfig> = {
@@ -77,7 +77,7 @@ export default function contentCollectionsPlugin(
       let configPath = resolveConfigPath(config.root, pluginOptions.configPath);
       console.log(
         "Starting content-collections with config",
-        path.relative(process.cwd(), configPath)
+        path.relative(process.cwd(), configPath),
       );
 
       builder = await createBuilder(configPath);

@@ -1,8 +1,8 @@
-import { Content, Section, Title } from "./Section";
+import { Link } from "@/components/links";
 import { codeToJsx } from "@/lib/codeToJsx";
+import { Content, Section, Title } from "./Section";
 import { TransformationPreviewer } from "./TransformationPreviewer";
 import { Sample, sampleSources } from "./TransformationSamples";
-import { Link } from "@/components/links";
 
 async function mapSample(sample: Sample) {
   return {
@@ -19,7 +19,7 @@ export async function TransformationSection() {
     <Section backgroundGrid>
       <Content>
         <Title center>Transformation</Title>
-        <p className="text-lg max-w-2xl md:text-center mx-auto">
+        <p className="mx-auto max-w-2xl text-lg md:text-center">
           Content Collection does not handle the transformation or compilation
           of content for you. We understand that there are numerous options and
           use cases, so we leave that flexibility in your hands. However, we
@@ -29,7 +29,7 @@ export async function TransformationSection() {
           way you desire.
         </p>
         <TransformationPreviewer samples={samples} />
-        <p className="mt-5 mx-auto max-w-xl text-center">
+        <p className="mx-auto mt-5 max-w-xl text-center">
           These are just a few examples of what is possible with the transform
           function. For more examples, take a look at our{" "}
           <Link href="/docs">documentation</Link>.

@@ -45,9 +45,9 @@ Example:
 ```ts
 const posts = defineCollection({
   // ...
-  transform: async (doc, {collection}) => {
+  transform: async (doc, { collection }) => {
     const docs = await collection.documents();
-    const idx = docs.findIndex(d => doc._meta.filePath === d._meta.filePath);
+    const idx = docs.findIndex((d) => doc._meta.filePath === d._meta.filePath);
     return {
       ...doc,
       prev: idx > 0 ? docs[idx - 1] : null,
@@ -88,7 +88,10 @@ const posts = defineCollection({
 For a complete example have a look at the [Join collections](#join-collections) example.
 
 <Callout type="warn">
-  It is not possible to access documents of the same collection with the `documents` function. Use the `collection.documents` function instead. Please refer to [Access sibling documents](#access-sibling-documents) for more information.
+  It is not possible to access documents of the same collection with the
+  `documents` function. Use the `collection.documents` function instead. Please
+  refer to [Access sibling documents](#access-sibling-documents) for more
+  information.
 </Callout>
 
 ## Examples
@@ -116,7 +119,7 @@ transform: async (author, { cache }) => {
       const response = await fetch(url);
       const user = await response.json();
       return user.bio;
-    }
+    },
   );
 
   return {

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -6,9 +6,9 @@ test.beforeEach(async ({ page }) => {
 
 test("should have content for character", async ({ page }) => {
   await expect(
-    page.getByRole("heading", { name: "Arthur Dent" })
+    page.getByRole("heading", { name: "Arthur Dent" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Ford Prefect" })
+    page.getByRole("heading", { name: "Ford Prefect" }),
   ).toBeVisible();
 });

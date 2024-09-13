@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import clsx from "clsx";
 import { RootProvider } from "fumadocs-ui/provider";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
-import "./globals.css";
 import { Analytics } from "@/components/Analytics";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={clsx(
-          "min-h-svh flex flex-col",
+          "flex min-h-svh flex-col",
           "selection:bg-primary-500 selection:text-white",
           inter.className,
         )}

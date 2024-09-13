@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
 import * as Fathom from "fathom-client";
+import { useEffect } from "react";
 
-export function Analytics(){
+export function Analytics() {
   useEffect(() => {
     Fathom.load("PQLIJXQX", {
-      includedDomains: ["content-collections.dev", "www.content-collections.dev"],
-      spa: "auto"
+      includedDomains: [
+        "content-collections.dev",
+        "www.content-collections.dev",
+      ],
+      spa: "auto",
     });
   }, []);
 
   return null;
-};
+}

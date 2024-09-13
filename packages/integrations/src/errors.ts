@@ -12,7 +12,7 @@ export function registerErrorListeners(builder: Builder) {
     console.log();
     console.log(
       "Validation failed on",
-      path.join(event.collection.directory, event.file.path) + ":"
+      path.join(event.collection.directory, event.file.path) + ":",
     );
     console.log(event.error.message);
     console.log();

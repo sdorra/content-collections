@@ -4,10 +4,10 @@ description: Use MDX files with Content Collections
 stackBlitz:
   file: content/001-hello-world.md
 tags:
-- mdx
-- markdown
-- react
-- next.js
+  - mdx
+  - markdown
+  - react
+  - next.js
 adapter: next
 ---
 
@@ -32,7 +32,7 @@ const posts = defineCollection({
   directory: "content",
   include: "*.mdx",
   schema: (z) => ({
-    title: z.string()
+    title: z.string(),
   }),
   transform: async (document, context) => {
     const body = await compileMDX(context, document);

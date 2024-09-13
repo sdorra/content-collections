@@ -4,14 +4,14 @@ import {
   defineConfig,
   type Document,
 } from "@content-collections/core";
-import { selectAll } from "hast-util-select";
-import { Root } from "hast";
-import GithubSlugger from "github-slugger";
-import { exec as cpExec } from "node:child_process";
-import { promisify } from "node:util";
-import path from "node:path";
 import { transformMDX } from "@fumadocs/content-collections/configuration";
 import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
+import GithubSlugger from "github-slugger";
+import { Root } from "hast";
+import { selectAll } from "hast-util-select";
+import { exec as cpExec } from "node:child_process";
+import path from "node:path";
+import { promisify } from "node:util";
 
 const exec = promisify(cpExec);
 
@@ -78,7 +78,7 @@ const samples = defineCollection({
       body,
       tags: data.tags,
       lastModified: await lastModificationDate(ctx, data),
-      structuredData
+      structuredData,
     };
   },
 });

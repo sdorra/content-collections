@@ -12,12 +12,12 @@ const posts = defineCollection({
     author: z.string(),
   }),
   transform: async (post, ctx) => {
-    const code = await compileMDX(ctx, post)
+    const code = await compileMDX(ctx, post);
     return {
       ...post,
-      code
-    }
-  }
+      code,
+    };
+  },
 });
 
 export default defineConfig({

@@ -1,5 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMarkdown } from "@content-collections/markdown"
+import { compileMarkdown } from "@content-collections/markdown";
 
 const characters = defineCollection({
   name: "characters",
@@ -17,7 +17,7 @@ const characters = defineCollection({
       ...document,
       content,
     };
-  }
+  },
 });
 
 export default defineConfig({

@@ -7,9 +7,9 @@ const posts = defineCollection({
   schema: (z) => ({
     title: z.string(),
   }),
-  transform: async (doc, {collection}) => {
+  transform: async (doc, { collection }) => {
     const docs = await collection.documents();
-    const idx = docs.findIndex(d => doc._meta.filePath === d._meta.filePath);
+    const idx = docs.findIndex((d) => doc._meta.filePath === d._meta.filePath);
     return {
       ...doc,
       prev: idx > 0 ? docs[idx - 1] : null,

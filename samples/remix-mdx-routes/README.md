@@ -2,10 +2,10 @@
 title: Remix MDX Routes
 description: Use MDX routes with Remix and Content Collections
 tags:
-- mdx
-- markdown
-- react
-- remix
+  - mdx
+  - markdown
+  - react
+  - remix
 adapter: remix
 ---
 
@@ -31,16 +31,16 @@ const posts = defineCollection({
   directory: "app/routes",
   include: "posts.*.mdx",
   schema: (z) => ({
-    title: z.string()
+    title: z.string(),
   }),
   // we can exclude the content from the data
   // because remix will load the content for us
-  transform: async ({content, _meta, ...data}) => {
+  transform: async ({ content, _meta, ...data }) => {
     // turn e.g.: posts.hello-world.mdx into hello-world
     const slug = _meta.path.replace("posts.", "");
     return {
       ...data,
-      slug
+      slug,
     };
   },
 });
@@ -63,14 +63,11 @@ export default function Index() {
       <ul>
         {allPosts.map((post) => (
           <li key={post.slug}>
-            <Link to={`/posts/${post.slug}`}>
-              {post.title}
-            </Link>
+            <Link to={`/posts/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
       </ul>
     </main>
   );
 }
-
 ```

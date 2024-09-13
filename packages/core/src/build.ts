@@ -1,11 +1,11 @@
-import { isDefined } from "./utils";
-import { createCollector } from "./collector";
-import { Emitter } from "./events";
-import { InternalConfiguration } from "./configurationReader";
-import { createWriter } from "./writer";
-import { createSynchronizer } from "./synchronizer";
 import { createCacheManager } from "./cache";
+import { createCollector } from "./collector";
+import { InternalConfiguration } from "./configurationReader";
+import { Emitter } from "./events";
+import { createSynchronizer } from "./synchronizer";
 import { createTransformer } from "./transformer";
+import { isDefined } from "./utils";
+import { createWriter } from "./writer";
 
 type Dependencies = {
   emitter: Emitter;
@@ -17,7 +17,7 @@ type Dependencies = {
 export type BuildEvents = {
   "builder:start": {
     startedAt: number;
-  },
+  };
   "builder:end": {
     startedAt: number;
     endedAt: number;
@@ -25,8 +25,8 @@ export type BuildEvents = {
       collections: number;
       documents: number;
     };
-  },
-}
+  };
+};
 
 export async function createBuildContext({
   emitter,
@@ -45,7 +45,7 @@ export async function createBuildContext({
   const synchronizer = createSynchronizer(
     collector.collectFile,
     resolved,
-    baseDirectory
+    baseDirectory,
   );
 
   const transform = createTransformer(emitter, cacheManager);
@@ -69,7 +69,6 @@ export async function build({
   writer,
   configuration,
 }: BuildContext) {
-
   const startedAt = Date.now();
   emitter.emit("builder:start", {
     startedAt,
@@ -85,7 +84,7 @@ export async function build({
   const pendingOnSuccess = collections
     .filter((collection) => Boolean(collection.onSuccess))
     .map((collection) =>
-      collection.onSuccess?.(collection.documents.map((doc) => doc.document))
+      collection.onSuccess?.(collection.documents.map((doc) => doc.document)),
     );
 
   await Promise.all(pendingOnSuccess.filter(isDefined));
@@ -99,7 +98,7 @@ export async function build({
     {
       collections: 0,
       documents: 0,
-    }
+    },
   );
 
   emitter.emit("builder:end", {

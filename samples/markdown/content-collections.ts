@@ -1,5 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMarkdown } from "@content-collections/markdown"
+import { compileMarkdown } from "@content-collections/markdown";
 
 const posts = defineCollection({
   name: "posts",
@@ -14,8 +14,8 @@ const posts = defineCollection({
     return {
       ...document,
       html,
-    }
-  }
+    };
+  },
 });
 
 export default defineConfig({

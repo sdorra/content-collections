@@ -1,7 +1,7 @@
 "use client";
 
-import { allPosts } from "content-collections";
 import { MDXContent } from "@content-collections/mdx/react";
+import { allPosts } from "content-collections";
 
 export default function ClientPage() {
   return (

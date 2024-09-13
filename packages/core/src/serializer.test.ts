@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { serializableSchema, serialize, extension } from "./serializer";
-import { tmpdirTest } from "./__tests__/tmpdir";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { describe, expect, it } from "vitest";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import { extension, serializableSchema, serialize } from "./serializer";
 
 describe("serializer", () => {
   it("should pass valid json", () => {
@@ -40,7 +40,7 @@ describe("serializer", () => {
   });
 
   it("should allow map values", () => {
-    const map = new Map<string,string>();
+    const map = new Map<string, string>();
     map.set("a", "b");
 
     const json = {
@@ -82,7 +82,6 @@ describe("serializer", () => {
   });
 
   describe("serialize", () => {
-
     async function writeAndImport(tmpdir: string, object: unknown) {
       const result = serialize([object]);
       const filePath = path.join(tmpdir, `test.${extension}`);
@@ -92,7 +91,7 @@ describe("serializer", () => {
       return imported.default;
     }
 
-    tmpdirTest("should serialize a simple object", async ({tmpdir}) => {
+    tmpdirTest("should serialize a simple object", async ({ tmpdir }) => {
       const object = {
         firstName: "Tricia",
         lastName: "McMillan",
@@ -102,7 +101,7 @@ describe("serializer", () => {
       expect(imported).toEqual([object]);
     });
 
-    tmpdirTest("should serialize an object with a date", async ({tmpdir}) => {
+    tmpdirTest("should serialize an object with a date", async ({ tmpdir }) => {
       const object = {
         date: new Date("2021-01-01"),
       };
@@ -112,8 +111,8 @@ describe("serializer", () => {
       expect(imported[0].date).toBeInstanceOf(Date);
     });
 
-    tmpdirTest("should serialize an object with a map", async ({tmpdir}) => {
-      const map = new Map<string,string>();
+    tmpdirTest("should serialize an object with a map", async ({ tmpdir }) => {
+      const map = new Map<string, string>();
       map.set("a", "b");
 
       const object = {
@@ -125,7 +124,7 @@ describe("serializer", () => {
       expect(imported[0].map).toBeInstanceOf(Map);
     });
 
-    tmpdirTest("should serialize an object with a set", async ({tmpdir}) => {
+    tmpdirTest("should serialize an object with a set", async ({ tmpdir }) => {
       const set = new Set<string>();
       set.add("a");
 
@@ -138,16 +137,17 @@ describe("serializer", () => {
       expect(imported[0].set).toBeInstanceOf(Set);
     });
 
-    tmpdirTest("should serialize an object with a bigint", async ({tmpdir}) => {
-      const object = {
-        bigint: BigInt(1),
-      };
+    tmpdirTest(
+      "should serialize an object with a bigint",
+      async ({ tmpdir }) => {
+        const object = {
+          bigint: BigInt(1),
+        };
 
-      const imported = await writeAndImport(tmpdir, object);
-      expect(imported).toEqual([object]);
-      expect(imported[0].bigint).toBeTypeOf("bigint");
-    });
-
+        const imported = await writeAndImport(tmpdir, object);
+        expect(imported).toEqual([object]);
+        expect(imported[0].bigint).toBeTypeOf("bigint");
+      },
+    );
   });
-
 });

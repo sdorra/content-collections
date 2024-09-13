@@ -1,5 +1,5 @@
-import z from "zod";
 import serializeJs from "serialize-javascript";
+import z from "zod";
 
 const literalSchema = z.union([
   // json
@@ -20,7 +20,7 @@ type Literal = z.infer<typeof literalSchema>;
 type SchemaType = Literal | { [key: string]: SchemaType } | SchemaType[];
 
 const schema: z.ZodType<SchemaType> = z.lazy(() =>
-  z.union([literalSchema, z.array(schema), z.record(schema)])
+  z.union([literalSchema, z.array(schema), z.record(schema)]),
 );
 
 export type NotSerializableError =

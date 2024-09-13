@@ -34,7 +34,7 @@ export const Notification = ({
   return (
     <div
       className={clsx(
-        "rounded-md border-l-8 border-r border-t border-b p-5 shadow-md",
+        "rounded-md border-b border-l-8 border-r border-t p-5 shadow-md",
         className,
         {
           "[&_a]:underline hover:[&_a]:decoration-2": !disableLinkStyle,
@@ -47,7 +47,7 @@ export const Notification = ({
           "border-success-600 dark:border-success-500 hover:[&_a]:decoration-success-500":
             type === "success",
           "not-prose": !prose,
-        }
+        },
       )}
     >
       <div
@@ -63,9 +63,7 @@ export const Notification = ({
         </div>
         <Icon />
       </div>
-      <div className="overflow-auto scrollbar-hide">
-      {children}
-      </div>
+      <div className="scrollbar-hide overflow-auto">{children}</div>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import { Context, Meta } from "@content-collections/core";
-import { Pluggable, Transformer } from "unified";
-import { bundleMDX } from "mdx-bundler";
-import fs from "fs/promises";
-import path from "path";
 import { existsSync } from "fs";
+import fs from "fs/promises";
+import { bundleMDX } from "mdx-bundler";
+import path from "path";
+import { Pluggable, Transformer } from "unified";
 
 type Document = {
   _meta: Meta;
@@ -22,7 +22,7 @@ export type Options = {
 async function appendFile(
   files: Record<string, string>,
   importPath: string,
-  filePath: string
+  filePath: string,
 ) {
   files[importPath] = await fs.readFile(filePath, "utf-8");
 }
@@ -30,7 +30,7 @@ async function appendFile(
 async function appendDirectory(
   files: Record<string, string>,
   importPathPrefix: string,
-  directoryPath: string
+  directoryPath: string,
 ) {
   if (!existsSync(directoryPath)) {
     return;
@@ -45,7 +45,7 @@ async function appendDirectory(
 
 function createFileAppender(
   tasks: Promise<void>[],
-  files: Record<string, string>
+  files: Record<string, string>,
 ) {
   return {
     content: (importPath: string, content: string) => {
@@ -117,7 +117,7 @@ function createCacheKey(document: Document): Document {
 export function compileMDX(
   { cache }: Pick<Context, "cache">,
   document: Document,
-  options?: Options
+  options?: Options,
 ) {
   const cacheKey = createCacheKey(document);
   return cache(cacheKey, (doc) => compile(doc, options));

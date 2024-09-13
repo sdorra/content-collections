@@ -13,7 +13,7 @@ function isValueElement(el: any): el is ValueElement {
 
 function componentNameFromComment(
   prefix: "cmp-line" | "cmp-inline",
-  comment: string
+  comment: string,
 ) {
   let c = comment.replace("/*", "").replace("*/", "").trim();
   if (c.startsWith(prefix + ":")) {
@@ -37,7 +37,7 @@ function findLineComponent(node: any) {
 }
 
 export function commentComponentTransformer(
-  components: Components
+  components: Components,
 ): ShikiTransformer {
   return {
     line(node) {

@@ -16,7 +16,7 @@ export function configureLogging(builder: Builder) {
       event.stats.documents,
       event.stats.documents === 1 ? "document" : "documents",
       "in",
-      event.endedAt - event.startedAt + "ms"
+      event.endedAt - event.startedAt + "ms",
     );
   });
 

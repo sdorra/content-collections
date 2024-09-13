@@ -17,12 +17,12 @@ export function TypeContent({ title, prefix, content }: Props) {
   const [currentContent, setCurrentContent] = useState("");
 
   return (
-    <div className="grid grid-row-2 gap-2">
-      <div className="bg-[#22272E] rounded-md shadow-md border border-base-600/50">
-        <header className="border border-b-base-600/50 flex gap-1 rounded-t-md p-2">
-          <Circle className="text-rose-500 fill-current size-3" />
-          <Circle className="text-amber-500 fill-current size-3" />
-          <Circle className="text-emerald-500 fill-current size-3" />
+    <div className="grid-row-2 grid gap-2">
+      <div className="border-base-600/50 rounded-md border bg-[#22272E] shadow-md">
+        <header className="border-b-base-600/50 flex gap-1 rounded-t-md border p-2">
+          <Circle className="size-3 fill-current text-rose-500" />
+          <Circle className="size-3 fill-current text-amber-500" />
+          <Circle className="size-3 fill-current text-emerald-500" />
         </header>
         <div className="p-5">
           <pre>
@@ -61,8 +61,8 @@ title: ${title}
           </div>
         </div>
       </div>
-      <div className="bg-base-700 rounded-md shadow-md p-5">
-        <p className="font-bold text-xl mb-4">{title}</p>
+      <div className="bg-base-700 rounded-md p-5 shadow-md">
+        <p className="mb-4 text-xl font-bold">{title}</p>
         <p>
           {prefix} {currentContent}
         </p>

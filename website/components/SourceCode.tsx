@@ -1,9 +1,9 @@
-import { codeToHast } from "shiki";
+import { cn } from "@/lib/utils";
+import { transformerNotationHighlight } from "@shikijs/transformers";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { transformerNotationHighlight } from "@shikijs/transformers";
+import { codeToHast } from "shiki";
 import { commentTransformer } from "./CommentTransformer";
-import { cn } from "@/lib/utils";
 
 type Props = {
   lang: string;
@@ -31,7 +31,7 @@ export async function SourceCode({
     commentTransformer(
       cn(className, {
         "line-highlighting": lineHighlighter,
-      })
+      }),
     ),
   ];
 

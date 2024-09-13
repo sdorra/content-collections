@@ -1,10 +1,10 @@
-import { describe, expect, vi, afterEach } from "vitest";
-import { tmpdirTest } from "./__tests__/tmpdir";
-import path from "node:path";
-import { compile } from "./esbuild";
+import bundleRequire from "bundle-require";
 import { existsSync } from "node:fs";
 import { copyFile, readFile } from "node:fs/promises";
-import bundleRequire from "bundle-require";
+import path from "node:path";
+import { afterEach, describe, expect, vi } from "vitest";
+import { tmpdirTest } from "./__tests__/tmpdir";
+import { compile } from "./esbuild";
 
 type Params = {
   tsConfig?: unknown;
@@ -68,7 +68,7 @@ describe("esbuild", () => {
     async ({ tmpdir }) => {
       const output = await compileAndImportFile(tmpdir, "external");
       expect(output).toBe("helloWorld");
-    }
+    },
   );
 
   tmpdirTest("should compile with internal module", async ({ tmpdir }) => {
@@ -98,7 +98,7 @@ describe("esbuild", () => {
 
       const mod = await import(config);
       expect(mod.default).toBe("hello world");
-    }
+    },
   );
 
   tmpdirTest(
@@ -107,7 +107,7 @@ describe("esbuild", () => {
       const output = await compileFile(tmpdir, "aliasDynamicImport");
       const content = await readFile(output, "utf-8");
       expect(content).includes('import("@alias")');
-    }
+    },
   );
 
   tmpdirTest("should use empty paths", async ({ tmpdir }) => {
@@ -119,20 +119,28 @@ describe("esbuild", () => {
   });
 
   tmpdirTest("should return configuration path", async ({ tmpdir }) => {
-    const configPath = path.join(__dirname, "__tests__", "esbuild", "simple.ts");
+    const configPath = path.join(
+      __dirname,
+      "__tests__",
+      "esbuild",
+      "simple.ts",
+    );
     const output = path.join(tmpdir, "out.mjs");
 
     const paths = await compile(configPath, output);
-    expect(paths.map(p => path.resolve(p))).toEqual([configPath]);
+    expect(paths.map((p) => path.resolve(p))).toEqual([configPath]);
   });
 
-  tmpdirTest("should return configuration and imported path", async ({ tmpdir }) => {
-    const directory = path.join(__dirname, "__tests__", "esbuild");
-    const configPath = path.join(directory, "internal.ts");
-    const imported = path.join(directory, "simple.ts");
-    const output = path.join(tmpdir, "out.mjs");
+  tmpdirTest(
+    "should return configuration and imported path",
+    async ({ tmpdir }) => {
+      const directory = path.join(__dirname, "__tests__", "esbuild");
+      const configPath = path.join(directory, "internal.ts");
+      const imported = path.join(directory, "simple.ts");
+      const output = path.join(tmpdir, "out.mjs");
 
-    const paths = await compile(configPath, output);
-    expect(paths.map(p => path.resolve(p))).toEqual([imported, configPath]);
-  });
+      const paths = await compile(configPath, output);
+      expect(paths.map((p) => path.resolve(p))).toEqual([imported, configPath]);
+    },
+  );
 });

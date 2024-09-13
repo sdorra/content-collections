@@ -25,7 +25,7 @@ export function removeChildPaths(paths: Array<string>) {
           }
           return path.startsWith(otherPath);
         });
-      })
-    )
+      }),
+    ),
   );
 }

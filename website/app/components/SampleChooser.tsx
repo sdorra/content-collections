@@ -16,7 +16,7 @@ type Props = {
 export function SampleChooser({ value, onValueChange, samples }: Props) {
   return (
     <RadioGroup.Root
-      className="flex gap-2 w-full md:w-fit md:flex-col justify-center flex-wrap items-center"
+      className="flex w-full flex-wrap items-center justify-center gap-2 md:w-fit md:flex-col"
       value={value}
       onValueChange={onValueChange}
     >
@@ -25,12 +25,12 @@ export function SampleChooser({ value, onValueChange, samples }: Props) {
           key={idx}
           value={String(idx)}
           title={sample.description}
-          className="px-4 md:w-full py-2 dark:bg-base-950 bg-white dark:hover:bg-base-900 hover:border-primary-300 shadow-md inline-flex gap-2 items-center text-xl rounded-md border-2 border-base-300 aria-checked:border-primary-600"
+          className="dark:bg-base-950 dark:hover:bg-base-900 hover:border-primary-300 border-base-300 aria-checked:border-primary-600 inline-flex items-center gap-2 rounded-md border-2 bg-white px-4 py-2 text-xl shadow-md md:w-full"
         >
-          <div className="size-4 rounded-full bg-base-200 border-base-300 border shadow-inner flex items-center justify-center">
-            <RadioGroup.Indicator className="rounded-full size-3 bg-primary-600 block" />
+          <div className="bg-base-200 border-base-300 flex size-4 items-center justify-center rounded-full border shadow-inner">
+            <RadioGroup.Indicator className="bg-primary-600 block size-3 rounded-full" />
           </div>
-          <span className="font-bold text-nowrap">{sample.name}</span>
+          <span className="text-nowrap font-bold">{sample.name}</span>
         </RadioGroup.Item>
       ))}
     </RadioGroup.Root>

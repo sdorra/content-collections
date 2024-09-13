@@ -1,11 +1,11 @@
-import path, { join } from "node:path";
-import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
+import path, { join } from "node:path";
 
 export type CacheFn = <TInput, TOutput>(
   input: TInput,
-  compute: (input: TInput) => Promise<TOutput> | TOutput
+  compute: (input: TInput) => Promise<TOutput> | TOutput,
 ) => Promise<TOutput>;
 
 function createKey(config: string, input: unknown): string {
@@ -44,7 +44,7 @@ async function readMapping(mappingPath: string): Promise<Mapping> {
       return JSON.parse(await readFile(mappingPath, "utf-8"));
     } catch (e) {
       console.error(
-        "Failed to parse the cache mapping. We will recreate the cache."
+        "Failed to parse the cache mapping. We will recreate the cache.",
       );
     }
   }
@@ -53,7 +53,7 @@ async function readMapping(mappingPath: string): Promise<Mapping> {
 
 export async function createCacheManager(
   baseDirectory: string,
-  configChecksum: string
+  configChecksum: string,
 ) {
   const cacheDirectory = await createCacheDirectory(baseDirectory);
 
@@ -69,7 +69,7 @@ export async function createCacheManager(
     const directory = join(
       cacheDirectory,
       fileName(collection),
-      fileName(file)
+      fileName(file),
     );
 
     let collectionMapping = mapping[collection];
@@ -99,7 +99,7 @@ export async function createCacheManager(
             return JSON.parse(await readFile(filePath, "utf-8"));
           } catch (e) {
             console.error(
-              "Failed to parse the cache file. We will recompute the value."
+              "Failed to parse the cache file. We will recompute the value.",
             );
           }
         }

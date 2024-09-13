@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { GetTypeByName } from "./types";
 import { defineCollection, defineConfig } from "./config";
+import { GetTypeByName } from "./types";
 
 describe("types", () => {
   describe("GetTypeByName", () => {

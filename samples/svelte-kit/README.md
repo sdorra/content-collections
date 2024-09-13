@@ -11,5 +11,5 @@ Use `@content-collections/vite` to integrate content-collections into your Svelt
 
 For more information, refer to the following resources:
 
-* [SvelteKit Quick Start](https://www.content-collections.dev/docs/quickstart/svelte-kit)
-* [Vite adapter documentation](https://www.content-collections.dev/docs/adapter/vite/)
+- [SvelteKit Quick Start](https://www.content-collections.dev/docs/quickstart/svelte-kit)
+- [Vite adapter documentation](https://www.content-collections.dev/docs/adapter/vite/)

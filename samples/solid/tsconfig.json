@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "paths": {
       "~/*": ["./src/*"],
-      "content-collections": ["./.content-collections/generated"],
-    },
-  },
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
 }

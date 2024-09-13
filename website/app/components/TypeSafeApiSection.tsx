@@ -21,7 +21,7 @@ export function Posts() {
 
 function TsLogo() {
   return (
-    <svg fill="none" viewBox="0 0 512 512" className="w-24 h-24 mx-auto">
+    <svg fill="none" viewBox="0 0 512 512" className="mx-auto h-24 w-24">
       <rect fill="#3178c6" height="512" rx="50" width="512" />
       <rect fill="#3178c6" height="512" rx="50" width="512" />
       <path
@@ -41,7 +41,7 @@ export async function TypeSafeApiSection() {
   });
   return (
     <Section>
-      <Content className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+      <Content className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         <div className="flex flex-col gap-5">
           <Title>Simple TypeSafe API</Title>
           <p>

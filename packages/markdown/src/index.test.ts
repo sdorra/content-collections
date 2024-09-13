@@ -1,6 +1,6 @@
+import { Context, Meta } from "@content-collections/core";
 import { describe, expect, it, vitest } from "vitest";
 import { compileMarkdown } from ".";
-import { Context, Meta } from "@content-collections/core";
 
 type Cache = Context["cache"];
 
@@ -23,7 +23,7 @@ describe("markdown", () => {
       {
         _meta: sampleMeta,
         content: "# Hello World!",
-      }
+      },
     );
 
     expect(html).toBe("<h1>Hello World!</h1>");
@@ -42,7 +42,7 @@ describe("markdown", () => {
             tree.children[0].children[0].value = "Hello Universe!";
           },
         ],
-      }
+      },
     );
 
     expect(html).toBe("<h1>Hello Universe!</h1>");
@@ -61,7 +61,7 @@ describe("markdown", () => {
             tree.children[0].children[0].value = "Hello Universe!";
           },
         ],
-      }
+      },
     );
 
     expect(html).toBe("<h1>Hello Universe!</h1>");
@@ -81,7 +81,7 @@ describe("markdown", () => {
             tree.children[0].children[0].value = `Hello from ${vfile.data._meta.path}`;
           },
         ],
-      }
+      },
     );
 
     expect(html).toBe("<h1>Hello from /post</h1>");
@@ -93,7 +93,7 @@ describe("markdown", () => {
       {
         _meta: sampleMeta,
         content: "# Hello <strong>World</strong>!",
-      }
+      },
     );
 
     expect(html).toBe("<h1>Hello World!</h1>");
@@ -105,9 +105,10 @@ describe("markdown", () => {
       {
         _meta: sampleMeta,
         content: "# Hello <strong>World</strong>!",
-      },{
-        allowDangerousHtml: true
-      }
+      },
+      {
+        allowDangerousHtml: true,
+      },
     );
 
     expect(html).toBe("<h1>Hello <strong>World</strong>!</h1>");

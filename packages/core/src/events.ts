@@ -38,12 +38,12 @@ export function createEmitter<TEvents extends EventMap>() {
 
   function on<TKey extends Keys<TEvents>>(
     key: TKey,
-    listener: Listener<TEvents[TKey]>
+    listener: Listener<TEvents[TKey]>,
   ): void;
 
   function on<TKey extends Keys<SystemEvents>>(
     key: TKey,
-    listener: Listener<SystemEvents[TKey]>
+    listener: Listener<SystemEvents[TKey]>,
   ): void;
 
   function on(key: string, listener: Listener<any>) {
