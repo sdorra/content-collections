@@ -21,7 +21,7 @@ function resolveConfigPath(root: string, configPath: string) {
 
 export default function contentCollectionsPlugin(
   options: Partial<Options> = {},
-): Plugin {
+) {
   const pluginOptions = { ...defaultOptions, ...options };
 
   let builder: Builder;
@@ -30,7 +30,7 @@ export default function contentCollectionsPlugin(
   return {
     name: "content-collections",
 
-    config(config) {
+    config(config: any) {
       isEnabled = options.isEnabled ? options.isEnabled(config) : true;
 
       // even if the plugin is disabled, we need to configure the alias
@@ -67,7 +67,8 @@ export default function contentCollectionsPlugin(
         };
       }
 
-      return configPatch;
+      // we cast to any here to avoid type mismatches with different vite versions
+      return configPatch as any;
     },
 
     async configResolved(config: any) {
@@ -103,5 +104,5 @@ export default function contentCollectionsPlugin(
       builder.watch();
       return;
     },
-  };
+  } satisfies Plugin;
 }

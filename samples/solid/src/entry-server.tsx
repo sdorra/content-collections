@@ -12,7 +12,21 @@ export default createHandler(() => (
           {assets}
         </head>
         <body>
-          <div id="app">{children}</div>
+          <header id="top">
+            <h1>ContentCrafter Inc.</h1>
+            <p>
+              From Worldly Wonders to Polished Perfection – Crafting Content
+              That Captivates and Converts.
+            </p>
+            <nav>
+              <a href="/">Posts</a>
+            </nav>
+          </header>
+          <main id="app">{children}</main>
+          <footer>
+            <a href="#top">↑ Back to top</a>
+            <p>Copyright © {new Date().getFullYear()} ContentCrafter Inc.</p>
+          </footer>
           {scripts}
         </body>
       </html>

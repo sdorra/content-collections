@@ -1,25 +1,25 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMarkdown } from "@content-collections/markdown";
 
-const characters = defineCollection({
-  name: "characters",
-  directory: "characters",
+const posts = defineCollection({
+  name: "posts",
+  directory: "src/content/posts",
   include: "*.md",
   schema: (z) => ({
-    name: z.string().min(1),
-    origin: z.string().min(1),
-    species: z.string().min(1),
-    source: z.string().min(1).url(),
+    title: z.string(),
+    summary: z.string(),
+    date: z.string(),
+    author: z.string(),
   }),
-  transform: async (document, context) => {
-    const content = await compileMarkdown(context, document);
+  transform: async (post, ctx) => {
+    const html = await compileMarkdown(ctx, post);
     return {
-      ...document,
-      content,
+      ...post,
+      html,
     };
   },
 });
 
 export default defineConfig({
-  collections: [characters],
+  collections: [posts],
 });

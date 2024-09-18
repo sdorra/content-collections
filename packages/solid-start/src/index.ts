@@ -1,9 +1,9 @@
 import contentCollectionsPlugin, { Options } from "@content-collections/vite";
 import { Plugin } from "vite";
 
-export default function remixContentCollectionsPlugin(
+export default function solidStartContentCollectionsPlugin(
   options?: Partial<Omit<Options, "isEnabled">>,
-): Plugin {
+) {
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
@@ -15,5 +15,5 @@ export default function remixContentCollectionsPlugin(
   return {
     ...plugin,
     name: "solidstart-content-collections",
-  };
+  } satisfies Plugin;
 }
