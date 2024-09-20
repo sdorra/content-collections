@@ -26,6 +26,7 @@
     "typescript": "^5.0.2"
   },
   "devDependencies": {
+    "bundle-require": "^5.0.0",
     "@types/node": "^20.14.9",
     "@types/picomatch": "^3.0.1",
     "@types/pluralize": "^0.0.33",
@@ -38,7 +39,6 @@
   },
   "dependencies": {
     "@parcel/watcher": "^2.4.1",
-    "bundle-require": "^5.0.0",
     "camelcase": "^8.0.0",
     "esbuild": "^0.21.4",
     "gray-matter": "^4.0.3",
