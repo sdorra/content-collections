@@ -1,5 +1,14 @@
 # @content-collections/cli
 
+## 0.1.4
+
+### Patch Changes
+
+- [#317](https://github.com/sdorra/content-collections/pull/317) [`9a7795d`](https://github.com/sdorra/content-collections/commit/9a7795d3ad8249cb78c1a90b01ff1b69c5404904) Thanks [@sdorra](https://github.com/sdorra)! - Fix cli on node 22
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.2.0
+
 ## 0.1.3
 
 ### Patch Changes

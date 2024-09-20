@@ -1,5 +1,14 @@
 # @content-collections/next
 
+## 0.2.2
+
+### Patch Changes
+
+- [#319](https://github.com/sdorra/content-collections/pull/319) [`a0d1a67`](https://github.com/sdorra/content-collections/commit/a0d1a678ad13c66607ffd578485a2b3cfb902c0e) Thanks [@sdorra](https://github.com/sdorra)! - Fix double execution when next.config.ts is used
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.2.0
+
 ## 0.2.1
 
 ### Patch Changes
