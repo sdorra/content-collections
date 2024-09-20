@@ -3,13 +3,13 @@
   "description": "Command line interface for content-collections",
   "version": "0.1.3",
   "type": "module",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "files": [
     "dist",
     "README.md"
   ],
   "bin": {
-    "content-collections": "dist/src/index.js"
+    "content-collections": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -22,7 +22,6 @@
   "devDependencies": {
     "@content-collections/core": "workspace:*",
     "@types/node": "^20.14.9",
-    "tsup": "^8.2.4",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4"
   },

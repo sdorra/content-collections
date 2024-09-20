@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import { Clerc, completionsPlugin, helpPlugin, versionPlugin } from "clerc";
-import packageJson from "../package.json" assert { type: "json" };
 import build from "./commands/build.js";
 import watch from "./commands/watch.js";
+
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const packageJson = require("../package.json");
 
 const name = "content-collections";
 if (!packageJson.bin[name]) {
