@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.7.1
+
+### Patch Changes
+
+- [#318](https://github.com/sdorra/content-collections/pull/318) [`5724373`](https://github.com/sdorra/content-collections/commit/5724373e28d4972d604cf24f195518ea58b39b88) Thanks [@sdorra](https://github.com/sdorra)! - Fix webpack warning on next.js 15
+
 ## 0.7.0
 
 ### Minor Changes
