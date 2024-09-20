@@ -10,6 +10,7 @@ const defaultOptions: Options = {
 };
 
 export function createContentCollectionPlugin(pluginOptions: Options) {
+  let initialized = false;
   return async (
     nextConfig: Partial<NextConfig> | Promise<Partial<NextConfig>> = {},
   ): Promise<Partial<NextConfig>> => {
@@ -17,6 +18,12 @@ export function createContentCollectionPlugin(pluginOptions: Options) {
       .slice(2)
       .filter((arg) => !arg.startsWith("-"));
     if (command === "build" || command === "dev") {
+      if (initialized) {
+        return nextConfig;
+      }
+
+      initialized = true;
+
       const { createBuilder } = await import("@content-collections/core");
 
       console.log("Starting content-collections", pluginOptions.configPath);
