@@ -3,17 +3,19 @@
   "description": "Compile markdown to html as part of your content-collection transform function",
   "version": "0.1.1",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts -d dist",
+    "build": "tsup src/index.ts --format esm,cjs --dts -d dist",
     "test": "vitest --run --coverage",
     "typecheck": "tsc"
   },
