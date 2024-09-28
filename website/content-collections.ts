@@ -4,7 +4,10 @@ import {
   defineConfig,
   type Document,
 } from "@content-collections/core";
-import { transformMDX } from "@fumadocs/content-collections/configuration";
+import {
+  createMetaSchema,
+  transformMDX,
+} from "@fumadocs/content-collections/configuration";
 import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
 import GithubSlugger from "github-slugger";
 import { Root } from "hast";
@@ -130,10 +133,7 @@ const metas = defineCollection({
   name: "meta",
   directory: "../docs",
   include: "**/*.json",
-  schema: (z) => ({
-    title: z.string().optional(),
-    pages: z.array(z.string()).optional(),
-  }),
+  schema: createMetaSchema,
   parser: "json",
 });
 

@@ -2,6 +2,7 @@ import { getPage, getPages } from "@/app/source";
 import { Notification } from "@/components/Notification";
 import { Correct, Wrong } from "@/components/RightOrWrong";
 import { MDXContent } from "@content-collections/mdx/react";
+import { TableOfContents } from "fumadocs-core/server";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Card, Cards } from "fumadocs-ui/components/card";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
@@ -19,8 +20,11 @@ export default async function Page({
 
   if (!page) notFound();
 
+  // @ts-expect-error see https://github.com/fuma-nama/fumadocs/issues/896
+  const toc: TableOfContents = page.data.toc;
+
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage toc={toc} full={page.data.full}>
       <DocsBody>
         <h1>{page.data.linkText ?? page.data.title}</h1>
         {page.data.description ? (
