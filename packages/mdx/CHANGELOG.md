@@ -1,5 +1,11 @@
 # @content-collections/mdx
 
+## 0.1.6
+
+### Patch Changes
+
+- [#330](https://github.com/sdorra/content-collections/pull/330) [`43533cb`](https://github.com/sdorra/content-collections/commit/43533cb47f3387efc7729989a2e9e2675e7cb05b) Thanks [@sdorra](https://github.com/sdorra)! - Export cjs bundle besides the esm bundle #329
+
 ## 0.1.5
 
 ### Patch Changes
