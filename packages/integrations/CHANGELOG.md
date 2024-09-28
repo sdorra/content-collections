@@ -1,5 +1,11 @@
 # @content-collections/integrations
 
+## 0.2.1
+
+### Patch Changes
+
+- [#330](https://github.com/sdorra/content-collections/pull/330) [`b2c89ce`](https://github.com/sdorra/content-collections/commit/b2c89ce6075d9a5115486d8ff9c0b84f4c0841dd) Thanks [@sdorra](https://github.com/sdorra)! - Ensure types is exported before imports and require
+
 ## 0.2.0
 
 ### Minor Changes

@@ -18,8 +18,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@content-collections/core": "0.7.1",
-    "@content-collections/vite": "0.2.2",
+    "@content-collections/core": "0.7.2",
+    "@content-collections/vite": "0.2.3",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.11.2",
     "@types/react": "^18.3.3",

@@ -1,5 +1,12 @@
 # @content-collections/cli
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`b2c89ce`](https://github.com/sdorra/content-collections/commit/b2c89ce6075d9a5115486d8ff9c0b84f4c0841dd)]:
+  - @content-collections/integrations@0.2.1
+
 ## 0.1.4
 
 ### Patch Changes

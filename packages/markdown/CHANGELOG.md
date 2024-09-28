@@ -1,5 +1,11 @@
 # @content-collections/markdown
 
+## 0.1.2
+
+### Patch Changes
+
+- [#330](https://github.com/sdorra/content-collections/pull/330) [`72d97a0`](https://github.com/sdorra/content-collections/commit/72d97a0c8858b31c2890887416180d7842851670) Thanks [@sdorra](https://github.com/sdorra)! - Export cjs bundle besides the esm bundle
+
 ## 0.1.1
 
 ### Patch Changes

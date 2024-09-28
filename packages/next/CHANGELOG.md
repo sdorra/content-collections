@@ -1,5 +1,14 @@
 # @content-collections/next
 
+## 0.2.3
+
+### Patch Changes
+
+- [#330](https://github.com/sdorra/content-collections/pull/330) [`b2c89ce`](https://github.com/sdorra/content-collections/commit/b2c89ce6075d9a5115486d8ff9c0b84f4c0841dd) Thanks [@sdorra](https://github.com/sdorra)! - Ensure types is exported before imports and require
+
+- Updated dependencies [[`b2c89ce`](https://github.com/sdorra/content-collections/commit/b2c89ce6075d9a5115486d8ff9c0b84f4c0841dd)]:
+  - @content-collections/integrations@0.2.1
+
 ## 0.2.2
 
 ### Patch Changes
