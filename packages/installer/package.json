@@ -1,0 +1,23 @@
+{
+  "name": "@content-collections/installer",
+  "description": "CLI for installing content-collections",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@vitest/coverage-v8": "^2.1.1",
+    "tsx": "^4.1.1",
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.1"
+  },
+  "dependencies": {
+    "comment-json": "^4.2.5",
+    "package-manager-detector": "^0.2.0",
+    "recast": "^0.23.9",
+    "zod": "^3.23.8"
+  }
+}
