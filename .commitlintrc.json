@@ -23,6 +23,7 @@
       [
         "core",
         "cli",
+        "installer",
         "website",
         "vite",
         "remix-vite",

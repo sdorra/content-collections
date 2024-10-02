@@ -87,6 +87,10 @@
         "label": "cli"
       },
       {
+        "value": "installer",
+        "label": "installer"
+      },
+      {
         "value": "website",
         "label": "website"
       },
