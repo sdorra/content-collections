@@ -46,7 +46,7 @@
     "github-slugger": "^2.0.0",
     "hast-util-select": "^6.0.2",
     "hast-util-to-jsx-runtime": "^2.3.0",
-    "postcss": "^8.4.39",
+    "postcss": "^8.4.47",
     "tailwindcss": "^3.4.4",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
