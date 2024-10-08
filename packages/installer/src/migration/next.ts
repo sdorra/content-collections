@@ -3,7 +3,6 @@ import { createConfiguration } from "./tasks/config.js";
 import { createDemoContent } from "./tasks/demo.js";
 import { addDependencies } from "./tasks/dependencies.js";
 import { addToGitIgnore } from "./tasks/gitignore.js";
-import { Task } from "./tasks/index.js";
 import { modifyNextConfig } from "./tasks/nextconfig.js";
 import { addAliasToTsConfig } from "./tasks/tsconfig.js";
 
@@ -14,41 +13,22 @@ export const migratorNextJS: Migrator = {
     packageJson,
     demoContent,
   }): Promise<Migration> {
-    const tasks: Array<Task> = [];
-
     const packages = ["@content-collections/core", "@content-collections/next"];
 
     if (demoContent) {
       packages.push("@content-collections/markdown");
     }
 
-    const addDependenciesTask = addDependencies(
-      directory,
-      packageJson,
-      [],
-      packages,
-    );
-    tasks.push(addDependenciesTask);
-
-    const tsConfigTask = addAliasToTsConfig(directory);
-    if (tsConfigTask) {
-      tasks.push(tsConfigTask);
-    }
-
-    const nextConfigTask = await modifyNextConfig(directory);
-    tasks.push(nextConfigTask);
-
-    const gitIgnoreTask = addToGitIgnore(directory);
-    if (gitIgnoreTask) {
-      tasks.push(gitIgnoreTask);
-    }
-
-    const configTask = createConfiguration(directory, demoContent);
-    tasks.push(configTask);
+    const tasks = [
+      addDependencies(directory, packageJson, [], packages),
+      addAliasToTsConfig(directory),
+      modifyNextConfig(directory),
+      addToGitIgnore(directory),
+      createConfiguration(directory, demoContent),
+    ];
 
     if (demoContent) {
-      const demoContentTask = createDemoContent(directory);
-      tasks.push(demoContentTask);
+      tasks.push(createDemoContent(directory));
     }
 
     return tasks;

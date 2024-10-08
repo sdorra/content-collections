@@ -24,14 +24,21 @@ function collectDependenciesToAdd(
   return dependenciesToAdd;
 }
 
+type DependenciesTask = Task & {
+  dependencies: Array<string>;
+  devDependencies: Array<string>;
+};
+
 export function addDependencies(
   directory: string,
   packageJson: PackageJson,
   dependencies: Array<string>,
   devDependencies: Array<string>,
-): Task {
+): DependenciesTask {
   return {
     name: "Install dependencies",
+    dependencies,
+    devDependencies,
     run: async () => {
       const dependenciesToAdd = collectDependenciesToAdd(
         packageJson,
