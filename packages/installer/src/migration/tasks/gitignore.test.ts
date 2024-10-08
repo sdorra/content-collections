@@ -3,19 +3,25 @@ import { join } from "path";
 import { describe, expect } from "vitest";
 import { tmpdirTest } from "./__tests__/tmpdir.js";
 import { addToGitIgnore } from "./gitignore.js";
-import exp from "constants";
 
 describe("gitignore", () => {
+
+  tmpdirTest(
+    "should have a name",
+    async ({ tmpdir }) => {
+      const task = addToGitIgnore(tmpdir);
+      expect(task.name).toBe("Add .content-collections to .gitignore");
+    },
+  );
+
   tmpdirTest(
     "should add .content-collections to .gitignore",
     async ({ tmpdir }) => {
       const filePath = join(tmpdir, ".gitignore");
       await fs.writeFile(filePath, "node_modules\n");
 
-      const task = addToGitIgnore(tmpdir);
-      const changed = await task?.run();
-
-      expect(changed).toBe(true);
+      const result = await addToGitIgnore(tmpdir).run();
+      expect(result.status).toBe("changed");
 
       const content = await fs.readFile(filePath, "utf-8");
       expect(content).toContain("node_modules\n");
@@ -24,15 +30,13 @@ describe("gitignore", () => {
   );
 
   tmpdirTest(
-    "should not add .content-collections to .gitignore if already present",
+    "should skip .content-collections to .gitignore if already present",
     async ({ tmpdir }) => {
       const filePath = join(tmpdir, ".gitignore");
       await fs.writeFile(filePath, "node_modules\n.content-collections\n");
 
-      const task = addToGitIgnore(tmpdir);
-      const changed = await task?.run();
-
-      expect(changed).toBe(false);
+      const result = await addToGitIgnore(tmpdir).run();
+      expect(result.status).toBe("skipped");
 
       const content = await fs.readFile(filePath, "utf-8");
       expect(content).toContain("node_modules\n");
@@ -41,10 +45,10 @@ describe("gitignore", () => {
   );
 
   tmpdirTest(
-    "should not add .content-collections to .gitignore if .gitignore does not exist",
+    "should skip if .gitignore does not exist",
     async ({ tmpdir }) => {
-      const task = addToGitIgnore(tmpdir);
-      expect(task).toBe(null);
+      const result = await addToGitIgnore(tmpdir).run();
+      expect(result.status).toBe("skipped");
     },
   );
 
@@ -56,10 +60,8 @@ describe("gitignore", () => {
 
       const childDir = join(tmpdir, "child");
 
-      const task = addToGitIgnore(childDir);
-      const changed = await task?.run();
-
-      expect(changed).toBe(true);
+      const result = await addToGitIgnore(childDir).run();
+      expect(result.status).toBe("changed");
 
       const content = await fs.readFile(filePath, "utf-8");
       expect(content).toContain(".content-collections\n");
@@ -74,10 +76,8 @@ describe("gitignore", () => {
 
       const childDir = join(tmpdir, "a", "b", "c");
 
-      const task = addToGitIgnore(childDir);
-      const changed = await task?.run();
-
-      expect(changed).toBe(true);
+      const result = await addToGitIgnore(childDir).run();
+      expect(result.status).toBe("changed");
 
       const content = await fs.readFile(filePath, "utf-8");
       expect(content).toContain(".content-collections\n");
