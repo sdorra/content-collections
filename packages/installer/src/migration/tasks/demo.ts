@@ -4,7 +4,23 @@ import { join } from "path";
 import { allPosts } from "../content.js";
 import { Task } from "./index.js";
 
-export function createDemoContent(directory: string): Task {
+type ContentType = Exclude<DemoContent, false>;
+
+function createExtension(contentType: ContentType) {
+  switch (contentType) {
+    case "markdown":
+      return ".md";
+    case "mdx":
+      return ".mdx";
+    default:
+      throw new Error(`Invalid content type: ${contentType}`);
+  }
+}
+
+export function createDemoContent(
+  directory: string,
+  contentType: ContentType,
+): Task {
   return {
     name: "Create demo content",
     run: async () => {
@@ -13,7 +29,10 @@ export function createDemoContent(directory: string): Task {
 
       let changed = false;
       for (const post of allPosts) {
-        const filePath = join(contentDirectory, post.filename);
+        const filePath = join(
+          contentDirectory,
+          post.filename + createExtension(contentType),
+        );
         if (!existsSync(filePath)) {
           changed = true;
           await fs.writeFile(filePath, post.content);

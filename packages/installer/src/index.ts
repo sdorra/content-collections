@@ -3,7 +3,7 @@ import { readPackageJson } from "./packageJson.js";
 
 type Options = {
   directory: string;
-  demoContent: boolean;
+  demoContent: DemoContent;
 };
 
 async function install(options: Options) {
@@ -20,9 +20,33 @@ async function install(options: Options) {
   await migrate(migration);
 }
 
-install({
-  directory: "/Users/sdorra/Desktop/installer-test",
-  demoContent: true,
-});
+// get the first two arguments
+const [, , directory, demoContent] = process.argv;
 
-// install(process.cwd());
+if (!directory) {
+  console.error("directory argument missing");
+  process.exit(1);
+}
+
+if (!demoContent) {
+  console.error("demoContent argument missing");
+  process.exit(1);
+}
+
+const validDemoContent = ["false", "markdown", "mdx"];
+if (!validDemoContent.includes(demoContent)) {
+  console.error("demoContent must be one of false, markdown, mdx");
+  process.exit(1);
+}
+
+let demoContentValue: DemoContent = false;
+if (demoContent !== "false") {
+  demoContentValue = demoContent as DemoContent;
+}
+
+console.log(`Install in ${directory} with demo content ${demoContentValue}`);
+
+install({
+  directory,
+  demoContent: demoContentValue,
+});

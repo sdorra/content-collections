@@ -2,8 +2,9 @@ import fs from "fs/promises";
 import { join } from "path";
 
 function createObject(filename: string, content: string) {
+  // remove extension from filename
   return `{
-    filename: "${filename}",
+    filename: "${filename.replace(".md", "")}",
     content: ${JSON.stringify(content)},
   },`;
 }

@@ -28,7 +28,7 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
-      demoContent: true,
+      demoContent: "markdown",
     });
 
     const names = migration.map((task) => task.name);
@@ -42,11 +42,11 @@ describe("next.js migrator", () => {
     ]);
   });
 
-  it("should add markdown package with demo content", async () => {
+  it("should add markdown package with markdown demo content", async () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
-      demoContent: true,
+      demoContent: "markdown",
     });
 
     const addDependenciesTask = migration.find((task) => task.name === "Install dependencies");
@@ -57,6 +57,23 @@ describe("next.js migrator", () => {
     // @ts-expect-error - we know it's there
     const dependencies = addDependenciesTask.devDependencies;
     expect(dependencies).toContain("@content-collections/markdown");
+  });
+
+  it("should add mdx package with mdx demo content", async () => {
+    const migration = await migratorNextJS.createMigration({
+      directory: "directory",
+      packageJson,
+      demoContent: "mdx",
+    });
+
+    const addDependenciesTask = migration.find((task) => task.name === "Install dependencies");
+    if (!addDependenciesTask) {
+      throw new Error("Task not found");
+    }
+
+    // @ts-expect-error - we know it's there
+    const dependencies = addDependenciesTask.devDependencies;
+    expect(dependencies).toContain("@content-collections/mdx");
   });
 
   it("should not add markdown package without demo content", async () => {

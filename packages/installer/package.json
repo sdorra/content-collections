@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "gen-content": "tsx ./scripts/gen-content.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

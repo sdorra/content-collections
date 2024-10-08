@@ -46,14 +46,28 @@ describe("config", () => {
   );
 
   tmpdirTest(
-    "should create content-collections configuration with demo content",
+    "should create content-collections configuration with markdown demo content",
     async ({ tmpdir }) => {
-      const result = await createConfiguration(tmpdir, true).run();
+      const result = await createConfiguration(tmpdir, "markdown").run();
       expect(result.status).toBe("changed");
 
       const filePath = join(tmpdir, "content-collections.ts");
       const content = await fs.readFile(filePath, "utf-8");
-      expect(content).toContain('name: "posts"');
+      expect(content).toContain("collections: [posts]");
+      expect(content).toContain("compileMarkdown");
+    },
+  );
+
+  tmpdirTest(
+    "should create content-collections configuration with mdx demo content",
+    async ({ tmpdir }) => {
+      const result = await createConfiguration(tmpdir, "mdx").run();
+      expect(result.status).toBe("changed");
+
+      const filePath = join(tmpdir, "content-collections.ts");
+      const content = await fs.readFile(filePath, "utf-8");
+      expect(content).toContain("collections: [posts]");
+      expect(content).toContain("compileMDX");
     },
   );
 });

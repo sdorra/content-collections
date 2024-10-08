@@ -15,8 +15,10 @@ export const migratorNextJS: Migrator = {
   }): Promise<Migration> {
     const packages = ["@content-collections/core", "@content-collections/next"];
 
-    if (demoContent) {
+    if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");
+    } else if (demoContent === "mdx") {
+      packages.push("@content-collections/mdx");
     }
 
     const tasks = [
@@ -28,7 +30,7 @@ export const migratorNextJS: Migrator = {
     ];
 
     if (demoContent) {
-      tasks.push(createDemoContent(directory));
+      tasks.push(createDemoContent(directory, demoContent));
     }
 
     return tasks;

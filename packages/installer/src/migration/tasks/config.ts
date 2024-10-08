@@ -32,7 +32,7 @@ export default defineConfig({
 });
 `;
 
-const demoContentConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
+const sampleMarkdownConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMarkdown } from "@content-collections/markdown";
 
 // for more information on configuration, visit:
@@ -45,7 +45,7 @@ const posts = defineCollection({
   schema: (z) => ({
     title: z.string(),
     summary: z.string(),
-    date: z.coerce().date(),
+    date: z.coerce.date(),
     author: z.string(),
   }),
   transform: async (document, context) => {
@@ -62,9 +62,39 @@ export default defineConfig({
 });
 `;
 
+const sampleMdxConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
+import { compileMDX } from "@content-collections/mdx";
+
+// for more information on configuration, visit:
+// https://www.content-collections.dev/docs/configuration
+
+const posts = defineCollection({
+  name: "posts",
+  directory: "content/posts",
+  include: "*.mdx",
+  schema: (z) => ({
+    title: z.string(),
+    summary: z.string(),
+    date: z.coerce.date(),
+    author: z.string(),
+  }),
+  transform: async (document, context) => {
+    const mdx = await compileMDX(context, document);
+    return {
+      ...document,
+      mdx,
+    };
+  },
+});
+
+export default defineConfig({
+  collections: [posts],
+});
+`;
+
 export function createConfiguration(
   directory: string,
-  demoContent: boolean,
+  demoContent: DemoContent,
 ): Task {
   return {
     name: "Create configuration file",
@@ -74,13 +104,19 @@ export function createConfiguration(
         return {
           status: "skipped",
           message: "Configuration file already exists",
-        }
+        };
       }
 
-      await fs.writeFile(
-        filePath,
-        demoContent ? demoContentConfig : sampleConfig,
-      );
+      switch (demoContent) {
+        case "markdown":
+          await fs.writeFile(filePath, sampleMarkdownConfig);
+          break;
+        case "mdx":
+          await fs.writeFile(filePath, sampleMdxConfig);
+          break;
+        default:
+          await fs.writeFile(filePath, sampleConfig);
+      }
 
       return {
         status: "changed",

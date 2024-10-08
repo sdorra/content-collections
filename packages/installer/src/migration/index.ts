@@ -7,7 +7,7 @@ export type Migration = Array<Task>;
 type MigratorContext = {
   directory: string;
   packageJson: PackageJson;
-  demoContent: boolean;
+  demoContent: DemoContent;
 };
 
 export type Migrator = {
