@@ -43,10 +43,10 @@ export function addDependencies(
       );
 
       if (dependenciesToAdd.length === 0 && devDependenciesToAdd.length === 0) {
-        console.log(
-          `dependencies ${[...dependencies, ...devDependencies].join(",")} already installed, skipping`,
-        );
-        return false;
+        return {
+          status: "skipped",
+          message: `dependencies ${[...dependencies, ...devDependencies].join(",")} already installed, skipping`,
+        };
       }
 
       const packageManager = await detectPackageManager(directory);
@@ -59,7 +59,10 @@ export function addDependencies(
         packageManager.addDevDependencies(...devDependenciesToAdd);
       }
 
-      return true;
+      return {
+        status: "changed",
+        message: `added dependencies ${[...dependenciesToAdd, ...devDependenciesToAdd].join(",")}`,
+      };
     },
   };
 }

@@ -71,8 +71,10 @@ export function createConfiguration(
     run: async () => {
       const filePath = join(directory, "content-collections.ts");
       if (existsSync(filePath)) {
-        console.log("Configuration file already exists, skipping");
-        return false;
+        return {
+          status: "skipped",
+          message: "Configuration file already exists",
+        }
       }
 
       await fs.writeFile(
@@ -80,7 +82,10 @@ export function createConfiguration(
         demoContent ? demoContentConfig : sampleConfig,
       );
 
-      return true;
+      return {
+        status: "changed",
+        message: "Configuration file created",
+      };
     },
   };
 }

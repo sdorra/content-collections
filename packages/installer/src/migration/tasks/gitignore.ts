@@ -1,7 +1,7 @@
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
 import { join } from "node:path";
 import { Task } from "./index.js";
-import fs from "node:fs/promises";
-import { existsSync } from "node:fs";
 
 function findGitIgnore(directory: string): string | null {
   let current = directory;
@@ -17,27 +17,35 @@ function findGitIgnore(directory: string): string | null {
   return null;
 }
 
-export function addToGitIgnore(directory: string): Task | null {
-  const gitIgnore = findGitIgnore(directory);
-  if (!gitIgnore) {
-    console.log("No .gitignore found, skipping");
-    return null;
-  }
-
+export function addToGitIgnore(directory: string): Task {
   return {
     name: "Add .content-collections to .gitignore",
     run: async () => {
+      const gitIgnore = findGitIgnore(directory);
+      if (!gitIgnore) {
+        return {
+          status: "skipped",
+          message: "No .gitignore found",
+        };
+      }
+
       let content = await fs.readFile(gitIgnore, "utf-8");
 
       if (content.includes(".content-collections")) {
-        return false;
+        return {
+          status: "skipped",
+          message: ".content-collections already in .gitignore",
+        };
       }
 
       content += "\n.content-collections\n";
 
       await fs.writeFile(gitIgnore, content);
 
-      return true;
+      return {
+        status: "changed",
+        message: "Added .content-collections to .gitignore",
+      };
     },
   };
 }

@@ -16,11 +16,18 @@ describe("next configuration", () => {
   }
 
   tmpdirTest(
-    "should fail if next.config file is not found",
+    "should return name",
     async ({ tmpdir }) => {
-      await expect(modifyNextConfig(tmpdir)).rejects.toThrow(
-        "next.config.(js|mjs|ts) not found",
-      );
+      const task = modifyNextConfig(tmpdir);
+      expect(task.name).toBe("Modify next configuration");
+    },
+  );
+
+  tmpdirTest(
+    "should error if next.config file is not found",
+    async ({ tmpdir }) => {
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("error");
     },
   );
 
@@ -28,15 +35,13 @@ describe("next configuration", () => {
     tmpdirTest("should add import", async ({ tmpdir }) => {
       await prepare(tmpdir, "001");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("changed");
 
       const nextConfig = await fs.readFile(
         join(tmpdir, "next.config.js"),
         "utf-8",
       );
-
-      expect(changed).toBe(true);
       expect(nextConfig).toContain(
         'const { withContentCollections } = require("@content-collections/next");',
       );
@@ -47,15 +52,13 @@ describe("next configuration", () => {
       async ({ tmpdir }) => {
         await prepare(tmpdir, "001");
 
-        const task = await modifyNextConfig(tmpdir);
-        const changed = await task.run();
+        const result = await modifyNextConfig(tmpdir).run();
+        expect(result.status).toBe("changed");
 
         const nextConfig = await fs.readFile(
           join(tmpdir, "next.config.js"),
           "utf-8",
         );
-
-        expect(changed).toBe(true);
         expect(nextConfig).toContain(
           "module.exports = withContentCollections(nextConfig);",
         );
@@ -65,10 +68,8 @@ describe("next configuration", () => {
     tmpdirTest("should not modify if already modified", async ({ tmpdir }) => {
       await prepare(tmpdir, "004");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
-
-      expect(changed).toBe(false);
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("skipped");
     });
   });
 
@@ -76,15 +77,13 @@ describe("next configuration", () => {
     tmpdirTest("should add import", async ({ tmpdir }) => {
       await prepare(tmpdir, "002");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("changed");
 
       const nextConfig = await fs.readFile(
         join(tmpdir, "next.config.mjs"),
         "utf-8",
       );
-
-      expect(changed).toBe(true);
       expect(nextConfig).toContain(
         'import { withContentCollections } from "@content-collections/next";',
       );
@@ -95,15 +94,13 @@ describe("next configuration", () => {
       async ({ tmpdir }) => {
         await prepare(tmpdir, "002");
 
-        const task = await modifyNextConfig(tmpdir);
-        const changed = await task.run();
+        const result = await modifyNextConfig(tmpdir).run();
+        expect(result.status).toBe("changed");
 
         const nextConfig = await fs.readFile(
           join(tmpdir, "next.config.mjs"),
           "utf-8",
         );
-
-        expect(changed).toBe(true);
         expect(nextConfig).toContain(
           "export default withContentCollections(nextConfig);",
         );
@@ -113,10 +110,8 @@ describe("next configuration", () => {
     tmpdirTest("should not modify if already modified", async ({ tmpdir }) => {
       await prepare(tmpdir, "005");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
-
-      expect(changed).toBe(false);
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("skipped");
     });
   });
 
@@ -124,15 +119,13 @@ describe("next configuration", () => {
     tmpdirTest("should add import", async ({ tmpdir }) => {
       await prepare(tmpdir, "003");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("changed");
 
       const nextConfig = await fs.readFile(
         join(tmpdir, "next.config.ts"),
         "utf-8",
       );
-
-      expect(changed).toBe(true);
       expect(nextConfig).toContain(
         'import { withContentCollections } from "@content-collections/next";',
       );
@@ -143,15 +136,13 @@ describe("next configuration", () => {
       async ({ tmpdir }) => {
         await prepare(tmpdir, "003");
 
-        const task = await modifyNextConfig(tmpdir);
-        const changed = await task.run();
+        const result = await modifyNextConfig(tmpdir).run();
+        expect(result.status).toBe("changed");
 
         const nextConfig = await fs.readFile(
           join(tmpdir, "next.config.ts"),
           "utf-8",
         );
-
-        expect(changed).toBe(true);
         expect(nextConfig).toContain(
           "export default withContentCollections(nextConfig);",
         );
@@ -161,10 +152,8 @@ describe("next configuration", () => {
     tmpdirTest("should not modify if already modified", async ({ tmpdir }) => {
       await prepare(tmpdir, "006");
 
-      const task = await modifyNextConfig(tmpdir);
-      const changed = await task.run();
-
-      expect(changed).toBe(false);
+      const result = await modifyNextConfig(tmpdir).run();
+      expect(result.status).toBe("skipped");
     });
   });
 });
