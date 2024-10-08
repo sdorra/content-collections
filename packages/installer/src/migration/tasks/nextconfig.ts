@@ -12,7 +12,7 @@ type NextConfig = {
   type: "cjs" | "esm" | "ts";
 };
 
-async function findNextConfig(directory: string): Promise<NextConfig> {
+async function findNextConfig(directory: string): Promise<NextConfig | null> {
   let config = join(directory, "next.config.js");
   if (existsSync(config)) {
     return { path: config, type: "cjs" };
@@ -28,7 +28,7 @@ async function findNextConfig(directory: string): Promise<NextConfig> {
     return { path: config, type: "ts" };
   }
 
-  throw new Error("next.config.(js|mjs|ts) not found");
+  return null;
 }
 
 function modifyCjsNextConfig(content: string) {
@@ -71,7 +71,10 @@ function modifyCjsNextConfig(content: string) {
   return recast.print(ast).code;
 }
 
-function modifyEsmNextConfig(content: string, options: Partial<recast.Options> = {}) {
+function modifyEsmNextConfig(
+  content: string,
+  options: Partial<recast.Options> = {},
+) {
   const ast = recast.parse(content, options);
 
   const newImport = recast.parse(
@@ -102,7 +105,6 @@ function modifyEsmNextConfig(content: string, options: Partial<recast.Options> =
     ],
   };
 
-
   return recast.print(ast).code;
 }
 
@@ -112,16 +114,25 @@ const modifiers = {
   ts: (content: string) => modifyEsmNextConfig(content, { parser: tsparser }),
 };
 
-export async function modifyNextConfig(directory: string): Promise<Task> {
-  const nextConfig = await findNextConfig(directory);
-
+export function modifyNextConfig(directory: string): Task {
   return {
-    name: "Modify next.config.js",
+    name: "Modify next configuration",
     run: async () => {
+      const nextConfig = await findNextConfig(directory);
+      if (!nextConfig) {
+        return {
+          status: "error",
+          message: "Could not find next.config.(mjs|js|ts) found",
+        };
+      }
+
       const content = await fs.readFile(nextConfig.path, "utf-8");
 
       if (content.includes("@content-collections/next")) {
-        return false;
+        return {
+          status: "skipped",
+          message: "@content-collections/next already configured",
+        };
       }
 
       const modifiedCode = modifiers[nextConfig.type](content);
@@ -129,7 +140,10 @@ export async function modifyNextConfig(directory: string): Promise<Task> {
       // Write the modified code back to the file
       await fs.writeFile(nextConfig.path, modifiedCode);
 
-      return true;
+      return {
+        status: "changed",
+        message: `Added @content-collections/next to ${nextConfig.path}`,
+      };
     },
   };
 }

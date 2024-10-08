@@ -15,7 +15,12 @@ vi.mock("../utils/packageManager.js", () => ({
 
 describe("dependencies", () => {
 
-  it("should not add dependencies if already installed", async () => {
+  it("should have a name", async () => {
+    const task = addDependencies("directory", {} as any, [], []);
+    expect(task.name).toBe("Install dependencies");
+  });
+
+  it("should skip if dependencies already installed", async () => {
     const packageJson: PackageJson = {
       name: "something",
       dependencies: {
@@ -24,15 +29,13 @@ describe("dependencies", () => {
       },
     }
 
-    const task = await addDependencies("directory", packageJson, ["core", "next"], []);
-    const changed = await task.run();
-
-    expect(changed).toBe(false);
+    const result = await addDependencies("directory", packageJson, ["core", "next"], []).run();
+    expect(result.status).toBe("skipped");
     expect(packageManager.addDependencies).not.toBeCalled();
     expect(packageManager.addDevDependencies).not.toBeCalled();
   });
 
-  it("should not add dev dependencies if already installed", async () => {
+  it("should skip if dev dependencies already installed", async () => {
     const packageJson: PackageJson = {
       name: "something",
       devDependencies: {
@@ -41,15 +44,13 @@ describe("dependencies", () => {
       },
     }
 
-    const task = await addDependencies("directory", packageJson, [], ["core", "next"]);
-    const changed = await task.run();
-
-    expect(changed).toBe(false);
+    const result = await addDependencies("directory", packageJson, [], ["core", "next"]).run();
+    expect(result.status).toBe("skipped");
     expect(packageManager.addDependencies).not.toBeCalled();
     expect(packageManager.addDevDependencies).not.toBeCalled();
   });
 
-  it("should not add dependencies or dev dependencies if already installed", async () => {
+  it("should skip if dependencies or dev dependencies already installed", async () => {
     const packageJson: PackageJson = {
       name: "something",
       dependencies: {
@@ -60,10 +61,8 @@ describe("dependencies", () => {
       },
     }
 
-    const task = await addDependencies("directory", packageJson, ["core"], ["next"]);
-    const changed = await task.run();
-
-    expect(changed).toBe(false);
+    const result = await addDependencies("directory", packageJson, ["core"], ["next"]).run();
+    expect(result.status).toBe("skipped");
     expect(packageManager.addDependencies).not.toBeCalled();
     expect(packageManager.addDevDependencies).not.toBeCalled();
   });
@@ -73,10 +72,8 @@ describe("dependencies", () => {
       name: "something"
     }
 
-    const task = await addDependencies("directory", packageJson, ["core"], ["next"]);
-    const changed = await task.run();
-
-    expect(changed).toBe(true);
+    const result = await addDependencies("directory", packageJson, ["core"], ["next"]).run();
+    expect(result.status).toBe("changed");
     expect(packageManager.addDependencies).toHaveBeenCalledWith("core");
     expect(packageManager.addDevDependencies).toHaveBeenCalledWith("next");
   });

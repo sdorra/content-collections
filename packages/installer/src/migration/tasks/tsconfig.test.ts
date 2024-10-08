@@ -21,38 +21,28 @@ describe("tsconfig", () => {
     return JSONC.parse(await fs.readFile(tsconfigPath, "utf-8")) as any;
   }
 
-  tmpdirTest(
-    "should return null for directory without tsconfig.json",
-    async ({ tmpdir }) => {
-      await prepare(tmpdir, "001");
-      const task = addAliasToTsConfig(tmpdir);
-      expect(task).toBe(null);
-    },
-  );
-
-  tmpdirTest(
-    "should return a task for directory with tsconfig.json",
-    async ({ tmpdir }) => {
-      await prepare(tmpdir, "002");
-      const task = addAliasToTsConfig(tmpdir);
-      expect(task).not.toBe(null);
-    },
-  );
-
   tmpdirTest("should have a name", async ({ tmpdir }) => {
     await prepare(tmpdir, "002");
     const task = addAliasToTsConfig(tmpdir);
-    expect(task?.name).toBe("Add alias to tsconfig");
+    expect(task.name).toBe("Add alias to tsconfig");
   });
+
+  tmpdirTest(
+    "should skip  directory without tsconfig.json",
+    async ({ tmpdir }) => {
+      await prepare(tmpdir, "001");
+      const result = await addAliasToTsConfig(tmpdir).run();
+      expect(result.status).toBe("skipped");
+    },
+  );
 
   tmpdirTest("should add alias", async ({ tmpdir }) => {
     await prepare(tmpdir, "002");
-    const task = addAliasToTsConfig(tmpdir);
-    const changed = await task?.run();
+    const result = await addAliasToTsConfig(tmpdir).run();
+
+    expect(result.status).toBe("changed");
 
     const tsconfig = await readTsConfig(tmpdir);
-
-    expect(changed).toBe(true);
     expect(tsconfig.compilerOptions.paths["content-collections"]).toEqual([
       "./.content-collections/generated",
     ]);
@@ -60,12 +50,10 @@ describe("tsconfig", () => {
 
   tmpdirTest("should add alias without compilerOptions", async ({ tmpdir }) => {
     await prepare(tmpdir, "003");
-    const task = addAliasToTsConfig(tmpdir);
-    const changed = await task?.run();
+    const result = await addAliasToTsConfig(tmpdir).run();
+    expect(result.status).toBe("changed");
 
     const tsconfig = await readTsConfig(tmpdir);
-
-    expect(changed).toBe(true);
     expect(tsconfig.compilerOptions.paths["content-collections"]).toEqual([
       "./.content-collections/generated",
     ]);
@@ -73,27 +61,24 @@ describe("tsconfig", () => {
 
   tmpdirTest("should add alias to existing paths", async ({ tmpdir }) => {
     await prepare(tmpdir, "004");
-    const task = addAliasToTsConfig(tmpdir);
-    const changed = await task?.run();
+    const result = await addAliasToTsConfig(tmpdir).run();
+    expect(result.status).toBe("changed");
 
     const tsconfig = await readTsConfig(tmpdir);
-
-    expect(changed).toBe(true);
     expect(tsconfig.compilerOptions.paths["content-collections"]).toEqual([
       "./.content-collections/generated",
     ]);
   });
 
   tmpdirTest(
-    "should do nothing if alias already exists",
+    "should skip if alias already exists",
     async ({ tmpdir }) => {
       await prepare(tmpdir, "005");
-      const task = addAliasToTsConfig(tmpdir);
-      const changed = await task?.run();
+
+      const result = await addAliasToTsConfig(tmpdir).run();
+      expect(result.status).toBe("skipped");
 
       const tsconfig = await readTsConfig(tmpdir);
-
-      expect(changed).toBe(false);
       expect(tsconfig.compilerOptions.paths["content-collections"]).toEqual([
         "./.content-collections/generated",
       ]);
@@ -101,13 +86,12 @@ describe("tsconfig", () => {
   );
 
   tmpdirTest(
-    "should fail if alias is pointing elsewhere",
+    "should error if alias is pointing elsewhere",
     async ({ tmpdir }) => {
       await prepare(tmpdir, "006");
-      const task = addAliasToTsConfig(tmpdir);
-      await expect(() => task?.run()).rejects.toThrowError(
-        "content-collections alias already exists",
-      );
+
+      const result = await addAliasToTsConfig(tmpdir).run();
+      expect(result.status).toBe("error");
     },
   );
 });
