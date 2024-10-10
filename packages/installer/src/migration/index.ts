@@ -1,30 +1,13 @@
 import { PackageJson } from "src/packageJson.js";
+import { z, ZodObject, ZodRawShape } from "zod";
 import { migratorNextJS } from "./next.js";
-import { Task } from "./tasks/index.js";
+import { Migrator } from "./migrator.js";
 
-export type Migration = Array<Task>;
-
-type MigratorContext = {
-  directory: string;
-  packageJson: PackageJson;
-  demoContent: DemoContent;
-};
-
-export type Migrator = {
-  name: string;
-  createMigration: (context: MigratorContext) => Promise<Migration>;
-};
-
-export function findMigrator(packageJson: PackageJson): Migrator {
+export function findMigrator(
+  packageJson: PackageJson,
+): Migrator<ZodObject<ZodRawShape>, any> {
   if (packageJson.dependencies?.next) {
     return migratorNextJS;
   }
   throw new Error(`unsupported package ${packageJson.name}`);
-}
-
-export async function migrate(migration: Migration) {
-  for (const task of migration) {
-    console.log(`execute task ${task.name}`);
-    await task.run();
-  }
 }

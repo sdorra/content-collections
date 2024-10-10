@@ -94,7 +94,7 @@ export default defineConfig({
 
 export function createConfiguration(
   directory: string,
-  demoContent: DemoContent,
+  demoContent: "none" | "markdown" | "mdx",
 ): Task {
   return {
     name: "Create configuration file",

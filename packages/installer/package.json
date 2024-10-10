@@ -3,22 +3,36 @@
   "description": "CLI for installing content-collections",
   "version": "0.1.0",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
+    "build": "tsup src/index.ts --format esm --dts -d dist",
     "test": "vitest",
     "gen-content": "tsx ./scripts/gen-content.ts",
     "typecheck": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "@types/node": "^20.14.9",
     "@vitest/coverage-v8": "^2.1.1",
+    "tsup": "^8.2.4",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.1",
+    "zod": "^3.23.8"
   },
   "dependencies": {
     "comment-json": "^4.2.5",
     "package-manager-detector": "^0.2.0",
-    "recast": "^0.23.9",
-    "zod": "^3.23.8"
+    "recast": "^0.23.9"
   }
 }

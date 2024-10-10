@@ -11,7 +11,8 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
-      demoContent: false,
+    }, {
+      demoContent: "none",
     });
 
     const names = migration.map((task) => task.name);
@@ -28,6 +29,7 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
+    }, {
       demoContent: "markdown",
     });
 
@@ -46,6 +48,7 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
+    }, {
       demoContent: "markdown",
     });
 
@@ -63,6 +66,7 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
+    }, {
       demoContent: "mdx",
     });
 
@@ -80,7 +84,8 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
-      demoContent: false,
+    }, {
+      demoContent: "none",
     });
 
     const addDependenciesTask = migration.find((task) => task.name === "Install dependencies");
@@ -97,7 +102,8 @@ describe("next.js migrator", () => {
     const migration = await migratorNextJS.createMigration({
       directory: "directory",
       packageJson,
-      demoContent: false,
+    }, {
+      demoContent: "none",
     });
 
     const addDependenciesTask = migration.find((task) => task.name === "Install dependencies");
@@ -109,5 +115,10 @@ describe("next.js migrator", () => {
     const dependencies = addDependenciesTask.devDependencies;
     expect(dependencies).toContain("@content-collections/core");
     expect(dependencies).toContain("@content-collections/next");
+  });
+
+  it("should parse options", () => {
+    const options = migratorNextJS.options.parse({ demoContent: "none" });
+    expect(options).toEqual({ demoContent: "none" });
   });
 });

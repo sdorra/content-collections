@@ -4,7 +4,7 @@ import { join } from "path";
 import { allPosts } from "../content.js";
 import { Task } from "./index.js";
 
-type ContentType = Exclude<DemoContent, false>;
+type ContentType = "markdown" | "mdx";
 
 function createExtension(contentType: ContentType) {
   switch (contentType) {

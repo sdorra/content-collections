@@ -2,9 +2,7 @@ import { existsSync } from "fs";
 import fs from "fs/promises";
 import { join } from "path";
 import * as recast from "recast";
-
-// @ts-expect-error - No types available
-import tsparser from "recast/parsers/typescript";
+import tsparser from "recast/parsers/typescript.js";
 import { Task } from "./index.js";
 
 type NextConfig = {
