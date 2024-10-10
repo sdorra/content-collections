@@ -38,7 +38,6 @@ describe("dependencies", () => {
     expect(spawn).toHaveBeenCalledOnce();
     expect(spawn).toHaveBeenCalledWith("yarn", ["add", "core", "next"], {
       cwd: "directory",
-      stdio: "inherit",
     });
   });
 
@@ -51,7 +50,6 @@ describe("dependencies", () => {
     expect(spawn).toHaveBeenCalledOnce();
     expect(spawn).toHaveBeenCalledWith("npm", ["install", "core", "next"], {
       cwd: "directory",
-      stdio: "inherit",
     });
   });
 
@@ -64,7 +62,6 @@ describe("dependencies", () => {
     expect(spawn).toHaveBeenCalledOnce();
     expect(spawn).toHaveBeenCalledWith("pnpm", ["add", "-D", "core", "next"], {
       cwd: "directory",
-      stdio: "inherit",
     });
   });
 
@@ -77,7 +74,6 @@ describe("dependencies", () => {
     expect(spawn).toHaveBeenCalledOnce();
     expect(spawn).toHaveBeenCalledWith("npm", ["install", "react"], {
       cwd: "directory",
-      stdio: "inherit",
     });
   });
 
