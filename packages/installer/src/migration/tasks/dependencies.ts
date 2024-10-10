@@ -59,11 +59,11 @@ export function addDependencies(
       const packageManager = await detectPackageManager(directory);
 
       if (dependenciesToAdd.length > 0) {
-        packageManager.addDependencies(...dependenciesToAdd);
+        await packageManager.addDependencies(...dependenciesToAdd);
       }
 
       if (devDependenciesToAdd.length > 0) {
-        packageManager.addDevDependencies(...devDependenciesToAdd);
+        await packageManager.addDevDependencies(...devDependenciesToAdd);
       }
 
       return {
