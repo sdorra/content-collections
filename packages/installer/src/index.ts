@@ -1,52 +1,36 @@
-import { findMigrator, migrate } from "./migration/index.js";
+import { ZodTypeAny } from "zod";
+import { findMigrator } from "./migration/index.js";
 import { readPackageJson } from "./packageJson.js";
 
-type Options = {
-  directory: string;
-  demoContent: DemoContent;
-};
+export type Ask = (key: string, value?: ZodTypeAny) => Promise<unknown>;
 
-async function install(options: Options) {
-  const packageJson = await readPackageJson(options.directory);
+async function resolveOptions(ask: Ask, schema: ZodTypeAny) {
+  const options: any = {};
+
+  const shape = schema._def.shape();
+  for (const key in shape) {
+    const value = await ask(key, shape[key]);
+    options[key] = value;
+  }
+  return schema.parse(options);
+}
+
+export async function createMigrator(directory: string) {
+  const packageJson = await readPackageJson(directory);
   const migrator = findMigrator(packageJson);
 
-  console.log(`Using migrator ${migrator.name}`);
-  const migration = await migrator.createMigration({
-    ...options,
-    packageJson,
-  });
+  return {
+    name: migrator.name,
+    createMigration: async (ask: Ask) => {
+      const options = await resolveOptions(ask, migrator.options);
 
-  console.log(`Start migration with ${migration.length} tasks`);
-  await migrate(migration);
+      return migrator.createMigration(
+        {
+          directory,
+          packageJson,
+        },
+        options,
+      );
+    }
+  }
 }
-
-// get the first two arguments
-const [, , directory, demoContent] = process.argv;
-
-if (!directory) {
-  console.error("directory argument missing");
-  process.exit(1);
-}
-
-if (!demoContent) {
-  console.error("demoContent argument missing");
-  process.exit(1);
-}
-
-const validDemoContent = ["false", "markdown", "mdx"];
-if (!validDemoContent.includes(demoContent)) {
-  console.error("demoContent must be one of false, markdown, mdx");
-  process.exit(1);
-}
-
-let demoContentValue: DemoContent = false;
-if (demoContent !== "false") {
-  demoContentValue = demoContent as DemoContent;
-}
-
-console.log(`Install in ${directory} with demo content ${demoContentValue}`);
-
-install({
-  directory,
-  demoContent: demoContentValue,
-});
