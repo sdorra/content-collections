@@ -1,4 +1,5 @@
-import { Migration, Migrator } from "./index.js";
+import { z } from "zod";
+import { defineMigrator } from "./migrator.js";
 import { createConfiguration } from "./tasks/config.js";
 import { createDemoContent } from "./tasks/demo.js";
 import { addDependencies } from "./tasks/dependencies.js";
@@ -6,13 +7,15 @@ import { addToGitIgnore } from "./tasks/gitignore.js";
 import { modifyNextConfig } from "./tasks/nextconfig.js";
 import { addAliasToTsConfig } from "./tasks/tsconfig.js";
 
-export const migratorNextJS: Migrator = {
+export const migratorNextJS = defineMigrator({
   name: "next",
-  async createMigration({
-    directory,
-    packageJson,
-    demoContent,
-  }): Promise<Migration> {
+  options: z.object({
+    demoContent: z
+      .enum(["none", "markdown", "mdx"])
+      .default("markdown")
+      .describe("Type of demo content"),
+  }),
+  async createMigration({ directory, packageJson }, { demoContent }) {
     const packages = ["@content-collections/core", "@content-collections/next"];
 
     if (demoContent === "markdown") {
@@ -29,10 +32,10 @@ export const migratorNextJS: Migrator = {
       createConfiguration(directory, demoContent),
     ];
 
-    if (demoContent) {
+    if (demoContent !== "none") {
       tasks.push(createDemoContent(directory, demoContent));
     }
 
     return tasks;
   },
-};
+});

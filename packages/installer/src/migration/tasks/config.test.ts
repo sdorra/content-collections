@@ -7,14 +7,14 @@ import { createConfiguration } from "./config.js";
 
 describe("config", () => {
   tmpdirTest("should have a name", async ({ tmpdir }) => {
-    const task = createConfiguration(tmpdir, false);
+    const task = createConfiguration(tmpdir, "none");
     expect(task.name).toBe("Create configuration file");
   });
 
   tmpdirTest(
     "should create content-collections configuration",
     async ({ tmpdir }) => {
-      const result = await createConfiguration(tmpdir, false).run();
+      const result = await createConfiguration(tmpdir, "none").run();
       expect(result.status).toBe("changed");
 
       const filePath = join(tmpdir, "content-collections.ts");
@@ -28,7 +28,7 @@ describe("config", () => {
       const filePath = join(tmpdir, "content-collections.ts");
       await fs.writeFile(filePath, "");
 
-      const result = await createConfiguration(tmpdir, false).run();
+      const result = await createConfiguration(tmpdir, "none").run();
       expect(result.status).toBe("skipped");
     },
   );
@@ -36,7 +36,7 @@ describe("config", () => {
   tmpdirTest(
     "should create content-collections configuration without demo content",
     async ({ tmpdir }) => {
-      const result = await createConfiguration(tmpdir, false).run();
+      const result = await createConfiguration(tmpdir, "none").run();
       expect(result.status).toBe("changed");
 
       const filePath = join(tmpdir, "content-collections.ts");
