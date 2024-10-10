@@ -6,7 +6,6 @@ function createPackageManager(directory: string, name: string) {
     return new Promise((resolve, reject) => {
       const child = spawn(name, args, {
         cwd: directory,
-        stdio: "inherit",
       });
 
       child.on("exit", (code: number) => {
