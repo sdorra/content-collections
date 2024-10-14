@@ -12,7 +12,7 @@
     "@content-collections/mdx": "0.1.6",
     "@content-collections/next": "0.2.3",
     "@content-collections/sample-theme": "0.1.0",
-    "next": "14.2.13",
+    "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18"
   },
