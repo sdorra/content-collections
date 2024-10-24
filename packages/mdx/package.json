@@ -32,8 +32,8 @@
   },
   "peerDependencies": {
     "@content-collections/core": "0.x",
-    "react": "^18.0.0",
-    "react-dom": "^18.2.0"
+    "react": ">= 18",
+    "react-dom": ">= 18"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
