@@ -27,9 +27,7 @@
     "unified": "^11.0.5"
   },
   "peerDependencies": {
-    "@content-collections/core": "0.x",
-    "react": "^18.0.0",
-    "react-dom": "^18.2.0"
+    "@content-collections/core": "0.x"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
