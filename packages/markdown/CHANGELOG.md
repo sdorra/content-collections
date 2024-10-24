@@ -1,5 +1,11 @@
 # @content-collections/markdown
 
+## 0.1.3
+
+### Patch Changes
+
+- [`36f89a7`](https://github.com/sdorra/content-collections/commit/36f89a7546d3ecf5a8b5bc0446d68d5a590a9e5f) Thanks [@sdorra](https://github.com/sdorra)! - Remove wrong peer dependency to react
+
 ## 0.1.2
 
 ### Patch Changes
