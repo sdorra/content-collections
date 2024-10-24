@@ -2,7 +2,7 @@ import JSONC, { CommentObject } from "comment-json";
 import fs from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect } from "vitest";
-import { tmpdirTest } from "./__tests__/tmpdir.js";
+import { tmpdirTest } from "../../__tests__/tmpdir.js";
 import { addAliasToTsConfig } from "./tsconfig.js";
 
 describe("tsconfig", () => {

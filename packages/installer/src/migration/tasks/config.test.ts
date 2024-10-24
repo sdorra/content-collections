@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import fs from "fs/promises";
 import { join } from "path";
 import { describe, expect } from "vitest";
-import { tmpdirTest } from "./__tests__/tmpdir.js";
+import { tmpdirTest } from "../../__tests__/tmpdir.js";
 import { createConfiguration } from "./config.js";
 
 describe("config", () => {
