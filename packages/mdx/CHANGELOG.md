@@ -1,5 +1,11 @@
 # @content-collections/mdx
 
+## 0.2.0
+
+### Minor Changes
+
+- [`528babf`](https://github.com/sdorra/content-collections/commit/528babf319581f32438b021ff344a27d54f75d7f) Thanks [@sdorra](https://github.com/sdorra)! - Support for React 19
+
 ## 0.1.6
 
 ### Patch Changes

@@ -346,7 +346,7 @@ importers:
         specifier: 0.7.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.2
+        specifier: 0.1.3
         version: link:../../packages/markdown
       '@content-collections/vite':
         specifier: 0.2.3
@@ -393,7 +393,7 @@ importers:
         specifier: 0.7.2
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.1.6
+        specifier: 0.2.0
         version: link:../../packages/mdx
       '@content-collections/next':
         specifier: 0.2.3
@@ -460,7 +460,7 @@ importers:
         specifier: 0.7.2
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.1.6
+        specifier: 0.2.0
         version: link:../../packages/mdx
       '@content-collections/next':
         specifier: 0.2.3
@@ -731,7 +731,7 @@ importers:
         specifier: 0.7.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.2
+        specifier: 0.1.3
         version: link:../../packages/markdown
       '@content-collections/solid-start':
         specifier: 0.1.3
@@ -752,7 +752,7 @@ importers:
         specifier: 0.7.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.2
+        specifier: 0.1.3
         version: link:../../packages/markdown
       '@content-collections/vite':
         specifier: 0.2.3
