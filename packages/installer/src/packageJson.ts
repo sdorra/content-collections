@@ -14,12 +14,9 @@ export type PackageJson = z.infer<typeof packageJsonSchema>;
 export async function readPackageJson(directory: string): Promise<PackageJson> {
   const packageJsonPath = join(directory, "package.json");
   if (!existsSync(packageJsonPath)) {
-    console.error("package.json not found in current directory");
-    process.exit(1);
+    throw new Error("package.json not found in current directory");
   }
 
-  const packageJson: PackageJson = JSON.parse(
-    await fs.readFile(packageJsonPath, "utf-8"),
-  );
-  return packageJson;
+  const packageJson = JSON.parse(await fs.readFile(packageJsonPath, "utf-8"));
+  return packageJsonSchema.parse(packageJson);
 }

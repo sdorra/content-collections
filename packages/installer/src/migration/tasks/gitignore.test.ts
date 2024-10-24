@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import { join } from "path";
 import { describe, expect } from "vitest";
-import { tmpdirTest } from "./__tests__/tmpdir.js";
+import { tmpdirTest } from "../../__tests__/tmpdir.js";
 import { addToGitIgnore } from "./gitignore.js";
 
 describe("gitignore", () => {

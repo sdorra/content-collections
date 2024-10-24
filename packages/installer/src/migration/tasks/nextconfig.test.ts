@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect } from "vitest";
-import { tmpdirTest } from "./__tests__/tmpdir.js";
+import { tmpdirTest } from "../../__tests__/tmpdir.js";
 import { modifyNextConfig } from "./nextconfig.js";
 
 describe("next configuration", () => {
