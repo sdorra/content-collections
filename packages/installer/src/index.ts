@@ -1,19 +1,7 @@
-import { ZodTypeAny } from "zod";
 import { findMigrator } from "./migration/index.js";
 import { readPackageJson } from "./packageJson.js";
-
-export type Ask = (key: string, value?: ZodTypeAny) => Promise<unknown>;
-
-async function resolveOptions(ask: Ask, schema: ZodTypeAny) {
-  const options: any = {};
-
-  const shape = schema._def.shape();
-  for (const key in shape) {
-    const value = await ask(key, shape[key]);
-    options[key] = value;
-  }
-  return schema.parse(options);
-}
+import { Ask, resolveOptions } from "./migration/options.js";
+export type { Option, InputOption, ListOption } from "./migration/options.js";
 
 export async function createMigrator(directory: string) {
   const packageJson = await readPackageJson(directory);
@@ -22,7 +10,7 @@ export async function createMigrator(directory: string) {
   return {
     name: migrator.name,
     createMigration: async (ask: Ask) => {
-      const options = await resolveOptions(ask, migrator.options);
+      const options = await resolveOptions(migrator, ask);
 
       return migrator.createMigration(
         {
