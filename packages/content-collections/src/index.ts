@@ -1,43 +1,26 @@
 #!/usr/bin/env node
-import { createMigrator } from "@content-collections/installer";
+import { createMigrator, type Option } from "@content-collections/installer";
 import { input, select } from "@inquirer/prompts";
 import chalk from "chalk";
 import { Listr } from "listr2";
-import { ZodDefault, ZodEnum, ZodTypeAny } from "zod";
 
-async function ask(key: string, value?: ZodTypeAny) {
-  if (!value) {
-    throw new Error("No value provided");
-  }
-
-  let valueType = value;
-  let defaultValueResolver = value._def.defaultValue;
-  let description = value._def.description;
-
-  if (value instanceof ZodDefault) {
-    valueType = value._def.innerType;
-    defaultValueResolver = value._def.defaultValue;
-
-    if (!description) {
-      description = valueType._def.description;
-    }
-  }
-
-  const defaultValue = defaultValueResolver
-    ? defaultValueResolver()
-    : undefined;
-
-  if (valueType instanceof ZodEnum) {
-    return select({
-      message: description || "Select an option",
-      default: defaultValue,
-      choices: valueType.options,
+async function ask(option: Option) {
+  if (option.type === "list") {
+    const result = await select({
+      message: option.description || `Select an ${option.name}`,
+      default: option.defaultValue,
+      choices: option.choices,
     });
+    if (typeof result !== "string") {
+      throw new Error("Invalid selection, the result must be a string");
+    }
+
+    return result;
   }
 
   return input({
-    default: defaultValue,
-    message: description || `Enter ${key}`,
+    default: option.defaultValue,
+    message: option.description || `Enter ${option.name}`,
   });
 }
 
