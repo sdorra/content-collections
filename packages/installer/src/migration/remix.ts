@@ -4,20 +4,26 @@ import { createConfiguration } from "./tasks/config.js";
 import { createDemoContent } from "./tasks/demo.js";
 import { addDependencies } from "./tasks/dependencies.js";
 import { addToGitIgnore } from "./tasks/gitignore.js";
-import { modifyNextConfig } from "./tasks/nextconfig.js";
 import { addAliasToTsConfig } from "./tasks/tsconfig.js";
+import { modifyViteConfig } from "./tasks/viteconfig.js";
 
-export const migratorNextJS = defineMigrator({
-  name: "next",
+export const migratorRemix = defineMigrator({
+  name: "remix",
   options: z.object({
     demoContent: z
       .enum(["none", "markdown", "mdx"])
       .default("markdown")
       .describe("Type of demo content"),
   }),
-  isResponsible: (packageJson) => Boolean(packageJson.dependencies?.next),
+  isResponsible: (packageJson) =>
+    Object.keys(packageJson.dependencies || {}).filter((dep) =>
+      dep.startsWith("@remix-run"),
+    ).length > 0,
   async createMigration({ directory, packageJson }, { demoContent }) {
-    const packages = ["@content-collections/core", "@content-collections/next"];
+    const packages = [
+      "@content-collections/core",
+      "@content-collections/remix-vite",
+    ];
 
     if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");
@@ -28,7 +34,7 @@ export const migratorNextJS = defineMigrator({
     const tasks = [
       addDependencies(directory, packageJson, [], packages),
       addAliasToTsConfig(directory),
-      modifyNextConfig(directory),
+      modifyViteConfig(directory, "remix-vite"),
       addToGitIgnore(directory),
       createConfiguration(directory, demoContent),
     ];

@@ -16,11 +16,12 @@ export function defineMigrator<TOptions extends ZodObject<ZodRawShape>>(
 }
 
 export type Migrator<
-  TOptionsSchema extends ZodTypeAny,
+  TOptionsSchema extends ZodTypeAny = ZodObject<ZodRawShape>,
   TOptions = z.infer<TOptionsSchema>,
 > = {
   name: string;
   options: TOptionsSchema;
+  isResponsible: (packageJson: PackageJson) => boolean;
   createMigration: (
     context: MigratorContext,
     options: TOptions,
