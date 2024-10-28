@@ -92,13 +92,13 @@ describe("configurationReader", () => {
 
   it("should throw an error if the config file does not exists", async () => {
     await expect(config("non-existing")).rejects.toThrowError(
-      /configuration file .*\/non-existing does not exist/,
+      /configuration file .*non-existing does not exist/,
     );
   });
 
   it("should throw an error if the config file is invalid", async () => {
     await expect(config("invalid")).rejects.toThrowError(
-      /configuration file .*\/invalid is invalid/,
+      /configuration file .*invalid is invalid/,
     );
   });
 });
