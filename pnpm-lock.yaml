@@ -454,6 +454,64 @@ importers:
         specifier: ^5
         version: 5.4.5
 
+  samples/next-mdx-dynamic-import:
+    dependencies:
+      '@content-collections/core':
+        specifier: 0.7.2
+        version: link:../../packages/core
+      '@content-collections/next':
+        specifier: 0.2.3
+        version: link:../../packages/next
+      '@content-collections/sample-theme':
+        specifier: 0.1.0
+        version: link:../../utils/sample-theme
+      '@mdx-js/loader':
+        specifier: ^3.1.0
+        version: 3.1.0
+      '@mdx-js/react':
+        specifier: ^3.1.0
+        version: 3.1.0(@types/react@18.3.3)(react@18.3.1)
+      '@next/mdx':
+        specifier: ^15.0.1
+        version: 15.0.1(@mdx-js/loader@3.1.0)(@mdx-js/react@3.1.0)
+      '@types/mdx':
+        specifier: ^2.0.13
+        version: 2.0.13
+      next:
+        specifier: 14.2.15
+        version: 14.2.15(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1)
+      react:
+        specifier: ^18
+        version: 18.3.1
+      react-dom:
+        specifier: ^18
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/node':
+        specifier: ^20
+        version: 20.14.9
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
+      eslint:
+        specifier: ^8
+        version: 8.57.0
+      eslint-config-next:
+        specifier: 14.2.15
+        version: 14.2.15(eslint@8.57.0)(typescript@5.5.4)
+      remark-frontmatter:
+        specifier: ^5.0.0
+        version: 5.0.0
+      remark-mdx-frontmatter:
+        specifier: ^4.0.0
+        version: 4.0.0
+      typescript:
+        specifier: ^5
+        version: 5.5.4
+
   samples/next-pages:
     dependencies:
       '@content-collections/core':
@@ -3454,6 +3512,20 @@ packages:
       - supports-color
     dev: false
 
+  /@mdx-js/loader@3.1.0:
+    resolution: {integrity: sha512-xU/lwKdOyfXtQGqn3VnJjlDrmKXEvMi1mgYxVmukEUtVycIz1nh7oQ40bKTd4cA7rLStqu0740pnhGYxGoqsCg==}
+    peerDependencies:
+      webpack: '>=5'
+    peerDependenciesMeta:
+      webpack:
+        optional: true
+    dependencies:
+      '@mdx-js/mdx': 3.0.1
+      source-map: 0.7.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@mdx-js/mdx@2.3.0:
     resolution: {integrity: sha512-jLuwRlz8DQfQNiUCJR50Y09CGPq3fLtmtUQfVrj79E0JWu3dvsVcxVIcfhR5h0iXu+/z++zDrYeiJqifRynJkA==}
     dependencies:
@@ -3506,6 +3578,17 @@ packages:
       vfile: 6.0.1
     transitivePeerDependencies:
       - supports-color
+
+  /@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1):
+    resolution: {integrity: sha512-QjHtSaoameoalGnKDT3FoIl4+9RwyTmo9ZJGBdLOks/YOiWHoRDI3PUwEzOE7kEmGcV3AFcp9K6dYu9rEuKLAQ==}
+    peerDependencies:
+      '@types/react': '>=16'
+      react: '>=16'
+    dependencies:
+      '@types/mdx': 2.0.13
+      '@types/react': 18.3.3
+      react: 18.3.1
+    dev: false
 
   /@mdx-js/rollup@3.0.1(rollup@4.24.0):
     resolution: {integrity: sha512-j0II91OCm4ld+l5QVgXXMQGxVVcAWIQJakYWi1dv5pefDHASJyCYER2TsdH7Alf958GoFSM7ugukWyvDq/UY4A==}
@@ -3571,6 +3654,22 @@ packages:
     dependencies:
       glob: 10.3.10
     dev: true
+
+  /@next/mdx@15.0.1(@mdx-js/loader@3.1.0)(@mdx-js/react@3.1.0):
+    resolution: {integrity: sha512-tqIQKLd7pwiZ2fiU8Jr1qvIBLgXnF/HHW9o9IYS/z5GBxID40fNkS/3fv5k4PWeUXdWv6JD5X34rd0EonyhHcQ==}
+    peerDependencies:
+      '@mdx-js/loader': '>=0.15.0'
+      '@mdx-js/react': '>=0.15.0'
+    peerDependenciesMeta:
+      '@mdx-js/loader':
+        optional: true
+      '@mdx-js/react':
+        optional: true
+    dependencies:
+      '@mdx-js/loader': 3.1.0
+      '@mdx-js/react': 3.1.0(@types/react@18.3.3)(react@18.3.1)
+      source-map: 0.7.4
+    dev: false
 
   /@next/swc-darwin-arm64@14.2.15:
     resolution: {integrity: sha512-Rvh7KU9hOUBnZ9TJ28n2Oa7dD9cvDBKua9IKx7cfQQ0GoYUwg9ig31O2oMwH3wm+pE3IkAQ67ZobPfEgurPZIA==}
@@ -6221,7 +6320,7 @@ packages:
       '@typescript-eslint/types': 6.21.0
       '@typescript-eslint/typescript-estree': 6.21.0(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 6.21.0
-      debug: 4.3.4
+      debug: 4.3.6
       eslint: 8.57.0
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -8763,6 +8862,32 @@ packages:
       - supports-color
     dev: true
 
+  /eslint-config-next@14.2.15(eslint@8.57.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-mKg+NC/8a4JKLZRIOBplxXNdStgxy7lzWuedUaCc8tev+Al9mwDUTujQH6W6qXDH9kycWiVo28tADWGvpBsZcQ==}
+    peerDependencies:
+      eslint: ^7.23.0 || ^8.0.0
+      typescript: '>=3.3.1'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@next/eslint-plugin-next': 14.2.15
+      '@rushstack/eslint-patch': 1.10.2
+      '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.0)(typescript@5.5.4)
+      '@typescript-eslint/parser': 6.21.0(eslint@8.57.0)(typescript@5.5.4)
+      eslint: 8.57.0
+      eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.21.0)(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0)(eslint@8.57.0)
+      eslint-plugin-jsx-a11y: 6.8.0(eslint@8.57.0)
+      eslint-plugin-react: 7.34.1(eslint@8.57.0)
+      eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
+      typescript: 5.5.4
+    transitivePeerDependencies:
+      - eslint-import-resolver-webpack
+      - supports-color
+    dev: true
+
   /eslint-config-prettier@9.1.0(eslint@8.57.0):
     resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
     hasBin: true
@@ -9185,17 +9310,10 @@ packages:
       is-plain-obj: 3.0.0
     dev: true
 
-  /estree-util-value-to-estree@3.1.1:
-    resolution: {integrity: sha512-5mvUrF2suuv5f5cGDnDphIy4/gW86z82kl5qG6mM9z04SEQI4FB5Apmaw/TGEf3l55nLtMs5s51dmhUzvAHQCA==}
-    dependencies:
-      '@types/estree': 1.0.6
-      is-plain-obj: 4.1.0
-
   /estree-util-value-to-estree@3.1.2:
     resolution: {integrity: sha512-S0gW2+XZkmsx00tU2uJ4L9hUT7IFabbml9pHh2WQqFmAbxit++YGZne0sKJbNwkj9Wvg9E4uqWl4nCIFQMmfag==}
     dependencies:
       '@types/estree': 1.0.6
-    dev: false
 
   /estree-util-visit@1.2.1:
     resolution: {integrity: sha512-xbgqcrkIVbIG+lI/gzbvd9SGTJL4zqJKBFttUl5pP27KhAjtMKbX/mQXJ7qgyXpMgVy/zvpm0xoQQaGL8OloOw==}
@@ -11477,7 +11595,6 @@ packages:
       unist-util-stringify-position: 4.0.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /mdast-util-frontmatter@1.0.1:
     resolution: {integrity: sha512-JjA2OjxRqAa8wEG8hloD0uTU0kdn8kbtOWpPP94NBkfAlbxn4S8gCGf/9DwFtEeGPXrDcNXdiDjVaRdUFqYokw==}
@@ -11493,7 +11610,7 @@ packages:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
       escape-string-regexp: 5.0.0
-      mdast-util-from-markdown: 2.0.0
+      mdast-util-from-markdown: 2.0.1
       mdast-util-to-markdown: 2.1.0
       micromark-extension-frontmatter: 2.0.0
     transitivePeerDependencies:
@@ -14237,7 +14354,7 @@ packages:
     dependencies:
       '@types/mdast': 4.0.4
       estree-util-is-identifier-name: 3.0.0
-      estree-util-value-to-estree: 3.1.1
+      estree-util-value-to-estree: 3.1.2
       toml: 3.0.0
       unified: 11.0.5
       yaml: 2.4.5
