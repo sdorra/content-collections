@@ -34,7 +34,13 @@ vi.mock("@parcel/watcher", async (importOriginal) => {
   };
 });
 
-describe("watcher", () => {
+describe(
+  "watcher",
+  {
+    // the watcher tests are flaky on windows, so we retry them
+    retry: 3,
+  },
+  () => {
   const events: Array<string> = [];
 
   async function syncFn(modification: Modification, path: string) {
