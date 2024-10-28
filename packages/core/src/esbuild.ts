@@ -2,7 +2,7 @@ import { loadTsConfig, match, tsconfigPathsToRegExp } from "bundle-require";
 import { Plugin, build } from "esbuild";
 import { dirname, join } from "node:path";
 
-// the code to handle tsconfig paths is inspired by the awesome tsup project
+// the code to handle externals is mostly the one which is used by the awesome tsup project
 // https://github.com/egoist/tsup
 
 function tsconfigResolvePaths(configPath: string) {
@@ -13,9 +13,7 @@ function tsconfigResolvePaths(configPath: string) {
   return tsconfig?.data?.compilerOptions?.paths || {};
 }
 
-// we treat every package (everything starting . or ..) as external
-// except for typescript aliases we led esbuild to resolve them,
-// but if the alias is dynamic import we treat it as external as well.
+const NON_NODE_MODULE_RE = /^[A-Z]:[/\\]|^\.{0,2}\/|^\.{1,2}$/
 
 function createExternalsPlugin(configPath: string): Plugin {
   const resolvedPaths = tsconfigResolvePaths(configPath);
@@ -24,15 +22,20 @@ function createExternalsPlugin(configPath: string): Plugin {
   return {
     name: "external-packages",
     setup: (build) => {
-      const filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/;
-      build.onResolve({ filter }, ({ path, kind }) => {
+      build.onResolve({filter: /.*/ }, ({ path, kind }) => {
         if (match(path, resolvePatterns)) {
           if (kind === "dynamic-import") {
             return { path, external: true };
           }
           return;
         }
-        return { path, external: true };
+
+        if (!NON_NODE_MODULE_RE.test(path)) {
+          return {
+            path: path,
+            external: true,
+          }
+        }
       });
     },
   };
