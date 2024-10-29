@@ -1,10 +1,11 @@
 import { PackageJson } from "src/packageJson.js";
-import { z, ZodObject, ZodRawShape } from "zod";
-import { migratorNextJS } from "./next.js";
+import { ZodObject, ZodRawShape } from "zod";
 import { Migrator } from "./migrator.js";
+import { migratorNextJS } from "./next.js";
+import { migratorQwik } from "./qwik.js";
 import { migratorRemix } from "./remix.js";
 
-const migrators = [migratorNextJS, migratorRemix];
+const migrators = [migratorNextJS, migratorRemix, migratorQwik];
 
 export function findMigrator(
   packageJson: PackageJson,
