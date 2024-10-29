@@ -1,27 +1,35 @@
 import { PackageJson } from "src/packageJson.js";
 import { describe, expect, it } from "vitest";
-import { migratorRemix } from "./remix.js";
+import { migratorQwik } from "./qwik.js";
 
-describe("remix migrator", () => {
+describe("qwik migrator", () => {
   const packageJson: PackageJson = {
     name: "something",
   };
 
   describe("isResponsible", () => {
-    it("should be responsible for remix", () => {
-      const responsible = migratorRemix.isResponsible({
+    it("should be responsible for qwik", () => {
+      const responsible = migratorQwik.isResponsible({
         name: "something",
         dependencies: {
-          "@remix-run/node": "^2.13.1",
-          "@remix-run/react": "^2.13.1",
-          "@remix-run/serve": "^2.13.1",
+          "@builder.io/qwik": "^2.13.1"
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
+    it("should be responsible for qwik in dev dependencies", () => {
+      const responsible = migratorQwik.isResponsible({
+        name: "something",
+        devDependencies: {
+          "@builder.io/qwik": "^2.13.1"
         },
       });
       expect(responsible).toBe(true);
     });
 
     it("should not be responsible for next.js", () => {
-      const responsible = migratorRemix.isResponsible({
+      const responsible = migratorQwik.isResponsible({
         name: "something",
         dependencies: {
           next: "14.3.1",
@@ -33,14 +41,14 @@ describe("remix migrator", () => {
 
   describe("options", () => {
     it("should parse options", () => {
-      const options = migratorRemix.options.parse({ demoContent: "none" });
+      const options = migratorQwik.options.parse({ demoContent: "none" });
       expect(options).toEqual({ demoContent: "none" });
     });
   });
 
   describe("migration", () => {
     it("should return tasks without demo content", async () => {
-      const migration = await migratorRemix.createMigration(
+      const migration = await migratorQwik.createMigration(
         {
           directory: "directory",
           packageJson,
@@ -61,7 +69,7 @@ describe("remix migrator", () => {
     });
 
     it("should return tasks with demo content", async () => {
-      const migration = await migratorRemix.createMigration(
+      const migration = await migratorQwik.createMigration(
         {
           directory: "directory",
           packageJson,
@@ -83,7 +91,7 @@ describe("remix migrator", () => {
     });
 
     it("should add markdown package with markdown demo content", async () => {
-      const migration = await migratorRemix.createMigration(
+      const migration = await migratorQwik.createMigration(
         {
           directory: "directory",
           packageJson,
@@ -105,31 +113,8 @@ describe("remix migrator", () => {
       expect(dependencies).toContain("@content-collections/markdown");
     });
 
-    it("should add mdx package with mdx demo content", async () => {
-      const migration = await migratorRemix.createMigration(
-        {
-          directory: "directory",
-          packageJson,
-        },
-        {
-          demoContent: "mdx",
-        },
-      );
-
-      const addDependenciesTask = migration.find(
-        (task) => task.name === "Install dependencies",
-      );
-      if (!addDependenciesTask) {
-        throw new Error("Task not found");
-      }
-
-      // @ts-expect-error - we know it's there
-      const dependencies = addDependenciesTask.devDependencies;
-      expect(dependencies).toContain("@content-collections/mdx");
-    });
-
     it("should not add markdown package without demo content", async () => {
-      const migration = await migratorRemix.createMigration(
+      const migration = await migratorQwik.createMigration(
         {
           directory: "directory",
           packageJson,
@@ -151,8 +136,8 @@ describe("remix migrator", () => {
       expect(dependencies).not.toContain("@content-collections/markdown");
     });
 
-    it("should add core and remix-vite packages", async () => {
-      const migration = await migratorRemix.createMigration(
+    it("should add core and vite packages", async () => {
+      const migration = await migratorQwik.createMigration(
         {
           directory: "directory",
           packageJson,
@@ -172,7 +157,7 @@ describe("remix migrator", () => {
       // @ts-expect-error - we know it's there
       const dependencies = addDependenciesTask.devDependencies;
       expect(dependencies).toContain("@content-collections/core");
-      expect(dependencies).toContain("@content-collections/remix-vite");
+      expect(dependencies).toContain("@content-collections/vite");
     });
   });
 });
