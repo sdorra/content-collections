@@ -1,10 +1,10 @@
 import { readFile } from "fs/promises";
-import path from "path";
+import path from "node:path";
 import { glob } from "tinyglobby";
 import { Emitter } from "./events";
 import { parsers } from "./parser";
 import { CollectionFile, FileCollection } from "./types";
-import { isDefined, orderByPath } from "./utils";
+import { isDefined, orderByPath, posixToNativePath } from "./utils";
 
 export type CollectorEvents = {
   "collector:read-error": {
@@ -98,7 +98,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       ignore: createIgnorePattern(collection),
     });
     const promises = filePaths.map((filePath) =>
-      collectFile(collection, filePath),
+      collectFile(collection, posixToNativePath(filePath)),
     );
 
     const files = await Promise.all(promises);
