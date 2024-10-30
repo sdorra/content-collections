@@ -1,6 +1,7 @@
 import camelcase from "camelcase";
 import pluralize from "pluralize";
 import { CollectionFile } from "./types";
+import path from "node:path";
 
 export function generateTypeName(name: string) {
   const singularName = pluralize.singular(name);
@@ -28,4 +29,11 @@ export function removeChildPaths(paths: Array<string>) {
       }),
     ),
   );
+}
+
+export function posixToNativePath(pathName: string) {
+  if (path.sep !== path.posix.sep) {
+    return pathName.replaceAll(path.posix.sep, path.sep);
+  }
+  return pathName;
 }

@@ -1,3 +1,4 @@
+import path from "path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createCollector } from "./collector";
 import { Events, createEmitter } from "./events";
@@ -213,6 +214,24 @@ describe("collector", () => {
       ]);
 
       expect(collection?.files).toHaveLength(0);
+    });
+
+    it("should use native separator for collected paths", async () => {
+      // tinyglobby uses path.posix internally, so we have to convert the paths
+      // this test would fail on Windows if we didn't convert the paths
+      const [collection] = await collect([
+        {
+          directory: "./__tests__/sources/",
+          include: "test/*.md",
+          parser: "frontmatter",
+        },
+      ]);
+
+      const paths = collection?.files.map((file) => file.path);
+      expect(paths).toEqual([
+        path.join("test", "001.md"),
+        path.join("test", "002.md"),
+      ]);
     });
   });
 

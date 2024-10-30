@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { generateTypeName, isDefined, removeChildPaths } from "./utils";
+import { describe, expect, it, vitest } from "vitest";
+import { generateTypeName, isDefined, posixToNativePath, removeChildPaths } from "./utils";
 
 describe("generateTypeName", () => {
   it("should return same as collection name", () => {
@@ -78,5 +78,28 @@ describe("removeChildPaths", () => {
     const paths = ["a", "b", "a"];
     const filtered = removeChildPaths(paths);
     expect(filtered).toEqual(["a", "b"]);
+  });
+});
+
+describe("posixToNativePath", () => {
+
+  vitest.mock("node:path", async (importOriginal) => {
+    const origin = await importOriginal<typeof import("node:path")>();
+    return {
+      default: {
+        ...origin,
+        sep: origin.win32.sep,
+      },
+    };
+  });
+
+  it("should replace / with \\", () => {
+    const pathName = posixToNativePath("a/b/c");
+    expect(pathName).toBe("a\\b\\c");
+  });
+
+  it("should not replace \\ with \\", () => {
+    const pathName = posixToNativePath("a\\b\\c");
+    expect(pathName).toBe("a\\b\\c");
   });
 });
