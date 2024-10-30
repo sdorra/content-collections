@@ -4,8 +4,9 @@ import { Migrator } from "./migrator.js";
 import { migratorNextJS } from "./next.js";
 import { migratorQwik } from "./qwik.js";
 import { migratorRemix } from "./remix.js";
+import { migratorSolid } from "./solid.js";
 
-const migrators = [migratorNextJS, migratorRemix, migratorQwik];
+const migrators = [migratorNextJS, migratorRemix, migratorQwik, migratorSolid];
 
 export function findMigrator(
   packageJson: PackageJson,
