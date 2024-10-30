@@ -14,7 +14,9 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["CC_OS"]
+
     },
     "typecheck": {
       "dependsOn": ["^build", "^test"]
