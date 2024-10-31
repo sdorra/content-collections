@@ -1,0 +1,3 @@
+# use same eol as editorconfig and prettier
+* text eol=lf
+
