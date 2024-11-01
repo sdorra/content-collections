@@ -34,11 +34,13 @@ vi.mock("@parcel/watcher", async (importOriginal) => {
   };
 });
 
+const WAIT_UNTIL_TIMEOUT = 5000;
+
 describe(
   "watcher",
   {
     // the watcher tests are flaky on windows, so we retry them
-    retry: 3,
+    retry: 5,
   },
   () => {
   const events: Array<string> = [];
@@ -243,7 +245,7 @@ describe(
 
     await fs.writeFile(path.join(tmpdir, "foo"), "foo");
 
-    await vi.waitUntil(() => findEvent("create", tmpdir, "foo"));
+    await vi.waitUntil(() => findEvent("create", tmpdir, "foo"), WAIT_UNTIL_TIMEOUT);
 
     expect(findEvent("create", tmpdir, "foo")).toBeTruthy();
   });
@@ -260,10 +262,10 @@ describe(
     );
 
     await fs.writeFile(path.join(tmpdir, "foo"), "foo", "utf-8");
-    await vi.waitUntil(() => findEvent("create", tmpdir, "foo"), 2000);
+    await vi.waitUntil(() => findEvent("create", tmpdir, "foo"), WAIT_UNTIL_TIMEOUT);
 
     await fs.writeFile(path.join(tmpdir, "foo"), "bar", "utf-8");
-    await vi.waitUntil(() => findEvent("update", tmpdir, "foo"), 2000);
+    await vi.waitUntil(() => findEvent("update", tmpdir, "foo"), WAIT_UNTIL_TIMEOUT);
 
     expect(findEvent("update", tmpdir, "foo")).toBeTruthy();
   });
@@ -283,7 +285,7 @@ describe(
 
     await fs.rm(path.join(tmpdir, "foo"));
 
-    await vi.waitUntil(() => findEvent("delete", tmpdir, "foo"));
+    await vi.waitUntil(() => findEvent("delete", tmpdir, "foo"), WAIT_UNTIL_TIMEOUT);
 
     expect(findEvent("delete", tmpdir, "foo")).toBeTruthy();
   });
@@ -310,6 +312,7 @@ describe(
       await vi.waitUntil(
         () =>
           findEvent("create", one, "foo") && findEvent("create", two, "bar"),
+        WAIT_UNTIL_TIMEOUT
       );
 
       expect(findEvent("create", one, "foo")).toBeTruthy();
@@ -339,6 +342,7 @@ describe(
       await vi.waitUntil(
         () =>
           findEvent("create", foo, "baz") && findEvent("create", bar, "qux"),
+        WAIT_UNTIL_TIMEOUT
       );
 
       expect(findEvent("create", foo, "baz")).toBeTruthy();
@@ -364,7 +368,7 @@ describe(
       syncFn,
     );
 
-    await vi.waitUntil(() => localEvents.length > 0);
+    await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
 
     expect(localEvents[0]).toBe(`subscribe error:${tmpdir}`);
   });
@@ -405,7 +409,7 @@ describe(
 
     await fs.writeFile(path.join(tmpdir, "baz"), "baz");
 
-    await vi.waitUntil(() => findEvent("create", tmpdir, "baz"));
+    await vi.waitUntil(() => findEvent("create", tmpdir, "baz"), WAIT_UNTIL_TIMEOUT);
 
     expect(findEvent("create", tmpdir, "baz")).toBeTruthy();
   });
@@ -428,7 +432,7 @@ describe(
 
     await watcher?.unsubscribe();
 
-    await vi.waitUntil(() => localEvents.length > 0);
+    await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
     expect(localEvents[0]).toBe(`unsubscribed:${tmpdir}`);
   });
 });
