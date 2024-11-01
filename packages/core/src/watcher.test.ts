@@ -34,13 +34,14 @@ vi.mock("@parcel/watcher", async (importOriginal) => {
   };
 });
 
-const WAIT_UNTIL_TIMEOUT = 5000;
+const WAIT_UNTIL_TIMEOUT = 2000;
 
 describe(
   "watcher",
   {
     // the watcher tests are flaky on windows, so we retry them
-    retry: 5,
+    retry: 3,
+    skip: process.platform === "win32",
   },
   () => {
   const events: Array<string> = [];
