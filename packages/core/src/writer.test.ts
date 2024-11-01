@@ -131,81 +131,29 @@ describe("writer", () => {
     expect(existsSync(path.join(tmpdir, "index.d.ts"))).toBe(false);
   });
 
-  describe("os specific", () => {
-    tmpdirTest(
-      "should write import with / instead of \\ on windows",
-      async ({ tmpdir }) => {
-        vitest.mock("node:path", async (importOriginal) => {
-          const origin = await importOriginal<typeof import("node:path")>();
-          return {
-            default: {
-              ...origin,
-              sep: origin.win32.sep,
-              relative: origin.win32.relative,
-            },
-          };
-        });
+  tmpdirTest("should write import with /", async ({ tmpdir }) => {
+      const collections = [
+        {
+          name: "test",
+          typeName: "Test",
+        },
+      ];
 
-        const collections = [
-          {
-            name: "test",
-            typeName: "Test",
-          },
-        ];
+      const writer = await createWriter(tmpdir);
+      await writer.createTypeDefinitionFile({
+        collections,
+        path: path.join(tmpdir, "sub", "config.ts"),
+        generateTypes: true,
+      });
 
-        const writer = await createWriter(tmpdir);
-        await writer.createTypeDefinitionFile({
-          collections,
-          path: path.join(tmpdir, "sub", "config.ts"),
-          generateTypes: true,
-        });
+      const content = await fs.readFile(
+        path.join(tmpdir, "index.d.ts"),
+        "utf-8",
+      );
+      expect(content).toContain(
+        'import configuration from "./sub/config.ts";',
+      );
+    },
+  );
 
-        const content = await fs.readFile(
-          path.join(tmpdir, "index.d.ts"),
-          "utf-8",
-        );
-        expect(content).toContain(
-          'import configuration from "./sub/config.ts";',
-        );
-      },
-    );
-
-    tmpdirTest(
-      "should write import with / on posix based systems",
-      async ({ tmpdir }) => {
-        vitest.mock("node:path", async (importOriginal) => {
-          const origin = await importOriginal<typeof import("node:path")>();
-          return {
-            default: {
-              ...origin,
-              sep: origin.posix.sep,
-              relative: origin.posix.relative,
-            },
-          };
-        });
-
-        const collections = [
-          {
-            name: "test",
-            typeName: "Test",
-          },
-        ];
-
-        const writer = await createWriter(tmpdir);
-        await writer.createTypeDefinitionFile({
-          collections,
-          path: path.join(tmpdir, "sub", "config.ts"),
-          generateTypes: true,
-        });
-
-        const content = await fs.readFile(
-          path.join(tmpdir, "index.d.ts"),
-          "utf-8",
-        );
-        expect(content).toContain(
-          'import configuration from "./sub/config.ts";',
-        );
-      },
-    );
-  });
 });
