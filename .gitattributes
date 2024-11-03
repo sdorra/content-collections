@@ -1,3 +1,10 @@
 # use same eol as editorconfig and prettier
 * text eol=lf
 
+# mark images as binaries
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
