@@ -9,7 +9,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.7.2",
+    "@content-collections/core": "0.7.3",
     "@content-collections/vite": "0.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

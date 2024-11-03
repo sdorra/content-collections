@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.7.3
+
+### Patch Changes
+
+- [`169d6b9`](https://github.com/sdorra/content-collections/commit/169d6b9972b2319377155be16ccbf6883efe2ffb) Thanks [@sdorra](https://github.com/sdorra)! - Fix changes in a sub directory are treated as new documents on windows #373
+
 ## 0.7.2
 
 ### Patch Changes
