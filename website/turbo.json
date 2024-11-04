@@ -4,6 +4,7 @@
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", "../docs/**"],
+      "env": ["SPONSOR_GITHUB_TOKEN"],
       "dependsOn": ["^build"],
       "outputs": [
         "dist/**",

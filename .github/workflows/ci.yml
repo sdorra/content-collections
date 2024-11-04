@@ -19,6 +19,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       CC_OS: ${{ matrix.os }}
+      SPONSOR_GITHUB_TOKEN: ${{ secrets.SPONSOR_GITHUB_TOKEN }}
 
     steps:
       - name: Check out code

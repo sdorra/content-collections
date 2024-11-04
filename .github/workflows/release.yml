@@ -41,3 +41,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          SPONSOR_GITHUB_TOKEN: ${{ secrets.SPONSOR_GITHUB_TOKEN }}
