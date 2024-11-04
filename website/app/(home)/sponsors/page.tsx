@@ -77,7 +77,7 @@ function SponsorList({ title, sponsors }: SponsorListProps) {
   return (
     <>
       <h2 className="mb-5 mt-10 text-xl font-bold">{title}</h2>
-      <div className="flex gap-5">
+      <div className="flex gap-5 flex-wrap">
         {sponsors.map((sponsor) => (
           <a
             key={sponsor.name}
@@ -90,7 +90,7 @@ function SponsorList({ title, sponsors }: SponsorListProps) {
               alt={sponsor.name}
               width={128}
               height={128}
-              className="size-32 rounded-full"
+              className="size-20 md:size-32 rounded-full"
             />
             <p className="font-medium">{sponsor.name}</p>
           </a>
