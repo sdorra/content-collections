@@ -1,98 +1,45 @@
+import clsx from "clsx";
+import { allSponsors, Sponsor } from "content-collections";
 import Image from "next/image";
 
-const queryOneTimeSponsors = `query sponsors($user: String!) {
-  user(login: $user) {
-    sponsorsActivities(first: 100, period: ALL) {
-      nodes {
-        sponsorsTier {
-          monthlyPriceInDollars
-          isOneTime
-        }
-        sponsor {
-          ... on Organization {
-            name
-            avatarUrl
-            url
-          }
-          ... on User {
-            name
-            avatarUrl
-            url
-          }
-        }
-      }
-    }
-  }
-}`;
-
-type Sponsor = {
-  name: string;
-  avatarUrl: string;
-  url: string;
-  isOneTime: boolean;
-};
-
-async function fetchSponsors(): Promise<Sponsor[]> {
-  const response = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.SPONSOR_GITHUB_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: queryOneTimeSponsors,
-      variables: {
-        user: "sdorra",
-      },
-    }),
-  });
-
-  if (!response.ok || response.status !== 200) {
-    throw new Error(`Failed to fetch sponsors: ${response.status}`);
-  }
-
-  const { data } = await response.json();
-
-  const sponsors = data.user.sponsorsActivities.nodes;
-  sponsors.sort(
-    (a: any, b: any) =>
-      b.sponsorsTier.monthlyPriceInDollars -
-      a.sponsorsTier.monthlyPriceInDollars,
-  );
-
-  return sponsors.map((node: any) => ({
-    name: node.sponsor.name,
-    avatarUrl: node.sponsor.avatarUrl,
-    url: node.sponsor.url,
-    isOneTime: node.sponsorsTier.isOneTime,
-  }));
-}
+const sortedSponsors = allSponsors.toSorted((a, b) => b.order - a.order);
 
 type SponsorListProps = {
   title: string;
   sponsors: Sponsor[];
+  size: "small" | "large";
 };
 
-function SponsorList({ title, sponsors }: SponsorListProps) {
+function SponsorList({ title, sponsors, size }: SponsorListProps) {
   return (
     <>
       <h2 className="mb-5 mt-10 text-xl font-bold">{title}</h2>
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex flex-wrap gap-5">
         {sponsors.map((sponsor) => (
           <a
             key={sponsor.name}
             href={sponsor.url}
             target="_blank"
-            className="bg-card hover:bg-accent/80 group relative flex flex-col gap-2 rounded-xl border p-4 transition-colors"
+            className="bg-card hover:bg-accent/80 group relative flex flex-col items-center gap-2 rounded-xl border p-4 transition-colors"
           >
             <Image
               src={sponsor.avatarUrl}
               alt={sponsor.name}
               width={128}
               height={128}
-              className="size-20 md:size-32 rounded-full"
+              className={clsx("rounded-full", {
+                "size-20 md:size-32": size === "large",
+                "size-12 md:size-20": size === "small",
+              })}
             />
-            <p className="font-medium">{sponsor.name}</p>
+            <p
+              className={clsx({
+                "text-lg": size === "large",
+                "text-sm": size === "small",
+              })}
+            >
+              {sponsor.name}
+            </p>
           </a>
         ))}
       </div>
@@ -100,8 +47,7 @@ function SponsorList({ title, sponsors }: SponsorListProps) {
   );
 }
 
-export default async function SponsorPage() {
-  const sponsors = await fetchSponsors();
+export default function SponsorPage() {
   return (
     <main className="container py-12">
       <h1 className="mb-4 text-3xl font-bold">Sponsors</h1>
@@ -110,12 +56,14 @@ export default async function SponsorPage() {
         Content Collections.
       </p>
       <SponsorList
-        title="Monthly Sponsors"
-        sponsors={sponsors.filter((sponsor) => !sponsor.isOneTime)}
+        title="Current Sponsors"
+        sponsors={sortedSponsors.filter((sponsor) => sponsor.isActive)}
+        size="large"
       />
       <SponsorList
-        title="One-Time Sponsors"
-        sponsors={sponsors.filter((sponsor) => sponsor.isOneTime)}
+        title="Past Sponsors"
+        sponsors={sortedSponsors.filter((sponsor) => !sponsor.isActive)}
+        size="small"
       />
       <h2 className="mb-2 mt-10 text-xl font-bold">Become a Sponsor</h2>
       <p className="text-muted-foreground mb-4 max-w-2xl">

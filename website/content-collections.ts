@@ -137,6 +137,20 @@ const metas = defineCollection({
   parser: "json",
 });
 
+const sponsors = defineCollection({
+  name: "sponsors",
+  directory: "./content/sponsors",
+  include: "**/*.yml",
+  parser: "yaml",
+  schema: (z) => ({
+    name: z.string(),
+    avatarUrl: z.string().url(),
+    url: z.string().url(),
+    isActive: z.boolean(),
+    order: z.number(),
+  }),
+});
+
 export default defineConfig({
-  collections: [samples, docs, metas],
+  collections: [samples, docs, metas, sponsors],
 });
