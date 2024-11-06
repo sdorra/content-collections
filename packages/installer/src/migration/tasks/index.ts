@@ -1,4 +1,4 @@
-type Result = {
+export type Result = {
   status: "changed" | "skipped" | "error";
   message: string;
 }

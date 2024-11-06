@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts -d dist",
-    "test": "vitest",
+    "test": "vitest ./src --run",
     "gen-content": "tsx ./scripts/gen-content.ts",
     "typecheck": "tsc --noEmit"
   },
