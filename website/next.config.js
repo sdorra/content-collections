@@ -30,6 +30,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        pathname: "/vjeqenuhn/launchfast-website/purple-icon.png"
+      }
     ],
   },
 };
