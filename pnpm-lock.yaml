@@ -120,7 +120,7 @@ importers:
         version: 5.5.4
       vitest:
         specifier: ^2.1.3
-        version: 2.1.3(@types/node@20.14.9)(happy-dom@14.11.1)
+        version: 2.1.3(@types/node@20.14.9)(happy-dom@15.11.0)
 
   packages/integrations:
     devDependencies:
@@ -169,7 +169,7 @@ importers:
         version: 5.5.4
       vitest:
         specifier: ^2.1.3
-        version: 2.1.3(@types/node@20.14.9)(happy-dom@14.11.1)
+        version: 2.1.3(@types/node@20.14.9)(happy-dom@15.11.0)
 
   packages/mdx:
     dependencies:
@@ -208,8 +208,8 @@ importers:
         specifier: ^2.1.3
         version: 2.1.3(vitest@2.1.3)
       happy-dom:
-        specifier: ^14.11.1
-        version: 14.11.1
+        specifier: ^15.11.0
+        version: 15.11.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -224,7 +224,7 @@ importers:
         version: 5.5.4
       vitest:
         specifier: ^2.1.3
-        version: 2.1.3(@types/node@20.14.9)(happy-dom@14.11.1)
+        version: 2.1.3(@types/node@20.14.9)(happy-dom@15.11.0)
 
   packages/next:
     dependencies:
@@ -6755,7 +6755,7 @@ packages:
       std-env: 3.7.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.3(@types/node@20.14.9)(happy-dom@14.11.1)
+      vitest: 2.1.3(@types/node@20.14.9)(happy-dom@15.11.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -10237,9 +10237,9 @@ packages:
       - uWebSockets.js
     dev: false
 
-  /happy-dom@14.11.1:
-    resolution: {integrity: sha512-JuaGMxD3QlQei6LdAM9mMY9am/cHa978uFbkOpjN5x83DG+QQp/NLyVV4Ru7KOjs70XYZ4KbI0TNiO81nM7uQQ==}
-    engines: {node: '>=16.0.0'}
+  /happy-dom@15.11.0:
+    resolution: {integrity: sha512-/zyxHbXriYJ8b9Urh43ILk/jd9tC07djURnJuAimJ3tJCOLOzOUp7dEHDwJOZyzROlrrooUhr/0INZIDBj1Bjw==}
+    engines: {node: '>=18.0.0'}
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -17002,7 +17002,7 @@ packages:
       - terser
     dev: true
 
-  /vitest@2.1.3(@types/node@20.14.9)(happy-dom@14.11.1):
+  /vitest@2.1.3(@types/node@20.14.9)(happy-dom@15.11.0):
     resolution: {integrity: sha512-Zrxbg/WiIvUP2uEzelDNTXmEMJXuzJ1kCpbDvaKByFA9MNeO95V+7r/3ti0qzJzrxdyuUw5VduN7k+D3VmVOSA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -17037,7 +17037,7 @@ packages:
       '@vitest/utils': 2.1.3
       chai: 5.1.1
       debug: 4.3.6
-      happy-dom: 14.11.1
+      happy-dom: 15.11.0
       magic-string: 0.30.11
       pathe: 1.1.2
       std-env: 3.7.0
