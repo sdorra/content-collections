@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply scroll-smooth;
+}
+
 .cursor {
   @apply border border-primary-500;
   animation: blink-caret 0.75s step-end infinite;
