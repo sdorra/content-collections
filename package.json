@@ -29,7 +29,7 @@
     "@content-collections/prettier-config": "workspace:*",
     "@playwright/test": "^1.47.0",
     "husky": "^9.0.11",
-    "turbo": "^2.0.14"
+    "turbo": "^2.2.3"
   },
   "prettier": "@content-collections/prettier-config",
   "packageManager": "pnpm@8.15.8"
