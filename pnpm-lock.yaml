@@ -401,7 +401,7 @@ importers:
   samples/cli:
     dependencies:
       '@content-collections/cli':
-        specifier: 0.1.5
+        specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
         specifier: 0.7.3
