@@ -17,7 +17,10 @@
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*",
-    "clerc": "^0.44.0"
+    "@clerc/core": "^0.44.0",
+    "@clerc/plugin-completions": "^0.44.0",
+    "@clerc/plugin-help": "^0.44.0",
+    "@clerc/plugin-version": "^0.44.0"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",

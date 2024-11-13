@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import { Clerc, completionsPlugin, helpPlugin, versionPlugin } from "clerc";
+import { Clerc } from "@clerc/core";
+import { completionsPlugin } from "@clerc/plugin-completions";
+import { helpPlugin } from "@clerc/plugin-help";
+import { versionPlugin } from "@clerc/plugin-version";
 import install from "./commands/install.js";
 
 import { createRequire } from "node:module";

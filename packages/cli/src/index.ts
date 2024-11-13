@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-import { Clerc, completionsPlugin, helpPlugin, versionPlugin } from "clerc";
+import { Clerc } from "@clerc/core";
+import { completionsPlugin } from "@clerc/plugin-completions";
+import { helpPlugin } from "@clerc/plugin-help";
+import { versionPlugin } from "@clerc/plugin-version";
 import build from "./commands/build.js";
 import watch from "./commands/watch.js";
 
