@@ -70,10 +70,8 @@ export function zodToOptions(schema: ZodObject<ZodRawShape>) {
 
 export type Ask = (options: Option) => Promise<string>;
 
-export async function resolveOptions(migrator: Migrator, ask: Ask) {
+export async function resolveOptions(schema: ZodObject<ZodRawShape>, ask: Ask) {
   const resolvedOptions: any = {};
-
-  const schema = migrator.options;
 
   const options = zodToOptions(schema);
   for (const option of options) {

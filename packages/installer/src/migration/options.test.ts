@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { type Option, zodToOptions } from "./options.js";
+import { type Option, resolveOptions, zodToOptions } from "./options.js";
 
 describe("zodToOptions", () => {
   function expectSingleOption(options: Array<Option>) {
@@ -99,5 +99,23 @@ describe("zodToOptions", () => {
       throw new Error("Option type is not list");
     }
     expect(option.choices).toEqual(["none", "markdown", "mdx"]);
+  });
+});
+
+describe("resolveOptions", () => {
+  it("should resolve options", async () => {
+    const schema = z.object({
+      name: z.string(),
+    });
+
+    const ask = async (option: Option) => {
+      if (option.name === "name") {
+        return "test";
+      }
+      return "unknown";
+    };
+
+    const options = await resolveOptions(schema, ask);
+    expect(options).toEqual({ name: "test" });
   });
 });
