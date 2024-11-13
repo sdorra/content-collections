@@ -10,7 +10,7 @@ export async function createMigrator(directory: string) {
   return {
     name: migrator.name,
     createMigration: async (ask: Ask) => {
-      const options = await resolveOptions(migrator, ask);
+      const options = await resolveOptions(migrator.options, ask);
 
       return migrator.createMigration(
         {
