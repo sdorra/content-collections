@@ -16,8 +16,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      # TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      # TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       CC_OS: ${{ matrix.os }}
 
     steps:
@@ -52,4 +52,4 @@ jobs:
         run: pnpm playwright install chromium --with-deps
 
       - name: Test
-        run: pnpm test
+        run: pnpm test -- --force --concurrency=1
