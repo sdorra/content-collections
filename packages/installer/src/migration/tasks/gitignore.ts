@@ -1,11 +1,11 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { Task } from "./index.js";
 
 function findGitIgnore(directory: string): string | null {
   let current = directory;
-  while (current !== "/") {
+  while (current !== dirname(current)) {
     const gitIgnore = join(current, ".gitignore");
     if (existsSync(gitIgnore)) {
       return gitIgnore;
