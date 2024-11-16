@@ -1,5 +1,11 @@
 # @content-collections/next
 
+## 0.2.4
+
+### Patch Changes
+
+- [#409](https://github.com/sdorra/content-collections/pull/409) [`2677acc`](https://github.com/sdorra/content-collections/commit/2677acc67409f7cecb51ecc2de5ef1417c9caeaf) Thanks [@sdorra](https://github.com/sdorra)! - Fix double execution if next.config.ts is used on canary #397
+
 ## 0.2.3
 
 ### Patch Changes
