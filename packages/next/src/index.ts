@@ -9,8 +9,9 @@ const defaultOptions: Options = {
   configPath: "content-collections.ts",
 };
 
+const initializedState: Record<string, boolean> = {};
+
 export function createContentCollectionPlugin(pluginOptions: Options) {
-  let initialized = false;
   return async (
     nextConfig: Partial<NextConfig> | Promise<Partial<NextConfig>> = {},
   ): Promise<Partial<NextConfig>> => {
@@ -18,11 +19,13 @@ export function createContentCollectionPlugin(pluginOptions: Options) {
       .slice(2)
       .filter((arg) => !arg.startsWith("-"));
     if (command === "build" || command === "dev") {
+      const initialized = initializedState[pluginOptions.configPath];
+
       if (initialized) {
         return nextConfig;
       }
 
-      initialized = true;
+      initializedState[pluginOptions.configPath] = true;
 
       const { createBuilder } = await import("@content-collections/core");
 
