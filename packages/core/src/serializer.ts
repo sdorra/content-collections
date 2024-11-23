@@ -1,5 +1,6 @@
 import serializeJs from "serialize-javascript";
 import z from "zod";
+import { Import, isImport } from "./import";
 
 const literalSchema = z.union([
   // json
@@ -35,11 +36,46 @@ export const serializableSchema = z.record(schema);
 
 export type Serializable = z.infer<typeof serializableSchema>;
 
+function createImport(imp: Import<unknown>, variableName: string): string {
+  const variableDeclaration = imp.name
+    ? `{ ${imp.name} as ${variableName} }`
+    : variableName;
+
+  return `import ${variableDeclaration} from "${imp.path}";\n`;
+}
+
 export function serialize(value: Array<unknown>): string {
-  const serializedValue = serializeJs(value, {
+  let serializedValue = "";
+  let counter = 0;
+
+  function handleImports(item: any) {
+    if (item instanceof Object) {
+      Object.entries(item).forEach(([key, value]) => {
+        if (isImport(value)) {
+          counter++;
+          const variableName = `__v_${counter}`;
+          serializedValue += createImport(value, variableName);
+          item[key] = variableName;
+        } else if (value instanceof Object) {
+          handleImports(value);
+        }
+      });
+    }
+  }
+
+  value.forEach(handleImports);
+
+  serializedValue += "\n";
+
+  const js = serializeJs(value, {
     space: 2,
     unsafe: true,
     ignoreFunction: true,
+  }).replace(/"__v_(\d+)"/g, (_, index) => {
+    return `__v_${index}`;
   });
-  return `export default ${serializedValue};`;
+
+  serializedValue += "export default " + js;
+
+  return serializedValue;
 }

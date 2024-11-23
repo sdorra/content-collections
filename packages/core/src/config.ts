@@ -1,5 +1,6 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { CacheFn } from "./cache";
+import { GetTypeOfImport, Import } from "./import";
 import { Parser, Parsers } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
@@ -111,6 +112,21 @@ type InvalidReturnType<TMessage extends string, TObject> = {
   object: TObject;
 };
 
+type ResolveImports<TTransformResult> =
+  TTransformResult extends Import<any>
+    ? GetTypeOfImport<TTransformResult>
+    : TTransformResult extends Array<infer U>
+      ? Array<ResolveImports<U>>
+      : TTransformResult extends (...args: any[]) => any
+        ? TTransformResult
+        : TTransformResult extends object
+          ? {
+              [K in keyof TTransformResult]: ResolveImports<
+                TTransformResult[K]
+              >;
+            }
+          : TTransformResult;
+
 export function defineCollection<
   TName extends string,
   TShape extends ZodRawShape,
@@ -121,7 +137,7 @@ export function defineCollection<
     ? Schema<TParser, TShape>
     : Awaited<TTransformResult>,
   TResult = TDocument extends Serializable
-    ? Collection<TName, TShape, TParser, TSchema, TTransformResult, TDocument>
+    ? Collection<TName, TShape, TParser, TSchema, TTransformResult, ResolveImports<TDocument>>
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(
   collection: CollectionRequest<

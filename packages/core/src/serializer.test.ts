@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { tmpdirTest } from "./__tests__/tmpdir";
+import { createDefaultImport, createNamedImport } from "./import";
 import { extension, serializableSchema, serialize } from "./serializer";
 
 describe("serializer", () => {
@@ -147,6 +148,81 @@ describe("serializer", () => {
         const imported = await writeAndImport(tmpdir, object);
         expect(imported).toEqual([object]);
         expect(imported[0].bigint).toBeTypeOf("bigint");
+      },
+    );
+
+    tmpdirTest(
+      "should serialize an object with an import",
+      async ({ tmpdir }) => {
+        const object = {
+          name: "sample",
+          fso: createDefaultImport("node:fs/promises"),
+        };
+
+        const imported = await writeAndImport(tmpdir, object);
+        expect(imported).toEqual([{ name: "sample", fso: fs }]);
+      },
+    );
+
+    tmpdirTest(
+      "should serialize an object with an a nested import",
+      async ({ tmpdir }) => {
+        const object = {
+          name: "sample",
+          imports: {
+            fso: createDefaultImport("node:fs/promises"),
+          },
+        };
+
+        const [imported] = await writeAndImport(tmpdir, object);
+        expect(imported.imports.fso).toEqual(fs);
+      },
+    );
+
+    tmpdirTest(
+      "should serialize an object with multiple imports",
+      async ({ tmpdir }) => {
+        const object = {
+          name: "sample",
+          imports: {
+            fs: createDefaultImport("node:fs/promises"),
+            path: createDefaultImport("node:path"),
+          },
+        };
+
+        const [imported] = await writeAndImport(tmpdir, object);
+        expect(imported.imports.fs).toEqual(fs);
+        expect(imported.imports.path).toEqual(path);
+      },
+    );
+
+    tmpdirTest(
+      "should serialize an object with an array of imports",
+      async ({ tmpdir }) => {
+        const object = {
+          name: "sample",
+          imports: [
+            createDefaultImport("node:fs/promises"),
+            createDefaultImport("node:path"),
+          ],
+        };
+
+        const [imported] = await writeAndImport(tmpdir, object);
+        expect(imported.imports[0]).toEqual(fs);
+        expect(imported.imports[1]).toEqual(path);
+      },
+    );
+
+    tmpdirTest(
+      "should serialize an object with an name import",
+      async ({ tmpdir }) => {
+        const object = {
+          name: "sample",
+          join: createNamedImport("join", "node:path"),
+        };
+
+        const [imported] = await writeAndImport(tmpdir, object);
+        expect(imported.join).toEqual(path.join);
       },
     );
   });

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { defineCollection, defineConfig } from "./config";
+import { createDefaultImport } from "./import";
 import { GetTypeByName } from "./types";
 
 describe("types", () => {
@@ -324,11 +325,11 @@ describe("types", () => {
       directory: "./persons",
       include: "*.md",
       schema: (z) => ({
-        // date is not a valid json
         date: z.string(),
       }),
       transform: (data) => {
         return {
+          // functions are not serial
           fn: () => {},
         };
       },
@@ -336,5 +337,116 @@ describe("types", () => {
 
     // @ts-expect-error content is not a valid json object
     expect(collection.name).toBeDefined();
+  });
+
+  it("should return the generic of the import", () => {
+    type Content = {
+      mdx: string;
+    };
+
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      transform: ({ _meta, ...rest }) => {
+        const content = createDefaultImport<Content>("./content");
+        return {
+          ...rest,
+          content,
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: {
+        mdx: "# MDX Content",
+      },
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should return the generic of a nested import", () => {
+    type Content = {
+      mdx: string;
+    };
+
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      transform: ({ _meta, content: _,  ...rest }) => {
+        const content = createDefaultImport<Content>("./content");
+        return {
+          ...rest,
+          props: {
+            content,
+          },
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      props: {
+        content: {
+          mdx: "# MDX Content",
+        },
+      }
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should return a function from a resolve import", () => {
+    type Content = () => string;
+
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      transform: ({ _meta, ...rest }) => {
+        const content = createDefaultImport<Content>("./content");
+        return {
+          ...rest,
+          content,
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: () => "# MDX Content",
+    };
+
+    expect(post).toBeTruthy();
   });
 });
