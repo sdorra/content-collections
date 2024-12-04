@@ -17,7 +17,7 @@ Transform your content into type-safe data collections. Eliminate the need for m
 - **Simple to use**:
   No need to manually fetch and parse your content anymore. Just import it and start using Content Collections. It provides a simple API, allowing you to concentrate on building your app.
 
-- **Tansformation**:
+- **Transformation**:
   Content Collections allows you to transform your content before it enters your app. You can use it to modify your content, join two collections or even fetch data from a server.
 
 ## Installation
