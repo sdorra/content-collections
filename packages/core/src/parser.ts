@@ -8,8 +8,8 @@ function parseYaml(content: string) {
   return parse(content.trim());
 }
 
-function frontmatterParser(fileContent: string) {
-  const { data, content } = matter(fileContent, {
+function frontmatter(fileContent: string) {
+  return matter(fileContent, {
     engines: {
       yaml: {
         parse: parseYaml,
@@ -17,6 +17,10 @@ function frontmatterParser(fileContent: string) {
       },
     },
   });
+}
+
+function frontmatterParser(fileContent: string) {
+  const { data, content } = frontmatter(fileContent);
 
   return {
     ...data,
@@ -24,10 +28,20 @@ function frontmatterParser(fileContent: string) {
   };
 }
 
+function frontmatterOnlyParser(fileContent: string) {
+  const { data } = frontmatter(fileContent);
+
+  return data;
+}
+
 export const parsers = {
   frontmatter: {
     hasContent: true,
     parse: frontmatterParser,
+  },
+  ["frontmatter-only"]: {
+    hasContent: false,
+    parse: frontmatterOnlyParser,
   },
   json: {
     hasContent: false,

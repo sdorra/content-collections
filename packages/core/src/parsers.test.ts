@@ -26,6 +26,16 @@ describe("parsers", () => {
     });
   });
 
+  it("should parse frontmatter without content", () => {
+    const parser = parsers["frontmatter-only"];
+    expect(parser.hasContent).toBe(false);
+
+    const data = parser.parse(mdContent);
+    expect(data).toEqual({
+      name: "John"
+    });
+  });
+
   it("should parse json", () => {
     const parser = parsers["json"];
     expect(parser.hasContent).toBe(false);

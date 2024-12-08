@@ -4,14 +4,14 @@ const characters = defineCollection({
   name: "characters",
   directory: "app/routes",
   include: "*.mdx",
+  parser: "frontmatter-only",
   schema: (z) => ({
     name: z.string().min(1),
     origin: z.string().min(1),
     species: z.string().min(1),
     source: z.string().min(1).url(),
   }),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  transform: ({ content: _, _meta, ...data }) => {
+  transform: ({ _meta, ...data }) => {
     const slug = _meta.path.replace("characters.", "");
     return {
       ...data,
