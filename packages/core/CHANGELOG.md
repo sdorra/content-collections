@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.8.0
+
+### Minor Changes
+
+- [`d208994`](https://github.com/sdorra/content-collections/commit/d2089947ca83cd00de299645516d77b8dd0fd8ca) Thanks [@sdorra](https://github.com/sdorra)! - Allow creation of static imports from a transform function
+
 ## 0.7.3
 
 ### Patch Changes
