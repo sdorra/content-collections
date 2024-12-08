@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { defineCollection, defineConfig } from "./config";
-import { createDefaultImport } from "./import";
+import { createDefaultImport, split } from "./import";
 import { GetTypeByName } from "./types";
+import { setDefaultAutoSelectFamilyAttemptTimeout } from "node:net";
 
 describe("types", () => {
   describe("GetTypeByName", () => {
@@ -388,7 +389,7 @@ describe("types", () => {
       schema: (z) => ({
         title: z.string(),
       }),
-      transform: ({ _meta, content: _,  ...rest }) => {
+      transform: ({ _meta, content: _, ...rest }) => {
         const content = createDefaultImport<Content>("./content");
         return {
           ...rest,
@@ -411,7 +412,7 @@ describe("types", () => {
         content: {
           mdx: "# MDX Content",
         },
-      }
+      },
     };
 
     expect(post).toBeTruthy();
@@ -445,6 +446,44 @@ describe("types", () => {
     const post: Post = {
       title: "Hello World",
       content: () => "# MDX Content",
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should return the partial of the split", () => {
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+        summary: z.string(),
+      }),
+      transform: ({ summary, content, _meta: _, ...rest }) => {
+        const data = {
+          summary,
+          content,
+        };
+        return {
+          ...rest,
+          content: split(data),
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: {
+        summary: "Short summary",
+        content: "# MDX Content",
+      },
     };
 
     expect(post).toBeTruthy();

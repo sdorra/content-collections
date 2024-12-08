@@ -1,6 +1,6 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { CacheFn } from "./cache";
-import { GetTypeOfImport, Import } from "./import";
+import { GetTypeOfImport, GetTypeOfImportOrSplit, Import, ImportOrSplit } from "./import";
 import { Parser, Parsers } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
@@ -113,8 +113,8 @@ type InvalidReturnType<TMessage extends string, TObject> = {
 };
 
 type ResolveImports<TTransformResult> =
-  TTransformResult extends Import<any>
-    ? GetTypeOfImport<TTransformResult>
+  TTransformResult extends ImportOrSplit<any>
+    ? GetTypeOfImportOrSplit<TTransformResult>
     : TTransformResult extends Array<infer U>
       ? Array<ResolveImports<U>>
       : TTransformResult extends (...args: any[]) => any

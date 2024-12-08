@@ -1,6 +1,6 @@
 import serializeJs from "serialize-javascript";
 import z from "zod";
-import { Import, isImport } from "./import";
+import { Import, isImport, isSplit } from "./import";
 
 const literalSchema = z.union([
   // json
@@ -36,34 +36,62 @@ export const serializableSchema = z.record(schema);
 
 export type Serializable = z.infer<typeof serializableSchema>;
 
-function createImport(imp: Import<unknown>, variableName: string): string {
-  const variableDeclaration = imp.name
-    ? `{ ${imp.name} as ${variableName} }`
+function createImport(variableName: string, filePath: string, name?: string): string {
+  const variableDeclaration = name
+    ? `{ ${name} as ${variableName} }`
     : variableName;
 
-  return `import ${variableDeclaration} from "${imp.path}";\n`;
+  return `import ${variableDeclaration} from "${filePath}";\n`;
 }
 
+type AdditionalFile = {
+
+};
+
+// TODO: add support for split
+// - return multiple files, for each split
+// - create import for each split
 export function serialize(value: Array<unknown>): string {
   let serializedValue = "";
   let counter = 0;
 
-  function handleImports(item: any) {
+  const additonalFiles = [
+
+  ];
+
+  function handleImportsAndSplits(item: any) {
     if (item instanceof Object) {
       Object.entries(item).forEach(([key, value]) => {
         if (isImport(value)) {
           counter++;
           const variableName = `__v_${counter}`;
+          serializedValue += createImport(variableName, value.path, value.name);
+          item[key] = variableName;
+        } else if( isSplit(value) ) {
+
+          counter++;
+          const variableName = `__v_${counter}`;
+
+          const part = serializeJs(value.part, {
+            space: 2,
+            unsafe: true,
+            ignoreFunction: true,
+          });
+
+          // TODO write part to file
+
           serializedValue += createImport(value, variableName);
           item[key] = variableName;
+
+
         } else if (value instanceof Object) {
-          handleImports(value);
+          handleImportsAndSplits(value);
         }
       });
     }
   }
 
-  value.forEach(handleImports);
+  value.forEach(handleImportsAndSplits);
 
   serializedValue += "\n";
 
