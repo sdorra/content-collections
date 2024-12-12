@@ -34,10 +34,11 @@ const posts = defineCollection({
   name: "posts",
   directory: "./content/posts",
   include: "*.mdx",
+  parser: "frontmatter-only",
   schema: (z) => ({
     title: z.string(),
   }),
-  transform: ({ content: _, ...post }) => {
+  transform: ({ _meta, ...post }) => {
     const mdxContent = createDefaultImport<MDXContent>(`@/content/posts/${_meta.filePath}`);
     return {
       ...post,
