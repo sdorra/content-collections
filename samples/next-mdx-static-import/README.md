@@ -37,6 +37,7 @@ const posts = defineCollection({
   parser: "frontmatter-only",
   schema: (z) => ({
     title: z.string(),
+    slug: z.string(),
   }),
   transform: ({ _meta, ...post }) => {
     const mdxContent = createDefaultImport<MDXContent>(`@/content/posts/${_meta.filePath}`);
