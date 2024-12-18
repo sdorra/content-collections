@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@content-collections/cli": "0.1.6",
-    "@content-collections/core": "0.7.3"
+    "@content-collections/core": "0.8.0"
   },
   "devDependencies": {
     "@types/node": "20",
