@@ -13,6 +13,13 @@ Various libraries available in the Node.js ecosystem can be used for transformat
 - [@content-collections/markdown](/docs/content/markdown) for converting markdown to HTML
 - [@content-collections/mdx](/docs/content/mdx) for converting MDX to JSX
 
+Another option is to use Content Collections solely for metadata (e.g., frontmatter) while employing a different tool to render the content (e.g., `next/mdx`).
+This approach is particularly beneficial for larger sites using `mdx`. If the bundler that compiles the rest of the application also includes the `mdx` content files, it can optimize the resulting bundle.
+This way, imports in `mdx` files are resolved by the bundler and function like those in the rest of the application.
+Using an external bundler, as we do with `@content-collections/mdx`, may lead to larger bundles because the external bundler must re-bundle every used component, even if it is already utilized elsewhere in the application.
+To implement this approach, the `frontmatter-only` parser can be used alongside [Static Import](#static-imports).
+For a complete sample with Next.js, refer to the [next-mdx-static-import sample](/samples/next-mdx-static-import).
+
 ## Caching
 
 The `transform` function is invoked for every document during each build or document change. While this behavior may change in the future, it currently holds true. Therefore, ensuring fast transformations is crucial. For slower operations like markdown to HTML conversion, the context object provides a `cache` function to cache costly operations.
@@ -93,6 +100,48 @@ For a complete example have a look at the [Join collections](#join-collections) 
   refer to [Access sibling documents](#access-sibling-documents) for more
   information.
 </Callout>
+
+## Static Imports
+
+Since version 0.8.0, the `transform` function can return a reference to a static import.
+This reference can be used to import a JavaScript module, which then becomes part of the generated document.
+
+Example:
+
+```ts
+transform: async (doc) => {
+  const component = createDefaultImport<React.ComponentType>(`@/components/${doc.component}`);
+  return {
+    ...doc,
+    component,
+  };
+},
+```
+
+The static import is very useful when working with MDX files, and the application's bundler allows for their import.
+
+Example:
+
+```ts
+transform: async (doc) => {
+  const mdxContent = createDefaultImport<MDXContent>(`@/content/posts/${doc._meta.filePath}`);
+  return {
+    ...doc,
+    mdxContent,
+  };
+},
+```
+
+The `mdxContent` can the be used in the application:
+
+```tsx
+const Post = ({ post }: Props) => {
+  const MDXContent = post.mdxContent;
+  return <MDXContent />;
+};
+```
+
+To ensure type safety, a generic for the imported module must be passed to the `createDefaultImport`.
 
 ## Examples
 
