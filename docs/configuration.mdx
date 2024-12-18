@@ -31,11 +31,14 @@ The parser property is optional, and `frontmatter` is the default value.
 
 The parser used to read the documents. The parser must be one of the following values:
 
-| Type          | Description                                                            |
-| ------------- | ---------------------------------------------------------------------- |
-| `frontmatter` | Parses documents with frontmatter and content such as markdown or MDX. |
-| `json`        | Parses JSON documents                                                  |
-| `yaml`        | Parses YAML documents                                                  |
+| Type               | Description                                                             |
+| ------------------ | ----------------------------------------------------------------------- |
+| `frontmatter`      | Parses documents with frontmatter and content such as markdown or MDX.  |
+| `json`             | Parses JSON documents                                                   |
+| `yaml`             | Parses YAML documents                                                   |
+| `frontmatter-only` | Like `frontmatter`, but without content. Available since version 0.8.0. |
+
+The `frontmatter-only` parser is especially useful when only the metadata of a document is utilized with Content Collections, while the content is rendered by another source.
 
 ### `typeName` (optional)
 
