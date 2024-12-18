@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.8.0
+
+### Minor Changes
+
+- [`d208994`](https://github.com/sdorra/content-collections/commit/d2089947ca83cd00de299645516d77b8dd0fd8ca) Thanks [@sdorra](https://github.com/sdorra)! - Allow creation of static imports from a transform function
+
+- [`4a398a7`](https://github.com/sdorra/content-collections/commit/4a398a75fe9c5b5a77e2fad23c938d1a81cc1a36) Thanks [@sdorra](https://github.com/sdorra)! - Add frontmatter-only parser to parse md(x) files without the content
+
 ## 0.7.3
 
 ### Patch Changes
