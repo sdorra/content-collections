@@ -27,7 +27,7 @@ Content Collections offers a variety of adapters that seamlessly integrate with 
 - [Next.js](https://www.content-collections.dev/docs/quickstart/next)
 - [Qwik](https://www.content-collections.dev/docs/quickstart/qwik)
 - [Remix (Vite)](https://www.content-collections.dev/docs/quickstart/remix-vite)
-- [Solid Start](https://www.content-collections.dev/docs/quickstart/solid)
+- [Solid Start](https://www.content-collections.dev/docs/quickstart/solid-start)
 - [SvelteKit](https://www.content-collections.dev/docs/quickstart/svelte-kit)
 - [Vite](https://www.content-collections.dev/docs/quickstart/vite)
 
