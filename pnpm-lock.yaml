@@ -939,10 +939,10 @@ importers:
         specifier: 0.1.0
         version: link:../../packages/vinxi
       '@solidjs/start':
-        specifier: ^1.0.0-rc.0
+        specifier: ^1.0.11
         version: 1.0.11(solid-js@1.9.4)(vinxi@0.4.3)(vite@5.4.11)
       solid-js:
-        specifier: ^1.8.16
+        specifier: ^1.9.4
         version: 1.9.4
       vinxi:
         specifier: ^0.4.3
@@ -9549,10 +9549,6 @@ packages:
       - supports-color
     dev: true
 
-  /esm-env@1.0.0:
-    resolution: {integrity: sha512-Cf6VksWPsTuW01vU9Mk/3vRue91Zevka5SjyNf3nEpokFRuqt/KjUQoGAwq9qMmhpLTHmXzSIrFRw8zxWzmFBA==}
-    dev: true
-
   /esm-env@1.2.2:
     resolution: {integrity: sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==}
     dev: true
@@ -15634,7 +15630,7 @@ packages:
       acorn-typescript: 1.4.13(acorn@8.14.0)
       aria-query: 5.3.2
       axobject-query: 4.1.0
-      esm-env: 1.0.0
+      esm-env: 1.2.2
       esrap: 1.2.2
       is-reference: 3.0.3
       locate-character: 3.0.0
