@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev --port 5179",
-    "test": "playwright test"
+    "test": "playwright test",
+    "build": "vinxi build"
   },
   "dependencies": {
     "@content-collections/core": "0.8.0",

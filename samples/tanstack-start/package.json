@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev --port 5182",
-    "test": "playwright test"
+    "test": "playwright test",
+    "build": "vinxi build"
   },
   "dependencies": {
     "@content-collections/mdx": "0.2.0",
