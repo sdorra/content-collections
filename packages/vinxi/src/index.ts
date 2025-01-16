@@ -7,8 +7,15 @@ export default function vinxiContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
-      // @ts-ignore router is an solid-start internal property
-      return config.router?.name === "ssr";
+      // @ts-expect-error vinxi internal types
+      const routerConfig = config.app?.config?.routers?.find(
+        (router: any) => router.type !== "static",
+      );
+
+      const router = routerConfig?.name || "ssr";
+
+      // @ts-expect-error vinxi internal types
+      return config.router?.name === router;
     },
   });
 
