@@ -435,7 +435,7 @@ importers:
         specifier: 0.1.3
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -708,7 +708,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       '@types/eslint':
         specifier: ^8.56.7
@@ -747,7 +747,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -803,7 +803,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       '@mdx-js/rollup':
         specifier: ^3.0.1
@@ -957,7 +957,7 @@ importers:
         specifier: 0.1.3
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       '@sveltejs/adapter-auto':
         specifier: ^3.3.1
@@ -1045,7 +1045,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.3
+        specifier: 0.2.4
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
