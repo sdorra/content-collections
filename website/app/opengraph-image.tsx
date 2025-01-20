@@ -3,11 +3,11 @@ import { ImageResponse } from "next/og";
 
 export default async function Image() {
   const interRegular = fetch(
-    new URL("../assets/fonts/inter/Inter-Regular.ttf", import.meta.url),
+    new URL("../assets/fonts/inter/Inter-Regular.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   const interBold = fetch(
-    new URL("../assets/fonts/inter/Inter-Bold.ttf", import.meta.url),
+    new URL("../assets/fonts/inter/Inter-Bold.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   const logo = await fetch(
