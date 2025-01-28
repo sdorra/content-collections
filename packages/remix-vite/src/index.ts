@@ -7,8 +7,11 @@ export default function remixContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
-      // @ts-ignore - this is a remix specific property
-      if (config.__remixPluginResolvedConfig || config.__remixPluginContext) {
+      if (
+        !config.build?.ssr &&
+        // @ts-expect-error - this is a remix specific property
+        (config.__remixPluginResolvedConfig || config.__remixPluginContext)
+      ) {
         return true;
       }
       return false;
