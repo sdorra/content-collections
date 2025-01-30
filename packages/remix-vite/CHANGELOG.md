@@ -1,5 +1,11 @@
 # @content-collections/remix-vite
 
+## 0.1.3
+
+### Patch Changes
+
+- [#480](https://github.com/sdorra/content-collections/pull/480) [`e5f5571`](https://github.com/sdorra/content-collections/commit/e5f55715a6ba84ebcca0a97016208a890c4ada38) Thanks [@sdorra](https://github.com/sdorra)! - Fix double execution on build
+
 ## 0.1.2
 
 ### Patch Changes
