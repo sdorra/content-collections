@@ -16,12 +16,12 @@ The name of the collection. The name is used to identify the collection and must
 
 The directory where the documents are stored. The directory must be relative to the root of the project.
 
-### `includes` (required)
+### `include` (required)
 
 A glob pattern or an array of glob patterns that define which files are included in the collection. The glob pattern is relative to the collection directory.
 e.g.: `*.md`, `**/*.json`, `*.yaml`, `**/*.mdx`
 
-### `excludes` (optional)
+### `exclude` (optional)
 
 A glob pattern or an array of glob patterns that define which files are excluded from the collection. The glob pattern is relative to the collection directory.
 
@@ -109,7 +109,7 @@ import { defineCollection, defineConfig } from "@content-collections/core";
 const authors = defineCollection({
   name: "authors",
   directory: "content/authors",
-  includes: "**/*.md",
+  include: "**/*.md",
   schema: (z) => ({
     firstName: z.string(),
     lastName: z.string(),
