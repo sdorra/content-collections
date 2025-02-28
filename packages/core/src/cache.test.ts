@@ -33,7 +33,7 @@ describe("cacheManager", () => {
   tmpdirTest("should create file directory", async ({ tmpdir }) => {
     const cacheManager = await createCacheManager(tmpdir, "configChecksum");
     const cache = cacheManager.cache("collection", "file");
-    await cache.cacheFn("input", () => "output");
+    await cache.cacheFn("__test", "input", () => "output");
     const dir = path.join(
       tmpdir,
       ".content-collections",
@@ -45,6 +45,21 @@ describe("cacheManager", () => {
   });
 
   tmpdirTest("should cache", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("__test", "input", inc)).toBe(1);
+    expect(await cache.cacheFn("__test", "input", inc)).toBe(1);
+  });
+
+  tmpdirTest("should cache with legacy syntax", async ({ tmpdir }) => {
     const cacheManager = await createCacheManager(tmpdir, "configChecksum");
     const cache = cacheManager.cache("collection", "file");
 
@@ -70,8 +85,38 @@ describe("cacheManager", () => {
       return counter;
     }
 
-    expect(await cache.cacheFn("i-1", inc)).toBe(1);
-    expect(await cache.cacheFn("i-2", inc)).toBe(2);
+    expect(await cache.cacheFn("__test", "i-1", inc)).toBe(1);
+    expect(await cache.cacheFn("__test", "i-2", inc)).toBe(2);
+  });
+
+  tmpdirTest("should compute if name changes", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("__test", "i-1", inc)).toBe(1);
+    expect(await cache.cacheFn("__test_2", "i-1", inc)).toBe(2);
+  });
+
+  tmpdirTest("should compute if name changes with legacy syntax", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("i-1", inc, "__test")).toBe(1);
+    expect(await cache.cacheFn("i-1", inc, "__test_2")).toBe(2);
   });
 
   tmpdirTest("should cache across sessions", async ({ tmpdir }) => {
@@ -85,7 +130,7 @@ describe("cacheManager", () => {
       return counter;
     }
 
-    expect(await cache.cacheFn("i-1", inc)).toBe(1);
+    expect(await cache.cacheFn("__test", "i-1", inc)).toBe(1);
     await cache.tidyUp();
     await cacheManager.flush();
 
@@ -93,7 +138,7 @@ describe("cacheManager", () => {
     cache = cacheManager.cache("collection", "file");
 
     counter = 42;
-    expect(await cache.cacheFn("i-1", inc)).toBe(1);
+    expect(await cache.cacheFn("__test", "i-1", inc)).toBe(1);
   });
 
   tmpdirTest(
@@ -109,14 +154,14 @@ describe("cacheManager", () => {
         return counter;
       }
 
-      expect(await cache.cacheFn("i-1", inc)).toBe(1);
+      expect(await cache.cacheFn("__test", "i-1", inc)).toBe(1);
       await cache.tidyUp();
       await cacheManager.flush();
 
       cacheManager = await createCacheManager(tmpdir, "changed");
       cache = cacheManager.cache("collection", "file");
 
-      expect(await cache.cacheFn("i-1", inc)).toBe(2);
+      expect(await cache.cacheFn("__test", "i-1", inc)).toBe(2);
     },
   );
 
@@ -124,7 +169,7 @@ describe("cacheManager", () => {
     const cacheManager = await createCacheManager(tmpdir, "configChecksum");
     let cache = cacheManager.cache("collection", "file");
 
-    await cache.cacheFn("i-1", () => "output");
+    await cache.cacheFn("__test", "i-1", () => "output");
     await cache.tidyUp();
 
     const dir = path.join(
@@ -140,7 +185,7 @@ describe("cacheManager", () => {
 
     cache = cacheManager.cache("collection", "file");
 
-    await cache.cacheFn("i-2", () => "output");
+    await cache.cacheFn("__test", "i-2", () => "output");
     await cache.tidyUp();
 
     expect(await readdir(dir)).toHaveLength(1);
@@ -155,7 +200,7 @@ describe("cacheManager", () => {
 
       const cacheManager = await createCacheManager(tmpdir, "configChecksum");
       const cache = cacheManager.cache("collection", "file");
-      expect(await cache.cacheFn("input", () => "output")).toBe("output");
+      expect(await cache.cacheFn("__test", "input", () => "output")).toBe("output");
     },
   );
 
@@ -165,7 +210,7 @@ describe("cacheManager", () => {
       const cacheManager = await createCacheManager(tmpdir, "configChecksum");
       const cache = cacheManager.cache("collection", "file");
 
-      await cache.cacheFn("input", () => "cached value");
+      await cache.cacheFn("__test", "input", () => "cached value");
 
       const cacheDir = path.join(
         await createCacheDirectory(tmpdir),
@@ -181,7 +226,7 @@ describe("cacheManager", () => {
       const cacheFile = path.join(cacheDir, file);
       await writeFile(cacheFile, "broken");
 
-      const value = await cache.cacheFn("input", () => "new computed value");
+      const value = await cache.cacheFn("__test", "input", () => "new computed value");
       expect(value).toBe("new computed value");
     },
   );

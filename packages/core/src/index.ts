@@ -1,5 +1,6 @@
 export * from "./builder";
 export * from "./config";
+export { createCacheFn } from "./cache";
 export type { Document, GetTypeByName, Modification } from "./types";
 
 export { CollectError } from "./collector";

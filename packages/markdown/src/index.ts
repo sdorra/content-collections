@@ -60,5 +60,6 @@ export function compileMarkdown(
   options?: Options,
 ) {
   const cacheKey = createCacheKey(document);
-  return cache(cacheKey, (doc) => compile(doc, options));
+  // we stick with the deprecated syntax, in order to support older versions of core
+  return cache(cacheKey, (doc) => compile(doc, options), "__md");
 }
