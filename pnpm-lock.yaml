@@ -482,7 +482,7 @@ importers:
         specifier: 0.2.0
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/next
       '@types/node':
         specifier: ^20
@@ -509,7 +509,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/next
       next:
         specifier: 14.2.15
@@ -546,7 +546,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -604,7 +604,7 @@ importers:
         specifier: 0.8.0
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -665,7 +665,7 @@ importers:
         specifier: 0.2.0
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0

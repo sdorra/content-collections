@@ -1,5 +1,11 @@
 # @content-collections/next
 
+## 0.2.5
+
+### Patch Changes
+
+- [#506](https://github.com/sdorra/content-collections/pull/506) [`0c2b1c8`](https://github.com/sdorra/content-collections/commit/0c2b1c88d2703dfa2444a15696c751c150582bbf) Thanks [@sdorra](https://github.com/sdorra)! - Fix rerun on sigint
+
 ## 0.2.4
 
 ### Patch Changes
