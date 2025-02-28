@@ -1,12 +1,10 @@
-import { Context, Meta } from "@content-collections/core";
+import { createCacheFn, Meta } from "@content-collections/core";
 import { describe, expect, it, vitest } from "vitest";
 import { compileMarkdown } from ".";
 
-type Cache = Context["cache"];
-
-const cache: Cache = (input, fn) => {
-  return fn(input) as any;
-};
+const cache = createCacheFn(async (_, input, compute) => {
+  return compute(input);
+});
 
 const sampleMeta: Meta = {
   directory: "post",

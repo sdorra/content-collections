@@ -1,20 +1,16 @@
-import { Context, Meta } from "@content-collections/core";
+import { createCacheFn, Meta } from "@content-collections/core";
 import { cleanup, render, renderHook, screen } from "@testing-library/react";
 import { Node, Parent } from "mdast";
 import { Pluggable, Transformer } from "unified";
 import { beforeEach, describe, expect, it, vitest } from "vitest";
-import { Options, compileMDX } from ".";
+import { compileMDX, Options } from ".";
 import {
   MDXContent as MDXClientContent,
   useMDXComponent as useClientMDXComponent,
 } from "./react/client";
 import { MDXContent, useMDXComponent } from "./react/server";
 
-type Cache = Context["cache"];
-
-const cache: Cache = (input, fn) => {
-  return fn(input) as any;
-};
+const cache = createCacheFn(async (_, input, compute) => compute(input));
 
 const sampleMeta: Meta = {
   directory: "post",
