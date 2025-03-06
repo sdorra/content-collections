@@ -407,7 +407,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
     devDependencies:
       '@types/node':
@@ -429,7 +429,7 @@ importers:
   samples/markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.3
@@ -476,10 +476,10 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/mdx
       '@content-collections/next':
         specifier: 0.2.5
@@ -506,7 +506,7 @@ importers:
   samples/next:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.5
@@ -543,7 +543,7 @@ importers:
   samples/next-mdx-dynamic-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.5
@@ -601,7 +601,7 @@ importers:
   samples/next-mdx-static-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.5
@@ -659,10 +659,10 @@ importers:
   samples/next-pages:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/mdx
       '@content-collections/next':
         specifier: 0.2.5
@@ -705,7 +705,7 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(typescript@5.5.4)(vite@5.4.11)
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -744,7 +744,7 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -800,7 +800,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -879,7 +879,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/remix-vite':
         specifier: 0.1.3
@@ -930,7 +930,7 @@ importers:
   samples/solid:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.3
@@ -951,7 +951,7 @@ importers:
   samples/svelte-kit:
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.3
@@ -987,7 +987,7 @@ importers:
   samples/tanstack-start:
     dependencies:
       '@content-collections/mdx':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/mdx
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -1015,8 +1015,8 @@ importers:
         version: 0.5.1(@types/node@22.10.5)(typescript@5.7.2)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.7.3
-        version: 0.7.3(typescript@5.7.2)
+        specifier: 0.8.1
+        version: link:../../packages/core
       '@content-collections/vinxi':
         specifier: 0.1.0
         version: link:../../packages/vinxi
@@ -1042,7 +1042,7 @@ importers:
   samples/vite:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.0
+        specifier: 0.8.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -2022,25 +2022,6 @@ packages:
     dependencies:
       '@types/conventional-commits-parser': 5.0.0
       chalk: 5.3.0
-    dev: true
-
-  /@content-collections/core@0.7.3(typescript@5.7.2):
-    resolution: {integrity: sha512-eqrQ/59BdorWQFFLF1sGPtIKzsn1OPSomok8e6MevYAaZ2knkhI3ddTQqo8OMrW/zA5H71Pbg0cgxbCN0pOVsg==}
-    peerDependencies:
-      typescript: ^5.0.2
-    dependencies:
-      '@parcel/watcher': 2.4.1
-      camelcase: 8.0.0
-      esbuild: 0.21.5
-      gray-matter: 4.0.3
-      p-limit: 6.1.0
-      picomatch: 4.0.2
-      pluralize: 8.0.0
-      serialize-javascript: 6.0.2
-      tinyglobby: 0.2.5
-      typescript: 5.7.2
-      yaml: 2.4.5
-      zod: 3.23.8
     dev: true
 
   /@deno/shim-deno-test@0.5.0:
@@ -4533,6 +4514,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-darwin-arm64@2.4.1:
@@ -4541,6 +4523,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-darwin-x64@2.4.1:
@@ -4549,6 +4532,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-freebsd-x64@2.4.1:
@@ -4557,6 +4541,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm-glibc@2.4.1:
@@ -4565,6 +4550,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm64-glibc@2.4.1:
@@ -4573,6 +4559,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm64-musl@2.4.1:
@@ -4581,6 +4568,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-x64-glibc@2.4.1:
@@ -4589,6 +4577,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-x64-musl@2.4.1:
@@ -4597,6 +4586,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-wasm@2.3.0:
@@ -4625,6 +4615,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-win32-ia32@2.4.1:
@@ -4633,6 +4624,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-win32-x64@2.4.1:
@@ -4641,6 +4633,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher@2.4.1:
@@ -4664,6 +4657,7 @@ packages:
       '@parcel/watcher-win32-arm64': 2.4.1
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
+    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -8192,6 +8186,7 @@ packages:
   /camelcase@8.0.0:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
     engines: {node: '>=16'}
+    dev: false
 
   /caniuse-lite@1.0.30001669:
     resolution: {integrity: sha512-DlWzFDJqstqtIVx1zeSpIMLjunf5SmwOw0N2Ck/QSQdS8PLS4+9HrLaYei4w8BIAL7IB/UEDu889d8vhCTPA0w==}
@@ -9000,6 +8995,7 @@ packages:
     resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
     engines: {node: '>=0.10'}
     hasBin: true
+    dev: false
 
   /detect-libc@2.0.3:
     resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
@@ -10147,6 +10143,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-extendable: 0.1.1
+    dev: false
 
   /extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
@@ -10762,6 +10759,7 @@ packages:
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
+    dev: false
 
   /gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
@@ -11377,6 +11375,7 @@ packages:
   /is-extendable@0.1.1:
     resolution: {integrity: sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -13612,6 +13611,7 @@ packages:
   /node-addon-api@7.1.0:
     resolution: {integrity: sha512-mNcltoe1R8o7STTegSOHdnJNN7s5EUvhoS7ShnTHDyOSd+8H+UdWODq6qSv67PjC8Zc5JRT8+oLAMCr0SIXw7g==}
     engines: {node: ^16 || ^18 || >= 20}
+    dev: false
 
   /node-fetch-native@1.6.4:
     resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
@@ -13987,6 +13987,7 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       yocto-queue: 1.1.1
+    dev: false
 
   /p-locate@4.1.0:
     resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
@@ -14232,6 +14233,7 @@ packages:
   /pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
+    dev: false
 
   /possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
@@ -14644,6 +14646,7 @@ packages:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
       safe-buffer: 5.2.1
+    dev: false
 
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -15349,6 +15352,7 @@ packages:
     dependencies:
       extend-shallow: 2.0.1
       kind-of: 6.0.3
+    dev: false
 
   /semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
@@ -15388,6 +15392,7 @@ packages:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
     dependencies:
       randombytes: 2.1.0
+    dev: false
 
   /seroval-plugins@1.2.0(seroval@1.2.0):
     resolution: {integrity: sha512-hULTbfzSe81jGWLH8TAJjkEvw6JWMqOo9Uq+4V4vg+HNq53hyHldM9ZOfjdzokcFysiTp9aFdV2vJpZFqKeDjQ==}
@@ -15883,6 +15888,7 @@ packages:
   /strip-bom-string@1.0.0:
     resolution: {integrity: sha512-uCC2VHvQRYu+lMh4My/sFNmF2klFymLX1wHJeXnbEJERpV/ZsVuonzerjfrGpIGF7LBVa1O7i9kjiWvJiFck8g==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /strip-bom@3.0.0:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
@@ -16253,6 +16259,7 @@ packages:
     dependencies:
       fdir: 6.3.0(picomatch@4.0.2)
       picomatch: 4.0.2
+    dev: false
 
   /tinypool@1.0.1:
     resolution: {integrity: sha512-URZYihUbRPcGv95En+sz6MfghfIc2OJ1sv/RmhWZLouPY0/8Vo80viwPvg3dlaS9fuq7fQMEfgRRK7BBZThBEA==}

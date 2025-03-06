@@ -8,7 +8,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.8.0",
+    "@content-collections/core": "0.8.1",
     "@content-collections/next": "0.2.5",
     "next": "14.2.15",
     "react": "^18",

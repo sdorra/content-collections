@@ -18,7 +18,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@content-collections/core": "0.8.0",
+    "@content-collections/core": "0.8.1",
     "@content-collections/remix-vite": "0.1.3",
     "@remix-run/dev": "^2.15.2",
     "@types/react": "^18.3.3",
