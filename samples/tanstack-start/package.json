@@ -9,7 +9,7 @@
     "build": "vinxi build"
   },
   "dependencies": {
-    "@content-collections/mdx": "0.2.0",
+    "@content-collections/mdx": "0.2.1",
     "@content-collections/sample-theme": "0.1.0",
     "@tanstack/react-router": "^1.95.1",
     "@tanstack/router-devtools": "^1.95.1",
@@ -20,7 +20,7 @@
     "vinxi": "0.5.1"
   },
   "devDependencies": {
-    "@content-collections/core": "0.7.3",
+    "@content-collections/core": "0.8.1",
     "@content-collections/vinxi": "0.1.0",
     "@types/node": "^22.5.4",
     "@types/react": "^18.2.65",

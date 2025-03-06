@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.8.1
+
+### Patch Changes
+
+- [#512](https://github.com/sdorra/content-collections/pull/512) [`94c12cd`](https://github.com/sdorra/content-collections/commit/94c12cdb00d81f60b83edf6111f997e80fe46ab2) Thanks [@sdorra](https://github.com/sdorra)! - Update esbuild in order to fix docker standalone builds
+
 ## 0.8.0
 
 ### Minor Changes
