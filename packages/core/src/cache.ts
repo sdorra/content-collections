@@ -3,18 +3,24 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path, { join } from "node:path";
 
+type Options = {
+  key: string;
+};
+
 export type CacheFn = <TInput, TOutput>(
   input: TInput,
   compute: (input: TInput) => Promise<TOutput> | TOutput,
+  options?: Options,
 ) => Promise<TOutput>;
 
-function createKey(config: string, input: unknown): string {
+function createKey(config: string, input: unknown, key: string): string {
   return (
     createHash("sha256")
       // we add the config hash to the input hash to ensure that the cache is
       // invalidated when the config changes
       .update(config)
       .update(JSON.stringify(input))
+      .update(key)
       .digest("hex")
   );
 }
@@ -86,8 +92,8 @@ export async function createCacheManager(
 
     let newFileMapping: string[] = [];
 
-    const cacheFn: CacheFn = async (input, fn) => {
-      const key = createKey(configChecksum, input);
+    const cacheFn: CacheFn = async (input, fn, options) => {
+      const key = createKey(configChecksum, input, options?.key || "");
 
       newFileMapping.push(key);
 

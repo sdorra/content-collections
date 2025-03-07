@@ -60,5 +60,7 @@ export function compileMarkdown(
   options?: Options,
 ) {
   const cacheKey = createCacheKey(document);
-  return cache(cacheKey, (doc) => compile(doc, options));
+  return cache(cacheKey, (doc) => compile(doc, options), {
+    key: "__markdown",
+  });
 }

@@ -120,5 +120,7 @@ export function compileMDX(
   options?: Options,
 ) {
   const cacheKey = createCacheKey(document);
-  return cache(cacheKey, (doc) => compile(doc, options));
+  return cache(cacheKey, (doc) => compile(doc, options), {
+    key: "__mdx",
+  });
 }

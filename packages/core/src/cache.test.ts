@@ -59,7 +59,7 @@ describe("cacheManager", () => {
     expect(await cache.cacheFn("input", inc)).toBe(1);
   });
 
-  tmpdirTest("should compute if key changes", async ({ tmpdir }) => {
+  tmpdirTest("should compute if input changes", async ({ tmpdir }) => {
     const cacheManager = await createCacheManager(tmpdir, "configChecksum");
     const cache = cacheManager.cache("collection", "file");
 
@@ -72,6 +72,25 @@ describe("cacheManager", () => {
 
     expect(await cache.cacheFn("i-1", inc)).toBe(1);
     expect(await cache.cacheFn("i-2", inc)).toBe(2);
+  });
+
+  tmpdirTest("should compute if key changes", async ({ tmpdir }) => {
+    const cacheManager = await createCacheManager(tmpdir, "configChecksum");
+    const cache = cacheManager.cache("collection", "file");
+
+    let counter = 0;
+
+    function inc() {
+      counter++;
+      return counter;
+    }
+
+    expect(await cache.cacheFn("input", inc, {
+      key: "key",
+    })).toBe(1);
+    expect(await cache.cacheFn("input", inc, {
+      key: "key2",
+    })).toBe(2);
   });
 
   tmpdirTest("should cache across sessions", async ({ tmpdir }) => {
