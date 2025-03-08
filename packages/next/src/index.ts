@@ -19,10 +19,14 @@ export function createContentCollectionPlugin(pluginOptions: Options) {
       .slice(2)
       .filter((arg) => !arg.startsWith("-"));
     if (command === "build" || command === "dev") {
-      if (process.ppid === 1) {
+      if (command === "dev" && process.ppid === 1) {
         // if the parent process is 1, we assume that the parent process was killed
         // and we are running in a new process, so we skip the initialization
         // https://github.com/sdorra/content-collections/issues/499
+
+        // we do the check only in dev mode, because in environment like docker
+        // it is common that the build is directly started by the init process (pid 1).
+        // https://github.com/sdorra/content-collections/issues/511
         return nextConfig;
       }
 
