@@ -407,7 +407,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
     devDependencies:
       '@types/node':
@@ -429,10 +429,10 @@ importers:
   samples/markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.3
+        specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
         specifier: 0.2.4
@@ -476,13 +476,13 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/next
       '@types/node':
         specifier: ^20
@@ -506,10 +506,10 @@ importers:
   samples/next:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/next
       next:
         specifier: 14.2.15
@@ -543,10 +543,10 @@ importers:
   samples/next-mdx-dynamic-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -601,10 +601,10 @@ importers:
   samples/next-mdx-static-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/next':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -659,13 +659,13 @@ importers:
   samples/next-pages:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/mdx':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/mdx
       '@content-collections/next':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/next
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -705,7 +705,7 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(typescript@5.5.4)(vite@5.4.11)
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -744,7 +744,7 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -800,7 +800,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4
@@ -879,7 +879,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/remix-vite':
         specifier: 0.1.3
@@ -930,10 +930,10 @@ importers:
   samples/solid:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.3
+        specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vinxi':
         specifier: 0.1.0
@@ -951,10 +951,10 @@ importers:
   samples/svelte-kit:
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/markdown':
-        specifier: 0.1.3
+        specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
         specifier: 0.2.4
@@ -987,7 +987,7 @@ importers:
   samples/tanstack-start:
     dependencies:
       '@content-collections/mdx':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/mdx
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -1015,7 +1015,7 @@ importers:
         version: 0.5.1(@types/node@22.10.5)(typescript@5.7.2)
     devDependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/vinxi':
         specifier: 0.1.0
@@ -1042,7 +1042,7 @@ importers:
   samples/vite:
     dependencies:
       '@content-collections/core':
-        specifier: 0.8.1
+        specifier: 0.8.2
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.4

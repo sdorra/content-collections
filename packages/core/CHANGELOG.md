@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.8.2
+
+### Patch Changes
+
+- [#518](https://github.com/sdorra/content-collections/pull/518) [`d5a9b5a`](https://github.com/sdorra/content-collections/commit/d5a9b5ac259cadae496987468a44b883978c3e49) Thanks [@sdorra](https://github.com/sdorra)! - Add an option to cache the API, allowing the inclusion of an additional key to prevent cache collisions
+
 ## 0.8.1
 
 ### Patch Changes

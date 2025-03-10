@@ -1,5 +1,14 @@
 # @content-collections/next
 
+## 0.2.6
+
+### Patch Changes
+
+- [#520](https://github.com/sdorra/content-collections/pull/520) [`2f096e8`](https://github.com/sdorra/content-collections/commit/2f096e8d752199db7d3b4e21d12e423d610a9e0d) Thanks [@sdorra](https://github.com/sdorra)! - Check for ppid ooly on dev mode
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.2.1
+
 ## 0.2.5
 
 ### Patch Changes
