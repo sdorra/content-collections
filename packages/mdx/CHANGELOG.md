@@ -1,5 +1,11 @@
 # @content-collections/mdx
 
+## 0.2.2
+
+### Patch Changes
+
+- [#518](https://github.com/sdorra/content-collections/pull/518) [`d5a9b5a`](https://github.com/sdorra/content-collections/commit/d5a9b5ac259cadae496987468a44b883978c3e49) Thanks [@sdorra](https://github.com/sdorra)! - Pass an additional cache key to prevent cache collisions with the markdown package
+
 ## 0.2.1
 
 ### Patch Changes
