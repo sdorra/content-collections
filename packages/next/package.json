@@ -21,13 +21,13 @@
     "@content-collections/integrations": "workspace:*"
   },
   "peerDependencies": {
-    "next": "^12 || ^13 || ^14 || ^15",
-    "@content-collections/core": "0.x"
+    "@content-collections/core": "0.x",
+    "next": "^12 || ^13 || ^14 || ^15"
   },
   "devDependencies": {
-    "next": "^14.2.15",
+    "@content-collections/core": "workspace:*",
+    "next": "^14.2.24",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4",
-    "@content-collections/core": "workspace:*"
+    "typescript": "^5.5.4"
   }
 }
