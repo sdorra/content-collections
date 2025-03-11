@@ -14859,8 +14859,8 @@ packages:
   /path-to-regexp@0.1.10:
     resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
 
-  /path-to-regexp@6.2.2:
-    resolution: {integrity: sha512-GQX3SSMokngb36+whdpRXE+3f9V8UzyAorlYvOGx87ufGHehNTn5lCxrKtLyZ4Yl/wEKnNnr98ZzOwwDZV5ogw==}
+  /path-to-regexp@6.3.0:
+    resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
     dev: false
 
   /path-type@4.0.0:
@@ -18243,7 +18243,7 @@ packages:
       micromatch: 4.0.8
       nitropack: 2.10.4(typescript@5.8.2)
       node-fetch-native: 1.6.4
-      path-to-regexp: 6.2.2
+      path-to-regexp: 6.3.0
       pathe: 1.1.2
       radix3: 1.1.2
       resolve: 1.22.8
@@ -18321,7 +18321,7 @@ packages:
       micromatch: 4.0.8
       nitropack: 2.10.4(typescript@5.7.2)
       node-fetch-native: 1.6.4
-      path-to-regexp: 6.2.2
+      path-to-regexp: 6.3.0
       pathe: 1.1.2
       radix3: 1.1.2
       resolve: 1.22.8
