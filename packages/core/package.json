@@ -31,11 +31,11 @@
     "@types/picomatch": "^3.0.1",
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
-    "@vitest/coverage-v8": "^2.1.5",
+    "@vitest/coverage-v8": "^3.0.8",
     "tsup": "^8.2.4",
     "tsx": "^4.19.2",
     "typescript": "^5.5.4",
-    "vitest": "^2.1.9"
+    "vitest": "^3.0.8"
   },
   "dependencies": {
     "@parcel/watcher": "^2.4.1",
