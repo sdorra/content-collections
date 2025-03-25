@@ -10,7 +10,7 @@ export default function remixContentCollectionsPlugin(
       if (
         !config.build?.ssr &&
         // @ts-expect-error - this is a remix specific property
-        (config.__remixPluginResolvedConfig || config.__remixPluginContext)
+        (config.__remixPluginResolvedConfig || config.__remixPluginContext || config.__reactRouterPluginContext)
       ) {
         return true;
       }
