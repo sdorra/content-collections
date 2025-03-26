@@ -7,13 +7,32 @@ export default function remixContentCollectionsPlugin(
   const plugin = contentCollectionsPlugin({
     ...(options || {}),
     isEnabled(config) {
-      if (
-        !config.build?.ssr &&
+      if (!config.build?.ssr) {
         // @ts-expect-error - this is a remix specific property
-        (config.__remixPluginResolvedConfig || config.__remixPluginContext)
-      ) {
-        return true;
+        if (config.__remixPluginResolvedConfig || config.__remixPluginContext) {
+          return true;
+        }
+
+        // To support react-router in development mode
+        if (
+          config.mode === "development" &&
+          // @ts-expect-error - this is a react router specific property
+          config.__reactRouterPluginContext
+        ) {
+          return true;
+        }
+
+        // To support react-router in production build mode
+        if (
+          config.mode === "production" &&
+          // @ts-expect-error - this is a react router specific property
+          config.__reactRouterPluginContext?.environmentBuildContext?.name ===
+            "client"
+        ) {
+          return true;
+        }
       }
+
       return false;
     },
   });
