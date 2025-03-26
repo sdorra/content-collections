@@ -1,5 +1,5 @@
 ---
-"@content-collections/remix-vite": patch
+"@content-collections/remix-vite": minor
 ---
 
-fix: remix-vite doesn't work with react-router v7
+Support for react router 7
