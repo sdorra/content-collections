@@ -14,14 +14,20 @@ export default function remixContentCollectionsPlugin(
         }
 
         // To support react-router in development mode
-        if (config.mode === "development" && config.__reactRouterPluginContext) {
+        if (
+          config.mode === "development" &&
+          // @ts-expect-error - this is a react router specific property
+          config.__reactRouterPluginContext
+        ) {
           return true;
         }
 
         // To support react-router in production build mode
         if (
-          (config.mode === "production" &&
-            config.__reactRouterPluginContext?.environmentBuildContext?.name === "client")
+          config.mode === "production" &&
+          // @ts-expect-error - this is a react router specific property
+          config.__reactRouterPluginContext?.environmentBuildContext?.name ===
+            "client"
         ) {
           return true;
         }
