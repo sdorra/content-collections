@@ -10,10 +10,11 @@ export default function remixContentCollectionsPlugin(
       if (
         !config.build?.ssr &&
         // @ts-expect-error - this is a remix specific property
-        (config.__remixPluginResolvedConfig || config.__remixPluginContext || config.__reactRouterPluginContext)
+        (config.__remixPluginResolvedConfig || config.__remixPluginContext || config.__reactRouterPluginContext?.environmentBuildContext?.name === "client")
       ) {
         return true;
       }
+
       return false;
     },
   });
