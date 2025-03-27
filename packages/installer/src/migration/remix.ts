@@ -15,10 +15,15 @@ export const migratorRemix = defineMigrator({
       .default("markdown")
       .describe("Type of demo content"),
   }),
-  isResponsible: (packageJson) =>
-    Object.keys(packageJson.dependencies || {}).filter((dep) =>
-      dep.startsWith("@remix-run"),
-    ).length > 0,
+  isResponsible: (packageJson) => {
+    const dependencies = Object.keys(packageJson.dependencies || {});
+    const devDependencies = Object.keys(packageJson.devDependencies || {});
+
+    // Check both dependencies and devDependencies
+    return [...dependencies, ...devDependencies].filter(
+      (dep) => dep.startsWith("@remix-run") || dep.startsWith("@react-router/"),
+    ).length > 0;
+  },
   async createMigration({ directory, packageJson }, { demoContent }) {
     const packages = [
       "@content-collections/core",

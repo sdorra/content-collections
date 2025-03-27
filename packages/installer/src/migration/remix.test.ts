@@ -20,6 +20,46 @@ describe("remix migrator", () => {
       expect(responsible).toBe(true);
     });
 
+    it("should be responsible for remix in dev dependencies", () => {
+      const responsible = migratorRemix.isResponsible({
+        name: "something",
+        dependencies: {
+          "react": "^17.0.2",
+        },
+        devDependencies: {
+          "@remix-run/node": "^2.13.1",
+          "@remix-run/react": "^2.13.1",
+          "@remix-run/serve": "^2.13.1",
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
+    it("should be responsible for react router", () => {
+      const responsible = migratorRemix.isResponsible({
+        name: "something",
+        dependencies: {
+          "@react-router/node": "^7.4.0",
+          "@react-router/serve": "^7.4.0",
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
+    it("should be responsible for react router in dev dependencies", () => {
+      const responsible = migratorRemix.isResponsible({
+        name: "something",
+        dependencies: {
+          "react": "^17.0.2",
+        },
+        devDependencies: {
+          "@react-router/node": "^7.4.0",
+          "@react-router/serve": "^7.4.0",
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
     it("should not be responsible for next.js", () => {
       const responsible = migratorRemix.isResponsible({
         name: "something",
