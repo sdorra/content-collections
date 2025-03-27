@@ -1,5 +1,12 @@
 # content-collections
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`ccf2cba`](https://github.com/sdorra/content-collections/commit/ccf2cba04ee8cbdcf84b0cca5c082d448f9c9598)]:
+  - @content-collections/installer@0.3.0
+
 ## 0.1.3
 
 ### Patch Changes
