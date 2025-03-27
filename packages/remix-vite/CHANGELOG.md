@@ -1,5 +1,11 @@
 # @content-collections/remix-vite
 
+## 0.2.0
+
+### Minor Changes
+
+- [#527](https://github.com/sdorra/content-collections/pull/527) [`f923c7a`](https://github.com/sdorra/content-collections/commit/f923c7ae924a830f63484b69c49d6ed83fa280a2) Thanks [@cayter](https://github.com/cayter)! - Support for react router 7
+
 ## 0.1.3
 
 ### Patch Changes

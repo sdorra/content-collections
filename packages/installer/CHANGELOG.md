@@ -1,5 +1,11 @@
 # @content-collections/installer
 
+## 0.3.0
+
+### Minor Changes
+
+- [`ccf2cba`](https://github.com/sdorra/content-collections/commit/ccf2cba04ee8cbdcf84b0cca5c082d448f9c9598) Thanks [@sdorra](https://github.com/sdorra)! - Add support for react router v7
+
 ## 0.2.0
 
 ### Minor Changes
