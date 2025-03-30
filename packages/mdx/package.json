@@ -1,54 +1,55 @@
 {
-  "name": "@content-collections/mdx",
-  "description": "Compile MDX as part of your content-collection transform function",
-  "version": "0.2.2",
-  "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./react": {
-      "types": "./dist/react/client.d.ts",
-      "react-server": "./dist/react/server.js",
-      "import": "./dist/react/client.js",
-      "require": "./dist/react/client.cjs"
-    }
-  },
-  "scripts": {
-    "build": "tsup",
-    "test": "vitest --run --coverage",
-    "typecheck": "tsc"
-  },
-  "dependencies": {
-    "esbuild": "^0.25.0",
-    "mdx-bundler": "^10.0.3",
-    "unified": "^11.0.5"
-  },
-  "peerDependencies": {
-    "@content-collections/core": "0.x",
-    "react": ">= 18",
-    "react-dom": ">= 18"
-  },
-  "devDependencies": {
-    "@content-collections/core": "workspace:*",
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.0",
-    "@types/mdast": "^4.0.4",
-    "@types/node": "^20.14.9",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^3.0.8",
-    "happy-dom": "^15.11.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tsup": "^8.2.4",
-    "typescript": "^5.5.4",
-    "vitest": "^3.0.8"
-  }
+	"name": "@content-collections/mdx",
+	"description": "Compile MDX as part of your content-collection transform function",
+	"version": "0.2.2",
+	"type": "module",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./react": {
+			"types": "./dist/react/client.d.ts",
+			"react-server": "./dist/react/server.js",
+			"import": "./dist/react/client.js",
+			"require": "./dist/react/client.cjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"test": "vitest --run --coverage",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"esbuild": "^0.25.0",
+		"mdx-bundler": "^10.1.1",
+		"unified": "^11.0.5"
+	},
+	"peerDependencies": {
+		"@content-collections/core": "0.x",
+		"react": ">= 18",
+		"react-dom": ">= 18"
+	},
+	"devDependencies": {
+		"@builder.io/qwik": "^1.12.1",
+		"@content-collections/core": "workspace:*",
+		"@testing-library/jest-dom": "^6.5.0",
+		"@testing-library/react": "^16.0.0",
+		"@types/mdast": "^4.0.4",
+		"@types/node": "^20.14.9",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@vitest/coverage-v8": "^3.0.8",
+		"happy-dom": "^15.11.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"tsup": "^8.2.4",
+		"typescript": "^5.5.4",
+		"vitest": "^3.0.8"
+	}
 }
