@@ -710,6 +710,9 @@ importers:
       '@content-collections/core':
         specifier: 0.8.2
         version: link:../../packages/core
+      '@content-collections/mdx':
+        specifier: workspace:^
+        version: link:../../packages/mdx
       '@content-collections/vite':
         specifier: 0.2.4
         version: link:../../packages/vite
@@ -20307,7 +20310,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0(supports-color@9.4.0)
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.7.2)
       vite: 5.4.11(@types/node@22.10.5)
