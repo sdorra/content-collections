@@ -18,11 +18,15 @@ export type Options = {
   remarkPlugins?: Pluggable[];
   rehypePlugins?: Pluggable[];
   jsxConfig?: {
-    jsxRuntime: {
+    jsxLib: {
       varName: string;
       package: string;
     };
-    jsxLib: {
+    jsxDom?: {
+      varName: string;
+      package: string;
+    };
+    jsxRuntime: {
       varName: string;
       package: string;
     };
