@@ -17,6 +17,20 @@ export type Options = {
   files?: (appender: FileAppender) => void;
   remarkPlugins?: Pluggable[];
   rehypePlugins?: Pluggable[];
+  jsxConfig?: {
+    jsxLib: {
+      varName: string;
+      package: string;
+    };
+    jsxDom?: {
+      varName: string;
+      package: string;
+    };
+    jsxRuntime: {
+      varName: string;
+      package: string;
+    };
+  };
 };
 
 async function appendFile(
@@ -84,6 +98,7 @@ async function compile(document: Document, options: Options = {}) {
     source: document.content,
     cwd: options.cwd,
     files,
+    jsxConfig: options.jsxConfig,
     esbuildOptions(options) {
       if (!options.define) {
         options.define = {};
