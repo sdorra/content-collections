@@ -1,7 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { allCharacters } from "content-collections";
-import { MDXContent } from "~/components/mdx-content/mdx-content";
 
 export default component$(() => {
   return (
@@ -23,7 +22,7 @@ export default component$(() => {
           </li>
         ))}
       </ul>
-      <MDXContent />
+      {/* <MDXContent /> */}
     </main>
   );
 });
