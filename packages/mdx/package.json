@@ -18,11 +18,6 @@
 			"react-server": "./dist/react/server.js",
 			"import": "./dist/react/client.js",
 			"require": "./dist/react/client.cjs"
-		},
-		"./qwik": {
-			"types": "./dist/qwik/mdx.d.ts",
-			"import": "./dist/qwik/mdx.js",
-			"require": "./dist/qwik/mdx.cjs"
 		}
 	},
 	"scripts": {
