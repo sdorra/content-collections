@@ -41,7 +41,6 @@
 		"react-dom": ">= 18"
 	},
 	"devDependencies": {
-		"@builder.io/qwik": "^1.12.1",
 		"@content-collections/core": "workspace:*",
 		"@testing-library/jest-dom": "^6.5.0",
 		"@testing-library/react": "^16.0.0",
