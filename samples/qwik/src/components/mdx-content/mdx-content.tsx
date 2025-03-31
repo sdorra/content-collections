@@ -16,7 +16,11 @@ export function useMDXComponent(code: string): Qwik.Component<Props> {
     }
   }
 
-  return getMDXComponent(code, jsxComponentConfig);
+  const result = getMDXComponent(code, jsxComponentConfig);
+
+  console.log("RESULT", result);
+
+  return result;
 }
 
 export const MDXContent = component$(({ code, ...props }: Props) => {
