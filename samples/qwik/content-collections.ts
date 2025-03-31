@@ -15,7 +15,7 @@ const qwikBundlerConfig = {
 const characters = defineCollection({
   name: "characters",
   directory: "characters",
-  include: "*.md",
+  include: "*.mdx",
   schema: (z) => ({
     name: z.string().min(1),
     origin: z.string().min(1),
