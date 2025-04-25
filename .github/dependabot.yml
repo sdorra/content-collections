@@ -39,5 +39,8 @@ updates:
         patterns:
           - '@fumadocs/*'
           - 'fumadocs-*'
-
-
+      react-router:
+        patterns:
+          - 'react-router'
+          - '@react-router/*'
+          - 'react-router-devtools'
