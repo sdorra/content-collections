@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
 import { defineParser } from "./parser";
@@ -12,7 +13,7 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: (z) => ({
+        schema: z.object({
           name: z.string(),
           age: z.number(),
         }),
@@ -48,7 +49,7 @@ describe("types", () => {
         typeName: "person",
         directory: "./persons",
         include: "*.md",
-        schema: (z) => ({
+        schema: z.object({
           name: z.string(),
           age: z.number(),
         }),
@@ -89,7 +90,7 @@ describe("types", () => {
       name: "country",
       directory: "./countries",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         code: z.string().length(2),
         name: z.string(),
       }),
@@ -99,7 +100,7 @@ describe("types", () => {
       name: "person",
       directory: "./persons",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
         age: z.number(),
         countryCode: z.string().length(2),
@@ -145,7 +146,7 @@ describe("types", () => {
       typeName: "person",
       directory: "./persons",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
     });
@@ -178,7 +179,7 @@ describe("types", () => {
       directory: "./persons",
       include: "*.md",
       parser: "frontmatter",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
     });
@@ -211,7 +212,7 @@ describe("types", () => {
       directory: "./persons",
       include: "*.md",
       parser: "yaml",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
     });
@@ -245,7 +246,7 @@ describe("types", () => {
       directory: "./persons",
       include: "*.md",
       parser: "json",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
     });
@@ -278,7 +279,7 @@ describe("types", () => {
       typeName: "person",
       directory: "./persons",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
         content: z.number(),
       }),
@@ -310,7 +311,7 @@ describe("types", () => {
       name: "person",
       directory: "./persons",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         // functions are not serializable
         fn: z.function(),
       }),
@@ -325,7 +326,7 @@ describe("types", () => {
       name: "person",
       directory: "./persons",
       include: "*.md",
-      schema: (z) => ({
+      schema: z.object({
         date: z.string(),
       }),
       transform: (data) => {
@@ -349,7 +350,7 @@ describe("types", () => {
       name: "posts",
       directory: "./posts",
       include: "*.mdx",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       transform: ({ _meta, ...rest }) => {
@@ -386,7 +387,7 @@ describe("types", () => {
       name: "posts",
       directory: "./posts",
       include: "*.mdx",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       transform: ({ _meta, content: _, ...rest }) => {
@@ -425,7 +426,7 @@ describe("types", () => {
       name: "posts",
       directory: "./posts",
       include: "*.mdx",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       transform: ({ _meta, ...rest }) => {
@@ -514,6 +515,37 @@ describe("types", () => {
       title: "Hello World",
       // @ts-expect-error content is not defined in the schema
       content: "# MDX Content",
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should support legacy schema function", () => {
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (y) => ({
+        title: y.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: "# MDX Content",
+      _meta: {
+        fileName: "hello-world.mdx",
+        filePath: "posts/hello-world.mdx",
+        directory: "posts",
+        path: "posts/hello-world",
+        extension: "mdx",
+      },
     };
 
     expect(post).toBeTruthy();
