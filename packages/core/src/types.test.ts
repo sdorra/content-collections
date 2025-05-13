@@ -4,6 +4,7 @@ import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
 import { defineParser } from "./parser";
 import { GetTypeByName } from "./types";
+import { configureDeprecatedWarnings } from "./warn";
 
 describe("types", () => {
   describe("GetTypeByName", () => {
@@ -521,6 +522,8 @@ describe("types", () => {
   });
 
   it("should support legacy schema function", () => {
+    configureDeprecatedWarnings(false);
+
     const collection = defineCollection({
       name: "posts",
       directory: "./posts",

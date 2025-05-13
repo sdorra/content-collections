@@ -9,6 +9,7 @@ import {
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
+import { warnDeprecated } from "./warn";
 
 // Export all zod types to fix type errors,
 // if declaration is set to true in tsconfig.json.
@@ -165,6 +166,12 @@ type ResolveImports<TTransformResult> =
             }
           : TTransformResult;
 
+const legacySchemaDeprecatedMessage = `The use of a function as a schema is deprecated.
+Please use a StandardSchema compliant library directly.
+For more information, see:
+https://content-collections.dev/docs/legacy-schema`;
+
+
 export function defineCollection<
   TName extends string,
   TShape extends TSchemaProp,
@@ -204,6 +211,7 @@ export function defineCollection<
   }
   let schema: any = collection.schema;
   if (typeof schema === "function") {
+    warnDeprecated(legacySchemaDeprecatedMessage);
     schema = z.object(schema(z));
   }
   return {
