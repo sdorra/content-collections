@@ -1,11 +1,10 @@
 import os from "node:os";
 import { basename, dirname, extname } from "node:path";
 import pLimit from "p-limit";
-import { z } from "zod";
 import { Cache, CacheManager } from "./cache";
 import { AnyCollection, Context } from "./config";
 import { Emitter } from "./events";
-import { ConfiguredParser, getParser, parsers } from "./parser";
+import { getParser } from "./parser";
 import { serializableSchema } from "./serializer";
 import { CollectionFile } from "./types";
 import { isDefined } from "./utils";
@@ -61,33 +60,51 @@ export function createTransformer(
   emitter: Emitter,
   cacheManager: CacheManager,
 ) {
-  function createSchema(configuredParser: ConfiguredParser, schema: z.ZodRawShape) {
-    const parser = getParser(configuredParser);
-    if (!parser.hasContent) {
-      return z.object(schema);
-    }
-    return z.object({
-      content: z.string(),
-      ...schema,
-    });
-  }
-
   async function parseFile(
     collection: AnyCollection,
     file: CollectionFile,
   ): Promise<ParsedFile | null> {
     const { data, path } = file;
 
-    const schema = createSchema(collection.parser, collection.schema);
-
-    let parsedData = await schema.safeParseAsync(data);
-    if (!parsedData.success) {
+    let parsedData = await collection.schema["~standard"].validate(data);
+    if (parsedData.issues) {
       emitter.emit("transformer:validation-error", {
         collection,
         file,
-        error: new TransformError("Validation", parsedData.error.message),
+        // TODO: check for better issue formatting
+        error: new TransformError(
+          "Validation",
+          parsedData.issues.map((issue) => issue.message).join(", "),
+        ),
       });
       return null;
+    }
+
+    let values = parsedData.value;
+
+    const parser = getParser(collection.parser);
+    if (parser.hasContent) {
+      // TODO: validate content property
+      // we have to check if schema the schema already defines a content property
+      // if not, we have to check if the content property is a defined string
+
+      if (typeof data.content !== "string") {
+        emitter.emit("transformer:validation-error", {
+          collection,
+          file,
+          error: new TransformError(
+            "Validation",
+            `The content property is not a string`,
+          ),
+        });
+        return null;
+      }
+
+      values = {
+        // @ts-expect-error we can only spread on objects
+        ...values,
+        content: data.content,
+      };
     }
 
     const ext = extname(path);
@@ -98,7 +115,8 @@ export function createTransformer(
     }
 
     const document = {
-      ...parsedData.data,
+      // @ts-expect-error we can only spread on objects
+      ...values,
       _meta: {
         filePath: path,
         fileName: basename(path),

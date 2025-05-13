@@ -1,4 +1,4 @@
-import bundleRequire from "bundle-require";
+import * as bundleRequire from "bundle-require";
 import { existsSync } from "node:fs";
 import { copyFile, readFile } from "node:fs/promises";
 import path from "node:path";

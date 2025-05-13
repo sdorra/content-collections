@@ -1,5 +1,5 @@
-import { ZodRawShape } from "zod";
 import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
+import { StandardSchemaV1 } from "@standard-schema/spec";
 
 export type Modification = "create" | "update" | "delete";
 
@@ -31,7 +31,7 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
 type GetDocument<TCollection extends AnyCollection> =
   TCollection extends Collection<
     any,
-    ZodRawShape,
+    any,
     any,
     any,
     any,

@@ -52,22 +52,22 @@ describe("configurationReader", () => {
     expect(cfg.collections[0]?.name).toBe("posts");
   });
 
-  it("should have a valid zod schema", async () => {
+  it("should have a valid standard schema", async () => {
     const cfg = await config("config.002.ts");
     const schema = cfg.collections[0]?.schema;
     if (!schema) {
       throw new Error("collection does not have a schema");
     }
 
-    let result = z.object(schema).safeParse({
+    let result = await schema["~standard"].validate({
       title: "Hello",
     });
-    expect(result.success).toBe(true);
+    expect(result.issues).toBeUndefined();
 
-    result = z.object(schema).safeParse({
+    result = await schema["~standard"].validate({
       greeting: "Hello",
     });
-    expect(result.success).toBe(false);
+    expect(result.issues).toHaveLength(1);
   });
 
   it("should use different cache directory and name", async () => {
