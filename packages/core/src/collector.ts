@@ -2,7 +2,7 @@ import { readFile } from "fs/promises";
 import path from "node:path";
 import { glob } from "tinyglobby";
 import { Emitter } from "./events";
-import { parsers } from "./parser";
+import { getParser, parsers } from "./parser";
 import { CollectionFile, FileCollection } from "./types";
 import { isDefined, orderByPath, posixToNativePath } from "./utils";
 
@@ -56,7 +56,8 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
 
     try {
-      const data = parsers[collection.parser].parse(file);
+      const parser = getParser(collection.parser);
+      const data = await parser.parse(file);
 
       return {
         data,

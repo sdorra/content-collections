@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>Parasite</title>
+  <description>A poor family schemes to become employed by a wealthy household by infiltrating their home, leading to an unexpected incident that threatens their newfound comfort.</description>
+  <year>2019</year>
+  <genres>
+    <genre>Drama</genre>
+    <genre>Thriller</genre>
+    <genre>Comedy</genre>
+  </genres>
+</movie>

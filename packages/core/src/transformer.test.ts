@@ -498,7 +498,6 @@ describe("transform", () => {
       include: "*.md",
       transform: (doc) => {
         throw new Error("Something went wrong");
-        return doc;
       },
     });
 

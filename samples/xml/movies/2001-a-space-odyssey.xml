@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>2001: A Space Odyssey</title>
+  <description>A contemplative science fiction epic that traces human evolution from the dawn of man to a journey into the cosmos, featuring a mysterious black monolith and a sentient computer named HAL.</description>
+  <year>1968</year>
+  <genres>
+    <genre>Science Fiction</genre>
+    <genre>Adventure</genre>
+  </genres>
+</movie>

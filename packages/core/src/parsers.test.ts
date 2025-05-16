@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parsers } from "./parser";
+import { defineParser, getParser, parsers } from "./parser";
 
 const mdContent = `---
 name: John
@@ -53,6 +53,74 @@ describe("parsers", () => {
     const data = parser.parse(yamlContent);
     expect(data).toEqual({
       name: "John",
+    });
+  });
+});
+
+describe("defineParser", () => {
+
+  it("should define a parser", () => {
+    const parser = defineParser({
+      hasContent: true,
+      parse: (content: string) => {
+        return {
+          content
+        };
+      },
+    });
+
+    expect(parser).toEqual({
+      hasContent: true,
+      parse: expect.any(Function),
+    });
+  });
+
+  it("should define a parser with only a function", () => {
+    const parser = defineParser((content: string) => {
+      return {
+        content
+      };
+    });
+
+    expect(parser).toEqual({
+      hasContent: false,
+      parse: expect.any(Function),
+    });
+  });
+
+});
+
+describe("getParser", () => {
+  it("should get a parser by name", () => {
+    const parser = parsers["frontmatter"];
+    expect(parser).toEqual({
+      hasContent: true,
+      parse: expect.any(Function),
+    });
+  });
+
+  it("should throw an error if the parser does not exist", () => {
+    expect(() => {
+      // @ts-expect-error parser does not exist
+      getParser("non-existing-parser");
+    }).toThrowError(
+      "Parser non-existing-parser does not exist",
+    );
+  });
+
+  it("should return the parser if it is already a parser", () => {
+    const configuredParser = {
+      hasContent: false,
+      parse: (content: string) => {
+        return {
+          content
+        };
+      },
+    };
+    const parser = getParser(configuredParser);
+    expect(parser).toEqual({
+      hasContent: false,
+      parse: expect.any(Function),
     });
   });
 });

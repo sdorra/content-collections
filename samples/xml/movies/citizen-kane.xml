@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>Citizen Kane</title>
+  <description>Following the death of publishing tycoon Charles Foster Kane, reporters scramble to uncover the meaning of his final utterance, "Rosebud," revealing the rise and fall of a complex man.</description>
+  <year>1941</year>
+  <genres>
+    <genre>Drama</genre>
+    <genre>Mystery</genre>
+  </genres>
+</movie>

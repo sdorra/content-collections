@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Cache, CacheManager } from "./cache";
 import { AnyCollection, Context } from "./config";
 import { Emitter } from "./events";
-import { Parser, parsers } from "./parser";
+import { ConfiguredParser, getParser, parsers } from "./parser";
 import { serializableSchema } from "./serializer";
 import { CollectionFile } from "./types";
 import { isDefined } from "./utils";
@@ -61,8 +61,8 @@ export function createTransformer(
   emitter: Emitter,
   cacheManager: CacheManager,
 ) {
-  function createSchema(parserName: Parser, schema: z.ZodRawShape) {
-    const parser = parsers[parserName];
+  function createSchema(configuredParser: ConfiguredParser, schema: z.ZodRawShape) {
+    const parser = getParser(configuredParser);
     if (!parser.hasContent) {
       return z.object(schema);
     }

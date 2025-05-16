@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>Seven Samurai</title>
+  <description>In feudal Japan, a village of farmers hire seven masterless samurai to protect them from bandits who will return after the harvest to steal their crops.</description>
+  <year>1954</year>
+  <genres>
+    <genre>Action</genre>
+    <genre>Drama</genre>
+    <genre>Adventure</genre>
+  </genres>
+</movie>
