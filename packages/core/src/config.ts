@@ -1,7 +1,11 @@
 import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
 import { CacheFn } from "./cache";
 import { GetTypeOfImport, Import } from "./import";
-import { Parser, Parsers } from "./parser";
+import {
+  ConfiguredParser,
+  PredefinedParser,
+  PredefinedParsers,
+} from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
 
@@ -28,20 +32,19 @@ type AddContent<TShape extends ZodRawShape> = TShape extends {
   ? TShape
   : TShape & WithContent;
 
-type GetParsedShape<
-  TParser extends Parser,
-  TShape extends ZodRawShape,
-> = Parsers[TParser]["hasContent"] extends true ? AddContent<TShape> : TShape;
+type GetParser<TParser extends ConfiguredParser> =
+  TParser extends PredefinedParser ? PredefinedParsers[TParser] : TParser;
+
+type HasContent<TParser extends ConfiguredParser> =
+  GetParser<TParser>["hasContent"];
 
 type GetShape<
-  TParser extends Parser | undefined,
+  TParser extends ConfiguredParser,
   TShape extends ZodRawShape,
-> = TParser extends Parser
-  ? GetParsedShape<TParser, TShape>
-  : AddContent<TShape>;
+> = HasContent<TParser> extends true ? AddContent<TShape> : TShape;
 
 export type Schema<
-  TParser extends Parser | undefined,
+  TParser extends ConfiguredParser,
   TShape extends ZodRawShape,
 > = z.infer<ZodObject<GetShape<TParser, TShape>>> & {
   _meta: Meta;
@@ -83,7 +86,7 @@ export type CollectionRequest<
 export type Collection<
   TName extends string,
   TShape extends ZodRawShape,
-  TParser extends Parser,
+  TParser extends ConfiguredParser,
   TSchema,
   TTransformResult,
   TDocument,
@@ -103,7 +106,14 @@ export type Collection<
   parser: TParser;
 };
 
-export type AnyCollection = Collection<any, ZodRawShape, Parser, any, any, any>;
+export type AnyCollection = Collection<
+  any,
+  ZodRawShape,
+  ConfiguredParser,
+  any,
+  any,
+  any
+>;
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
 
@@ -130,14 +140,21 @@ type ResolveImports<TTransformResult> =
 export function defineCollection<
   TName extends string,
   TShape extends ZodRawShape,
-  TParser extends Parser = "frontmatter",
+  TParser extends ConfiguredParser = "frontmatter",
   TSchema = Schema<TParser, TShape>,
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
     ? Schema<TParser, TShape>
     : Awaited<TTransformResult>,
   TResult = TDocument extends Serializable
-    ? Collection<TName, TShape, TParser, TSchema, TTransformResult, ResolveImports<TDocument>>
+    ? Collection<
+        TName,
+        TShape,
+        TParser,
+        TSchema,
+        TTransformResult,
+        ResolveImports<TDocument>
+      >
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(
   collection: CollectionRequest<

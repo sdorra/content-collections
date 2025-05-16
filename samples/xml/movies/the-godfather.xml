@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>The Godfather</title>
+  <description>An epic crime drama following the Corleone family under patriarch Vito Corleone, depicting the transformation of his son Michael from reluctant outsider to ruthless mafia boss.</description>
+  <year>1972</year>
+  <genres>
+    <genre>Crime</genre>
+    <genre>Drama</genre>
+  </genres>
+</movie>

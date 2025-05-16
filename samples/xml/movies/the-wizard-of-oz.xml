@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>The Wizard of Oz</title>
+  <description>Young Dorothy Gale is swept away from her Kansas farm to the magical Land of Oz, where she embarks on a quest with her new friends to see the Wizard who can help her return home.</description>
+  <year>1939</year>
+  <genres>
+    <genre>Adventure</genre>
+    <genre>Fantasy</genre>
+    <genre>Musical</genre>
+  </genres>
+</movie>

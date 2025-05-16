@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>Schindler's List</title>
+  <description>The true story of Oskar Schindler, a German businessman who saved the lives of more than a thousand Jewish refugees during the Holocaust by employing them in his factories.</description>
+  <year>1993</year>
+  <genres>
+    <genre>Biography</genre>
+    <genre>Drama</genre>
+    <genre>History</genre>
+  </genres>
+</movie>

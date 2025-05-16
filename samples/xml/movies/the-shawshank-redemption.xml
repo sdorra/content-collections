@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>The Shawshank Redemption</title>
+  <description>A banker named Andy Dufresne is sentenced to life in Shawshank State Prison for murders he didn't commit, where he forms a friendship with fellow inmate Ellis "Red" Redding and finds hope amid desperate circumstances.</description>
+  <year>1994</year>
+  <genres>
+    <genre>Drama</genre>
+  </genres>
+</movie>

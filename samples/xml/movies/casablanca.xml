@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>Casablanca</title>
+  <description>Set during World War II, American expatriate Rick Blaine must choose between his love for a woman and helping her resistance leader husband escape from Casablanca to continue fighting the Nazis.</description>
+  <year>1942</year>
+  <genres>
+    <genre>Drama</genre>
+    <genre>Romance</genre>
+    <genre>War</genre>
+  </genres>
+</movie>

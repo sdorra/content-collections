@@ -1,0 +1,9 @@
+<movie>
+  <title>Pulp Fiction</title>
+  <description>A nonlinear narrative connecting the intersecting lives of Los Angeles mobsters, small-time criminals, and a mysterious briefcase, told through a series of interconnected stories.</description>
+  <year>1994</year>
+  <genres>
+    <genre>Crime</genre>
+    <genre>Drama</genre>
+  </genres>
+</movie>

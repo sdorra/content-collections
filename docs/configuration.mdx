@@ -40,6 +40,41 @@ The parser used to read the documents. The parser must be one of the following v
 
 The `frontmatter-only` parser is especially useful when only the metadata of a document is utilized with Content Collections, while the content is rendered by another source.
 
+#### Custom Parser
+
+If none of the parsers are fitting your needs, you can create a custom parser. This option is available since version 0.9.0. To create a custom parser, you have to import the `defineParser` function from `@content-collections/core` and create a parser either with only a function or with an object that contains a `parse` function and a `hasContent` property. If you only provide a function, the `hasContent` property is set to `false` by default. The `parse` function takes a single string as argument, the document, and should return an object with the parsed data or an `Promise` which contains the parsed data. The `hasContent` property is a boolean that indicates that content collection has to validate that the returned document has a property called `content`.
+
+```typescript
+import {
+  defineCollection,
+  defineConfig,
+  defineParser,
+} from "@content-collections/core";
+import { parseXml } from "cool-xml-parser-library";
+
+const customParser = defineParser(async (content) => {
+  const result = await parseXml(content);
+  return result.root;
+});
+
+const movies = defineCollection({
+  name: "movies",
+  directory: "movies",
+  include: "*.xml",
+  parser: customParser,
+  schema: (z) => ({
+    title: z.string(),
+    description: z.string()
+  }),
+});
+
+export default defineConfig({
+  collections: [movies],
+});
+```
+
+If you want to see a complete example of a custom parser, check the [Xml example](/samples/xml).
+
 ### `typeName` (optional)
 
 The name of the generated TypeScript type. If the `typeName` property is not provided, the type name is generated from the collection name.

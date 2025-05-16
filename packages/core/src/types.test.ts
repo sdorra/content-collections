@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
+import { defineParser } from "./parser";
 import { GetTypeByName } from "./types";
 
 describe("types", () => {
@@ -388,7 +389,7 @@ describe("types", () => {
       schema: (z) => ({
         title: z.string(),
       }),
-      transform: ({ _meta, content: _,  ...rest }) => {
+      transform: ({ _meta, content: _, ...rest }) => {
         const content = createDefaultImport<Content>("./content");
         return {
           ...rest,
@@ -411,7 +412,7 @@ describe("types", () => {
         content: {
           mdx: "# MDX Content",
         },
-      }
+      },
     };
 
     expect(post).toBeTruthy();
@@ -445,6 +446,74 @@ describe("types", () => {
     const post: Post = {
       title: "Hello World",
       content: () => "# MDX Content",
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should support custom parser", () => {
+    const parser = defineParser({
+      hasContent: true,
+      parse: (content: string) => {
+        return {
+          title: content.substring(0, 10).toUpperCase(),
+          content,
+        };
+      },
+    });
+
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      parser,
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = Omit<GetTypeByName<typeof config, "posts">, "_meta">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: "# MDX Content",
+    };
+
+    expect(post).toBeTruthy();
+  });
+
+  it("should support custom parser without content", () => {
+    const parser = defineParser((content: string) => {
+      return {
+        title: content.substring(0, 10).toUpperCase(),
+        content,
+      };
+    });
+
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: (z) => ({
+        title: z.string(),
+      }),
+      parser,
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = Omit<GetTypeByName<typeof config, "posts">, "_meta">;
+
+    const post: Post = {
+      title: "Hello World",
+      // @ts-expect-error content is not defined in the schema
+      content: "# MDX Content",
     };
 
     expect(post).toBeTruthy();
