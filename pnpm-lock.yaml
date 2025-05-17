@@ -446,6 +446,9 @@ importers:
       '@content-collections/core':
         specifier: 0.8.2
         version: link:../../packages/core
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: '20'
@@ -480,6 +483,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20.14.9
@@ -511,6 +517,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@content-collections/core':
         specifier: 0.8.2
@@ -557,6 +566,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -609,6 +621,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -667,6 +682,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -716,6 +734,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@playwright/test':
         specifier: ^1.46.1
@@ -734,6 +755,10 @@ importers:
         version: 5.8.3
 
   samples/qwik:
+    dependencies:
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@builder.io/qwik':
         specifier: ^1.13.0
@@ -795,6 +820,9 @@ importers:
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20.14.9
@@ -847,6 +875,9 @@ importers:
       react-router:
         specifier: ^7.5.2
         version: 7.5.2(react-dom@19.0.0)(react@19.0.0)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@react-router/dev':
         specifier: ^7.5.2
@@ -893,6 +924,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@content-collections/core':
         specifier: 0.8.2
@@ -972,6 +1006,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@content-collections/core':
         specifier: 0.8.2
@@ -1042,8 +1079,15 @@ importers:
       vinxi:
         specifier: ^0.4.3
         version: 0.4.3(@types/node@20.14.9)(typescript@5.8.3)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
 
   samples/svelte-kit:
+    dependencies:
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@content-collections/core':
         specifier: 0.8.2
@@ -1108,6 +1152,9 @@ importers:
       vinxi:
         specifier: 0.5.1
         version: 0.5.1(@types/node@22.10.5)(typescript@5.8.3)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@content-collections/core':
         specifier: 0.8.2
@@ -1176,6 +1223,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: ^20.14.9
@@ -1207,6 +1257,9 @@ importers:
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@types/node':
         specifier: '20'
