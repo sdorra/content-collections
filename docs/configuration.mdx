@@ -50,6 +50,7 @@ import {
   defineConfig,
   defineParser,
 } from "@content-collections/core";
+import { z } from "zod";
 import { parseXml } from "cool-xml-parser-library";
 
 const customParser = defineParser(async (content) => {
@@ -62,7 +63,7 @@ const movies = defineCollection({
   directory: "movies",
   include: "*.xml",
   parser: customParser,
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string()
   }),
@@ -185,12 +186,13 @@ The configuration file is a module that has to export a configuration object as 
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const authors = defineCollection({
   name: "authors",
   directory: "content/authors",
   include: "**/*.md",
-  schema: (z) => ({
+  schema: z.object({
     firstName: z.string(),
     lastName: z.string(),
     middleName: z.string().optional(),
