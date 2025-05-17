@@ -19,7 +19,11 @@ export const migratorSvelteKit = defineMigrator({
     Boolean(packageJson.dependencies?.["@sveltejs/kit"]) ||
     Boolean(packageJson.devDependencies?.["@sveltejs/kit"]),
   async createMigration({ directory, packageJson }, { demoContent }) {
-    const packages = ["@content-collections/core", "@content-collections/vite"];
+    const packages = [
+      "@content-collections/core",
+      "@content-collections/vite",
+      "zod",
+    ];
 
     if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");
