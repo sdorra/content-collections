@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.9.0
+
+### Minor Changes
+
+- [#571](https://github.com/sdorra/content-collections/pull/571) [`2b698e1`](https://github.com/sdorra/content-collections/commit/2b698e1984d5942127b55655d37c7b997b396253) Thanks [@sdorra](https://github.com/sdorra)! - Add option to define custom parser for a collection
+
 ## 0.8.2
 
 ### Patch Changes
