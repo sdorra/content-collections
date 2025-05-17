@@ -10,12 +10,13 @@ export const sampleSources: Array<Sample> = [
     description: "Simple transformation",
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "content",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     date: z.string(),
   }),
@@ -38,12 +39,13 @@ export default defineConfig({
     description: "Fetch data from the web",
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const people = defineCollection({
   name: "people",
   directory: "content",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     name: z.string(),
     homeworld: z.string().url(),
   }),
@@ -70,12 +72,13 @@ export default defineConfig({
     description: "Join data from multiple collections",
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const authors = defineCollection({
   name: "authors",
   directory: "content/authors",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     ref: z.string(),
     displayName: z.string(),
     email: z.string().email(),
@@ -86,7 +89,7 @@ const posts = defineCollection({
   name: "posts",
   directory: "content/posts",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     author: z.string(),
   }),
@@ -112,12 +115,13 @@ export default defineConfig({
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMarkdown } from "@content-collections/markdown";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "content",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string()
   }),
   transform: async (document, context) => {
@@ -140,12 +144,13 @@ export default defineConfig({
     code: /* ts */ `
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "content",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     date: z.string(),
   }),
