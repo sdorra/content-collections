@@ -3,6 +3,7 @@ import {
   defineConfig,
   defineParser,
 } from "@content-collections/core";
+import { z } from "zod";
 import xml2js from "xml2js";
 
 const xmlParser = new xml2js.Parser({
@@ -17,7 +18,7 @@ const movies = defineCollection({
   directory: "movies",
   include: "*.xml",
   parser,
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string(),
     // xml2js returns a string instead of a number

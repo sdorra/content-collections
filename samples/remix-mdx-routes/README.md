@@ -25,12 +25,13 @@ Than we can define our collection like this:
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "app/routes",
   include: "posts.*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
   }),
   // we can exclude the content from the data

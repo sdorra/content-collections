@@ -1,11 +1,12 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const characters = defineCollection({
   name: "characters",
   directory: "app/routes",
   include: "*.mdx",
   parser: "frontmatter-only",
-  schema: (z) => ({
+  schema: z.object({
     name: z.string().min(1),
     origin: z.string().min(1),
     species: z.string().min(1),
