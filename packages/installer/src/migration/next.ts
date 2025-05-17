@@ -17,7 +17,7 @@ export const migratorNextJS = defineMigrator({
   }),
   isResponsible: (packageJson) => Boolean(packageJson.dependencies?.next),
   async createMigration({ directory, packageJson }, { demoContent }) {
-    const packages = ["@content-collections/core", "@content-collections/next"];
+    const packages = ["@content-collections/core", "@content-collections/next", "zod"];
 
     if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");

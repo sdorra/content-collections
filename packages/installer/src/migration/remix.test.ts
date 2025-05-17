@@ -191,7 +191,7 @@ describe("remix migrator", () => {
       expect(dependencies).not.toContain("@content-collections/markdown");
     });
 
-    it("should add core and remix-vite packages", async () => {
+    it("should add core, remix-vite and zod packages", async () => {
       const migration = await migratorRemix.createMigration(
         {
           directory: "directory",
@@ -213,6 +213,7 @@ describe("remix migrator", () => {
       const dependencies = addDependenciesTask.devDependencies;
       expect(dependencies).toContain("@content-collections/core");
       expect(dependencies).toContain("@content-collections/remix-vite");
+      expect(dependencies).toContain("zod");
     });
   });
 });

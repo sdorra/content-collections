@@ -169,7 +169,7 @@ describe("tanstack migrator", () => {
       expect(dependencies).not.toContain("@content-collections/markdown");
     });
 
-    it("should add core and vite packages", async () => {
+    it("should add core, vinxi and zod packages", async () => {
       const migration = await migratorTanStack.createMigration(
         {
           directory: "directory",
@@ -191,6 +191,7 @@ describe("tanstack migrator", () => {
       const dependencies = addDependenciesTask.devDependencies;
       expect(dependencies).toContain("@content-collections/core");
       expect(dependencies).toContain("@content-collections/vinxi");
+      expect(dependencies).toContain("zod");
     });
   });
 });

@@ -5,6 +5,7 @@ import { Task } from "./index.js";
 
 const sampleConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
 // import { compileMarkdown } from "@content-collections/markdown";
+import { z } from "zod";
 
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
@@ -13,7 +14,7 @@ const sampleConfig = `import { defineCollection, defineConfig } from "@content-c
 //   name: "posts",
 //   directory: "content",
 //   include: "*.md",
-//   schema: (z) => ({
+//   schema: z.object({
 //     title: z.string(),
 //     author: z.string(),
 //     date: z.string(),
@@ -34,6 +35,7 @@ export default defineConfig({
 
 const sampleMarkdownConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMarkdown } from "@content-collections/markdown";
+import { z } from "zod";
 
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
@@ -42,7 +44,7 @@ const posts = defineCollection({
   name: "posts",
   directory: "content/posts",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     summary: z.string(),
     date: z.coerce.date(),
@@ -64,6 +66,7 @@ export default defineConfig({
 
 const sampleMdxConfig = `import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
+import { z } from "zod";
 
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
@@ -72,7 +75,7 @@ const posts = defineCollection({
   name: "posts",
   directory: "content/posts",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     summary: z.string(),
     date: z.coerce.date(),

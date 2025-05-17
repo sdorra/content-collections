@@ -20,7 +20,11 @@ export const migratorVite = defineMigrator({
     Boolean(packageJson.dependencies?.["vite"]) ||
     Boolean(packageJson.devDependencies?.["vite"]),
   async createMigration({ directory, packageJson }, { demoContent }) {
-    const packages = ["@content-collections/core", "@content-collections/vite"];
+    const packages = [
+      "@content-collections/core",
+      "@content-collections/vite",
+      "zod",
+    ];
 
     if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");
