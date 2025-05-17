@@ -1,0 +1,20 @@
+id: 389
+name: Zeta Alpha Rick
+status: Dead
+species: Human
+type: ''
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: Rick's Memories
+  url: 'https://rickandmortyapi.com/api/location/126'
+image: 'https://rickandmortyapi.com/api/character/avatar/389.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/10'
+  - 'https://rickandmortyapi.com/api/episode/11'
+  - 'https://rickandmortyapi.com/api/episode/22'
+  - 'https://rickandmortyapi.com/api/episode/51'
+url: 'https://rickandmortyapi.com/api/character/389'
+created: '2018-01-10T19:57:41.191Z'

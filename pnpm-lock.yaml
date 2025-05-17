@@ -410,6 +410,34 @@ importers:
         specifier: 5.4.11
         version: 5.4.11(@types/node@20.14.9)
 
+  samples/arktype:
+    dependencies:
+      '@content-collections/cli':
+        specifier: 0.1.6
+        version: link:../../packages/cli
+      '@content-collections/core':
+        specifier: 0.8.2
+        version: link:../../packages/core
+      arktype:
+        specifier: ^2.1.20
+        version: 2.1.20
+    devDependencies:
+      '@types/node':
+        specifier: '20'
+        version: 20.14.9
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: ^5.5.4
+        version: 5.8.3
+      vite:
+        specifier: 5.4.11
+        version: 5.4.11(@types/node@20.14.9)
+      vitest:
+        specifier: ^3.1.3
+        version: 3.1.3(@types/node@20.14.9)(happy-dom@15.11.4)
+
   samples/cli:
     dependencies:
       '@content-collections/cli':
@@ -1350,6 +1378,16 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
+
+  /@ark/schema@0.46.0:
+    resolution: {integrity: sha512-c2UQdKgP2eqqDArfBqQIJppxJHvNNXuQPeuSPlDML4rjw+f1cu0qAlzOG4b8ujgm9ctIDWwhpyw6gjG5ledIVQ==}
+    dependencies:
+      '@ark/util': 0.46.0
+    dev: false
+
+  /@ark/util@0.46.0:
+    resolution: {integrity: sha512-JPy/NGWn/lvf1WmGCPw2VGpBg5utZraE84I7wli18EDF3p3zc/e9WolT35tINeZO3l7C77SjqRJeAUoT0CvMRg==}
+    dev: false
 
   /@babel/code-frame@7.26.2:
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -8831,6 +8869,13 @@ packages:
     resolution: {integrity: sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /arktype@2.1.20:
+    resolution: {integrity: sha512-IZCEEXaJ8g+Ijd59WtSYwtjnqXiwM8sWQ5EjGamcto7+HVN9eK0C4p0zDlCuAwWhpqr6fIBkxPuYDl4/Mcj/+Q==}
+    dependencies:
+      '@ark/schema': 0.46.0
+      '@ark/util': 0.46.0
+    dev: false
 
   /array-buffer-byte-length@1.0.2:
     resolution: {integrity: sha512-LHE+8BuR7RYGDKvnrmcuSq3tDcKv9OFEXQt/HpbZhY7V6h0zlUXutnAD82GiFx9rdieCMjkvtcsPqBwgUl1Iiw==}
