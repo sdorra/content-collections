@@ -210,7 +210,7 @@ export function defineCollection<
     parser = "frontmatter" as TParser;
   }
   let schema: any = collection.schema;
-  if (typeof schema === "function") {
+  if (!schema["~standard"]) {
     warnDeprecated(legacySchemaDeprecatedMessage);
     schema = z.object(schema(z));
   }

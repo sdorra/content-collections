@@ -1,0 +1,17 @@
+id: 280
+name: Reverse Giraffe
+status: Dead
+species: Alien
+type: Parasite
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: Earth (Replacement Dimension)
+  url: 'https://rickandmortyapi.com/api/location/20'
+image: 'https://rickandmortyapi.com/api/character/avatar/280.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/15'
+url: 'https://rickandmortyapi.com/api/character/280'
+created: '2017-12-31T14:22:46.285Z'

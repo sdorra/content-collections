@@ -1,0 +1,17 @@
+id: 349
+name: The Scientist Formerly Known as Rick
+status: Dead
+species: Human
+type: ''
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: unknown
+  url: ''
+image: 'https://rickandmortyapi.com/api/character/avatar/349.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/10'
+url: 'https://rickandmortyapi.com/api/character/349'
+created: '2018-01-10T17:49:09.995Z'
