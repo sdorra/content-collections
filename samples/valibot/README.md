@@ -4,7 +4,7 @@ description: Using valibot to validate yaml files
 tags:
   - standard-schema
   - yaml
-  - valibort
+  - valibot
 adapter: cli
 ---
 

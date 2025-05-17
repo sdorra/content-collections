@@ -169,8 +169,8 @@ type ResolveImports<TTransformResult> =
 const legacySchemaDeprecatedMessage = `The use of a function as a schema is deprecated.
 Please use a StandardSchema compliant library directly.
 For more information, see:
-https://content-collections.dev/docs/legacy-schema`;
-
+https://content-collections.dev/docs/deprecations/schema-as-function
+`;
 
 export function defineCollection<
   TName extends string,
