@@ -27,7 +27,8 @@
     "react-dom": "^18.3.1",
     "shiki": "^3.3.0",
     "tailwind-merge": "^2.5.2",
-    "typewriter-effect": "^2.21.0"
+    "typewriter-effect": "^2.21.0",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",

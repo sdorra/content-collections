@@ -1,0 +1,17 @@
+id: 288
+name: Rick D716-B
+status: Alive
+species: Human
+type: ''
+gender: Male
+origin:
+  name: Earth (D716-B)
+  url: 'https://rickandmortyapi.com/api/location/60'
+location:
+  name: Citadel of Ricks
+  url: 'https://rickandmortyapi.com/api/location/3'
+image: 'https://rickandmortyapi.com/api/character/avatar/288.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/28'
+url: 'https://rickandmortyapi.com/api/character/288'
+created: '2017-12-31T19:55:25.101Z'

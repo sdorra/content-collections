@@ -1,4 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 import fs from "node:fs";
 
 function mkdir(directory: string) {
@@ -10,7 +11,7 @@ function mkdir(directory: string) {
 
 const posts = defineCollection({
   name: "posts",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
   }),
   directory: "sources/posts",
@@ -27,7 +28,7 @@ const posts = defineCollection({
 
 const authors = defineCollection({
   name: "authors",
-  schema: (z) => ({
+  schema: z.object({
     displayName: z.string(),
   }),
   directory: "sources/authors",

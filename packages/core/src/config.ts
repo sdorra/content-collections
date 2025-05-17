@@ -1,4 +1,5 @@
-import { ZodObject, ZodRawShape, ZodString, ZodTypeAny, z } from "zod";
+import { StandardSchemaV1 } from "@standard-schema/spec";
+import { z, ZodObject, ZodRawShape } from "zod";
 import { CacheFn } from "./cache";
 import { GetTypeOfImport, Import } from "./import";
 import {
@@ -8,6 +9,7 @@ import {
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
+import { warnDeprecated } from "./warn";
 
 // Export all zod types to fix type errors,
 // if declaration is set to true in tsconfig.json.
@@ -23,14 +25,14 @@ export type Meta = {
 };
 
 type WithContent = {
-  content: ZodString;
+  content: string;
 };
 
-type AddContent<TShape extends ZodRawShape> = TShape extends {
-  content: ZodTypeAny;
+type AddContent<TOutput> = TOutput extends {
+  content: any;
 }
-  ? TShape
-  : TShape & WithContent;
+  ? TOutput
+  : TOutput & WithContent;
 
 type GetParser<TParser extends ConfiguredParser> =
   TParser extends PredefinedParser ? PredefinedParsers[TParser] : TParser;
@@ -38,22 +40,49 @@ type GetParser<TParser extends ConfiguredParser> =
 type HasContent<TParser extends ConfiguredParser> =
   GetParser<TParser>["hasContent"];
 
-type GetShape<
+type LegacySchema<TResult extends ZodRawShape = ZodRawShape> = (
+  z: Z,
+) => TResult;
+
+type TSchemaProp = StandardSchemaV1 | LegacySchema;
+
+type GetLegacySchemaShape<LegacySchema> = LegacySchema extends (
+  z: Z,
+) => infer TObjectShape
+  ? TObjectShape
+  : never;
+
+type GetOutputShape<TShape extends TSchemaProp> =
+  TShape extends StandardSchemaV1
+    ? StandardSchemaV1.InferOutput<TShape>
+    : TShape extends ZodObject<any>
+      ? z.infer<TShape>
+      : TShape extends LegacySchema
+        ? z.infer<ZodObject<GetLegacySchemaShape<TShape>>>
+        : never;
+
+type GetOutput<
   TParser extends ConfiguredParser,
-  TShape extends ZodRawShape,
-> = HasContent<TParser> extends true ? AddContent<TShape> : TShape;
+  TShape extends TSchemaProp,
+  TOutput = GetOutputShape<TShape>,
+> = HasContent<TParser> extends true ? AddContent<TOutput> : TOutput;
 
 export type Schema<
   TParser extends ConfiguredParser,
-  TShape extends ZodRawShape,
-> = z.infer<ZodObject<GetShape<TParser, TShape>>> & {
+  TShape extends TSchemaProp,
+> = GetOutput<TParser, TShape> & {
   _meta: Meta;
 };
+
+type GetSchema<TCollection extends AnyCollection> =
+  TCollection extends Collection<any, infer TSchema, any, any, any, any>
+    ? GetOutputShape<TSchema>
+    : never;
 
 export type Context<TSchema = unknown> = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection,
-  ): Array<Schema<TCollection["parser"], TCollection["schema"]>>;
+  ): Array<GetSchema<TCollection>>;
   cache: CacheFn;
   collection: {
     name: string;
@@ -66,7 +95,7 @@ type Z = typeof z;
 
 export type CollectionRequest<
   TName extends string,
-  TShape extends ZodRawShape,
+  TShape extends TSchemaProp,
   TParser,
   TSchema,
   TTransformResult,
@@ -75,7 +104,7 @@ export type CollectionRequest<
   name: TName;
   parser?: TParser;
   typeName?: string;
-  schema: (z: Z) => TShape;
+  schema: TShape;
   transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
   directory: string;
   include: string | string[];
@@ -85,7 +114,7 @@ export type CollectionRequest<
 
 export type Collection<
   TName extends string,
-  TShape extends ZodRawShape,
+  TShape extends TSchemaProp,
   TParser extends ConfiguredParser,
   TSchema,
   TTransformResult,
@@ -102,13 +131,13 @@ export type Collection<
   "schema"
 > & {
   typeName: string;
-  schema: TShape;
+  schema: StandardSchemaV1;
   parser: TParser;
 };
 
 export type AnyCollection = Collection<
   any,
-  ZodRawShape,
+  TSchemaProp,
   ConfiguredParser,
   any,
   any,
@@ -137,9 +166,15 @@ type ResolveImports<TTransformResult> =
             }
           : TTransformResult;
 
+const legacySchemaDeprecatedMessage = `The use of a function as a schema is deprecated.
+Please use a StandardSchema compliant library directly.
+For more information, see:
+https://content-collections.dev/docs/deprecations/schema-as-function
+`;
+
 export function defineCollection<
   TName extends string,
-  TShape extends ZodRawShape,
+  TShape extends TSchemaProp,
   TParser extends ConfiguredParser = "frontmatter",
   TSchema = Schema<TParser, TShape>,
   TTransformResult = never,
@@ -174,11 +209,16 @@ export function defineCollection<
   if (!parser) {
     parser = "frontmatter" as TParser;
   }
+  let schema: any = collection.schema;
+  if (!schema["~standard"]) {
+    warnDeprecated(legacySchemaDeprecatedMessage);
+    schema = z.object(schema(z));
+  }
   return {
     ...collection,
     typeName,
     parser,
-    schema: collection.schema(z),
+    schema,
   } as TResult;
 }
 

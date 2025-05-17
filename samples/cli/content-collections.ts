@@ -1,8 +1,9 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const authors = defineCollection({
   name: "authors",
-  schema: (z) => ({
+  schema: z.object({
     ref: z.string(),
     displayName: z.string(),
     email: z.string().email(),
@@ -14,7 +15,7 @@ const authors = defineCollection({
 const posts = defineCollection({
   name: "posts",
   typeName: "Post",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string().min(5),
     description: z.string().min(10),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -49,7 +50,7 @@ const categories = defineCollection({
   directory: "categories",
   include: "*.yml",
   parser: "yaml",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string(),
   }),

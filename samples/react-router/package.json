@@ -11,15 +11,16 @@
   },
   "dependencies": {
     "@content-collections/core": "0.8.2",
-    "@content-collections/remix-vite": "0.2.0",
     "@content-collections/markdown": "0.1.4",
+    "@content-collections/remix-vite": "0.2.0",
     "@content-collections/sample-theme": "0.1.0",
     "@react-router/node": "^7.5.2",
     "@react-router/serve": "^7.5.2",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.2"
+    "react-router": "^7.5.2",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.2",

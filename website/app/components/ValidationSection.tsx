@@ -9,7 +9,7 @@ const code = `const samples = defineCollection({
   name: "samples",
   directory: "src/samples",
   include: "**/*.md",
-  schema: (z) => ({
+  schema: z.object({
     /* cmp-line:codemotion */
   }),
 });

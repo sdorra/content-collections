@@ -1,0 +1,17 @@
+id: 555
+name: Randotron
+status: Dead
+species: Robot
+type: ''
+gender: Genderless
+origin:
+  name: Earth (Replacement Dimension)
+  url: 'https://rickandmortyapi.com/api/location/20'
+location:
+  name: Heistotron Base
+  url: 'https://rickandmortyapi.com/api/location/89'
+image: 'https://rickandmortyapi.com/api/character/avatar/555.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/34'
+url: 'https://rickandmortyapi.com/api/character/555'
+created: '2020-05-07T10:12:53.234Z'

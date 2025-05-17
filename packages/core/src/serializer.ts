@@ -2,6 +2,10 @@ import serializeJs from "serialize-javascript";
 import z from "zod";
 import { Import, isImport } from "./import";
 
+// TODO: if we do not longer ship zod as part of the package,
+// we should add a smaller tree shakeable validation library as dev dependency
+// such as valibot or @zod/mini (part of zod 4)
+
 const literalSchema = z.union([
   // json
   z.string(),

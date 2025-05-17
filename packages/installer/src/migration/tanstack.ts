@@ -22,6 +22,7 @@ export const migratorTanStack = defineMigrator({
     const packages = [
       "@content-collections/core",
       "@content-collections/vinxi",
+      "zod",
     ];
 
     if (demoContent === "markdown") {

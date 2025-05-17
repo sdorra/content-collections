@@ -1,0 +1,17 @@
+id: 818
+name: Long Hair Rick
+status: unknown
+species: Human
+type: ''
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: Citadel of Ricks
+  url: 'https://rickandmortyapi.com/api/location/3'
+image: 'https://rickandmortyapi.com/api/character/avatar/818.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/51'
+url: 'https://rickandmortyapi.com/api/character/818'
+created: '2021-11-02T15:24:36.172Z'

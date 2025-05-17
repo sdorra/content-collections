@@ -1,10 +1,11 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "sources/posts",
   include: "**/*.md(x)?",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
   }),
   transform: async (doc, { collection }) => {

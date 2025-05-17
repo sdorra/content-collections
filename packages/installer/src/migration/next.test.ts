@@ -150,7 +150,7 @@ describe("next.js migrator", () => {
         expect(dependencies).not.toContain("@content-collections/markdown");
       });
 
-      it("should add core and next packages", async () => {
+      it("should add core, next and zod packages", async () => {
         const migration = await migratorNextJS.createMigration(
           {
             directory: "directory",
@@ -172,6 +172,7 @@ describe("next.js migrator", () => {
         const dependencies = addDependenciesTask.devDependencies;
         expect(dependencies).toContain("@content-collections/core");
         expect(dependencies).toContain("@content-collections/next");
+        expect(dependencies).toContain("zod");
       });
     });
   });

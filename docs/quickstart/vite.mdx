@@ -14,9 +14,10 @@ We have to install the following packages:
 
 - `@content-collections/core`
 - `@content-collections/vite`
+- `zod`
 
 ```package-install
-npm i @content-collections/core @content-collections/vite -D
+npm i @content-collections/core @content-collections/vite zod -D
 ```
 
 </div>
@@ -71,12 +72,13 @@ Create a `content-collections.ts` file at the root of your project:
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "src/posts",
   include: "**/*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     summary: z.string(),
   }),

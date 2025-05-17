@@ -20,9 +20,9 @@ describe("createBuildContext", () => {
           directory: "posts",
           include: ["*.md"],
           parser: "frontmatter",
-          schema: {
+          schema: z.object({
             title: z.string(),
-          },
+          }),
         },
       ],
       path: path.join(__dirname, "__tests__", "content-collection-config.mjs"),
@@ -61,9 +61,9 @@ describe("build", () => {
     directory: "sources/posts",
     include: "**/*.md(x)?",
     parser: "frontmatter",
-    schema: {
+    schema: z.object({
       title: z.string(),
-    },
+    }),
   };
 
   const authors: AnyCollection = {
@@ -72,9 +72,9 @@ describe("build", () => {
     directory: "sources/authors",
     include: "**/*.md(x)?",
     parser: "frontmatter",
-    schema: {
+    schema: z.object({
       displayName: z.string(),
-    },
+    }),
   };
 
   function createConfiguration(

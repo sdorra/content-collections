@@ -24,12 +24,13 @@ Configure Content Collections that it discover the MDX files, but we exclude the
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "./content/posts",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
   }),
   transform: ({ content: _, ...post }) => {
