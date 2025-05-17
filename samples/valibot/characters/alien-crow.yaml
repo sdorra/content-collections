@@ -1,0 +1,17 @@
+id: 793
+name: Alien Crow
+status: Dead
+species: Alien
+type: Crow
+gender: Female
+origin:
+  name: Avian Planet
+  url: 'https://rickandmortyapi.com/api/location/122'
+location:
+  name: Avian Planet
+  url: 'https://rickandmortyapi.com/api/location/122'
+image: 'https://rickandmortyapi.com/api/character/avatar/793.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/50'
+url: 'https://rickandmortyapi.com/api/character/793'
+created: '2021-11-02T13:00:18.318Z'

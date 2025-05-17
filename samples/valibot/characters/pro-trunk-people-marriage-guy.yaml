@@ -1,0 +1,17 @@
+id: 415
+name: Pro trunk people marriage guy
+status: Alive
+species: Human
+type: ''
+gender: Male
+origin:
+  name: Interdimensional Cable
+  url: 'https://rickandmortyapi.com/api/location/6'
+location:
+  name: Interdimensional Cable
+  url: 'https://rickandmortyapi.com/api/location/6'
+image: 'https://rickandmortyapi.com/api/character/avatar/415.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/8'
+url: 'https://rickandmortyapi.com/api/character/415'
+created: '2018-04-15T21:34:21.911Z'
