@@ -1,5 +1,5 @@
 ---
-title: CLI
+title: XML
 description: Basic example of a custom parser
 tags:
   - parser
