@@ -4,7 +4,7 @@ import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
 import { defineParser } from "./parser";
 import { GetTypeByName } from "./types";
-import { configureDeprecatedWarnings } from "./warn";
+import { suppressDeprecatedWarnings } from "./warn";
 
 describe("types", () => {
   describe("GetTypeByName", () => {
@@ -468,7 +468,7 @@ describe("types", () => {
       name: "posts",
       directory: "./posts",
       include: "*.mdx",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       parser,
@@ -500,7 +500,7 @@ describe("types", () => {
       name: "posts",
       directory: "./posts",
       include: "*.mdx",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       parser,
@@ -522,7 +522,7 @@ describe("types", () => {
   });
 
   it("should support legacy schema function", () => {
-    configureDeprecatedWarnings(false);
+    suppressDeprecatedWarnings("legacySchema");
 
     const collection = defineCollection({
       name: "posts",

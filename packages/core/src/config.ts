@@ -166,12 +166,6 @@ type ResolveImports<TTransformResult> =
             }
           : TTransformResult;
 
-const legacySchemaDeprecatedMessage = `The use of a function as a schema is deprecated.
-Please use a StandardSchema compliant library directly.
-For more information, see:
-https://content-collections.dev/docs/deprecations/schema-as-function
-`;
-
 export function defineCollection<
   TName extends string,
   TShape extends TSchemaProp,
@@ -211,7 +205,7 @@ export function defineCollection<
   }
   let schema: any = collection.schema;
   if (!schema["~standard"]) {
-    warnDeprecated(legacySchemaDeprecatedMessage);
+    warnDeprecated("legacySchema");
     schema = z.object(schema(z));
   }
   return {

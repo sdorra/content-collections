@@ -1,14 +1,39 @@
-let logDeprecated = true;
+const deprecations = {
+  legacySchema: `The use of a function as a schema is deprecated.
+Please use a StandardSchema compliant library directly.
+For more information, see:
+https://content-collections.dev/docs/deprecations/schema-as-function`,
+};
 
-export function configureDeprecatedWarnings(enabled: boolean) {
-  logDeprecated = enabled;
+type Deprecation = keyof typeof deprecations;
+
+const _suppressDeprecatedWarnings: Array<Deprecation> = [];
+
+export function suppressDeprecatedWarnings(...deprecations: Array<Deprecation | "all">) {
+  for (const deprecation of deprecations) {
+    if (deprecation === "all") {
+      _suppressDeprecatedWarnings.push(
+        ...(Object.keys(deprecations) as Array<Deprecation>),
+      );
+      return;
+    } else {
+      _suppressDeprecatedWarnings.push(deprecation);
+    }
+  }
+}
+
+export function clearSuppressedWarnings() {
+  _suppressDeprecatedWarnings.length = 0;
 }
 
 type Logger = (message: string) => void;
 
-export function warnDeprecated(message: string, logger: Logger = console.warn) {
-  if (!logDeprecated) {
+export function warnDeprecated(
+  deprecation: Deprecation,
+  logger: Logger = console.warn,
+) {
+  if (_suppressDeprecatedWarnings.includes(deprecation)) {
     return;
   }
-  logger(`[CC DEPRECATED]: ${message}`);
+  logger(`[CC DEPRECATED]: ${deprecations[deprecation]}`);
 }
