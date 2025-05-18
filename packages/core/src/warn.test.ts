@@ -1,21 +1,45 @@
-import { afterAll, describe, expect, it, vitest } from "vitest";
-import { configureDeprecatedWarnings, warnDeprecated } from "./warn";
+import { beforeEach } from "node:test";
+import { describe, expect, it, vitest } from "vitest";
+import {
+  clearSuppressedWarnings,
+  suppressDeprecatedWarnings,
+  warnDeprecated,
+} from "./warn";
 
 describe("warnDeprecated", () => {
-  it("should log deprecated warning", () => {
-    const logger = vitest.fn();
-    warnDeprecated("Test message", logger);
-    expect(logger).toHaveBeenCalledWith("[CC DEPRECATED]: Test message");
+  beforeEach(() => {
+    clearSuppressedWarnings();
   });
 
-  it("should not log deprecated warning when logging is disabled", () => {
-    configureDeprecatedWarnings(false);
+  it("should log deprecated warning", () => {
     const logger = vitest.fn();
-    warnDeprecated("Test message", logger);
+    warnDeprecated("legacySchema", logger);
+    expect(logger).toHaveBeenCalled();
+    //@ts-expect-error
+    const message = logger.mock.calls[0][0];
+    expect(message).toMatch(/\[CC DEPRECATED\]./);
+    expect(message).toMatch(/StandardSchema/);
+  });
+
+  it("should not log when deprecation is disabled", () => {
+    suppressDeprecatedWarnings("legacySchema");
+    const logger = vitest.fn();
+    warnDeprecated("legacySchema", logger);
     expect(logger).not.toHaveBeenCalled();
   });
 
-  afterAll(() => {
-    configureDeprecatedWarnings(true);
+  it("should not log when all deprecations are disabled", () => {
+    suppressDeprecatedWarnings("all");
+    const logger = vitest.fn();
+    warnDeprecated("legacySchema", logger);
+    expect(logger).not.toHaveBeenCalled();
+  });
+
+  it("should log after clearing suppressed warnings", () => {
+    suppressDeprecatedWarnings("legacySchema");
+    clearSuppressedWarnings();
+    const logger = vitest.fn();
+    warnDeprecated("legacySchema", logger);
+    expect(logger).toHaveBeenCalled();
   });
 });

@@ -56,3 +56,13 @@ export default defineConfig({
 ```
 
 And that's it! You have successfully migrated to the new schema format.
+
+## Suppressing Deprecation Warning
+
+If you are not ready to migrate yet, you can suppress the deprecation warning by setting the `suppressDeprecationWarnings` option in your configuration:
+
+```ts
+import { suppressDeprecatedWarnings } from "@content-collections/core";
+
+suppressDeprecatedWarnings("legacySchema");
+```

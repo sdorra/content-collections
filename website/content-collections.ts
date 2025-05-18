@@ -3,6 +3,7 @@ import {
   defineCollection,
   defineConfig,
   type Document,
+  suppressDeprecatedWarnings
 } from "@content-collections/core";
 import {
   createMetaSchema,
@@ -16,6 +17,9 @@ import { exec as cpExec } from "node:child_process";
 import path from "node:path";
 import { promisify } from "node:util";
 import {z} from "zod";
+
+// createMetaSchema of Fumadocs does not yet support the new schema
+suppressDeprecatedWarnings("legacySchema");
 
 const exec = promisify(cpExec);
 
