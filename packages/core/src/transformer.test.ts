@@ -100,9 +100,9 @@ describe("transform", () => {
       name: "sample",
       typeName: "Sample",
       parser: "frontmatter",
-      schema: {
+      schema: z.object({
         name: z.string(),
-      },
+      }),
       directory: "tests",
       include: "*.md",
       files,
@@ -116,9 +116,9 @@ describe("transform", () => {
       name: "sample",
       typeName: "Sample",
       parser: "frontmatter",
-      schema: {
+      schema: z.object({
         name: z.string(),
-      },
+      }),
       directory: "tests",
       include: "**/*.md",
       files,
@@ -126,10 +126,16 @@ describe("transform", () => {
   }
 
   it("should create two document", async () => {
+    const sampleCollection = createSampleCollection(sampleOne, sampleTwo);
+const modulePath = require.resolve('zod');
+console.log(modulePath);
+
+    console.log(z.object({})["~standard"]);
+
     const [collection] = await createTransformer(
       emitter,
       noopCacheManager,
-    )([createSampleCollection(sampleOne, sampleTwo)]);
+    )([sampleCollection]);
 
     expect(collection?.documents).toHaveLength(2);
   });
@@ -182,7 +188,7 @@ describe("transform", () => {
   it("should transform document", async () => {
     const sample = defineCollection({
       name: "sample",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -213,7 +219,7 @@ describe("transform", () => {
   it("should add the content to the document", async () => {
     const sample = defineCollection({
       name: "sample",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -236,7 +242,7 @@ describe("transform", () => {
   it("should collect with multiple collections", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
         author: z.string(),
       }),
@@ -246,7 +252,7 @@ describe("transform", () => {
 
     const authors = defineCollection({
       name: "authors",
-      schema: (z) => ({
+      schema: z.object({
         ref: z.string(),
         displayName: z.string(),
       }),
@@ -276,7 +282,7 @@ describe("transform", () => {
   it("should transform with collection references", async () => {
     const authors = defineCollection({
       name: "authors",
-      schema: (z) => ({
+      schema: z.object({
         ref: z.string(),
         displayName: z.string(),
       }),
@@ -286,7 +292,7 @@ describe("transform", () => {
 
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
         author: z.string(),
       }),
@@ -324,7 +330,7 @@ describe("transform", () => {
   it("should throw if document validation fails", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -345,13 +351,13 @@ describe("transform", () => {
           files: [firstPost],
         },
       ]),
-    ).rejects.toThrowError(/invalid_type/);
+    ).rejects.toThrowError(/Required/);
   });
 
   it("should throw if frontmatter document has no content", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -372,13 +378,41 @@ describe("transform", () => {
           files: [sampleWithoutContent],
         },
       ]),
-    ).rejects.toThrowError(/invalid_type/);
+    ).rejects.toThrowError(/The content property is not a string/);
+  });
+
+  it("should throw if custom content validation fails", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+        content: z.string().max(2),
+      }),
+      directory: "tests",
+      include: "*.md",
+    });
+
+    emitter.on("transformer:validation-error", (event) => {
+      throw event.error;
+    });
+
+    await expect(
+      createTransformer(
+        emitter,
+        noopCacheManager,
+      )([
+        {
+          ...posts,
+          files: [sampleOne],
+        },
+      ]),
+    ).rejects.toThrowError("String must contain at most 2 character(s)");
   });
 
   it("should not throw if yaml document has no content", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -402,7 +436,7 @@ describe("transform", () => {
   it("should capture validation error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -428,7 +462,7 @@ describe("transform", () => {
   it("should not hold invalid documents", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -450,7 +484,7 @@ describe("transform", () => {
   it("should report an error if a collection is not registered", async () => {
     const authors = defineCollection({
       name: "authors",
-      schema: (z) => ({
+      schema: z.object({
         ref: z.string(),
         displayName: z.string(),
       }),
@@ -460,7 +494,7 @@ describe("transform", () => {
 
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       directory: "tests",
@@ -491,7 +525,7 @@ describe("transform", () => {
   it("should report an transform error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       directory: "tests",
@@ -519,7 +553,7 @@ describe("transform", () => {
   it("should exclude documents with a transform error", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       directory: "tests",
@@ -545,7 +579,7 @@ describe("transform", () => {
   it("should report an result error, if the transform result is not serializable", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         title: z.string(),
       }),
       transform: (doc) => {
@@ -578,7 +612,7 @@ describe("transform", () => {
     const posts = defineCollection({
       name: "posts",
       parser: "json",
-      schema: (z) => ({
+      schema: z.object({
         fn: z.function(),
       }),
       directory: "tests",
@@ -604,7 +638,7 @@ describe("transform", () => {
   it("should pass the name of the collection to the context object", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -633,7 +667,7 @@ describe("transform", () => {
   it("should pass the directory of the collection to the context object", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",
@@ -662,7 +696,7 @@ describe("transform", () => {
   it("should access documents of the same collection", async () => {
     const posts = defineCollection({
       name: "posts",
-      schema: (z) => ({
+      schema: z.object({
         name: z.string(),
       }),
       directory: "tests",

@@ -1,0 +1,17 @@
+id: 225
+name: Michael Thompson
+status: Alive
+species: Humanoid
+type: Conjoined twin
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: Interdimensional Cable
+  url: 'https://rickandmortyapi.com/api/location/6'
+image: 'https://rickandmortyapi.com/api/character/avatar/225.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/19'
+url: 'https://rickandmortyapi.com/api/character/225'
+created: '2017-12-30T15:59:31.558Z'

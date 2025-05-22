@@ -1,0 +1,21 @@
+id: 242
+name: Mr. Meeseeks
+status: unknown
+species: Humanoid
+type: Meeseeks
+gender: Male
+origin:
+  name: Mr. Meeseeks Box
+  url: 'https://rickandmortyapi.com/api/location/53'
+location:
+  name: Earth (Fascist Dimension)
+  url: 'https://rickandmortyapi.com/api/location/77'
+image: 'https://rickandmortyapi.com/api/character/avatar/242.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/5'
+  - 'https://rickandmortyapi.com/api/episode/10'
+  - 'https://rickandmortyapi.com/api/episode/13'
+  - 'https://rickandmortyapi.com/api/episode/29'
+  - 'https://rickandmortyapi.com/api/episode/32'
+url: 'https://rickandmortyapi.com/api/character/242'
+created: '2017-12-30T17:52:12.243Z'

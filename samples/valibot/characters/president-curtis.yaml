@@ -1,0 +1,21 @@
+id: 347
+name: President Curtis
+status: Alive
+species: Human
+type: ''
+gender: Male
+origin:
+  name: Earth (Replacement Dimension)
+  url: 'https://rickandmortyapi.com/api/location/20'
+location:
+  name: Earth (Replacement Dimension)
+  url: 'https://rickandmortyapi.com/api/location/20'
+image: 'https://rickandmortyapi.com/api/character/avatar/347.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/16'
+  - 'https://rickandmortyapi.com/api/episode/31'
+  - 'https://rickandmortyapi.com/api/episode/43'
+  - 'https://rickandmortyapi.com/api/episode/45'
+  - 'https://rickandmortyapi.com/api/episode/47'
+url: 'https://rickandmortyapi.com/api/character/347'
+created: '2018-01-10T17:43:37.411Z'

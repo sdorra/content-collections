@@ -136,7 +136,7 @@ describe("sveltekit migrator", () => {
       expect(dependencies).not.toContain("@content-collections/markdown");
     });
 
-    it("should add core and vite packages", async () => {
+    it("should add core, vite and zod packages", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
           directory: "directory",
@@ -158,6 +158,7 @@ describe("sveltekit migrator", () => {
       const dependencies = addDependenciesTask.devDependencies;
       expect(dependencies).toContain("@content-collections/core");
       expect(dependencies).toContain("@content-collections/vite");
+      expect(dependencies).toContain("zod");
     });
   });
 });

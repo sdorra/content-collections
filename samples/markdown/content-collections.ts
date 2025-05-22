@@ -1,11 +1,12 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMarkdown } from "@content-collections/markdown";
+import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
   directory: "content",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     date: z.string(),
   }),

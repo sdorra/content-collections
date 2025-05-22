@@ -1,0 +1,17 @@
+id: 797
+name: Slartivartian
+status: Dead
+species: Alien
+type: Slartivartian
+gender: Male
+origin:
+  name: Slartivart
+  url: 'https://rickandmortyapi.com/api/location/124'
+location:
+  name: Slartivart
+  url: 'https://rickandmortyapi.com/api/location/124'
+image: 'https://rickandmortyapi.com/api/character/avatar/797.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/44'
+url: 'https://rickandmortyapi.com/api/character/797'
+created: '2021-11-02T13:07:40.795Z'

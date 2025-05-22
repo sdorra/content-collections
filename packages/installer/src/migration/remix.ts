@@ -28,6 +28,7 @@ export const migratorRemix = defineMigrator({
     const packages = [
       "@content-collections/core",
       "@content-collections/remix-vite",
+      "zod"
     ];
 
     if (demoContent === "markdown") {

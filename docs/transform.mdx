@@ -73,7 +73,7 @@ Example:
 ```ts
 const authors = defineCollection({
   // ...
-  schema: (z) => ({
+  schema: z.object({
     ref: z.string(),
     displayName: z.string()
   }),
@@ -201,12 +201,13 @@ transform: async (doc, { cache }) => {
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { z } from "zod";
 
 const authors = defineCollection({
   name: "authors",
   directory: "content/authors",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     ref: z.string(),
     displayName: z.string(),
     email: z.string().email(),
@@ -217,7 +218,7 @@ const posts = defineCollection({
   name: "posts",
   directory: "content/posts",
   include: "*.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     author: z.string(),
   }),

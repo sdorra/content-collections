@@ -7,4 +7,5 @@ export { ConfigurationError } from "./configurationReader";
 export { createDefaultImport, createNamedImport } from "./import";
 export { defineParser } from "./parser";
 export { TransformError } from "./transformer";
+export { suppressDeprecatedWarnings } from "./warn";
 export { type Watcher } from "./watcher";

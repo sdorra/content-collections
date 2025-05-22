@@ -1,0 +1,17 @@
+id: 261
+name: Photography Cyborg
+status: unknown
+species: Robot
+type: ''
+gender: Male
+origin:
+  name: unknown
+  url: ''
+location:
+  name: Planet Squanch
+  url: 'https://rickandmortyapi.com/api/location/35'
+image: 'https://rickandmortyapi.com/api/character/avatar/261.jpeg'
+episode:
+  - 'https://rickandmortyapi.com/api/episode/21'
+url: 'https://rickandmortyapi.com/api/character/261'
+created: '2017-12-31T13:38:53.640Z'

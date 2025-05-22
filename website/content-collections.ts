@@ -3,10 +3,11 @@ import {
   defineCollection,
   defineConfig,
   type Document,
+  suppressDeprecatedWarnings
 } from "@content-collections/core";
 import {
   createMetaSchema,
-  transformMDX,
+  transformMDX
 } from "@fumadocs/content-collections/configuration";
 import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
 import GithubSlugger from "github-slugger";
@@ -15,6 +16,10 @@ import { selectAll } from "hast-util-select";
 import { exec as cpExec } from "node:child_process";
 import path from "node:path";
 import { promisify } from "node:util";
+import {z} from "zod";
+
+// createMetaSchema of Fumadocs does not yet support the new schema
+suppressDeprecatedWarnings("legacySchema");
 
 const exec = promisify(cpExec);
 
@@ -56,7 +61,7 @@ const samples = defineCollection({
   name: "samples",
   directory: "../samples",
   include: "*/README.md",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string(),
     tags: z.array(z.string()),
@@ -90,7 +95,7 @@ const docs = defineCollection({
   name: "docs",
   directory: "../docs",
   include: "**/*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string().optional(),
     icon: z.string().optional(),
@@ -142,7 +147,7 @@ const sponsors = defineCollection({
   directory: "./content/sponsors",
   include: "**/*.yml",
   parser: "yaml",
-  schema: (z) => ({
+  schema: z.object({
     name: z.string(),
     avatarUrl: z.string().url(),
     url: z.string().url(),

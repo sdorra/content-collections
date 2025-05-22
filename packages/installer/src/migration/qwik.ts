@@ -20,7 +20,7 @@ export const migratorQwik = defineMigrator({
     Boolean(packageJson.dependencies?.["@builder.io/qwik"]) ||
     Boolean(packageJson.devDependencies?.["@builder.io/qwik"]),
   async createMigration({ directory, packageJson }, { demoContent }) {
-    const packages = ["@content-collections/core", "@content-collections/vite"];
+    const packages = ["@content-collections/core", "@content-collections/vite", "zod"];
 
     if (demoContent === "markdown") {
       packages.push("@content-collections/markdown");
