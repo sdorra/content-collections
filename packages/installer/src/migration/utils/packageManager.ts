@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn } from "cross-spawn";
 import { detect } from "package-manager-detector/detect";
 
 function createPackageManager(directory: string, name: string) {
