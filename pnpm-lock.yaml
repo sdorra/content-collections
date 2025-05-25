@@ -179,6 +179,9 @@ importers:
       comment-json:
         specifier: ^4.2.5
         version: 4.2.5
+      cross-spawn:
+        specifier: ^7.0.6
+        version: 7.0.6
       package-manager-detector:
         specifier: ^0.2.0
         version: 0.2.0
@@ -186,6 +189,9 @@ importers:
         specifier: ^0.23.9
         version: 0.23.9
     devDependencies:
+      '@types/cross-spawn':
+        specifier: ^6.0.6
+        version: 6.0.6
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
@@ -7685,6 +7691,12 @@ packages:
 
   /@types/cookie@0.6.0:
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
+
+  /@types/cross-spawn@6.0.6:
+    resolution: {integrity: sha512-fXRhhUkG4H3TQk5dBhQ7m/JDdSNHKwR2BBia62lhwEIq9xGiQKLxd6LymNhn47SjXhsUEPmxi+PKw2OkW4LLjA==}
+    dependencies:
+      '@types/node': 20.14.9
+    dev: true
 
   /@types/d3-hierarchy@1.1.11:
     resolution: {integrity: sha512-lnQiU7jV+Gyk9oQYk0GGYccuexmQPTp08E0+4BidgFdiJivjEvf+esPSdZqCZ2C7UwTWejWpqetVaU8A+eX3FA==}
