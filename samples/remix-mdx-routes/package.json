@@ -19,7 +19,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "@content-collections/core": "0.8.2",
+    "@content-collections/core": "0.9.0",
     "@content-collections/vite": "0.2.4",
     "@mdx-js/rollup": "^3.1.0",
     "@remix-run/dev": "^2.16.5",

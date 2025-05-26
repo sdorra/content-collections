@@ -1,5 +1,16 @@
 # content-collections
 
+## 0.2.0
+
+### Minor Changes
+
+- [#570](https://github.com/sdorra/content-collections/pull/570) [`846c36a`](https://github.com/sdorra/content-collections/commit/846c36a2a8bb5d873aa13edf3ebff802866e3a89) Thanks [@sdorra](https://github.com/sdorra)! - Use the new [StandardSchema](https://standardschema.dev) based schema definition
+
+### Patch Changes
+
+- Updated dependencies [[`e532e8d`](https://github.com/sdorra/content-collections/commit/e532e8d62f9c96ba172078b4ca235aa7b1aadd27), [`846c36a`](https://github.com/sdorra/content-collections/commit/846c36a2a8bb5d873aa13edf3ebff802866e3a89)]:
+  - @content-collections/installer@0.4.0
+
 ## 0.1.4
 
 ### Patch Changes
