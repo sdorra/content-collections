@@ -3,6 +3,7 @@ import { z } from "zod";
 import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
 import { defineParser } from "./parser";
+import { GetMetaFromCollection, Source } from "./source";
 import { GetTypeByName } from "./types";
 import { suppressDeprecatedWarnings } from "./warn";
 
@@ -33,6 +34,7 @@ describe("types", () => {
         city: "New York",
         content: "John is 20 years old",
         _meta: {
+          id: "persons/john.md",
           fileName: "john.md",
           filePath: "persons/john.md",
           directory: "persons",
@@ -74,6 +76,7 @@ describe("types", () => {
         street: "Main Street",
         content: "John is 20 years old",
         _meta: {
+          id: "persons/john.md",
           fileName: "john.md",
           filePath: "persons/john.md",
           directory: "persons",
@@ -217,6 +220,7 @@ describe("types", () => {
       name: "John",
       content: "John is 20 years old",
       _meta: {
+        id: "persons/john.md",
         fileName: "john.md",
         filePath: "persons/john.md",
         directory: "persons",
@@ -250,6 +254,7 @@ describe("types", () => {
       name: "John",
       content: "John is 20 years old",
       _meta: {
+        id: "persons/john.md",
         fileName: "john.md",
         filePath: "persons/john.md",
         directory: "persons",
@@ -284,6 +289,7 @@ describe("types", () => {
       // @ts-expect-error content is defined with yaml parser
       content: "John is 20 years old",
       _meta: {
+        id: "persons/john.md",
         fileName: "john.md",
         filePath: "persons/john.md",
         directory: "persons",
@@ -318,6 +324,7 @@ describe("types", () => {
       // @ts-expect-error content is defined with yaml parser
       content: "John is 20 years old",
       _meta: {
+        id: "persons/john.md",
         fileName: "john.md",
         filePath: "persons/john.md",
         directory: "persons",
@@ -351,6 +358,7 @@ describe("types", () => {
       name: "John",
       content: 42,
       _meta: {
+        id: "persons/john.md",
         fileName: "john.md",
         filePath: "persons/john.md",
         directory: "persons",
@@ -598,6 +606,7 @@ describe("types", () => {
       title: "Hello World",
       content: "# MDX Content",
       _meta: {
+        id: "posts/hello-world.mdx",
         fileName: "hello-world.mdx",
         filePath: "posts/hello-world.mdx",
         directory: "posts",
@@ -607,5 +616,40 @@ describe("types", () => {
     };
 
     expect(post).toBeTruthy();
+  });
+
+  it("should infer meta from source", () => {
+    const source: Source<{
+      id: string;
+      url: string;
+    }> = {
+      documents: async () => [
+        {
+          _meta: {
+            id: "1",
+            url: "https://example.com",
+          },
+          data: {},
+        },
+      ],
+      watch: async () => {
+        return null;
+      },
+    };
+
+    const collection = defineCollection({
+      name: "posts",
+      source,
+      schema: (y) => ({
+        title: y.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+    type Meta = GetMetaFromCollection<typeof collection>;
   });
 });

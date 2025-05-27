@@ -15,9 +15,10 @@ export type CollectionFile = {
   path: string;
 };
 
+// TODO: we are no longer file based
 export type FileCollection = Pick<
   AnyCollection,
-  "directory" | "include" | "exclude" | "parser"
+  "source"
 >;
 
 export type ResolvedCollection<T extends FileCollection> = T & {
@@ -35,7 +36,8 @@ type GetDocument<TCollection extends AnyCollection> =
     any,
     any,
     any,
-    infer TDocument
+    infer TDocument,
+    any
   >
     ? TDocument
     : never;
