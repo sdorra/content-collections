@@ -1,7 +1,17 @@
 {
   "name": "@content-collections/core",
-  "version": "0.9.0",
   "type": "module",
+  "version": "0.9.0",
+  "description": "Core of Content Collections",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/core"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

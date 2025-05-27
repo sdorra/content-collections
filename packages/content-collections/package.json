@@ -1,8 +1,17 @@
 {
   "name": "content-collections",
-  "description": "Installer for content-collections",
-  "version": "0.2.0",
   "type": "module",
+  "version": "0.2.0",
+  "description": "Installer for content-collections",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/content-collections"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {

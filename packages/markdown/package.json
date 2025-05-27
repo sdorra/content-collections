@@ -1,8 +1,17 @@
 {
   "name": "@content-collections/markdown",
-  "description": "Compile markdown to html as part of your content-collection transform function",
-  "version": "0.1.4",
   "type": "module",
+  "version": "0.1.4",
+  "description": "Compile markdown to html as part of your content-collection transform function",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/markdown"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
