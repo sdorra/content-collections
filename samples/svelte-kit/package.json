@@ -19,7 +19,7 @@
     "svelte-check": "^4.0.5",
     "tslib": "^2.6.3",
     "typescript": "^5.5.4",
-    "vite": "^5.4.6"
+    "vite": "^6.3.5"
   },
   "dependencies": {
     "zod": "^3.24.4"
