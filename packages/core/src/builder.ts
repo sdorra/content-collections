@@ -8,6 +8,7 @@ import {
 import { type Emitter, createEmitter } from "./events";
 import { Modification } from "./types";
 import { createWatcher, Watcher } from "./watcher";
+import { withSourceContext } from "./source";
 
 // TODO: get rid of namespaces at all
 export type BuilderEvents = BuildEvents & {
@@ -57,8 +58,15 @@ export async function createBuilder(
   },
   emitter: Emitter = createEmitter(),
 ) {
-  const readConfiguration = createConfigurationReader();
+  const configurationReader = createConfigurationReader();
   const baseDirectory = path.dirname(configurationPath);
+  function readConfiguration(configurationPath: string, options: Options) {
+    return withSourceContext({
+      baseDirectory,
+      emitter,
+    }, () => configurationReader(configurationPath, options));
+  }
+
   const outputDirectory = resolveOutputDir(baseDirectory, options);
 
   emitter.emit("builder:created", {
@@ -127,12 +135,13 @@ export async function createBuilder(
     });
 
     if (watcher) {
-      watcher = await createWatcher(
+      // TODO
+      /*watcher = await createWatcher(
         emitter,
         baseDirectory,
         configuration,
         sync,
-      );
+      );*/
     }
 
     return true;
@@ -149,7 +158,8 @@ export async function createBuilder(
   }
 
   async function watch() {
-    watcher = await createWatcher(emitter, baseDirectory, configuration, sync);
+    // TODO:
+    /*watcher = await createWatcher(emitter, baseDirectory, configuration, sync);
 
     return {
       unsubscribe: async () => {
@@ -157,7 +167,13 @@ export async function createBuilder(
           await watcher.unsubscribe();
         }
       },
-    };
+    };*/
+
+    return {
+      unsubscribe: async () => {
+
+      },
+    }
   }
 
   return {

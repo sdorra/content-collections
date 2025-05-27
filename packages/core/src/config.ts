@@ -8,6 +8,13 @@ import {
   PredefinedParsers,
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
+import {
+  defineFileSystemSource,
+  FileSystemSourceOptions,
+  GetMeta,
+  Source,
+  SourceOption,
+} from "./source";
 import { generateTypeName } from "./utils";
 import { warnDeprecated } from "./warn";
 
@@ -70,12 +77,13 @@ type GetOutput<
 export type Schema<
   TParser extends ConfiguredParser,
   TShape extends TSchemaProp,
+  TSource extends SourceOption,
 > = GetOutput<TParser, TShape> & {
-  _meta: Meta;
+  _meta: GetMeta<TSource>;
 };
 
 type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, infer TSchema, any, any, any, any>
+  TCollection extends Collection<any, infer TSchema, any, any, any, any, any>
     ? GetOutputShape<TSchema>
     : never;
 
@@ -86,6 +94,10 @@ export type Context<TSchema = unknown> = {
   cache: CacheFn;
   collection: {
     name: string;
+    /**
+     * TODO: how to handle this?
+     * @deprecated
+     */
     directory: string;
     documents: () => Promise<Array<TSchema>>;
   };
@@ -100,16 +112,31 @@ export type CollectionRequest<
   TSchema,
   TTransformResult,
   TDocument,
+  TSource,
 > = {
   name: TName;
-  parser?: TParser;
   typeName?: string;
+  source?: TSource;
   schema: TShape;
   transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
-  directory: string;
-  include: string | string[];
-  exclude?: string | string[];
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
+
+  /**
+   * @deprecated use `source` instead
+   */
+  directory?: string;
+  /**
+   * @deprecated use `source` instead
+   */
+  include?: string | string[];
+  /**
+   * @deprecated use `source` instead
+   */
+  exclude?: string | string[];
+  /**
+   * @deprecated use `source` instead
+   */
+  parser?: TParser;
 };
 
 export type Collection<
@@ -119,6 +146,7 @@ export type Collection<
   TSchema,
   TTransformResult,
   TDocument,
+  TSource extends SourceOption,
 > = Omit<
   CollectionRequest<
     TName,
@@ -126,19 +154,22 @@ export type Collection<
     TParser,
     TSchema,
     TTransformResult,
-    TDocument
+    TDocument,
+    TSource
   >,
-  "schema"
+  "schema" | "source" | "parser" | "directory" | "include" | "exclude"
 > & {
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
+  source: Source<GetMeta<TSource>>;
 };
 
 export type AnyCollection = Collection<
   any,
   TSchemaProp,
   ConfiguredParser,
+  any,
   any,
   any,
   any
@@ -170,10 +201,11 @@ export function defineCollection<
   TName extends string,
   TShape extends TSchemaProp,
   TParser extends ConfiguredParser = "frontmatter",
-  TSchema = Schema<TParser, TShape>,
+  TSource extends SourceOption = FileSystemSourceOptions,
+  TSchema = Schema<TParser, TShape, TSource>,
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
-    ? Schema<TParser, TShape>
+    ? Schema<TParser, TShape, TSource>
     : Awaited<TTransformResult>,
   TResult = TDocument extends Serializable
     ? Collection<
@@ -182,7 +214,8 @@ export function defineCollection<
         TParser,
         TSchema,
         TTransformResult,
-        ResolveImports<TDocument>
+        ResolveImports<TDocument>,
+        TSource
       >
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(
@@ -192,7 +225,8 @@ export function defineCollection<
     TParser,
     TSchema,
     TTransformResult,
-    TDocument
+    TDocument,
+    TSource
   >,
 ): TResult {
   let typeName = collection.typeName;
@@ -208,11 +242,40 @@ export function defineCollection<
     warnDeprecated("legacySchema");
     schema = z.object(schema(z));
   }
+
+  let source: any = collection.source;
+  // TODO: convert source and log deprecation warning
+  if (collection.directory && collection.include) {
+    warnDeprecated("topLevelFsSource");
+
+    if (source) {
+      throw new Error(
+        `Collection "${collection.name}" has both "source" and top-level "directory" and "include" options defined. Please use only "source".`,
+      );
+    }
+
+    source = defineFileSystemSource({
+      directory: collection.directory,
+      include: collection.include,
+      exclude: collection.exclude,
+      parser: collection.parser || "frontmatter",
+    });
+
+  } else if (source && source.directory && source.include) {
+    source = defineFileSystemSource({
+      directory: source.directory,
+      include: source.include,
+      exclude: source.exclude,
+      parser: source.parser || "frontmatter",
+    });
+  }
+
   return {
     ...collection,
     typeName,
     parser,
     schema,
+    source,
   } as TResult;
 }
 

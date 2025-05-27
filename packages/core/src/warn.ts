@@ -3,13 +3,19 @@ const deprecations = {
 Please use a StandardSchema compliant library directly.
 For more information, see:
 https://content-collections.dev/docs/deprecations/schema-as-function`,
+  topLevelFsSource: `The use of directory, include, exclude and parser options on the collection is deprecated.
+Please use the source option instead.
+For more information, see:
+https://content-collections.dev/docs/deprecations/top-level-fs-source`,
 };
 
 type Deprecation = keyof typeof deprecations;
 
 const _suppressDeprecatedWarnings: Array<Deprecation> = [];
 
-export function suppressDeprecatedWarnings(...deprecations: Array<Deprecation | "all">) {
+export function suppressDeprecatedWarnings(
+  ...deprecations: Array<Deprecation | "all">
+) {
   for (const deprecation of deprecations) {
     if (deprecation === "all") {
       _suppressDeprecatedWarnings.push(
