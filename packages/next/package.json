@@ -1,8 +1,17 @@
 {
   "name": "@content-collections/next",
-  "description": "Use content-collection with Next.js",
-  "version": "0.2.6",
   "type": "module",
+  "version": "0.2.6",
+  "description": "Use content-collection with Next.js",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/next"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",

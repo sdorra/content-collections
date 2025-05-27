@@ -1,8 +1,17 @@
 {
   "name": "@content-collections/vite",
-  "description": "Use content-collections with Vite",
-  "version": "0.2.4",
   "type": "module",
+  "version": "0.2.4",
+  "description": "Use content-collections with Vite",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/vite"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

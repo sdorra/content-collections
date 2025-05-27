@@ -1,8 +1,17 @@
 {
   "name": "@content-collections/installer",
-  "description": "CLI for installing content-collections",
-  "version": "0.4.0",
   "type": "module",
+  "version": "0.4.0",
+  "description": "Automatic installer for content-collections",
+  "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://content-collections.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdorra/content-collections.git",
+    "directory": "packages/installer"
+  },
+  "bugs": "https://github.com/sdorra/content-collections/issues",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
