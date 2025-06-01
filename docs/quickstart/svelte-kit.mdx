@@ -85,6 +85,10 @@ const posts = defineCollection({
     title: z.string(),
     summary: z.string(),
   }),
+	transform: (doc) => ({
+		...doc,
+		slug: doc.title.toLowerCase().replace(/ /g, '-'),
+	}),
 });
 
 export default defineConfig({
@@ -121,28 +125,81 @@ If the files are valid, they will be automatically added to the `posts` collecti
 </div>
 <div className="step">
 
-Usage in your code:
+Usage in your code, e.g. as post list:
 
+Create in a `src/posts` directory
+
+`+page.ts`
 ```svelte
-<script>
-  import { allPosts } from "content-collections";
+import type { PageLoad } from './$types';
+import { allPosts } from 'content-collections';
+
+export const load: PageLoad = async () => {
+	// Fetch all posts from the content collection and filter or sort (optional)
+	let posts = allPosts;
+
+	return {
+		posts,
+	};
+};
+```
+
+`+page.svelte`
+```svelte
+<script lang="ts">
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 </script>
 
 <h1>Posts</h1>
-
 <ul>
-  {#each allPosts as post}
-    <li>
-      <h2>{post.title}</h2>
-      <p>{post.summary}</p>
-    </li>
-  {/each}
+	{#each data.posts as post}
+		<li>
+			<h2>{post.title}</h2>
+			<p>{post.summary}</p>
+		</li>
+	{/each}
 </ul>
 ```
 
 Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
+
+For showing the single post create in `src/posts/[...post]`
+
+`+page.ts`
+```svelte
+import type { PageLoad } from './$types';
+import { error } from '@sveltejs/kit';
+import { allPosts } from 'content-collections';
+
+export const load: PageLoad = async ({ params }) => {
+	const post = allPosts.find((post) => post.slug == params.post);
+	if (!post) {
+		error(404, `Could not find ${params.post}`);
+	}
+
+	return {
+		post,
+	};
+};
+```
+
+`+page.svelte`
+```svelte
+<script lang="ts">
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
+
+	const post = data.post;
+</script>
+
+<h1>{post.title}</h1>
+
+```
 
 </div>
 </div>
