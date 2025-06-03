@@ -46,7 +46,7 @@ This is necessary because we will generate the files in the `.content-collection
 
 Modify your `vite.config.ts`:
 
-```ts
+```typescript
 import { sveltekit } from "@sveltejs/kit/vite";
 import contentCollections from "@content-collections/vite";
 import { defineConfig } from "vite";
@@ -73,7 +73,7 @@ Add the new `.content-collections` directory to your project's `.gitignore` file
 
 Create a `content-collections.ts` file at the root of your project:
 
-```ts
+```typescript
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 
@@ -85,10 +85,10 @@ const posts = defineCollection({
     title: z.string(),
     summary: z.string(),
   }),
-	transform: (doc) => ({
-		...doc,
-		slug: doc.title.toLowerCase().replace(/ /g, '-'),
-	}),
+  transform: (doc) => ({
+    ...doc,
+    slug: doc.title.toLowerCase().replace(/ /g, '-'),
+  }),
 });
 
 export default defineConfig({
@@ -106,7 +106,7 @@ For more information about the configuration have a look at the [documentation](
 
 Create your content files (e.g.: `src/posts/hello-world.md`):
 
-```md
+```markdown
 ---
 title: "Hello world"
 summary: "This is my first post!"
@@ -115,7 +115,7 @@ summary: "This is my first post!"
 # Hello world
 
 This is my first post!
-... rest of the content
+... rest of the markdown content
 ```
 
 You can create unlimited content files.
@@ -125,41 +125,43 @@ If the files are valid, they will be automatically added to the `posts` collecti
 </div>
 <div className="step">
 
-Usage in your code, e.g. as post list:
+## Example with Svelte 5 and SvelteKit
 
-Create in a `src/posts` directory
+### Showing Document List (Posts)
 
-`+page.ts`
-```svelte
+To generate a list of posts create in a `src/posts` directory two files.
+
+`+page.ts` file
+```typescript
 import type { PageLoad } from './$types';
 import { allPosts } from 'content-collections';
 
 export const load: PageLoad = async () => {
-	// Fetch all posts from the content collection and filter or sort (optional)
-	let posts = allPosts;
+  // Fetch all posts from the content collection and filter or sort (optional)
+  let posts = allPosts;
 
-	return {
-		posts,
-	};
+  return {
+    posts,
+  };
 };
 ```
 
-`+page.svelte`
+`+page.svelte` file
 ```svelte
 <script lang="ts">
-	import type { PageProps } from './$types';
+  import type { PageProps } from './$types';
 
-	let { data }: PageProps = $props();
+  let { data }: PageProps = $props();
 </script>
 
 <h1>Posts</h1>
 <ul>
-	{#each data.posts as post}
-		<li>
-			<h2>{post.title}</h2>
-			<p>{post.summary}</p>
-		</li>
-	{/each}
+  {#each data.posts as post}
+    <li>
+      <h2>{post.title}</h2>
+      <p>{post.summary}</p>
+    </li>
+  {/each}
 </ul>
 ```
 
@@ -167,38 +169,38 @@ Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
 
-For showing the single post create in `src/posts/[...post]`
+## Showing Document Entry (Post)
+For showing a single post create two files in `src/posts/[...slug]`.
 
-`+page.ts`
-```svelte
+`+page.ts` file
+```typescript
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { allPosts } from 'content-collections';
 
 export const load: PageLoad = async ({ params }) => {
-	const post = allPosts.find((post) => post.slug == params.post);
-	if (!post) {
-		error(404, `Could not find ${params.post}`);
-	}
+  const post = allPosts.find((post) => post.slug == params.slug);
+  if (!post) {
+    error(404, `Could not find ${params.slug}`);
+  }
 
-	return {
-		post,
-	};
+  return {
+    post,
+  };
 };
 ```
 
-`+page.svelte`
+`+page.svelte` file
 ```svelte
 <script lang="ts">
-	import type { PageProps } from './$types';
+  import type { PageProps } from './$types';
 
-	let { data }: PageProps = $props();
+  let { data }: PageProps = $props();
 
-	const post = data.post;
+  const post = $derived(data.post);
 </script>
 
 <h1>{post.title}</h1>
-
 ```
 
 </div>
