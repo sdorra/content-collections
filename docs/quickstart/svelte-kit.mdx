@@ -57,7 +57,7 @@ export default defineConfig({
 ```
 
 Add the Content Collections plugin to your Vite config.
-For more details on the vide adapter, refer to the [documentation](/docs/adapter/vite).
+For more details on the vite adapter, refer to the [documentation](/docs/adapter/vite).
 
 </div>
 <div className="step">
@@ -167,7 +167,7 @@ export const load: PageLoad = async () => {
 
 Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
-The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
+The `post` object will contain the `slug`, `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
 
 ## Showing Document Entry (Post)
 For showing a single post create two files in `src/posts/[...slug]`.
