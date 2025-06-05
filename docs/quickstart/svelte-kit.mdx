@@ -46,7 +46,7 @@ This is necessary because we will generate the files in the `.content-collection
 
 Modify your `vite.config.ts`:
 
-```ts
+```typescript
 import { sveltekit } from "@sveltejs/kit/vite";
 import contentCollections from "@content-collections/vite";
 import { defineConfig } from "vite";
@@ -73,7 +73,7 @@ Add the new `.content-collections` directory to your project's `.gitignore` file
 
 Create a `content-collections.ts` file at the root of your project:
 
-```ts
+```typescript
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 
@@ -84,6 +84,10 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
+  }),
+  transform: (doc) => ({
+    ...doc,
+    slug: doc.title.toLowerCase().replace(/ /g, '-'),
   }),
 });
 
@@ -102,7 +106,7 @@ For more information about the configuration have a look at the [documentation](
 
 Create your content files (e.g.: `src/posts/hello-world.md`):
 
-```md
+```markdown
 ---
 title: "Hello world"
 summary: "This is my first post!"
@@ -111,7 +115,7 @@ summary: "This is my first post!"
 # Hello world
 
 This is my first post!
-... rest of the content
+... rest of the markdown content
 ```
 
 You can create unlimited content files.
@@ -121,17 +125,38 @@ If the files are valid, they will be automatically added to the `posts` collecti
 </div>
 <div className="step">
 
-Usage in your code:
+## Example with Svelte 5 and SvelteKit
 
+### Showing Document List (Posts)
+
+To generate a list of posts create in a `src/posts` directory two files.
+
+`+page.ts` file
+```typescript
+import type { PageLoad } from './$types';
+import { allPosts } from 'content-collections';
+
+export const load: PageLoad = async () => {
+  // Fetch all posts from the content collection and filter or sort (optional)
+  let posts = allPosts;
+
+  return {
+    posts,
+  };
+};
+```
+
+`+page.svelte` file
 ```svelte
-<script>
-  import { allPosts } from "content-collections";
+<script lang="ts">
+  import type { PageProps } from './$types';
+
+  let { data }: PageProps = $props();
 </script>
 
 <h1>Posts</h1>
-
 <ul>
-  {#each allPosts as post}
+  {#each data.posts as post}
     <li>
       <h2>{post.title}</h2>
       <p>{post.summary}</p>
@@ -143,6 +168,40 @@ Usage in your code:
 Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
+
+## Showing Document Entry (Post)
+For showing a single post create two files in `src/posts/[...slug]`.
+
+`+page.ts` file
+```typescript
+import type { PageLoad } from './$types';
+import { error } from '@sveltejs/kit';
+import { allPosts } from 'content-collections';
+
+export const load: PageLoad = async ({ params }) => {
+  const post = allPosts.find((post) => post.slug == params.slug);
+  if (!post) {
+    error(404, `Could not find ${params.slug}`);
+  }
+
+  return {
+    post,
+  };
+};
+```
+
+`+page.svelte` file
+```svelte
+<script lang="ts">
+  import type { PageProps } from './$types';
+
+  let { data }: PageProps = $props();
+
+  const post = $derived(data.post);
+</script>
+
+<h1>{post.title}</h1>
+```
 
 </div>
 </div>
