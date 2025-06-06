@@ -1,8 +1,10 @@
 import watcher from "@parcel/watcher";
 import { readFile } from "node:fs/promises";
 import path, { basename, dirname, extname } from "node:path";
+import picomatch from "picomatch";
 import { CollectError } from "src/collector";
 import { ConfiguredParser, getParser } from "src/parser";
+import { Modification } from "src/types";
 import { isDefined, posixToNativePath } from "src/utils";
 import { glob } from "tinyglobby";
 import {
@@ -28,6 +30,10 @@ export type FileSystemMeta = MetaBase & {
   path: string;
   extension: string;
 };
+
+function createIncludePattern(options: FileSystemSourceOptions) {
+  return Array.isArray(options.include) ? options.include : [options.include];
+}
 
 function createIgnorePattern(
   options: FileSystemSourceOptions,
@@ -115,17 +121,8 @@ export function defineFileSystemSource(
     }
   }
 
-  function orderByPath(
-    a: RawDocument<FileSystemMeta>,
-    b: RawDocument<FileSystemMeta>,
-  ) {
-    return a._meta.path.localeCompare(b._meta.path);
-  }
-
   async function documents() {
-    const include = Array.isArray(options.include)
-      ? options.include
-      : [options.include];
+    const include = createIncludePattern(options);
 
     const filePaths = await glob(include, {
       cwd: collectionDirectory,
@@ -139,10 +136,26 @@ export function defineFileSystemSource(
     );
 
     const docs = await Promise.all(promises);
-    return docs.filter(isDefined).sort(orderByPath);
+    return docs.filter(isDefined);
   }
 
-  async function watch(sync: SyncFn): Promise<Watcher | null> {
+  function createDocument(
+    modification: Modification,
+    relativePath: string,
+  ): Promise<RawDocument<FileSystemMeta> | null> {
+    if (modification === "delete") {
+      return Promise.resolve({
+        data: {},
+        _meta: createMeta(posixToNativePath(relativePath)),
+      });
+    }
+
+    return collectFile(collectionDirectory, posixToNativePath(relativePath));
+  }
+
+  async function watch(sync: SyncFn<FileSystemMeta>): Promise<Watcher | null> {
+    const collectionPath = path.resolve(collectionDirectory);
+
     const subscription = await watcher.subscribe(
       collectionDirectory,
       async (error, events) => {
@@ -155,8 +168,30 @@ export function defineFileSystemSource(
         }
 
         for (const event of events) {
-          const { type, path } = event;
-          await sync(type, path);
+          const { type, path: fileName } = event;
+
+          const resolvedFilePath = path.resolve(fileName);
+          if (!resolvedFilePath.startsWith(collectionPath)) {
+            continue; // Ignore events outside the collection directory
+          }
+
+          const relativePath = path.relative(collectionPath, resolvedFilePath);
+
+          const include = createIncludePattern(options);
+          const match = picomatch.isMatch(relativePath, include, {
+            ignore: createIgnorePattern(options),
+          });
+
+          if (!match) {
+            continue; // Ignore events that do not match defined collection patterns
+          }
+
+          const doc = await createDocument(type, relativePath);
+          if (!doc) {
+            continue; // Skip if document creation failed
+          }
+
+          await sync(type, doc);
         }
       },
     );

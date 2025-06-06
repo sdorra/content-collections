@@ -3,29 +3,27 @@ import path from "node:path";
 import pluralize from "pluralize";
 import { InternalConfiguration } from "./configurationReader";
 import { extension, serialize } from "./serializer";
-import { TransformedCollection } from "./transformer";
+import { ValidatedCollection } from "./types";
 
 function createArrayConstName(name: string) {
   let suffix = name.charAt(0).toUpperCase() + name.slice(1);
   return "all" + pluralize(suffix);
 }
 
-type DataFileCollection = Pick<TransformedCollection, "name" | "documents">;
+type DataFileCollection = Pick<ValidatedCollection, "name" | "documents">;
 
 // visible for testing
 export async function createDataFile(
   directory: string,
-  collection: DataFileCollection,
+  collection: string,
+  documents: Array<unknown>,
 ) {
   const dataPath = path.join(
     directory,
-    `${createArrayConstName(collection.name)}.${extension}`,
+    `${createArrayConstName(collection)}.${extension}`,
   );
 
-  await fs.writeFile(
-    dataPath,
-    serialize(collection.documents.map((doc) => doc.document)),
-  );
+  await fs.writeFile(dataPath, serialize(documents));
 }
 
 function createDataFiles(
@@ -33,12 +31,14 @@ function createDataFiles(
   collections: Array<DataFileCollection>,
 ) {
   return Promise.all(
-    collections.map((collection) => createDataFile(directory, collection)),
+    collections.map((collection) =>
+      createDataFile(directory, collection.name, collection.documents),
+    ),
   );
 }
 
 type JavaScriptFileConfiguration = {
-  collections: Array<Pick<TransformedCollection, "name">>;
+  collections: Array<Pick<ValidatedCollection, "name">>;
 };
 
 async function createJavaScriptFile(
@@ -63,7 +63,7 @@ type TypeDefinitionFileConfiguration = Pick<
   InternalConfiguration,
   "path" | "generateTypes"
 > & {
-  collections: Array<Pick<TransformedCollection, "name" | "typeName">>;
+  collections: Array<Pick<ValidatedCollection, "name" | "typeName">>;
 };
 
 function createImportPath(directory: string, target: string) {
@@ -113,8 +113,11 @@ export async function createWriter(directory: string) {
     createTypeDefinitionFile: (
       configuration: TypeDefinitionFileConfiguration,
     ) => createTypeDefinitionFile(directory, configuration),
+    // TODO: do we need this
     createDataFiles: (collections: Array<DataFileCollection>) =>
       createDataFiles(directory, collections),
+    createDataFile: (collection: string, documents: Array<unknown>) =>
+      createDataFile(directory, collection, documents),
   };
 }
 
