@@ -23,6 +23,9 @@ import { warnDeprecated } from "./warn";
 // @see https://github.com/microsoft/TypeScript/issues/42873
 export type * from "zod";
 
+/**
+ * @deprecated Use `FileSystemMeta` instead.
+ */
 export type Meta = {
   filePath: string;
   fileName: string;

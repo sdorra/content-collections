@@ -20,11 +20,11 @@ export type SourceContext = {
   emitter: Emitter;
 };
 
-export type SyncFn = (modification: Modification, path: string) => Promise<unknown>;
+export type SyncFn<TMeta extends MetaBase> = (modification: Modification, document: RawDocument<TMeta>) => Promise<unknown>;
 
 export type Source<TMeta extends MetaBase> = {
   documents: () => Promise<RawDocument<TMeta>[]>;
-  watch: (sync: SyncFn) => Promise<Watcher | null>;
+  watch: (sync: SyncFn<TMeta>) => Promise<Watcher | null>;
 };
 
 const sourceContextStorage = new AsyncLocalStorage<SourceContext>();
