@@ -475,7 +475,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -770,7 +770,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       '@types/eslint':
         specifier: ^8.56.7
@@ -809,7 +809,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -852,7 +852,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/remix-vite':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/remix-vite
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -932,7 +932,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       '@mdx-js/rollup':
         specifier: ^3.1.0
@@ -1014,7 +1014,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/remix-vite':
-        specifier: 0.2.0
+        specifier: 0.2.1
         version: link:../../packages/remix-vite
       '@remix-run/dev':
         specifier: ^2.16.5
@@ -1068,7 +1068,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vinxi':
-        specifier: 0.1.0
+        specifier: 0.1.1
         version: link:../../packages/vinxi
       '@solidjs/start':
         specifier: ^1.0.11
@@ -1096,7 +1096,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       '@sveltejs/adapter-auto':
         specifier: ^3.3.1
@@ -1160,7 +1160,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/vinxi':
-        specifier: 0.1.0
+        specifier: 0.1.1
         version: link:../../packages/vinxi
       '@types/node':
         specifier: ^22.5.4
@@ -1215,7 +1215,7 @@ importers:
         specifier: 0.9.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.4
+        specifier: 0.2.5
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0

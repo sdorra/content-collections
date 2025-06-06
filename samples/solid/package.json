@@ -10,7 +10,7 @@
   "dependencies": {
     "@content-collections/core": "0.9.0",
     "@content-collections/markdown": "0.1.4",
-    "@content-collections/vinxi": "0.1.0",
+    "@content-collections/vinxi": "0.1.1",
     "@solidjs/start": "^1.0.11",
     "solid-js": "^1.9.4",
     "vinxi": "^0.4.3",
