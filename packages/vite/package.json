@@ -36,6 +36,6 @@
   },
   "peerDependencies": {
     "@content-collections/core": "^0.x",
-    "vite": "^5"
+    "vite": "^5 || ^6"
   }
 }
