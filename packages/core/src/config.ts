@@ -11,6 +11,7 @@ import { NotSerializableError, Serializable } from "./serializer";
 import {
   defineFileSystemSource,
   FileSystemSourceOptions,
+  GetExtendedContext,
   GetMeta,
   Source,
   SourceOption,
@@ -86,7 +87,7 @@ export type Schema<
 };
 
 type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, infer TSchema, any, any, any, any, any>
+  TCollection extends Collection<any, infer TSchema, any, any, any, any, Source<any, any>>
     ? GetOutputShape<TSchema>
     : never;
 
@@ -106,6 +107,8 @@ export type Context<TSchema = unknown> = {
   };
 };
 
+type GetContext<TSource extends SourceOption, TSchema> = Context<TSchema> & GetExtendedContext<TSource>;
+
 type Z = typeof z;
 
 export type CollectionRequest<
@@ -115,13 +118,13 @@ export type CollectionRequest<
   TSchema,
   TTransformResult,
   TDocument,
-  TSource,
+  TSource extends SourceOption,
 > = {
   name: TName;
   typeName?: string;
   source?: TSource;
   schema: TShape;
-  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
+  transform?: (data: TSchema, context: GetContext<TSource, TSchema>) => TTransformResult;
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 
   /**
@@ -149,7 +152,7 @@ export type Collection<
   TSchema,
   TTransformResult,
   TDocument,
-  TSource extends SourceOption,
+  TSource extends Source<any, any>,
 > = Omit<
   CollectionRequest<
     TName,
@@ -165,7 +168,7 @@ export type Collection<
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
-  source: Source<GetMeta<TSource>>;
+  source: TSource;
 };
 
 export type AnyCollection = Collection<
@@ -175,7 +178,7 @@ export type AnyCollection = Collection<
   any,
   any,
   any,
-  any
+  Source<any, any>
 >;
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
@@ -218,7 +221,7 @@ export function defineCollection<
         TSchema,
         TTransformResult,
         ResolveImports<TDocument>,
-        TSource
+        Source<GetMeta<TSource>, GetExtendedContext<TSource>>
       >
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(

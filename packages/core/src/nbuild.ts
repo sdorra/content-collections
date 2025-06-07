@@ -99,8 +99,9 @@ export async function createBuilder(
   function createContext(
     collection: ValidatedCollection,
     cache: Cache,
+    document: ValidatedDocument,
   ): Context<unknown> {
-    return {
+    const baseContext: Context<unknown> = {
       documents: (collection) => {
         const resolved = validatedCollections.find(
           (c) => c.name === collection.name,
@@ -123,6 +124,16 @@ export async function createBuilder(
       },
       cache: cache.cacheFn,
     };
+
+    if (collection.source.extendContext) {
+      const extendedContext = collection.source.extendContext(document);
+      return {
+        ...baseContext,
+        ...extendedContext,
+      };
+    } else {
+      return baseContext;
+    }
   }
 
   async function buildDocument(
@@ -133,7 +144,7 @@ export async function createBuilder(
     const transform = collection.transform;
     if (transform) {
       const cache = cacheManager.cache(collection.name, document._meta.id);
-      const context = createContext(collection, cache);
+      const context = createContext(collection, cache, document);
       try {
         document = await transform(document, context);
         await cache.tidyUp();
@@ -315,9 +326,11 @@ export async function createBuilder(
   async function watch() {
     // TODO: check for configuration changes
 
-
     const watchers: Array<Watcher> = [];
     for (const collection of validatedCollections) {
+      if (!collection.source.watch) {
+        continue; // Skip collections that do not support watching
+      }
       const syncFn = createSyncFn(collection);
       const watcher = await collection.source.watch(syncFn);
       if (watcher) {

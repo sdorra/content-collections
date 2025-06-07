@@ -31,6 +31,10 @@ export type FileSystemMeta = MetaBase & {
   extension: string;
 };
 
+export type ExtendedFileSystemContext = {
+  directory: string;
+};
+
 function createIncludePattern(options: FileSystemSourceOptions) {
   return Array.isArray(options.include) ? options.include : [options.include];
 }
@@ -50,7 +54,7 @@ function createIgnorePattern(
 
 export function defineFileSystemSource(
   options: FileSystemSourceOptions,
-): Source<FileSystemMeta> {
+): Source<FileSystemMeta, ExtendedFileSystemContext> {
   const { baseDirectory, emitter } = sourceContext();
 
   const collectionDirectory = path.join(baseDirectory, options.directory);
@@ -153,7 +157,7 @@ export function defineFileSystemSource(
     return collectFile(collectionDirectory, posixToNativePath(relativePath));
   }
 
-  async function watch(sync: SyncFn<FileSystemMeta>): Promise<Watcher | null> {
+  async function watch(sync: SyncFn<FileSystemMeta>): Promise<Watcher> {
     const collectionPath = path.resolve(collectionDirectory);
 
     const subscription = await watcher.subscribe(
@@ -199,8 +203,17 @@ export function defineFileSystemSource(
     return subscription;
   }
 
+  function extendContext(
+    document: RawDocument<FileSystemMeta>,
+  ) {
+    return {
+      directory: document._meta.directory,
+    };
+  }
+
   return {
     documents,
+    extendContext,
     watch,
   };
 }

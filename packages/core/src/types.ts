@@ -1,5 +1,5 @@
 import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
-import { MetaBase } from "./source";
+import { MetaBase, Source } from "./source";
 
 export type Modification = "create" | "update" | "delete";
 
@@ -35,7 +35,7 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
 };
 
 type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, any, any, infer TDocument, any>
+  TCollection extends Collection<any, any, any, any, any, infer TDocument, Source<any, any>>
     ? TDocument
     : never;
 
