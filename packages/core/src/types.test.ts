@@ -3,7 +3,11 @@ import { z } from "zod";
 import { defineCollection, defineConfig } from "./config";
 import { createDefaultImport } from "./import";
 import { defineParser } from "./parser";
-import { GetMetaFromCollection, Source } from "./source";
+import {
+  defineSource,
+  GetExtendedContext,
+  GetMetaFromCollection,
+} from "./source";
 import { GetTypeByName } from "./types";
 import { suppressDeprecatedWarnings } from "./warn";
 
@@ -619,30 +623,27 @@ describe("types", () => {
   });
 
   it("should infer meta from source", () => {
-    const source: Source<{
-      id: string;
-      url: string;
-    }> = {
+    const source = defineSource({
       documents: async () => [
         {
           _meta: {
             id: "1",
             url: "https://example.com",
           },
-          data: {},
-        },
+          data: {
+            title: "Hello World",
+            content: "This is a test document.",
+          },
+        }
       ],
-      watch: async () => {
-        return null;
-      },
-    };
+    });
 
     const collection = defineCollection({
       name: "posts",
       source,
       schema: (y) => ({
         title: y.string(),
-      }),
+      })
     });
 
     const config = defineConfig({
@@ -650,6 +651,83 @@ describe("types", () => {
     });
 
     type Post = GetTypeByName<typeof config, "posts">;
+    const post: Post = {
+      title: "Hello World",
+      content: "This is a test document.",
+      // @ts-expect-error description is not defined in the schema
+      description: "This is a test description.",
+      _meta: {
+        id: "1",
+        url: "https://example.com",
+      },
+    };
+    expect(post).toBeTruthy();
+
     type Meta = GetMetaFromCollection<typeof collection>;
+    const meta: Meta = {
+      id: "1",
+      url: "https://example.com",
+      // @ts-expect-error fileName is not defined in the source
+      fileName: "example.md",
+    };
+    expect(meta).toBeTruthy();
+  });
+
+  it("should infer extended context from source", () => {
+    const source = defineSource({
+      documents: async () => [
+        {
+          _meta: {
+            id: "1",
+            url: "https://example.com",
+          },
+          data: {
+            title: "Hello World",
+            content: "This is a test document.",
+          },
+        }
+      ],
+      extendContext: (document) => {
+        return {
+          customData: `Custom data for ${document._meta.id}`,
+        };
+      },
+    });
+
+    const collection = defineCollection({
+      name: "posts",
+      source,
+      schema: (y) => ({
+        title: y.string(),
+      }),
+      transform: (data, context) => {
+        return {
+          ...data,
+          custom: context.customData,
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+    const post: Post = {
+      title: "Hello World",
+      content: "This is a test document.",
+      custom: "Custom data for 1",
+      _meta: {
+        id: "1",
+        url: "https://example.com",
+      },
+    };
+    expect(post).toBeTruthy();
+
+    type ExtendedContext = GetExtendedContext<typeof source>;
+    const extendedContext: ExtendedContext = {
+      customData: "Custom data for 1",
+    };
+    expect(extendedContext.customData).toBe("Custom data for 1");
   });
 });

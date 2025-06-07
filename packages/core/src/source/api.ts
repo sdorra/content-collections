@@ -20,11 +20,15 @@ export type SourceContext = {
   emitter: Emitter;
 };
 
-export type SyncFn<TMeta extends MetaBase> = (modification: Modification, document: RawDocument<TMeta>) => Promise<unknown>;
+export type SyncFn<TMeta extends MetaBase> = (
+  modification: Modification,
+  document: RawDocument<TMeta>,
+) => Promise<unknown>;
 
-export type Source<TMeta extends MetaBase> = {
+export type Source<TMeta extends MetaBase, TExtendedContext = {}> = {
   documents: () => Promise<RawDocument<TMeta>[]>;
-  watch: (sync: SyncFn<TMeta>) => Promise<Watcher | null>;
+  extendContext?: (document: RawDocument<TMeta>) => TExtendedContext;
+  watch?: (sync: SyncFn<TMeta>) => Promise<Watcher>;
 };
 
 const sourceContextStorage = new AsyncLocalStorage<SourceContext>();
@@ -39,7 +43,15 @@ export function withSourceContext<T>(
 export function sourceContext(): SourceContext {
   const ctx = sourceContextStorage.getStore();
   if (!ctx) {
-    throw new Error("Source context is not available. Ensure you are using withSourceContext.");
+    throw new Error(
+      "Source context is not available. Ensure you are using withSourceContext.",
+    );
   }
   return ctx;
+}
+
+export function defineSource<TMeta extends MetaBase, TExtendedContext = {}>(
+  source: Source<TMeta, TExtendedContext>,
+): Source<TMeta, TExtendedContext> {
+  return source;
 }
