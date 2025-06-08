@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { allPosts } from 'content-collections';
-import { markdownPlugins } from './markdownPlugins';
+import { markdownPlugins } from '$lib/mdSveltePlugins';
 
 export const load: PageLoad = async ({ params }) => {
 	const post = allPosts.find((post) => post.slug == params.slug);

@@ -8,7 +8,6 @@
 <p>List of Posts</p>
 <ul>
   {#each data.posts as post}
-    {@debug post}
     <li>
       <a href="/posts/{post.slug}">{post.title}</a>
       <p>{post.summary}</p>
