@@ -181,7 +181,9 @@ export async function createBuilder(
       return null;
     }
 
-    return transformedValidationResult.value;
+    // We keep using the document, because `transformedValidationResult.value`
+    // would remove things like our import symbols.
+    return document;
   }
 
   async function buildCollection(collection: ValidatedCollection) {
@@ -235,6 +237,17 @@ export async function createBuilder(
 
     const result = validationResult.value as ValidatedDocument;
     result._meta = rawDocument._meta;
+
+    // TODO: dirty hack if content is not defined in the schema,
+    // most validation libraries will remove the content property.
+    // Before StandardSchema, we have added a content property to the schema,
+    // after StandardSchema, we have added the property from the parser after validation.
+    // But now, the parsing happens in the source, we have to find a better way to handle this.
+
+    if (rawDocument.data.content !== undefined) {
+      result.content = rawDocument.data.content;
+    }
+
     return result;
   }
 
@@ -349,5 +362,8 @@ export async function createBuilder(
     build,
     // TODO: sync
     watch,
+    on: emitter.on,
   };
 }
+
+export type Builder = Awaited<ReturnType<typeof createBuilder>>;
