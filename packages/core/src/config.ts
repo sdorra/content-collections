@@ -74,9 +74,13 @@ export type Schema<
   _meta: Meta;
 };
 
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
 type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, infer TSchema, any, any, any, any>
-    ? GetOutputShape<TSchema>
+  TCollection extends Collection<any, any, any, infer TSchema, any, any>
+    ? Prettify<TSchema>
     : never;
 
 export type Context<TSchema = unknown> = {
