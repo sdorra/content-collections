@@ -141,6 +141,61 @@ describe("types", () => {
     expect(person).toBeTruthy();
   });
 
+  it("should infer type with content from other collection", () => {
+    const authors = defineCollection({
+      name: "authors",
+      directory: "content",
+      include: "authors/*.md",
+      schema: z.object({
+        ref: z.string(),
+        name: z.string(),
+      }),
+    });
+
+    const articles = defineCollection({
+      name: "articles",
+      directory: "content",
+      include: "articles/*.md",
+      schema: z.object({
+        title: z.string(),
+        author: z.string(),
+      }),
+      transform: async (doc, context) => {
+        const author = await context
+          .documents(authors)
+          .find((author) => author.ref === doc.author);
+        if (!author) {
+          throw new Error(`Author ${doc.author} not found`);
+        }
+
+        return {
+          ...doc,
+          author: {
+            name: author.name,
+            bio: author.content,
+          },
+        };
+      },
+    });
+
+    const config = defineConfig({
+      collections: [authors, articles],
+    });
+
+    type Article = Omit<GetTypeByName<typeof config, "articles">, "_meta">;
+
+    const article: Article = {
+      title: "My Article",
+      author: {
+        name: "John Doe",
+        bio: "John is a software engineer.",
+      },
+      content: "This is the content of the article.",
+    };
+
+    expect(article).toBeTruthy();
+  });
+
   it("should have content if parser is not defined", () => {
     const collection = defineCollection({
       name: "person",
