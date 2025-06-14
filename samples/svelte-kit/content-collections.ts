@@ -21,6 +21,22 @@ const characters = defineCollection({
   },
 });
 
+const posts = defineCollection({
+  name: "posts",
+  directory: "posts",
+  include: "**/*.md",
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+  }),
+  transform: async (doc) => {
+    return {
+      ...doc,
+      slug: doc.title.toLowerCase().replace(/ /g, "-"),
+    };
+  },
+});
+
 export default defineConfig({
-  collections: [characters],
+  collections: [characters, posts],
 });
