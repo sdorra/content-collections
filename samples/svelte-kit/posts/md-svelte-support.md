@@ -1,6 +1,8 @@
 ---
 title: Svelte Markdown Example
 summary: Markdown with Svelte Components, Remark and Rehype support, simular as MDX, just for Svelte
+author: unknown
+date: 2023-10-01
 ---
 
 ## GFM

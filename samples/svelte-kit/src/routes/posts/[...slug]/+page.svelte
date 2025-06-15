@@ -7,12 +7,17 @@
 
   const post = $derived(data.post);
   const plugins = markdownPlugins;
-  // const content = { md: post.content, plugins: data.plugins };
 </script>
 
-<div class="w-screen h-screen bg-slate-200 m-20">
-  <div class="prose prose-md">
-    <h1>{post.title}</h1>
+<article class="post">
+  <header>
+    <h2>{post.title}</h2>
+  </header>
+  <div class="content">
     <Markdown md={post.content} {plugins} />
   </div>
-</div>
+  <footer>
+    <p>By {post.author}</p>
+    <time>{post.date}</time>
+  </footer>
+</article>
