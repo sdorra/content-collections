@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.9.1
+
+### Patch Changes
+
+- [#594](https://github.com/sdorra/content-collections/pull/594) [`f232837`](https://github.com/sdorra/content-collections/commit/f2328373b057520a3c9b35cd10d511b079fb999e) Thanks [@sdorra](https://github.com/sdorra)! - Fix missing content property when accessing other collections
+
 ## 0.9.0
 
 ### Minor Changes
