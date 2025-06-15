@@ -1,26 +1,24 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMarkdown } from "@content-collections/markdown";
 import { z } from "zod";
 
-const characters = defineCollection({
-  name: "characters",
-  directory: "characters",
-  include: "*.md",
+const posts = defineCollection({
+  name: "posts",
+  directory: "posts",
+  include: "**/*.md",
   schema: z.object({
-    name: z.string().min(1),
-    origin: z.string().min(1),
-    species: z.string().min(1),
-    source: z.string().min(1).url(),
+    title: z.string(),
+    summary: z.string(),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    author: z.string(),
   }),
-  transform: async (document, context) => {
-    const content = await compileMarkdown(context, document);
+  transform: async (doc) => {
     return {
-      ...document,
-      content,
+      ...doc,
+      slug: doc.title.toLowerCase().replace(/ /g, "-"),
     };
   },
 });
 
 export default defineConfig({
-  collections: [characters],
+  collections: [posts],
 });

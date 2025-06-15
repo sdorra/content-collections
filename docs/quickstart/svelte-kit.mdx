@@ -87,7 +87,7 @@ const posts = defineCollection({
   }),
   transform: (doc) => ({
     ...doc,
-    slug: doc.title.toLowerCase().replace(/ /g, '-'),
+    slug: doc.title.toLowerCase().replace(/ /g, "-"),
   }),
 });
 
@@ -132,9 +132,10 @@ If the files are valid, they will be automatically added to the `posts` collecti
 To generate a list of posts create in a `src/posts` directory two files.
 
 `+page.ts` file
+
 ```typescript
-import type { PageLoad } from './$types';
-import { allPosts } from 'content-collections';
+import type { PageLoad } from "./$types";
+import { allPosts } from "content-collections";
 
 export const load: PageLoad = async () => {
   // Fetch all posts from the content collection and filter or sort (optional)
@@ -147,6 +148,7 @@ export const load: PageLoad = async () => {
 ```
 
 `+page.svelte` file
+
 ```svelte
 <script lang="ts">
   import type { PageProps } from './$types';
@@ -169,39 +171,7 @@ Now you can just import the `allPosts` collection and use it in your code.
 The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `slug`, `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
 
-## Showing Document Entry (Post)
-For showing a single post create two files in `src/posts/[...slug]`.
-
-`+page.ts` file
-```typescript
-import type { PageLoad } from './$types';
-import { error } from '@sveltejs/kit';
-import { allPosts } from 'content-collections';
-
-export const load: PageLoad = async ({ params }) => {
-  const post = allPosts.find((post) => post.slug == params.slug);
-  if (!post) {
-    error(404, `Could not find ${params.slug}`);
-  }
-
-  return {
-    post,
-  };
-};
-```
-
-`+page.svelte` file
-```svelte
-<script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
-
-  const post = $derived(data.post);
-</script>
-
-<h1>{post.title}</h1>
-```
+For more examples have a look in [Content-Collections Svelte Examples](https://www.content-collections.dev/samples/svelte-kit)
 
 </div>
 </div>
