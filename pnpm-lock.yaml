@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  vite: 5.4.11
-
 importers:
 
   .:
@@ -361,7 +358,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   packages/vinxi:
@@ -385,7 +382,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   packages/vite:
@@ -407,7 +404,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   samples/arktype:
@@ -432,7 +429,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vitest:
         specifier: ^3.1.3
@@ -460,7 +457,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vitest:
         specifier: ^3.1.3
@@ -503,7 +500,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   samples/mdx:
@@ -797,7 +794,7 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vite-tsconfig-paths:
         specifier: ^4.3.2
@@ -840,7 +837,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   samples/react-router:
@@ -898,7 +895,7 @@ importers:
         specifier: ^5.7.2
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.11
         version: 5.4.11(@types/node@20.14.9)
       vite-tsconfig-paths:
         specifier: ^5.1.4
@@ -980,7 +977,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vite-tsconfig-paths:
         specifier: ^4.3.2
@@ -1053,7 +1050,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vite-tsconfig-paths:
         specifier: ^4.3.2
@@ -1085,6 +1082,9 @@ importers:
 
   samples/svelte-kit:
     dependencies:
+      vite:
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@20.14.9)
       zod:
         specifier: ^3.25.56
         version: 3.25.56
@@ -1095,18 +1095,21 @@ importers:
       '@content-collections/markdown':
         specifier: 0.1.4
         version: link:../../packages/markdown
+      '@content-collections/sample-theme':
+        specifier: 0.1.0
+        version: link:../../utils/sample-theme
       '@content-collections/vite':
         specifier: 0.2.5
         version: link:../../packages/vite
       '@sveltejs/adapter-auto':
         specifier: ^6.0.1
-        version: 6.0.1(@sveltejs/kit@2.21.2)
+        version: 6.0.1(@sveltejs/kit@2.21.5)
       '@sveltejs/kit':
-        specifier: ^2.21.2
-        version: 2.21.2(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.33.17)(vite@5.4.11)
+        specifier: ^2.21.5
+        version: 2.21.5(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.34.3)(vite@6.3.5)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.1.0
-        version: 5.1.0(svelte@5.33.17)(vite@5.4.11)
+        version: 5.1.0(svelte@5.34.3)(vite@6.3.5)
       rehype-attr:
         specifier: ^4.0.2
         version: 4.0.2
@@ -1117,23 +1120,20 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       svelte:
-        specifier: ^5.33.17
-        version: 5.33.17
+        specifier: ^5.34.3
+        version: 5.34.3
       svelte-check:
         specifier: ^4.2.1
-        version: 4.2.1(svelte@5.33.17)(typescript@5.8.3)
+        version: 4.2.1(svelte@5.34.3)(typescript@5.8.3)
       svelte-exmarkdown:
         specifier: ^5.0.1
-        version: 5.0.1(svelte@5.33.17)
+        version: 5.0.1(svelte@5.34.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
-      vite:
-        specifier: 5.4.11
-        version: 5.4.11(@types/node@20.14.9)
 
   samples/tanstack-start:
     dependencies:
@@ -1187,7 +1187,7 @@ importers:
         specifier: ^5.7.2
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@22.10.5)
       vite-tsconfig-paths:
         specifier: ^5.1.4
@@ -1215,7 +1215,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vitest:
         specifier: ^3.1.3
@@ -1255,7 +1255,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
 
   samples/xml:
@@ -1286,7 +1286,7 @@ importers:
         specifier: ^5.5.4
         version: 5.8.3
       vite:
-        specifier: 5.4.11
+        specifier: ^5.4.6
         version: 5.4.11(@types/node@20.14.9)
       vitest:
         specifier: ^3.1.3
@@ -1919,7 +1919,7 @@ packages:
     resolution: {integrity: sha512-CDo5/JBLyJkC8uWn/DO5SnhXzGPLr9ecbAprloQMwoDaYFh846DRXhD+dK1Sqoa84O40+dk3p5Zltf2SkXdV2w==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     peerDependencies:
-      vite: 5.4.11
+      vite: ^5
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.14.1)
       '@types/mdx': 2.0.13
@@ -1943,7 +1943,7 @@ packages:
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     hasBin: true
     peerDependencies:
-      vite: 5.4.11
+      vite: ^5
     dependencies:
       csstype: 3.1.3
       vite: 5.4.11(@types/node@20.14.9)
@@ -6446,7 +6446,7 @@ packages:
       '@react-router/serve': ^7.5.2
       react-router: ^7.5.2
       typescript: ^5.1.0
-      vite: 5.4.11
+      vite: ^5.1.0 || ^6.0.0
       wrangler: ^3.28.2 || ^4.0.0
     peerDependenciesMeta:
       '@react-router/serve':
@@ -6593,7 +6593,7 @@ packages:
       '@remix-run/react': ^2.16.5
       '@remix-run/serve': ^2.16.5
       typescript: ^5.1.0
-      vite: 5.4.11
+      vite: ^5.1.0 || ^6.0.0
       wrangler: ^3.28.2
     peerDependenciesMeta:
       '@remix-run/serve':
@@ -7427,25 +7427,25 @@ packages:
       acorn: 8.14.1
     dev: true
 
-  /@sveltejs/adapter-auto@6.0.1(@sveltejs/kit@2.21.2):
+  /@sveltejs/adapter-auto@6.0.1(@sveltejs/kit@2.21.5):
     resolution: {integrity: sha512-mcWud3pYGPWM2Pphdj8G9Qiq24nZ8L4LB7coCUckUEy5Y7wOWGJ/enaZ4AtJTcSm5dNK1rIkBRoqt+ae4zlxcQ==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.21.2(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.33.17)(vite@5.4.11)
+      '@sveltejs/kit': 2.21.5(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.34.3)(vite@6.3.5)
     dev: true
 
-  /@sveltejs/kit@2.21.2(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.33.17)(vite@5.4.11):
-    resolution: {integrity: sha512-EMYTY4+rNa7TaRZYzCqhQslEkACEZzWc363jOYuc90oJrgvlWTcgqTxcGSIJim48hPaXwYlHyatRnnMmTFf5tA==}
+  /@sveltejs/kit@2.21.5(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.34.3)(vite@6.3.5):
+    resolution: {integrity: sha512-P5m7yZtvD1Kx/Z6JcjgJtdMqef/tCGMDrd9B9S2q8j+FMnkeKTMxW1nidnjVzk4HEDRGf4IlBI94/niy6t3hLA==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^3.0.0 || ^4.0.0-next.1 || ^5.0.0
       svelte: ^4.0.0 || ^5.0.0-next.0
-      vite: 5.4.11
+      vite: ^5.0.3 || ^6.0.0
     dependencies:
       '@sveltejs/acorn-typescript': 1.0.5(acorn@8.14.1)
-      '@sveltejs/vite-plugin-svelte': 5.1.0(svelte@5.33.17)(vite@5.4.11)
+      '@sveltejs/vite-plugin-svelte': 5.1.0(svelte@5.34.3)(vite@6.3.5)
       '@types/cookie': 0.6.0
       acorn: 8.14.1
       cookie: 0.6.0
@@ -7457,41 +7457,42 @@ packages:
       sade: 1.8.1
       set-cookie-parser: 2.7.1
       sirv: 3.0.1
-      svelte: 5.33.17
-      vite: 5.4.11(@types/node@20.14.9)
+      svelte: 5.34.3
+      vite: 6.3.5(@types/node@20.14.9)
+      vitefu: 1.0.6(vite@6.3.5)
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.33.17)(vite@5.4.11):
+  /@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.34.3)(vite@6.3.5):
     resolution: {integrity: sha512-J/Nmb2Q2y7mck2hyCX4ckVHcR5tu2J+MtBEQqpDrrgELZ2uvraQcK/ioCV61AqkdXFgriksOKIceDcQmqnGhVw==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22}
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^5.0.0
       svelte: ^5.0.0
-      vite: 5.4.11
+      vite: ^6.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 5.1.0(svelte@5.33.17)(vite@5.4.11)
+      '@sveltejs/vite-plugin-svelte': 5.1.0(svelte@5.34.3)(vite@6.3.5)
       debug: 4.4.1(supports-color@9.4.0)
-      svelte: 5.33.17
-      vite: 5.4.11(@types/node@20.14.9)
+      svelte: 5.34.3
+      vite: 6.3.5(@types/node@20.14.9)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.33.17)(vite@5.4.11):
+  /@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.3)(vite@6.3.5):
     resolution: {integrity: sha512-wojIS/7GYnJDYIg1higWj2ROA6sSRWvcR1PO/bqEyFr/5UZah26c8Cz4u0NaqjPeVltzsVpt2Tm8d2io0V+4Tw==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22}
     peerDependencies:
       svelte: ^5.0.0
-      vite: 5.4.11
+      vite: ^6.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.33.17)(vite@5.4.11)
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.1.0)(svelte@5.34.3)(vite@6.3.5)
       debug: 4.4.1(supports-color@9.4.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.17
-      svelte: 5.33.17
-      vite: 5.4.11(@types/node@20.14.9)
-      vitefu: 1.0.6(vite@5.4.11)
+      svelte: 5.34.3
+      vite: 6.3.5(@types/node@20.14.9)
+      vitefu: 1.0.6(vite@6.3.5)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7597,7 +7598,7 @@ packages:
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
-      vite: 5.4.11
+      vite: '>=5.0.0 || >=6.0.0'
       webpack: '>=5.92.0'
     peerDependenciesMeta:
       '@rsbuild/core':
@@ -7706,6 +7707,7 @@ packages:
       - encoding
       - idb-keyval
       - ioredis
+      - jiti
       - less
       - lightningcss
       - mysql2
@@ -7715,11 +7717,13 @@ packages:
       - sugarss
       - supports-color
       - terser
+      - tsx
       - typescript
       - uploadthing
       - vite
       - webpack
       - xml2js
+      - yaml
     dev: false
 
   /@tanstack/store@0.7.0:
@@ -7870,7 +7874,7 @@ packages:
   /@types/estree-jsx@1.0.5:
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
 
   /@types/estree@1.0.7:
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
@@ -8563,7 +8567,7 @@ packages:
     peerDependencies:
       react: 0.0.0-experimental-035a41c4e-20230704
       react-dom: 0.0.0-experimental-035a41c4e-20230704
-      vite: 5.4.11
+      vite: ^4.3.9
     dependencies:
       acorn-loose: 8.4.0
       react: 18.3.1
@@ -8639,7 +8643,7 @@ packages:
     resolution: {integrity: sha512-SCCPBJtYLdE8PX/7ZQAs1QAZ8Jqwih+0VBLum1EGqmCCQal+MIUqLCzj3ZUy8ufbC0cAM4LRlSTm7IQJwWT4ug==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      vite: 5.4.11
+      vite: ^4.2.0 || ^5.0.0 || ^6.0.0
     dependencies:
       '@babel/core': 7.26.10
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.10)
@@ -8689,7 +8693,7 @@ packages:
     resolution: {integrity: sha512-PJbLjonJK82uCWHjzgBJZuR7zmAOrSvKk1QBxrennDIgtH4uK0TB1PvYmc0XBCigxxtiAVPfWtAdy4lpz8SQGQ==}
     peerDependencies:
       msw: ^2.4.9
-      vite: 5.4.11
+      vite: ^5.0.0 || ^6.0.0
     peerDependenciesMeta:
       msw:
         optional: true
@@ -11340,8 +11344,8 @@ packages:
       estraverse: 5.3.0
     dev: true
 
-  /esrap@1.4.7:
-    resolution: {integrity: sha512-0ZxW6guTF/AeKeKi7he93lmgv7Hx7giD1tBrOeVqkqsZGQJd2/kfnL7LdIsr9FT/AtkBK9XeDTov+gxprBqdEg==}
+  /esrap@1.4.9:
+    resolution: {integrity: sha512-3OMlcd0a03UGuZpPeUC1HxR3nA23l+HEyCiZw3b3FumJIN9KphoGzDJKMXI1S72jVS1dsenDyQC0kJlO1U9E1g==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
     dev: true
@@ -11399,7 +11403,7 @@ packages:
   /estree-util-scope@1.0.0:
     resolution: {integrity: sha512-2CAASclonf+JFWBNJPndcOpA8EMJwa0Q8LUFJEKqXLW6+qBvbFZuF5gItbQOs/umBUkjviCSDCbBwU2cXbmrhQ==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       devlop: 1.1.0
 
   /estree-util-to-js@1.2.0:
@@ -16434,7 +16438,7 @@ packages:
       react: '>=17'
       react-dom: '>=17'
       react-router: '>=7.0.0'
-      vite: 5.4.11
+      vite: '>=5.0.0 || >=6.0.0'
     dependencies:
       '@babel/core': 7.26.10
       '@babel/generator': 7.26.10
@@ -16654,7 +16658,7 @@ packages:
   /recma-build-jsx@1.0.0:
     resolution: {integrity: sha512-8GtdyqaBcDfva+GUKDr3nev3VpKAhup1+RvkMvUxURHpW7QyIvk9F5wz7Vzo06CEMSilw6uArgRqhpiUcWp8ew==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       estree-util-build-jsx: 3.0.1
       vfile: 6.0.3
 
@@ -16672,7 +16676,7 @@ packages:
   /recma-parse@1.0.0:
     resolution: {integrity: sha512-OYLsIGBB5Y5wjnSnQW6t3Xg7q3fQ7FWbw/vcXtORTnyaSFscOtABg+7Pnz6YZ6c27fG1/aN8CjfwoUEUIdwqWQ==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       esast-util-from-js: 2.0.1
       unified: 11.0.5
       vfile: 6.0.3
@@ -16680,7 +16684,7 @@ packages:
   /recma-stringify@1.0.0:
     resolution: {integrity: sha512-cjwII1MdIIVloKvC9ErQ+OgAtwHBmcZ0Bg4ciz78FtbT8In39aAYbaA7zvxQ61xVMSPE8WxhLwLbhif4Js2C+g==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       estree-util-to-js: 2.0.0
       unified: 11.0.5
       vfile: 6.0.3
@@ -16789,7 +16793,7 @@ packages:
   /rehype-recma@1.0.0:
     resolution: {integrity: sha512-lqA4rGUf1JmacCNWWZx0Wv1dHqMwxzsDWYMTowuplHF3xH0N/MmrZ/G3BDZnzAkRmxDadujCjaKM2hqYdCBOGw==}
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       '@types/hast': 3.0.4
       hast-util-to-estree: 3.1.3
     transitivePeerDependencies:
@@ -17955,7 +17959,7 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /svelte-check@4.2.1(svelte@5.33.17)(typescript@5.8.3):
+  /svelte-check@4.2.1(svelte@5.34.3)(typescript@5.8.3):
     resolution: {integrity: sha512-e49SU1RStvQhoipkQ/aonDhHnG3qxHSBtNfBRb9pxVXoa+N7qybAo32KgA9wEb2PCYFNaDg7bZCdhLD1vHpdYA==}
     engines: {node: '>= 18.0.0'}
     hasBin: true
@@ -17968,13 +17972,13 @@ packages:
       fdir: 6.4.5(picomatch@4.0.2)
       picocolors: 1.1.1
       sade: 1.8.1
-      svelte: 5.33.17
+      svelte: 5.34.3
       typescript: 5.8.3
     transitivePeerDependencies:
       - picomatch
     dev: true
 
-  /svelte-exmarkdown@5.0.1(svelte@5.33.17):
+  /svelte-exmarkdown@5.0.1(svelte@5.34.3):
     resolution: {integrity: sha512-LVfk4WxysQ/jHws30QsTEtTv89TkPO1w/zZR8PjNMK69aqAjYk1S5l5inuPX1JoQwWN0cjg9WqLKxXKLWKOddw==}
     peerDependencies:
       svelte: ^5.1.3
@@ -17982,14 +17986,14 @@ packages:
       remark-gfm: 4.0.1
       remark-parse: 11.0.0
       remark-rehype: 11.1.2
-      svelte: 5.33.17
+      svelte: 5.34.3
       unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /svelte@5.33.17:
-    resolution: {integrity: sha512-y453Ac1Xi/MFXbGIDK89YH1CeXlFk+aTsDQ1uMc7iE+iVau6ZnE4t3iWsr0oxKnIApjfI7CL4R1NEHzVMUrkVg==}
+  /svelte@5.34.3:
+    resolution: {integrity: sha512-Y0QKP2rfWD+ARKe91c4JgZgc/nXa2BfOnVBUjYUMB819m7VyPszihkjdzXPIV0qlGRZYEukpgNq7hgbzTbopJw==}
     engines: {node: '>=18'}
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -18001,7 +18005,7 @@ packages:
       axobject-query: 4.1.0
       clsx: 2.1.1
       esm-env: 1.2.2
-      esrap: 1.4.7
+      esrap: 1.4.9
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.17
@@ -19291,7 +19295,7 @@ packages:
       unctx: 2.3.1
       unenv: 1.10.0
       unstorage: 1.14.4(db0@0.2.1)(ioredis@5.4.1)
-      vite: 5.4.11(@types/node@22.10.5)
+      vite: 6.3.5(@types/node@22.10.5)
       zod: 3.24.4
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -19318,6 +19322,7 @@ packages:
       - encoding
       - idb-keyval
       - ioredis
+      - jiti
       - less
       - lightningcss
       - mysql2
@@ -19327,9 +19332,11 @@ packages:
       - sugarss
       - supports-color
       - terser
+      - tsx
       - typescript
       - uploadthing
       - xml2js
+      - yaml
     dev: false
 
   /vite-imagetools@7.0.5:
@@ -19414,7 +19421,7 @@ packages:
     peerDependencies:
       '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.*
       solid-js: ^1.7.2
-      vite: 5.4.11
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     peerDependenciesMeta:
       '@testing-library/jest-dom':
         optional: true
@@ -19434,7 +19441,7 @@ packages:
   /vite-tsconfig-paths@4.3.2(typescript@5.5.4)(vite@5.4.11):
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
     peerDependencies:
-      vite: 5.4.11
+      vite: '*'
     peerDependenciesMeta:
       vite:
         optional: true
@@ -19451,7 +19458,7 @@ packages:
   /vite-tsconfig-paths@4.3.2(typescript@5.8.3)(vite@5.4.11):
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
     peerDependencies:
-      vite: 5.4.11
+      vite: '*'
     peerDependenciesMeta:
       vite:
         optional: true
@@ -19468,7 +19475,7 @@ packages:
   /vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@5.4.11):
     resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
     peerDependencies:
-      vite: 5.4.11
+      vite: '*'
     peerDependenciesMeta:
       vite:
         optional: true
@@ -19558,10 +19565,111 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
+  /vite@6.3.5(@types/node@20.14.9):
+    resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      jiti: '>=1.21.0'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      sass-embedded: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
+        optional: true
+    dependencies:
+      '@types/node': 20.14.9
+      esbuild: 0.25.0
+      fdir: 6.4.5(picomatch@4.0.2)
+      picomatch: 4.0.2
+      postcss: 8.5.4
+      rollup: 4.42.0
+      tinyglobby: 0.2.13
+    optionalDependencies:
+      fsevents: 2.3.3
+
+  /vite@6.3.5(@types/node@22.10.5):
+    resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      jiti: '>=1.21.0'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      sass-embedded: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
+        optional: true
+    dependencies:
+      '@types/node': 22.10.5
+      esbuild: 0.25.0
+      fdir: 6.4.5(picomatch@4.0.2)
+      picomatch: 4.0.2
+      postcss: 8.5.4
+      rollup: 4.42.0
+      tinyglobby: 0.2.13
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: false
+
   /vitefu@1.0.5(vite@5.4.11):
     resolution: {integrity: sha512-h4Vflt9gxODPFNGPwp4zAMZRpZR7eslzwH2c5hn5kNZ5rhnKyRJ50U+yGCdc2IRaBs8O4haIgLNGrV5CrpMsCA==}
     peerDependencies:
-      vite: 5.4.11
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     peerDependenciesMeta:
       vite:
         optional: true
@@ -19569,15 +19677,15 @@ packages:
       vite: 5.4.11(@types/node@20.14.9)
     dev: false
 
-  /vitefu@1.0.6(vite@5.4.11):
+  /vitefu@1.0.6(vite@6.3.5):
     resolution: {integrity: sha512-+Rex1GlappUyNN6UfwbVZne/9cYC4+R2XDk9xkNXBKMw6HQagdX9PgZ8V2v1WUSK1wfBLp7qbI1+XSNIlB1xmA==}
     peerDependencies:
-      vite: 5.4.11
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     peerDependenciesMeta:
       vite:
         optional: true
     dependencies:
-      vite: 5.4.11(@types/node@20.14.9)
+      vite: 6.3.5(@types/node@20.14.9)
     dev: true
 
   /vitest@3.1.3(@types/node@20.14.9)(happy-dom@15.11.4):
