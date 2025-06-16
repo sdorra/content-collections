@@ -8,6 +8,12 @@ export function generateTypeName(name: string) {
   return camelcase(singularName, { pascalCase: true });
 }
 
+// TODO: missing tests
+export function generateArrayConstName(name: string) {
+  let suffix = name.charAt(0).toUpperCase() + name.slice(1);
+  return "all" + pluralize(suffix);
+}
+
 export function isDefined<T>(value: T | undefined | null): value is T {
   return value !== undefined && value !== null;
 }

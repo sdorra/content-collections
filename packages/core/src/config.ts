@@ -13,7 +13,7 @@ import {
   FileSystemSourceOptions,
   GetExtendedContext,
   GetMeta,
-  Source,
+  SourceFactory,
   SourceOption,
 } from "./source";
 import { generateTypeName } from "./utils";
@@ -91,7 +91,15 @@ type Prettify<T> = {
 } & {};
 
 type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, infer TSchema, any, any, any, any, Source<any, any>>
+  TCollection extends Collection<
+    any,
+    infer TSchema,
+    any,
+    any,
+    any,
+    any,
+    SourceFactory<any, any>
+  >
     ? Prettify<GetOutputShape<TSchema>>
     : never;
 
@@ -111,7 +119,8 @@ export type Context<TSchema = unknown> = {
   };
 };
 
-type GetContext<TSource extends SourceOption, TSchema> = Context<TSchema> & GetExtendedContext<TSource>;
+type GetContext<TSource extends SourceOption, TSchema> = Context<TSchema> &
+  GetExtendedContext<TSource>;
 
 type Z = typeof z;
 
@@ -128,7 +137,10 @@ export type CollectionRequest<
   typeName?: string;
   source?: TSource;
   schema: TShape;
-  transform?: (data: TSchema, context: GetContext<TSource, TSchema>) => TTransformResult;
+  transform?: (
+    data: TSchema,
+    context: GetContext<TSource, TSchema>,
+  ) => TTransformResult;
   onSuccess?: (documents: Array<TDocument>) => void | Promise<void>;
 
   /**
@@ -156,7 +168,7 @@ export type Collection<
   TSchema,
   TTransformResult,
   TDocument,
-  TSource extends Source<any, any>,
+  TSource extends SourceFactory<any, any>,
 > = Omit<
   CollectionRequest<
     TName,
@@ -182,7 +194,7 @@ export type AnyCollection = Collection<
   any,
   any,
   any,
-  Source<any, any>
+  SourceFactory<any, any>
 >;
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
@@ -225,7 +237,7 @@ export function defineCollection<
         TSchema,
         TTransformResult,
         ResolveImports<TDocument>,
-        Source<GetMeta<TSource>, GetExtendedContext<TSource>>
+        SourceFactory<GetMeta<TSource>, GetExtendedContext<TSource>>
       >
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(
@@ -270,7 +282,6 @@ export function defineCollection<
       exclude: collection.exclude,
       parser: collection.parser || "frontmatter",
     });
-
   } else if (source && source.directory && source.include) {
     source = defineFileSystemSource({
       directory: source.directory,

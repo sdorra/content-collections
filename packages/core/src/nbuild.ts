@@ -7,17 +7,16 @@ import {
   Options as ConfigurationOptions,
   createConfigurationReader,
   defaultConfigName,
+  InternalConfiguration,
 } from "./configurationReader";
-import { type Emitter, createEmitter } from "./events";
+import { createEmitter, type Emitter, TransformError } from "./events";
 import { serializableSchema } from "./serializer";
 import {
   MetaBase,
   RawDocument,
   SyncFn,
   Watcher,
-  withSourceContext,
 } from "./source";
-import { TransformError } from "./transformer";
 import { ValidatedCollection, ValidatedDocument } from "./types";
 import { isDefined } from "./utils";
 import { createWriter } from "./writer";
@@ -37,36 +36,23 @@ function orderById(a: RawDocument<MetaBase>, b: RawDocument<MetaBase>) {
   return a._meta.id.localeCompare(b._meta.id);
 }
 
-export async function createBuilder(
-  configurationPath: string,
-  options: Options = {
-    configName: defaultConfigName,
-  },
-  emitter: Emitter = createEmitter(),
+// TODO: check export
+export async function createInternalBuilder(
+  configuration: InternalConfiguration,
+  baseDirectory: string,
+  options: Options,
+  emitter: Emitter,
 ) {
-  const limit = pLimit(os.cpus().length);
-
-  const configurationReader = createConfigurationReader();
-  const baseDirectory = path.dirname(configurationPath);
-  function readConfiguration(configurationPath: string, options: Options) {
-    return withSourceContext(
-      {
-        baseDirectory,
-        emitter,
-      },
-      () => configurationReader(configurationPath, options),
-    );
-  }
-
   const outputDirectory = resolveOutputDir(baseDirectory, options);
+
+  const limit = pLimit(os.cpus().length);
 
   emitter.emit("builder:created", {
     createdAt: Date.now(),
-    configurationPath,
+    configurationPath: configuration.path,
     outputDirectory: outputDirectory,
   });
 
-  const configuration = await readConfiguration(configurationPath, options);
   const cacheManager = await createCacheManager(
     baseDirectory,
     configuration.checksum,
@@ -76,9 +62,13 @@ export async function createBuilder(
 
   let validatedCollections: ValidatedCollection[] = [];
 
-  async function validateCollections() {
+  async function validateCollections() {;
     for (const collection of configuration.collections) {
-      const rawDocuments = await limit(() => collection.source.documents());
+      const resolvedSource = collection.source({
+        baseDirectory,
+        emitter
+      });
+      const rawDocuments = await limit(() => resolvedSource.documents());
       const documents = (
         await Promise.all(
           rawDocuments.map((rawDocument) =>
@@ -91,6 +81,7 @@ export async function createBuilder(
 
       validatedCollections.push({
         ...collection,
+        resolvedSource,
         documents,
       });
     }
@@ -125,8 +116,8 @@ export async function createBuilder(
       cache: cache.cacheFn,
     };
 
-    if (collection.source.extendContext) {
-      const extendedContext = collection.source.extendContext(document);
+    if (collection.resolvedSource.extendContext) {
+      const extendedContext = collection.resolvedSource.extendContext(document);
       return {
         ...baseContext,
         ...extendedContext,
@@ -341,11 +332,11 @@ export async function createBuilder(
 
     const watchers: Array<Watcher> = [];
     for (const collection of validatedCollections) {
-      if (!collection.source.watch) {
+      if (!collection.resolvedSource.watch) {
         continue; // Skip collections that do not support watching
       }
       const syncFn = createSyncFn(collection);
-      const watcher = await collection.source.watch(syncFn);
+      const watcher = await collection.resolvedSource.watch(syncFn);
       if (watcher) {
         watchers.push(watcher);
       }
@@ -364,6 +355,20 @@ export async function createBuilder(
     watch,
     on: emitter.on,
   };
+}
+
+export async function createBuilder(
+  configurationPath: string,
+  options: Options = {
+    configName: defaultConfigName,
+  },
+  emitter: Emitter = createEmitter(),
+) {
+  const readConfiguration = createConfigurationReader();
+  const baseDirectory = path.dirname(configurationPath);
+  const configuration = await readConfiguration(configurationPath, options);
+
+  return createInternalBuilder(configuration, baseDirectory, options, emitter);
 }
 
 export type Builder = Awaited<ReturnType<typeof createBuilder>>;

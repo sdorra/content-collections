@@ -1,5 +1,5 @@
 import { AnyCollection, Collection } from "../config";
-import { MetaBase, Source } from "./api";
+import { MetaBase, Source, SourceFactory } from "./api";
 import {
   ExtendedFileSystemContext,
   FileSystemMeta,
@@ -10,15 +10,15 @@ export * from "./api";
 export * from "./fs";
 
 export type SourceOption =
-  | Source<any, any>
+  | SourceFactory<any, any>
   | FileSystemSourceOptions
   | undefined;
 
 export type GetMeta<TSource extends SourceOption> =
-  TSource extends Source<infer TMeta, any> ? TMeta : FileSystemMeta;
+  TSource extends SourceFactory<infer TMeta, any> ? TMeta : FileSystemMeta;
 
 export type GetExtendedContext<TSource extends SourceOption> =
-  TSource extends Source<any, infer TExtendedContext>
+  TSource extends SourceFactory<any, infer TExtendedContext>
     ? TExtendedContext
     : ExtendedFileSystemContext;
 

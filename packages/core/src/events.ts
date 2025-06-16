@@ -1,8 +1,92 @@
 import { EventEmitter } from "node:events";
-import { BuilderEvents } from "./builder";
-import { CollectorEvents } from "./collector";
-import { TransformerEvents } from "./transformer";
-import { WatcherEvents } from "./watcher";
+import { AnyCollection } from "./config";
+import { CollectionFile, Modification } from "./types";
+
+export type CollectorEvents = {
+  "collector:read-error": {
+    filePath: string;
+    error: CollectError;
+  };
+  "collector:parse-error": {
+    filePath: string;
+    error: CollectError;
+  };
+};
+
+export type CollectorErrorType = "Parse" | "Read";
+
+export class CollectError extends Error {
+  type: CollectorErrorType;
+  constructor(type: CollectorErrorType, message: string) {
+    super(message);
+    this.type = type;
+  }
+}
+
+export type TransformErrorType =
+  | "Validation"
+  | "Configuration"
+  | "Transform"
+  | "Result";
+
+export class TransformError extends Error {
+  type: TransformErrorType;
+  constructor(type: TransformErrorType, message: string) {
+    super(message);
+    this.type = type;
+  }
+}
+
+export type BuilderEvents = {
+  "builder:start": {
+    startedAt: number;
+  };
+  "builder:end": {
+    startedAt: number;
+    endedAt: number;
+    stats: {
+      collections: number;
+      documents: number;
+    };
+  };
+  "builder:created": {
+    createdAt: number;
+    configurationPath: string;
+    outputDirectory: string;
+  };
+  // events namespaced with watcher for backward compatibility
+
+  // TODO: rename to document-changed
+  "watcher:file-changed": {
+    filePath: string;
+    modification: Modification;
+  };
+  "watcher:config-changed": {
+    filePath: string;
+    modification: Modification;
+  };
+  "watcher:config-reload-error": {
+    error: Error;
+    configurationPath: string;
+  };
+};
+
+export type TransformerEvents = {
+  "transformer:validation-error": {
+    collection: AnyCollection;
+    file: CollectionFile;
+    error: TransformError;
+  };
+  "transformer:result-error": {
+    collection: AnyCollection;
+    document: any;
+    error: TransformError;
+  };
+  "transformer:error": {
+    collection: AnyCollection;
+    error: TransformError;
+  };
+};
 
 type EventMap = Record<string, object>;
 
@@ -15,6 +99,19 @@ type SystemEvent = {
 };
 
 type ErrorEvent = EventWithError & SystemEvent;
+
+export type WatcherEvents = {
+  "watcher:subscribe-error": {
+    paths: Array<string>;
+    error: Error;
+  };
+  "watcher:subscribed": {
+    paths: Array<string>;
+  };
+  "watcher:unsubscribed": {
+    paths: Array<string>;
+  };
+};
 
 export type Events = BuilderEvents &
   CollectorEvents &

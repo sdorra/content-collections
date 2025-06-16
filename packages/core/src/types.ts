@@ -1,5 +1,5 @@
 import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
-import { MetaBase, Source } from "./source";
+import { MetaBase, Source, SourceFactory } from "./source";
 
 export type Modification = "create" | "update" | "delete";
 
@@ -24,6 +24,7 @@ export type ValidatedDocument = any & {
 
 export type ValidatedCollection = AnyCollection & {
   documents: Array<ValidatedDocument>;
+  resolvedSource: Source<any, any>;
 };
 
 export type ResolvedCollection<T extends FileCollection> = T & {
@@ -35,9 +36,11 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
 };
 
 type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, any, any, infer TDocument, Source<any, any>>
+  TCollection extends Collection<any, any, any, any, any, infer TDocument, SourceFactory<any, any>>
     ? TDocument
     : never;
+
+export type GetCollectionNames<TConfiguration extends AnyConfiguration> = keyof CollectionByName<TConfiguration>;
 
 export type GetTypeByName<
   TConfiguration extends AnyConfiguration,

@@ -623,7 +623,7 @@ describe("types", () => {
   });
 
   it("should infer meta from source", () => {
-    const source = defineSource({
+    const source = defineSource(() => ({
       documents: async () => [
         {
           _meta: {
@@ -634,16 +634,16 @@ describe("types", () => {
             title: "Hello World",
             content: "This is a test document.",
           },
-        }
+        },
       ],
-    });
+    }));
 
     const collection = defineCollection({
       name: "posts",
       source,
       schema: (y) => ({
         title: y.string(),
-      })
+      }),
     });
 
     const config = defineConfig({
@@ -674,7 +674,7 @@ describe("types", () => {
   });
 
   it("should infer extended context from source", () => {
-    const source = defineSource({
+    const source = defineSource(() => ({
       documents: async () => [
         {
           _meta: {
@@ -685,14 +685,14 @@ describe("types", () => {
             title: "Hello World",
             content: "This is a test document.",
           },
-        }
+        },
       ],
       extendContext: (document) => {
         return {
           customData: `Custom data for ${document._meta.id}`,
         };
       },
-    });
+    }));
 
     const collection = defineCollection({
       name: "posts",

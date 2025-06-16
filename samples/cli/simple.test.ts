@@ -23,6 +23,7 @@ describe("simple", () => {
       lower: "post one",
       content: "# One",
       _meta: {
+        id: "one.mdx",
         path: "one",
         directory: ".",
         extension: "mdx",
@@ -49,6 +50,7 @@ describe("simple", () => {
       lower: "post two",
       content: "## Two",
       _meta: {
+        id: "two.md",
         path: "two",
         directory: ".",
         extension: "md",
