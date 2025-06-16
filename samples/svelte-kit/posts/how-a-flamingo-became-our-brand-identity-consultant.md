@@ -5,6 +5,8 @@ date: 2024-03-15
 author: Isabella Martinez
 ---
 
+<Bootcamp></Bootcamp>
+
 When you work for ContentCrafter Inc., you learn to expect the unexpected. But nothing could have prepared us for the day a flamingo decided to revolutionize our entire approach to brand identity. What started as a routine content collection trip to the Galápagos Islands turned into the most colorful consulting session of our careers – literally.
 
 ## Paradise Found, Chaos Ensued

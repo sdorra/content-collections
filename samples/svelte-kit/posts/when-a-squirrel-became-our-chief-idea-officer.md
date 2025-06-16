@@ -5,6 +5,8 @@ date: 2023-10-15
 author: Emily Johnson
 ---
 
+<Counter></Counter>
+
 When you think of a content creation company, you might picture a sleek office filled with serious professionals, diligently typing away at their keyboards. But at ContentCrafter Inc., things are a bit different. Picture this: a team of adventurous Collectors, meticulous Validators, and imaginative Transformers, all working together while navigating the wild and wacky world of content creation. And just when you think it can't get any crazier, a squirrel decides to join the party as our Chief Idea Officer. Buckle up for a hilarious ride through our latest escapades!
 
 ## Collectors' Adventure: A Nutty Expedition

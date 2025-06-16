@@ -5,6 +5,8 @@ date: 2024-03-15
 author: Marcus Chen
 ---
 
+<Accelerator></Accelerator>
+
 Picture this: you're working on a pristine beach in the Maldives, laptop balanced on your knees, when suddenly eight tentacles emerge from the crystal-clear water and yank your entire workstation into the ocean. That's exactly what happened to our Collector, Marcus, last Tuesday. But here's the twist – the octopus wasn't just being mischievous. It had a business proposition.
 
 ## The Great Underwater Heist
