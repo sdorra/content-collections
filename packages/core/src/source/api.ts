@@ -24,7 +24,7 @@ export type SyncFn<TMeta extends MetaBase> = (
   document: RawDocument<TMeta>,
 ) => Promise<unknown>;
 
-export type SourceFactory<TMeta extends MetaBase, TExtendedContext = {}> = (context: SourceContext) => Source<TMeta, TExtendedContext>;
+export type SourceFactory<TMeta extends MetaBase, TExtendedContext = {}, THasContent = false> = (context: SourceContext) => Source<TMeta, TExtendedContext>;
 
 export type Source<TMeta extends MetaBase, TExtendedContext> = {
   documents: () => Promise<RawDocument<TMeta>[]>;
@@ -32,8 +32,8 @@ export type Source<TMeta extends MetaBase, TExtendedContext> = {
   watch?: (sync: SyncFn<TMeta>) => Promise<Watcher>;
 };
 
-export function defineSource<TMeta extends MetaBase, TExtendedContext = {}>(
-  source: SourceFactory<TMeta, TExtendedContext>,
-): SourceFactory<TMeta, TExtendedContext> {
+export function defineSource<TMeta extends MetaBase, TExtendedContext = {}, THasContent = false>(
+  source: SourceFactory<TMeta, TExtendedContext, THasContent>,
+): SourceFactory<TMeta, TExtendedContext, THasContent> {
   return source;
 }

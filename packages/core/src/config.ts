@@ -12,6 +12,7 @@ import {
   defineFileSystemSource,
   FileSystemSourceOptions,
   GetExtendedContext,
+  GetHasContentFromSourceOption,
   GetMeta,
   SourceFactory,
   SourceOption,
@@ -72,17 +73,28 @@ type GetOutputShape<TShape extends TSchemaProp> =
         ? z.infer<ZodObject<GetLegacySchemaShape<TShape>>>
         : never;
 
+type GetHasContent<
+  TParser extends ConfiguredParser,
+  TSource extends SourceOption<any, any>,
+> = [TSource] extends [FileSystemSourceOptions<any>]
+  ? GetHasContentFromSourceOption<TSource>
+  : [TSource] extends [SourceFactory<any, any, any>]
+    ? GetHasContentFromSourceOption<TSource>
+    : HasContent<TParser>;
+
 type GetOutput<
   TParser extends ConfiguredParser,
   TShape extends TSchemaProp,
+  TSource extends SourceOption<any, any>,
   TOutput = GetOutputShape<TShape>,
-> = HasContent<TParser> extends true ? AddContent<TOutput> : TOutput;
+> =
+  GetHasContent<TParser, TSource> extends true ? AddContent<TOutput> : TOutput;
 
 export type Schema<
   TParser extends ConfiguredParser,
   TShape extends TSchemaProp,
-  TSource extends SourceOption,
-> = GetOutput<TParser, TShape> & {
+  TSource extends SourceOption<any, any>,
+> = GetOutput<TParser, TShape, TSource> & {
   _meta: GetMeta<TSource>;
 };
 
@@ -94,13 +106,13 @@ type GetSchema<TCollection extends AnyCollection> =
   TCollection extends Collection<
     any,
     infer TSchema,
+    infer TParser,
     any,
     any,
     any,
-    any,
-    SourceFactory<any, any>
+    infer TSource
   >
-    ? Prettify<GetOutputShape<TSchema>>
+    ? Prettify<Schema<TParser, TSchema, TSource>>
     : never;
 
 export type Context<TSchema = unknown> = {
@@ -119,8 +131,10 @@ export type Context<TSchema = unknown> = {
   };
 };
 
-type GetContext<TSource extends SourceOption, TSchema> = Context<TSchema> &
-  GetExtendedContext<TSource>;
+type GetContext<
+  TSource extends SourceOption<any, any>,
+  TSchema,
+> = Context<TSchema> & GetExtendedContext<TSource>;
 
 type Z = typeof z;
 
@@ -131,7 +145,9 @@ export type CollectionRequest<
   TSchema,
   TTransformResult,
   TDocument,
-  TSource extends SourceOption,
+  TSourceParser extends ConfiguredParser | undefined,
+  TSourceHasContent extends boolean,
+  TSource extends SourceOption<TSourceParser, TSourceHasContent>,
 > = {
   name: TName;
   typeName?: string;
@@ -177,6 +193,8 @@ export type Collection<
     TSchema,
     TTransformResult,
     TDocument,
+    any,
+    any,
     TSource
   >,
   "schema" | "source" | "parser" | "directory" | "include" | "exclude"
@@ -222,8 +240,10 @@ type ResolveImports<TTransformResult> =
 export function defineCollection<
   TName extends string,
   TShape extends TSchemaProp,
+  TSourceParser extends ConfiguredParser | undefined,
+  TSourceHasContent extends boolean,
+  TSource extends SourceOption<TSourceParser, TSourceHasContent>,
   TParser extends ConfiguredParser = "frontmatter",
-  TSource extends SourceOption = FileSystemSourceOptions,
   TSchema = Schema<TParser, TShape, TSource>,
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
@@ -237,7 +257,11 @@ export function defineCollection<
         TSchema,
         TTransformResult,
         ResolveImports<TDocument>,
-        SourceFactory<GetMeta<TSource>, GetExtendedContext<TSource>>
+        SourceFactory<
+          GetMeta<TSource>,
+          GetExtendedContext<TSource>,
+          GetHasContentFromSourceOption<TSource>
+        >
       >
     : InvalidReturnType<NotSerializableError, TDocument>,
 >(
@@ -248,6 +272,8 @@ export function defineCollection<
     TSchema,
     TTransformResult,
     TDocument,
+    TSourceParser,
+    TSourceHasContent,
     TSource
   >,
 ): TResult {

@@ -16,6 +16,8 @@ export type PredefinedParser = keyof typeof parsers;
 
 export type ConfiguredParser = PredefinedParser | Parser;
 
+export type ParserOption = ConfiguredParser | undefined;
+
 function parseYaml(content: string) {
   return parse(content.trim());
 }

@@ -1,12 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect } from "vitest";
 import { z } from "zod";
 import { workspaceTest } from "./__tests__/workspace";
 import { defineCollection, defineConfig } from "./config";
+import { defineFileSystemSource } from "./source";
 
 describe("workspace tests", () => {
 
-  workspaceTest("simple", async ({ workspaceBuilder, workspacePath }) => {
-
+  workspaceTest("simple", async ({ workspaceBuilder }) => {
     const workspace = workspaceBuilder/* ts */ `
       import { defineCollection, defineConfig } from "@content-collections/core";
       import { z } from "zod";
@@ -60,14 +60,14 @@ describe("workspace tests", () => {
     expect(allPosts.map((p) => p.title)).toEqual(["First post", "Second post"]);
   });
 
-  workspaceTest("second test", async ({ workspaceBuilder, workspacePath }) => {
+  workspaceTest("second test", async ({ workspaceBuilder }) => {
     const posts = defineCollection({
       name: "posts",
       source: {
         directory: "sources/posts",
         include: "*.md",
         // TODO: should not be required, should default to frontmatter
-        parser: "frontmatter",
+        parser: "yaml",
       },
       schema: z.object({
         title: z.string(),
@@ -110,4 +110,29 @@ describe("workspace tests", () => {
 
     expect(allPosts.map((p) => p.title)).toEqual(["First post", "Second post"]);
   });
+
+  workspaceTest("third test", async ({ workspaceBuilder }) => {
+    const source = defineFileSystemSource({
+      directory: "sources/posts",
+      include: "*.md",
+      parser: "yaml",
+    });
+
+    const posts = defineCollection({
+      name: "posts",
+      source,
+      schema: z.object({
+        title: z.string(),
+      }),
+    });
+
+    const config = defineConfig({
+      collections: [posts],
+    });
+
+    const workspace = workspaceBuilder(config);
+    const { collection } = await workspace.build();
+    const allPosts = await collection("posts");
+  });
+
 });

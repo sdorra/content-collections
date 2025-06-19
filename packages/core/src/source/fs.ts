@@ -2,16 +2,22 @@ import { readFile } from "node:fs/promises";
 import path, { basename, dirname, extname } from "node:path";
 import picomatch from "picomatch";
 import { CollectError } from "src/events";
-import { ConfiguredParser, getParser } from "src/parser";
+import {
+  ConfiguredParser,
+  getParser,
+} from "src/parser";
 import { Modification } from "src/types";
 import { isDefined, posixToNativePath } from "src/utils";
 import { glob } from "tinyglobby";
 import { MetaBase, RawDocument, SourceFactory, SyncFn, Watcher } from "./api";
 import chokidar from "chokidar";
+import { GetHasContentFromParserOption } from ".";
 
-export type FileSystemSourceOptions = {
+export type FileSystemSourceOptions<
+  TParser extends ConfiguredParser | undefined = undefined,
+> = {
   directory: string;
-  parser: ConfiguredParser;
+  parser?: TParser;
   include: string | string[];
   exclude?: string | string[];
 };
@@ -28,12 +34,12 @@ export type ExtendedFileSystemContext = {
   directory: string;
 };
 
-function createIncludePattern(options: FileSystemSourceOptions) {
+function createIncludePattern(options: FileSystemSourceOptions<any>) {
   return Array.isArray(options.include) ? options.include : [options.include];
 }
 
 function createIgnorePattern(
-  options: FileSystemSourceOptions,
+  options: FileSystemSourceOptions<any>,
 ): Array<string> | undefined {
   if (options.exclude) {
     if (Array.isArray(options.exclude)) {
@@ -45,9 +51,9 @@ function createIgnorePattern(
   return undefined;
 }
 
-export function defineFileSystemSource(
-  options: FileSystemSourceOptions,
-): SourceFactory<FileSystemMeta, ExtendedFileSystemContext> {
+export function defineFileSystemSource<TParser extends ConfiguredParser | undefined>(
+  options: FileSystemSourceOptions<TParser>,
+): SourceFactory<FileSystemMeta, ExtendedFileSystemContext, GetHasContentFromParserOption<TParser>> {
   return ({ baseDirectory, emitter }) => {
     const collectionDirectory = path.join(baseDirectory, options.directory);
 
@@ -101,7 +107,7 @@ export function defineFileSystemSource(
       }
 
       try {
-        const parser = getParser(options.parser);
+        const parser = getParser(options.parser || "frontmatter");
         const data = await parser.parse(file);
 
         return {

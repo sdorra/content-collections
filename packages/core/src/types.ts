@@ -35,7 +35,7 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
   [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
 };
 
-type GetDocument<TCollection extends AnyCollection> =
+export type GetDocument<TCollection extends AnyCollection> =
   TCollection extends Collection<any, any, any, any, any, infer TDocument, SourceFactory<any, any>>
     ? TDocument
     : never;
