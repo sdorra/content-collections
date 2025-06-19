@@ -184,7 +184,7 @@ export type Collection<
   TSchema,
   TTransformResult,
   TDocument,
-  TSource extends SourceFactory<any, any>,
+  TSource extends SourceFactory<any, any, any>,
 > = Omit<
   CollectionRequest<
     TName,
@@ -212,7 +212,7 @@ export type AnyCollection = Collection<
   any,
   any,
   any,
-  SourceFactory<any, any>
+  SourceFactory<any, any, any>
 >;
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);

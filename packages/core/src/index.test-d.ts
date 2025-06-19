@@ -409,6 +409,24 @@ describe("Add content tests", () => {
     expectTypeOf<Post>().not.toHaveProperty("content");
   });
 
+  it("should add content from inferred custom source", () => {
+    const source = defineSource(() => ({
+      documents: () => Promise.resolve([]),
+      documentsHaveContent: true,
+    }));
+
+    const collection = defineCollection({
+      name: "posts",
+      source,
+      schema: z.object({
+        title: z.string(),
+      }),
+    });
+
+    type Post = GetDocument<typeof collection>;
+    expectTypeOf<Post>().toHaveProperty("content");
+  });
+
   it("should add content to posts for legacy frontmatter parser", () => {
     const collection = defineCollection({
       name: "posts",

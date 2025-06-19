@@ -2,16 +2,13 @@ import { readFile } from "node:fs/promises";
 import path, { basename, dirname, extname } from "node:path";
 import picomatch from "picomatch";
 import { CollectError } from "src/events";
-import {
-  ConfiguredParser,
-  getParser,
-} from "src/parser";
+import { ConfiguredParser, getParser } from "src/parser";
 import { Modification } from "src/types";
 import { isDefined, posixToNativePath } from "src/utils";
 import { glob } from "tinyglobby";
-import { MetaBase, RawDocument, SourceFactory, SyncFn, Watcher } from "./api";
 import chokidar from "chokidar";
 import { GetHasContentFromParserOption } from ".";
+import { MetaBase, RawDocument, SourceFactory, SyncFn, Watcher } from "./api";
 
 export type FileSystemSourceOptions<
   TParser extends ConfiguredParser | undefined = undefined,
@@ -51,9 +48,17 @@ function createIgnorePattern(
   return undefined;
 }
 
-export function defineFileSystemSource<TParser extends ConfiguredParser | undefined>(
+export function defineFileSystemSource<
+  TParser extends ConfiguredParser | undefined,
+>(
   options: FileSystemSourceOptions<TParser>,
-): SourceFactory<FileSystemMeta, ExtendedFileSystemContext, GetHasContentFromParserOption<TParser>> {
+): SourceFactory<
+  FileSystemMeta,
+  ExtendedFileSystemContext,
+  GetHasContentFromParserOption<TParser>
+> {
+  const parser = getParser(options.parser || "frontmatter");
+
   return ({ baseDirectory, emitter }) => {
     const collectionDirectory = path.join(baseDirectory, options.directory);
 
@@ -107,7 +112,6 @@ export function defineFileSystemSource<TParser extends ConfiguredParser | undefi
       }
 
       try {
-        const parser = getParser(options.parser || "frontmatter");
         const data = await parser.parse(file);
 
         return {
@@ -209,6 +213,8 @@ export function defineFileSystemSource<TParser extends ConfiguredParser | undefi
     return {
       documents,
       extendContext,
+      documentsHaveContent:
+        parser.hasContent as GetHasContentFromParserOption<TParser>,
       watch,
     };
   };

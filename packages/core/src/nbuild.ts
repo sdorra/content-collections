@@ -11,12 +11,7 @@ import {
 } from "./configurationReader";
 import { createEmitter, type Emitter, TransformError } from "./events";
 import { serializableSchema } from "./serializer";
-import {
-  MetaBase,
-  RawDocument,
-  SyncFn,
-  Watcher,
-} from "./source";
+import { MetaBase, RawDocument, Source, SyncFn, Watcher } from "./source";
 import { ValidatedCollection, ValidatedDocument } from "./types";
 import { isDefined } from "./utils";
 import { createWriter } from "./writer";
@@ -62,17 +57,19 @@ export async function createInternalBuilder(
 
   let validatedCollections: ValidatedCollection[] = [];
 
-  async function validateCollections() {;
+  async function validateCollections() {
     for (const collection of configuration.collections) {
       const resolvedSource = collection.source({
         baseDirectory,
-        emitter
+        emitter,
       });
       const rawDocuments = await limit(() => resolvedSource.documents());
       const documents = (
         await Promise.all(
           rawDocuments.map((rawDocument) =>
-            limit(() => validateRawDocument(collection, rawDocument)),
+            limit(() =>
+              validateRawDocument(collection, resolvedSource, rawDocument),
+            ),
           ),
         )
       )
@@ -202,6 +199,7 @@ export async function createInternalBuilder(
 
   async function validateRawDocument(
     collection: AnyCollection,
+    source: Source<MetaBase, any, boolean>,
     rawDocument: RawDocument<MetaBase>,
   ): Promise<ValidatedDocument | null> {
     // validate the document
@@ -229,14 +227,21 @@ export async function createInternalBuilder(
     const result = validationResult.value as ValidatedDocument;
     result._meta = rawDocument._meta;
 
-    // TODO: dirty hack if content is not defined in the schema,
-    // most validation libraries will remove the content property.
-    // Before StandardSchema, we have added a content property to the schema,
-    // after StandardSchema, we have added the property from the parser after validation.
-    // But now, the parsing happens in the source, we have to find a better way to handle this.
+    let documentHaveContent = source.documentsHaveContent;
+    if (typeof documentHaveContent === "function") {
+      documentHaveContent = await documentHaveContent();
+    }
 
-    if (rawDocument.data.content !== undefined) {
-      result.content = rawDocument.data.content;
+    if (documentHaveContent) {
+      // TODO: dirty hack if content is not defined in the schema,
+      // most validation libraries will remove the content property.
+      // Before StandardSchema, we have added a content property to the schema,
+      // after StandardSchema, we have added the property from the parser after validation.
+      // But now, the parsing happens in the source, we have to find a better way to handle this.
+
+      if (rawDocument.data.content !== undefined) {
+        result.content = rawDocument.data.content;
+      }
     }
 
     return result;
@@ -295,7 +300,11 @@ export async function createInternalBuilder(
     }
 
     async function updateDoc(document: RawDocument<MetaBase>) {
-      const validatedDocument = await validateRawDocument(collection, document);
+      const validatedDocument = await validateRawDocument(
+        collection,
+        collection.resolvedSource,
+        document,
+      );
       if (validatedDocument) {
         const idx = collection.documents.findIndex(
           (doc) => doc._meta.id === validatedDocument._meta.id,
@@ -308,7 +317,11 @@ export async function createInternalBuilder(
     }
 
     async function createDoc(document: RawDocument<MetaBase>) {
-      const validatedDocument = await validateRawDocument(collection, document);
+      const validatedDocument = await validateRawDocument(
+        collection,
+        collection.resolvedSource,
+        document,
+      );
       if (validatedDocument) {
         collection.documents.push(validatedDocument);
         collection.documents.sort(orderById);
