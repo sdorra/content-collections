@@ -489,3 +489,31 @@ describe("Add content tests", () => {
     }>();
   });
 });
+
+describe("Extend context tests", () => {
+  it("should extend context with custom function", () => {
+    const source = defineSource(() => ({
+      documents: () => Promise.resolve([]),
+      extendContext: (document) => ({
+        computeSid: () => `sid-${document._meta.id}`,
+      }),
+    }));
+
+    const collection = defineCollection({
+      name: "posts",
+      source,
+      schema: z.object({
+        title: z.string(),
+      }),
+      transform: (doc, ctx) => {
+        return {
+          ...doc,
+          sid: ctx.computeSid(),
+        };
+      },
+    });
+
+    type Post = GetDocument<typeof collection>;
+    expectTypeOf<Post>().toHaveProperty("sid");
+  });
+});
