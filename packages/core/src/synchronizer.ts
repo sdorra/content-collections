@@ -46,6 +46,8 @@ export function createSynchronizer<T extends FileCollection>(
       })
       .filter(({ collection, relativePath }) => {
         return picomatch.isMatch(relativePath, collection.include, {
+          // @see https://github.com/sdorra/content-collections/issues/602
+          windows: process.platform === "win32",
           ignore: collection.exclude,
         });
       });
