@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["ENABLE_EXPERIMENTAL_COREPACK"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -16,7 +17,6 @@
     "test": {
       "dependsOn": ["^build"],
       "env": ["CC_OS"]
-
     },
     "typecheck": {
       "dependsOn": ["^build", "^test"]
