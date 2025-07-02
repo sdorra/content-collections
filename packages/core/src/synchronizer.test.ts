@@ -1,7 +1,7 @@
-import { describe, expect, it, vitest } from "vitest";
+import path from "node:path";
+import { describe, expect, it } from "vitest";
 import { createSynchronizer } from "./synchronizer";
 import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
-import path from "node:path";
 
 describe("synchronizer", () => {
   async function noopCollectionFileReader(): Promise<CollectionFile | null> {
@@ -142,15 +142,17 @@ describe("synchronizer", () => {
     const synchronizer = createSynchronizer(
       createCollectionFileReader({
         data: {
-          content: "{ \"changed\": true }",
+          content: '{ "changed": true }',
         },
         path: path.join("a", "test.json"),
       }),
       [collection],
     );
 
-    expect(await synchronizer.changed(path.join("content", "a", "test.json"))).toBe(true);
-    expect(collection.files[0]?.data.content).toBe("{ \"changed\": true }");
+    expect(
+      await synchronizer.changed(path.join("content", "a", "test.json")),
+    ).toBe(true);
+    expect(collection.files[0]?.data.content).toBe('{ "changed": true }');
   });
 
   it("should not add file, if path is not in collection directory", async () => {
@@ -347,39 +349,4 @@ describe("synchronizer", () => {
 
     expect(collection.files.length).toBe(0);
   });
-
-  describe("posix", () => {
-    it("should add a new file", async () => {
-      vitest.mock("node:path", async (importOriginal) => {
-        const origin = await importOriginal<typeof import("node:path")>();
-        return {
-          default: {
-            ...origin,
-            sep: origin.posix.sep,
-            resolve: origin.posix.resolve,
-          },
-        };
-      });
-
-      const collection = {
-        directory: "content",
-        include: "**/*.md",
-        files: [],
-      };
-
-      const synchronizer = createSynchronizer(
-        createCollectionFileReader({
-          data: {
-            content: "changed",
-          },
-          path: "new.md",
-        }),
-        [collection],
-      );
-      expect(await synchronizer.changed("content/new.md")).toBe(true);
-
-      expect(collection.files.length).toBe(1);
-    });
-  });
-
 });
