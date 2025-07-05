@@ -1,3 +1,6 @@
+import * as organizeImports from "prettier-plugin-organize-imports";
+import * as tailwindcss from "prettier-plugin-tailwindcss";
+
 export default {
-  plugins: ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
+  plugins: [organizeImports, tailwindcss],
 };
