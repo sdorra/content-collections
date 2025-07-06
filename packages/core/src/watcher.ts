@@ -65,7 +65,7 @@ export async function createWatcher(
   watcher.on("error", (error) => {
     emitter.emit("watcher:subscribe-error", {
       paths,
-      error,
+      error: error instanceof Error ? error : new Error(String(error)),
     });
   });
 
