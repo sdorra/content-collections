@@ -1,4 +1,4 @@
-import * as watcherImpl from "@parcel/watcher";
+import chokidar from "chokidar";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, vi } from "vitest";
@@ -17,21 +17,19 @@ const params = vi.hoisted(() => {
   } as Params;
 });
 
-vi.mock("@parcel/watcher", async (importOriginal) => {
-  const orig = await importOriginal<typeof watcherImpl>();
-  return {
-    ...orig,
-    subscribe: async (
-      path: string,
-      callback: watcherImpl.SubscribeCallback,
-    ) => {
-      if (params.subscribeError) {
-        callback(params.subscribeError, []);
-      } else {
-        return orig.subscribe(path, callback);
-      }
-    },
-  };
+// Instead of fully mocking chokidar, let's intercept specific behavior for error testing
+const originalWatch = chokidar.watch;
+vi.spyOn(chokidar, 'watch').mockImplementation((paths, options) => {
+  const watcher = originalWatch(paths, options);
+  
+  if (params.subscribeError) {
+    // Simulate error
+    setTimeout(() => {
+      watcher.emit('error', params.subscribeError);
+    }, 10);
+  }
+  
+  return watcher;
 });
 
 const WAIT_UNTIL_TIMEOUT = 2000;
