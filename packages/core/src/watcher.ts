@@ -42,8 +42,14 @@ export async function createWatcher(
   ]);
 
   const watcher = chokidar.watch(paths, {
-    ignored: /(^|[\/\\])\../, // ignore dotfiles
+    ignored: [
+      /(^|[\/\\])\../, // ignore dotfiles
+      '**/node_modules/**',
+      '**/.git/**',
+      '**/.next/**',
+    ],
     persistent: true,
+    ignoreInitial: true, // ignore initial add events
   });
 
   // Convert chokidar events to the expected format
