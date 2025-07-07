@@ -491,4 +491,31 @@ describe(
     await new Promise((resolve) => setTimeout(resolve, 500));
     expect(findEvent("create", nextDir, "foo.js")).toBeFalsy();
   });
+
+  tmpdirTest("should emit subscribe-error if sync throws", async ({ tmpdir }) => {
+    const errorMessage = "sync error";
+    const localEvents: Array<string> = [];
+    emitter.on("watcher:subscribe-error", ({ paths, error }) => {
+      localEvents.push(`${error.message}:${paths.join(",")}`);
+    });
+
+    // syncFn that throws
+    async function throwingSyncFn() {
+      throw new Error(errorMessage);
+    }
+
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      throwingSyncFn,
+    );
+
+    await fs.writeFile(path.join(tmpdir, "foo"), "foo");
+    await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
+    expect(localEvents[0]).toBe(`${errorMessage}:${tmpdir}`);
+  });
 });

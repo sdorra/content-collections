@@ -2,7 +2,7 @@ import chokidar from "chokidar";
 import path, { dirname, resolve } from "node:path";
 import { Emitter } from "./events";
 import { Modification } from "./types";
-import { isDefined, removeChildPaths } from "./utils";
+import { isDefined, removeChildPaths, toError } from "./utils";
 
 export type WatcherEvents = {
   "watcher:subscribe-error": {
@@ -57,7 +57,7 @@ export async function createWatcher(
     } catch (error) {
       emitter.emit("watcher:subscribe-error", {
         paths,
-        error: error instanceof Error ? error : new Error(String(error)),
+        error: toError(error),
       });
     }
   };
@@ -69,7 +69,7 @@ export async function createWatcher(
   watcher.on("error", (error) => {
     emitter.emit("watcher:subscribe-error", {
       paths,
-      error: error instanceof Error ? error : new Error(String(error)),
+      error: toError(error),
     });
   });
 
