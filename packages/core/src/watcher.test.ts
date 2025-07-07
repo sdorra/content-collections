@@ -21,14 +21,14 @@ const params = vi.hoisted(() => {
 const originalWatch = chokidar.watch;
 vi.spyOn(chokidar, 'watch').mockImplementation((paths, options) => {
   const watcher = originalWatch(paths, options);
-  
+
   if (params.subscribeError) {
     // Simulate error
     setTimeout(() => {
       watcher.emit('error', params.subscribeError);
     }, 10);
   }
-  
+
   return watcher;
 });
 
@@ -433,5 +433,62 @@ describe(
 
     await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
     expect(localEvents[0]).toBe(`unsubscribed:${tmpdir}`);
+  });
+
+  tmpdirTest("should ignore events from node_modules directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const nodeModulesDir = await mkdir(tmpdir, "node_modules");
+    await fs.writeFile(path.join(nodeModulesDir, "foo.js"), "console.log('foo')");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", nodeModulesDir, "foo.js")).toBeFalsy();
+  });
+
+  tmpdirTest("should ignore events from .git directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const gitDir = await mkdir(tmpdir, ".git");
+    await fs.writeFile(path.join(gitDir, "foo"), "bar");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", gitDir, "foo")).toBeFalsy();
+  });
+
+  tmpdirTest("should ignore events from .next directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const nextDir = await mkdir(tmpdir, ".next");
+    await fs.writeFile(path.join(nextDir, "foo.js"), "console.log('foo')");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", nextDir, "foo.js")).toBeFalsy();
   });
 });

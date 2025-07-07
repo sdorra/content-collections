@@ -45,8 +45,6 @@ export async function createWatcher(
     ignored: [
       /(^|[\/\\])\../, // ignore dotfiles
       /(^|[\/\\])node_modules([\/\\]|$)/, // ignore node_modules
-      /(^|[\/\\])\.git([\/\\]|$)/, // ignore .git
-      /(^|[\/\\])\.next([\/\\]|$)/, // ignore .next
     ],
     persistent: true,
     ignoreInitial: true, // ignore initial add events
