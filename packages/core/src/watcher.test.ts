@@ -1,4 +1,4 @@
-import * as watcherImpl from "@parcel/watcher";
+import chokidar from "chokidar";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, vi } from "vitest";
@@ -17,21 +17,19 @@ const params = vi.hoisted(() => {
   } as Params;
 });
 
-vi.mock("@parcel/watcher", async (importOriginal) => {
-  const orig = await importOriginal<typeof watcherImpl>();
-  return {
-    ...orig,
-    subscribe: async (
-      path: string,
-      callback: watcherImpl.SubscribeCallback,
-    ) => {
-      if (params.subscribeError) {
-        callback(params.subscribeError, []);
-      } else {
-        return orig.subscribe(path, callback);
-      }
-    },
-  };
+// Instead of fully mocking chokidar, let's intercept specific behavior for error testing
+const originalWatch = chokidar.watch;
+vi.spyOn(chokidar, 'watch').mockImplementation((paths, options) => {
+  const watcher = originalWatch(paths, options);
+
+  if (params.subscribeError) {
+    // Simulate error
+    setTimeout(() => {
+      watcher.emit('error', params.subscribeError);
+    }, 10);
+  }
+
+  return watcher;
 });
 
 const WAIT_UNTIL_TIMEOUT = 2000;
@@ -435,5 +433,89 @@ describe(
 
     await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
     expect(localEvents[0]).toBe(`unsubscribed:${tmpdir}`);
+  });
+
+  tmpdirTest("should ignore events from node_modules directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const nodeModulesDir = await mkdir(tmpdir, "node_modules");
+    await fs.writeFile(path.join(nodeModulesDir, "foo.js"), "console.log('foo')");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", nodeModulesDir, "foo.js")).toBeFalsy();
+  });
+
+  tmpdirTest("should ignore events from .git directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const gitDir = await mkdir(tmpdir, ".git");
+    await fs.writeFile(path.join(gitDir, "foo"), "bar");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", gitDir, "foo")).toBeFalsy();
+  });
+
+  tmpdirTest("should ignore events from .next directory", async ({ tmpdir }) => {
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      syncFn,
+    );
+
+    const nextDir = await mkdir(tmpdir, ".next");
+    await fs.writeFile(path.join(nextDir, "foo.js"), "console.log('foo')");
+
+    // Wait to ensure no event is triggered
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    expect(findEvent("create", nextDir, "foo.js")).toBeFalsy();
+  });
+
+  tmpdirTest("should emit subscribe-error if sync throws", async ({ tmpdir }) => {
+    const errorMessage = "sync error";
+    const localEvents: Array<string> = [];
+    emitter.on("watcher:subscribe-error", ({ paths, error }) => {
+      localEvents.push(`${error.message}:${paths.join(",")}`);
+    });
+
+    // syncFn that throws
+    async function throwingSyncFn() {
+      throw new Error(errorMessage);
+    }
+
+    await createWatcher(
+      emitter,
+      tmpdir,
+      {
+        inputPaths: [],
+        collections: [{ directory: "." }],
+      },
+      throwingSyncFn,
+    );
+
+    await fs.writeFile(path.join(tmpdir, "foo"), "foo");
+    await vi.waitUntil(() => localEvents.length > 0, WAIT_UNTIL_TIMEOUT);
+    expect(localEvents[0]).toBe(`${errorMessage}:${tmpdir}`);
   });
 });

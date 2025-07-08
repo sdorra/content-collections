@@ -1,8 +1,8 @@
-import * as watcher from "@parcel/watcher";
+import chokidar from "chokidar";
 import path, { dirname, resolve } from "node:path";
 import { Emitter } from "./events";
 import { Modification } from "./types";
-import { isDefined, removeChildPaths } from "./utils";
+import { isDefined, removeChildPaths, toError } from "./utils";
 
 export type WatcherEvents = {
   "watcher:subscribe-error": {
@@ -34,20 +34,6 @@ export async function createWatcher(
   configuration: WatcherConfiguration,
   sync: SyncFn,
 ) {
-  const onChange: watcher.SubscribeCallback = async (error, events) => {
-    if (error) {
-      emitter.emit("watcher:subscribe-error", {
-        paths,
-        error,
-      });
-      return;
-    }
-
-    for (const event of events) {
-      await sync(event.type, event.path);
-    }
-  };
-
   const paths = removeChildPaths([
     ...configuration.collections
       .map((collection) => path.join(baseDirectory, collection.directory))
@@ -55,28 +41,55 @@ export async function createWatcher(
     ...configuration.inputPaths.map((p) => dirname(p)),
   ]);
 
-  const subscriptions = (
-    await Promise.all(paths.map((path) => watcher.subscribe(path, onChange)))
-  ).filter(isDefined); // in case of an subscription error, subscribe will return undefined
+  const watcher = chokidar.watch(paths, {
+    ignored: [
+      /(^|[\/\\])\../, // ignore dotfiles
+      /(^|[\/\\])node_modules([\/\\]|$)/, // ignore node_modules
+    ],
+    persistent: true,
+    ignoreInitial: true, // ignore initial add events
+  });
 
-  emitter.emit("watcher:subscribed", {
-    paths,
+  // Convert chokidar events to the expected format
+  const handleEvent = async (modification: Modification, filePath: string) => {
+    try {
+      await sync(modification, filePath);
+    } catch (error) {
+      emitter.emit("watcher:subscribe-error", {
+        paths,
+        error: toError(error),
+      });
+    }
+  };
+
+  watcher.on("add", (filePath) => handleEvent("create", filePath));
+  watcher.on("change", (filePath) => handleEvent("update", filePath));
+  watcher.on("unlink", (filePath) => handleEvent("delete", filePath));
+
+  watcher.on("error", (error) => {
+    emitter.emit("watcher:subscribe-error", {
+      paths,
+      error: toError(error),
+    });
+  });
+
+  // Wait for watcher to be ready before emitting subscribed event
+  await new Promise<void>((resolve, reject) => {
+    watcher.on("ready", () => {
+      emitter.emit("watcher:subscribed", {
+        paths,
+      });
+      resolve();
+    });
+    watcher.on("error", reject);
   });
 
   return {
     unsubscribe: async () => {
-      if (!subscriptions || subscriptions.length === 0) {
-        return;
-      }
-
-      await Promise.all(
-        subscriptions.map((subscription) => subscription.unsubscribe()),
-      );
-
+      await watcher.close();
       emitter.emit("watcher:unsubscribed", {
         paths,
       });
-      return;
     },
   };
 }

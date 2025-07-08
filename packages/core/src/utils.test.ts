@@ -1,5 +1,5 @@
 import { describe, expect, it, vitest } from "vitest";
-import { generateTypeName, isDefined, posixToNativePath, removeChildPaths } from "./utils";
+import { generateTypeName, isDefined, posixToNativePath, removeChildPaths, toError } from "./utils";
 
 describe("generateTypeName", () => {
   it("should return same as collection name", () => {
@@ -82,7 +82,6 @@ describe("removeChildPaths", () => {
 });
 
 describe("posixToNativePath", () => {
-
   vitest.mock("node:path", async (importOriginal) => {
     const origin = await importOriginal<typeof import("node:path")>();
     return {
@@ -101,5 +100,32 @@ describe("posixToNativePath", () => {
   it("should not replace \\ with \\", () => {
     const pathName = posixToNativePath("a\\b\\c");
     expect(pathName).toBe("a\\b\\c");
+  });
+});
+
+describe("toError", () => {
+  it("should return the same error if input is an Error", () => {
+    const err = new Error("test error");
+    const result = toError(err);
+    expect(result).toBe(err);
+  });
+
+  it("should convert string to Error", () => {
+    const result = toError("string error");
+    expect(result).toBeInstanceOf(Error);
+    expect(result.message).toBe("string error");
+  });
+
+  it("should convert number to Error", () => {
+    const result = toError(123);
+    expect(result).toBeInstanceOf(Error);
+    expect(result.message).toBe("123");
+  });
+
+  it("should convert object to Error", () => {
+    const obj = { foo: "bar" };
+    const result = toError(obj);
+    expect(result).toBeInstanceOf(Error);
+    expect(result.message).toBe("[object Object]");
   });
 });
