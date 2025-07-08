@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.10.0
+
+### Minor Changes
+
+- [#612](https://github.com/sdorra/content-collections/pull/612) [`5aae6f3`](https://github.com/sdorra/content-collections/commit/5aae6f347e30d671e515272f9af1821c4011eb95) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Migrate file watcher from @parcel/watcher to chokidar to fix duplicate build events on Windows.
+
+### Patch Changes
+
+- [#603](https://github.com/sdorra/content-collections/pull/603) [`bec682f`](https://github.com/sdorra/content-collections/commit/bec682f1a22755baaa60ac0f03bcf52eeb29dfdd) Thanks [@sdorra](https://github.com/sdorra)! - Fix synchronizing of nested files on windows.
+
 ## 0.9.1
 
 ### Patch Changes

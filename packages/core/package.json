@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/core",
   "type": "module",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Core of Content Collections",
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",
