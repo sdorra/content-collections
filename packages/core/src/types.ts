@@ -24,7 +24,7 @@ export type ValidatedDocument = any & {
 
 export type ValidatedCollection = AnyCollection & {
   documents: Array<ValidatedDocument>;
-  resolvedSource: Source<any, any>;
+  resolvedSource: Source<any, any, any>;
 };
 
 export type ResolvedCollection<T extends FileCollection> = T & {
@@ -36,7 +36,7 @@ type CollectionByName<TConfiguration extends AnyConfiguration> = {
 };
 
 export type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, any, any, infer TDocument, SourceFactory<any, any>>
+  TCollection extends Collection<any, any, any, any, any, infer TDocument, SourceFactory<any, any, any>>
     ? TDocument
     : never;
 

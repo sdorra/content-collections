@@ -42,7 +42,7 @@ export type GetMeta<TSource extends SourceOption<any, any>> =
   [TSource] extends [SourceFactory<infer TMeta, any, any>] ? TMeta : FileSystemMeta;
 
 export type GetExtendedContext<TSource extends SourceOption<any, any>> =
-  TSource extends SourceFactory<any, infer TExtendedContext, any>
+  [TSource] extends [SourceFactory<any, infer TExtendedContext, any>]
     ? TExtendedContext
     : ExtendedFileSystemContext;
 

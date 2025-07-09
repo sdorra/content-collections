@@ -151,8 +151,10 @@ describe("types", () => {
   it("should infer type with content from other collection", () => {
     const authors = defineCollection({
       name: "authors",
-      directory: "content",
-      include: "authors/*.md",
+      source: {
+        directory: "content",
+        include: "authors/*.md",
+      },
       schema: z.object({
         ref: z.string(),
         name: z.string(),
@@ -636,6 +638,7 @@ describe("types", () => {
           },
         },
       ],
+      documentsHaveContent: true,
     }));
 
     const collection = defineCollection({
@@ -687,6 +690,7 @@ describe("types", () => {
           },
         },
       ],
+      documentsHaveContent: true,
       extendContext: (document) => {
         return {
           customData: `Custom data for ${document._meta.id}`,
