@@ -6,6 +6,12 @@ icon: tanstack
 category: frameworks
 ---
 
+<Callout type="warn" title='Warning'>
+
+This guide is for TanStack Start version `v1.121.0` and later. Versions prior to this should use the [@content-collections/vinxi adapter](/docs/adapter/vinxi) instead of the [@content-collections/vite adapter](https://www.npmjs.com/package/@content-collections/vite).
+
+</Callout>
+
 <div className="steps">
 <div className="step">
 
@@ -14,11 +20,11 @@ Install required packages:
 We have to install the following packages:
 
 - `@content-collections/core`
-- `@content-collections/vinxi`
+- `@content-collections/vite`
 - `zod`
 
 ```package-install
-npm i @content-collections/core @content-collections/vinxi zod -D
+npm i @content-collections/core @content-collections/vite zod -D
 ```
 
 </div>
@@ -31,7 +37,7 @@ Adjust your `tsconfig.json`:
   "compilerOptions": {
     // ...
     "paths": {
-      "~/*": ["./app/*"],
+      "~/*": ["./src/*"],
       "content-collections": ["./.content-collections/generated"]
     }
   }
@@ -44,12 +50,13 @@ This is necessary because we will generate the files in the `.content-collection
 </div>
 <div className="step">
 
-Modify your `app.config.ts`:
+Modify your `vite.config.ts`:
 
 ```ts
-import contentCollections from "@content-collections/vinxi";
-import { defineConfig } from "@tanstack/start/config";
+import contentCollections from "@content-collections/vite";
+import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 export default defineConfig({
   vite: {
@@ -58,13 +65,14 @@ export default defineConfig({
       tsConfigPaths({
         projects: ["./tsconfig.json"],
       }),
+      tanstackStart()
     ],
   },
 });
 ```
 
-Add the Content Collections plugin to your Vinxi config.
-For more details on the Vinxi adapter, refer to the [documentation](/docs/adapter/vinxi).
+Add the Content Collections plugin to your Vite config.
+For more details on the Vite adapter, refer to the [documentation](/docs/adapter/vite).
 
 </div>
 <div className="step">
