@@ -93,6 +93,27 @@ describe("vite configuration", () => {
       );
     });
 
+    tmpdirTest("should adjust tanstack start vite config", async ({ tmpdir }) => {
+      await prepare(tmpdir, "tanstack-start");
+
+      const result = await modifyViteConfig(tmpdir, "vite").run();
+      expect(result.status).toBe("changed");
+
+      const viteConfig = await fs.readFile(
+        join(tmpdir, "vite.config.ts"),
+        "utf-8",
+      );
+
+      expect(viteConfig).toContain(
+        'import contentCollections from "@content-collections/vite";',
+      );
+      expect(viteConfig).toContain(`plugins: [
+    tsConfigPaths({projects: ["./tsconfig.json"],}),
+    tanstackStart(),
+    contentCollections()
+  ],`);
+    });
+
     tmpdirTest("should adjust vite config", async ({ tmpdir }) => {
       await prepare(tmpdir, "vite");
 
