@@ -38,4 +38,3 @@ Eventually, we had to bid farewell to our colorful critic, arranging for his saf
 These days, whenever we're stuck on a design decision, someone inevitably asks, "What would Pantone do?" And somehow, channeling our chromatic consultant's wisdom always leads us in the right direction.
 
 As for our client presentations? We now include a color psychology section in every proposal, secretly smiling at the thought of our scaly mentor who taught us that sometimes the best feedback doesn't need words – just the right shade of approval.
-```
