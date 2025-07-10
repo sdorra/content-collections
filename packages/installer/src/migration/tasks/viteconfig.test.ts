@@ -108,10 +108,10 @@ describe("vite configuration", () => {
         'import contentCollections from "@content-collections/vite";',
       );
       expect(viteConfig.replace(/\r\n/g, '\n')).toContain(`plugins: [
-        tsConfigPaths({projects: ["./tsconfig.json"],}),
-        tanstackStart(),
-        contentCollections()
-      ],`);
+    tsConfigPaths({projects: ["./tsconfig.json"],}),
+    tanstackStart(),
+    contentCollections()
+  ],`);
     });
 
     tmpdirTest("should adjust vite config", async ({ tmpdir }) => {
