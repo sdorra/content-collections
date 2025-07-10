@@ -5,13 +5,12 @@ tags:
   - tanstack
   - vite
   - react
-  - vinxi
-adapter: vinxi
+adapter: vite
 ---
 
-Use `@content-collections/vinxi` to integrate content-collections into your TanStack Start project.
+Use `@content-collections/vite` to integrate content-collections into your TanStack Start project.
 
 For more information, refer to the following resources:
 
 - [TanStack Quick Start](https://www.content-collections.dev/docs/quickstart/tanstack-start)
-- [Vinxi adapter documentation](https://www.content-collections.dev/docs/adapter/vinxi/)
+- [Vite adapter documentation](https://www.content-collections.dev/docs/adapter/vite/)

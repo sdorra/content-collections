@@ -1,13 +1,13 @@
+/// <reference types="vite/client" />
 import appCss from "@content-collections/sample-theme/sample.css?url";
+import type { ReactNode } from 'react'
 import {
-  Link,
   Outlet,
-  ScrollRestoration,
   createRootRoute,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { Meta, Scripts } from "@tanstack/start";
-import * as React from "react";
+  HeadContent,
+  Scripts,
+  Link,
+} from '@tanstack/react-router'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -33,11 +33,11 @@ function RootComponent() {
   );
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: { children: ReactNode }) {
   return (
     <html>
       <head>
-        <Meta />
+        <HeadContent />
       </head>
       <body>
         <header id="top">
@@ -55,8 +55,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <a href="#top">↑ Back to top</a>
           <p>Copyright © {new Date().getFullYear()} ContentCrafter Inc.</p>
         </footer>
-        <ScrollRestoration />
-        <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>

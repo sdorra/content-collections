@@ -1,4 +1,3 @@
-import { MDXContent } from "@content-collections/mdx/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { findPostBySlug } from "~/utils/posts";
 
@@ -15,9 +14,7 @@ function PostComponent() {
       <header>
         <h2>{post.title}</h2>
       </header>
-      <div className="content">
-        <MDXContent code={post.content} />
-      </div>
+      <div className="content" dangerouslySetInnerHTML={{ __html: post.content }} />
       <footer>
         <p>By {post.author}</p>
         <time>{post.date}</time>

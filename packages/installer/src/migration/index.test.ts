@@ -30,7 +30,7 @@ describe("findMigrator", () => {
     const migrator = findMigrator({
       name: "tanstack",
       dependencies: {
-        "@tanstack/start": "^1.95.1",
+        "@tanstack/react-start": "^1.121.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "vinxi": "0.5.1"

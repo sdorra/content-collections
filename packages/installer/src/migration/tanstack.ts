@@ -6,6 +6,7 @@ import { addDependencies } from "./tasks/dependencies.js";
 import { addToGitIgnore } from "./tasks/gitignore.js";
 import { modifyVinxiConfig } from "./tasks/vinxi.js";
 import { addAliasToTsConfig } from "./tasks/tsconfig.js";
+import { modifyViteConfig } from "./tasks/viteconfig.js";
 
 export const migratorTanStack = defineMigrator({
   name: "tanstack",
@@ -16,12 +17,14 @@ export const migratorTanStack = defineMigrator({
       .describe("Type of demo content"),
   }),
   isResponsible: (packageJson) =>
-    Boolean(packageJson.dependencies?.["@tanstack/start"]) ||
-    Boolean(packageJson.devDependencies?.["@tanstack/start"]),
+    Boolean(packageJson.dependencies?.["@tanstack/react-start"]) ||
+    Boolean(packageJson.devDependencies?.["@tanstack/react-start"]) ||
+    Boolean(packageJson.dependencies?.["@tanstack/solid-start"]) ||
+    Boolean(packageJson.devDependencies?.["@tanstack/solid-start"]),
   async createMigration({ directory, packageJson }, { demoContent }) {
     const packages = [
       "@content-collections/core",
-      "@content-collections/vinxi",
+      "@content-collections/vite",
       "zod",
     ];
 
@@ -35,7 +38,7 @@ export const migratorTanStack = defineMigrator({
     const tasks = [
       addDependencies(directory, packageJson, [], packages),
       addAliasToTsConfig(directory),
-      modifyVinxiConfig(directory),
+      modifyViteConfig(directory, "vite"),
       addToGitIgnore(directory),
       createConfiguration(directory, demoContent),
     ];

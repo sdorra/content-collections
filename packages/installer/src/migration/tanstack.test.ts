@@ -8,21 +8,41 @@ describe("tanstack migrator", () => {
   };
 
   describe("isResponsible", () => {
-    it("should be responsible for TanStack Start", () => {
+    it("should be responsible for TanStack Start (react)", () => {
       const responsible = migratorTanStack.isResponsible({
         name: "something",
         dependencies: {
-          "@tanstack/start": "^1.95.1"
+          "@tanstack/react-start": "^1.125.0"
         },
       });
       expect(responsible).toBe(true);
     });
 
-    it("should be responsible for TanStack Start in dev dependencies", () => {
+    it("should be responsible for TanStack Start (react) in dev dependencies", () => {
       const responsible = migratorTanStack.isResponsible({
         name: "something",
         devDependencies: {
-          "@tanstack/start": "^1.95.1"
+          "@tanstack/react-start": "^1.125.0"
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
+      it("should be responsible for TanStack Start (solid)", () => {
+      const responsible = migratorTanStack.isResponsible({
+        name: "something",
+        dependencies: {
+          "@tanstack/solid-start": "^1.125.0"
+        },
+      });
+      expect(responsible).toBe(true);
+    });
+
+    it("should be responsible for TanStack Start (solid) in dev dependencies", () => {
+      const responsible = migratorTanStack.isResponsible({
+        name: "something",
+        devDependencies: {
+          "@tanstack/solid-start": "^1.125.0"
         },
       });
       expect(responsible).toBe(true);
@@ -38,11 +58,11 @@ describe("tanstack migrator", () => {
       expect(responsible).toBe(false);
     });
 
-    it("should not be responsible for vinxi", () => {
+    it("should not be responsible for vite", () => {
       const responsible = migratorTanStack.isResponsible({
         name: "something",
         dependencies: {
-          vinxi: "0.5.1",
+          vite: "0.5.1",
         },
       });
       expect(responsible).toBe(false);
@@ -72,7 +92,7 @@ describe("tanstack migrator", () => {
       expect(names).toEqual([
         "Install dependencies",
         "Add alias to tsconfig",
-        "Modify vinxi configuration",
+        "Modify vite configuration",
         "Add .content-collections to .gitignore",
         "Create configuration file",
       ]);
@@ -93,7 +113,7 @@ describe("tanstack migrator", () => {
       expect(names).toEqual([
         "Install dependencies",
         "Add alias to tsconfig",
-        "Modify vinxi configuration",
+        "Modify vite configuration",
         "Add .content-collections to .gitignore",
         "Create configuration file",
         "Create demo content",
@@ -169,7 +189,7 @@ describe("tanstack migrator", () => {
       expect(dependencies).not.toContain("@content-collections/markdown");
     });
 
-    it("should add core, vinxi and zod packages", async () => {
+    it("should add core, vite and zod packages", async () => {
       const migration = await migratorTanStack.createMigration(
         {
           directory: "directory",
@@ -190,7 +210,7 @@ describe("tanstack migrator", () => {
       // @ts-expect-error - we know it's there
       const dependencies = addDependenciesTask.devDependencies;
       expect(dependencies).toContain("@content-collections/core");
-      expect(dependencies).toContain("@content-collections/vinxi");
+      expect(dependencies).toContain("@content-collections/vite");
       expect(dependencies).toContain("zod");
     });
   });
