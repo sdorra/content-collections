@@ -1,7 +1,7 @@
 import { Builder, createBuilder } from "@content-collections/core";
 import { configureLogging } from "@content-collections/integrations";
 import path from "node:path";
-import { Plugin, UserConfig } from "vite";
+import type { Plugin, UserConfig } from "vite";
 
 export type Options = {
   configPath: string;
