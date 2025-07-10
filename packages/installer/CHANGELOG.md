@@ -1,5 +1,11 @@
 # @content-collections/installer
 
+## 0.5.0
+
+### Minor Changes
+
+- [#614](https://github.com/sdorra/content-collections/pull/614) [`f611a69`](https://github.com/sdorra/content-collections/commit/f611a69447f1971faf5cae1ed324f4feb29a17b8) Thanks [@sdorra](https://github.com/sdorra)! - Support TanStack Start projects version 1.121.0 and later.
+
 ## 0.4.0
 
 ### Minor Changes

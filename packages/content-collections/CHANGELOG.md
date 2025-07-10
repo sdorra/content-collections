@@ -1,5 +1,12 @@
 # content-collections
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`f611a69`](https://github.com/sdorra/content-collections/commit/f611a69447f1971faf5cae1ed324f4feb29a17b8)]:
+  - @content-collections/installer@0.5.0
+
 ## 0.2.0
 
 ### Minor Changes
