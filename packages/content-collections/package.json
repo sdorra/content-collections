@@ -1,7 +1,7 @@
 {
   "name": "content-collections",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Installer for content-collections",
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",

@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@content-collections/core": "0.10.0",
-    "@content-collections/vite": "0.2.5",
+    "@content-collections/vite": "0.2.6",
     "@mdx-js/rollup": "^3.1.0",
     "@remix-run/dev": "^2.16.5",
     "@types/react": "^18.3.3",

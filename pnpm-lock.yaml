@@ -270,7 +270,7 @@ importers:
         version: 0.25.6
       mdx-bundler:
         specifier: ^10.0.3
-        version: 10.1.1(acorn@8.15.0)(esbuild@0.25.6)
+        version: 10.1.1(esbuild@0.25.6)
       unified:
         specifier: ^11.0.5
         version: 11.0.5
@@ -472,7 +472,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -767,7 +767,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       '@types/eslint':
         specifier: ^8.56.7
@@ -806,7 +806,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -849,7 +849,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/remix-vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/remix-vite
       '@content-collections/sample-theme':
         specifier: 0.1.0
@@ -929,7 +929,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       '@mdx-js/rollup':
         specifier: ^3.1.0
@@ -1011,7 +1011,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/remix-vite':
-        specifier: 0.2.1
+        specifier: 0.2.2
         version: link:../../packages/remix-vite
       '@remix-run/dev':
         specifier: ^2.16.5
@@ -1065,7 +1065,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vinxi':
-        specifier: 0.1.1
+        specifier: 0.1.2
         version: link:../../packages/vinxi
       '@solidjs/start':
         specifier: ^1.0.11
@@ -1093,7 +1093,7 @@ importers:
         specifier: 0.1.4
         version: link:../../packages/markdown
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       '@sveltejs/adapter-auto':
         specifier: ^3.3.1
@@ -1148,7 +1148,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       '@types/node':
         specifier: ^22.5.4
@@ -1206,7 +1206,7 @@ importers:
         specifier: 0.10.0
         version: link:../../packages/core
       '@content-collections/vite':
-        specifier: 0.2.5
+        specifier: 0.2.6
         version: link:../../packages/vite
       react:
         specifier: ^18.2.0
@@ -12612,7 +12612,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@mdx-js/esbuild@3.0.1(acorn@8.15.0)(esbuild@0.25.6)':
+  '@mdx-js/esbuild@3.0.1(esbuild@0.25.6)':
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       '@types/unist': 3.0.3
@@ -19207,12 +19207,12 @@ snapshots:
 
   mdn-data@2.0.30: {}
 
-  mdx-bundler@10.1.1(acorn@8.15.0)(esbuild@0.25.6):
+  mdx-bundler@10.1.1(esbuild@0.25.6):
     dependencies:
       '@babel/runtime': 7.27.1
       '@esbuild-plugins/node-resolve': 0.2.2(esbuild@0.25.6)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 3.0.1(acorn@8.15.0)(esbuild@0.25.6)
+      '@mdx-js/esbuild': 3.0.1(esbuild@0.25.6)
       esbuild: 0.25.6
       gray-matter: 4.0.3
       remark-frontmatter: 5.0.0
