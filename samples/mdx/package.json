@@ -8,7 +8,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "next": "14.2.26",
+    "next": "15.3.5",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.24.4"
@@ -21,7 +21,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8",
-    "eslint-config-next": "14.2.26",
+    "eslint-config-next": "15.3.5",
     "typescript": "^5"
   }
 }
