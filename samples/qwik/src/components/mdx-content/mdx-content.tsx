@@ -1,6 +1,6 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { getMDXComponent, type MDXContentProps } from "mdx-bundler/client";
-import * as Qwik from "@builder.io/qwik";
+import * as Qwik from "@qwik.dev/core";
 
 type Props = MDXContentProps & {
   code: string;
@@ -11,7 +11,7 @@ export function useMDXComponent(code: string): Qwik.Component<Props> {
     Qwik,
     _jsx_runtime: {
       jsx: Qwik.jsx,
-      jsxs: Qwik.jsx,
+      jsx: Qwik.jsx,
       Fragment: Qwik.Fragment
     }
   }

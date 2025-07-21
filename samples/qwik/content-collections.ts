@@ -4,11 +4,11 @@ import { compileMDX } from "@content-collections/mdx";
 const qwikBundlerConfig = {
   jsxLib: {
     varName: 'Qwik',
-    package: '@builder.io/qwik',
+    package: '@qwik.dev/core',
   },
   jsxRuntime: {
     varName: '_jsx_runtime',
-    package: '@builder.io/qwik/jsx-runtime',
+    package: '@qwik.dev/core/jsx-runtime',
   },
 }
 
