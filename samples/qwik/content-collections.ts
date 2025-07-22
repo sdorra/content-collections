@@ -1,16 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMDX } from "@content-collections/mdx";
-
-const qwikBundlerConfig = {
-  jsxLib: {
-    varName: 'Qwik',
-    package: '@qwik.dev/core',
-  },
-  jsxRuntime: {
-    varName: '_jsx_runtime',
-    package: '@qwik.dev/core/jsx-runtime',
-  },
-}
+import { compileMDXWithQwik } from "@content-collections/mdx";
 
 const characters = defineCollection({
   name: "characters",
@@ -25,8 +14,13 @@ const characters = defineCollection({
   transform: async (document, context) => {
     console.log("DOCUMENT", document);
     console.log("CONTEXT", context);
-    const mdx = await compileMDX(context, document, {
-      jsxConfig: qwikBundlerConfig,
+    const mdx = await compileMDXWithQwik(context, document, {
+      qwikOptimizer: {
+        // Additional Qwik optimizer configuration can go here
+      },
+      // Other MDX options can still be provided:
+      remarkPlugins: [],
+      rehypePlugins: [],
     });
     return {
       ...document,

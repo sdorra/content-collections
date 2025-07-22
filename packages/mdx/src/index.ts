@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import { bundleMDX } from "mdx-bundler";
 import path from "path";
 import { Pluggable, Transformer } from "unified";
+import type { Plugin } from "esbuild";
 
 type Document = {
   _meta: Meta;
@@ -17,6 +18,7 @@ export type Options = {
   files?: (appender: FileAppender) => void;
   remarkPlugins?: Pluggable[];
   rehypePlugins?: Pluggable[];
+  esbuildOptions?: (options: any) => any;
   jsxConfig?: {
     jsxLib: {
       varName: string;
@@ -31,6 +33,10 @@ export type Options = {
       package: string;
     };
   };
+};
+
+export type QwikOptions = Options & {
+  qwikOptimizer?: any; // Options for @qwik.dev/core/optimizer createOptimizer
 };
 
 async function appendFile(
@@ -99,13 +105,15 @@ async function compile(document: Document, options: Options = {}) {
     cwd: options.cwd,
     files,
     jsxConfig: options.jsxConfig,
-    esbuildOptions(options) {
-      if (!options.define) {
-        options.define = {};
+    esbuildOptions(esbuildOptions) {
+      if (!esbuildOptions.define) {
+        esbuildOptions.define = {};
       }
       const env = process.env.NODE_ENV ?? "production";
-      options.define["process.env.NODE_ENV"] = JSON.stringify(env);
-      return options;
+      esbuildOptions.define["process.env.NODE_ENV"] = JSON.stringify(env);
+      
+      // Apply custom esbuild options if provided
+      return options.esbuildOptions ? options.esbuildOptions(esbuildOptions) : esbuildOptions;
     },
     mdxOptions(mdxOptions) {
       mdxOptions.rehypePlugins = [...(options.rehypePlugins ?? [])];
@@ -119,6 +127,96 @@ async function compile(document: Document, options: Options = {}) {
     },
   });
   return code;
+}
+
+// Create a Qwik esbuild plugin that intercepts and transforms components from disk
+function createQwikEsbuildPlugin(qwikOptimizer: any = {}): Plugin {
+  return {
+    name: 'qwik-optimizer',
+    setup(build) {
+      console.log('🔧 Qwik esbuild plugin setup called');
+      
+      // Hook into onLoad BEFORE inMemoryPlugin to intercept disk reads
+      build.onLoad({ filter: /\.(tsx?|jsx?)$/ }, async (args) => {
+        console.log('🔍 Qwik plugin checking file:', args.path);
+        
+        try {
+          // Only handle files that exist on disk (not in-memory from files object)
+          if (!existsSync(args.path)) {
+            console.log('❌ File does not exist on disk, skipping:', args.path);
+            return null;
+          }
+
+          const content = await fs.readFile(args.path, 'utf-8');
+          
+          // Quick check if this is likely a Qwik component
+          if (!content.includes('component$')) {
+            console.log('❌ Not a Qwik component (no component$):', args.path);
+            return null; // Not a Qwik component, let other plugins handle
+          }
+
+          console.log('🎯 Transforming Qwik component:', args.path);
+
+          // We need to use dynamic import here to avoid bundling issues
+          // But we'll handle the error gracefully
+          const { createOptimizer } = await import('@qwik.dev/core/optimizer');
+          const optimizer = await createOptimizer(qwikOptimizer);
+
+          // Transform with Qwik optimizer - configure to inline everything (no separate chunks)
+          const transformResult = await optimizer.transformModules({
+            srcDir: path.resolve(process.cwd(), 'src'),
+            input: [{
+              path: path.relative(path.resolve(process.cwd(), 'src'), args.path),
+              code: content
+            }],
+            entryStrategy: { type: 'inline' }, // Use inline strategy to avoid separate chunks
+            minify: 'none',
+            sourceMaps: false,
+            transpileTs: true,
+            transpileJsx: true,
+            explicitExtensions: false, // Don't add explicit extensions
+            preserveFilenames: false, // Don't preserve filenames to avoid conflicts
+            mode: 'dev'
+          });
+          
+          if (transformResult.modules && transformResult.modules.length > 0) {
+            const relativePath = path.relative(path.resolve(process.cwd(), 'src'), args.path);
+            // Qwik optimizer changes .tsx to .js, so try both
+            const relativePathWithJs = relativePath.replace(/\.tsx?$/, '.js');
+            
+            console.log('🔍 Looking for module:', relativePath, 'or', relativePathWithJs);
+            
+            const mainModule = transformResult.modules.find((m: any) => 
+              m.path === relativePath || m.path === relativePathWithJs
+            );
+            
+            if (mainModule) {
+              console.log('✅ Qwik component transformed successfully');
+              console.log(`Generated ${transformResult.modules.length} module(s)`);
+              
+              return {
+                contents: mainModule.code,
+                loader: 'tsx' as const // Keep original loader type
+              };
+            } else {
+              console.log('❌ Main module not found');
+              console.log('Available modules:');
+              transformResult.modules.forEach((m: any, i: number) => {
+                console.log(`  ${i}: ${m.path}`);
+              });
+            }
+          }
+
+          console.log('❌ No main module found, falling back to original');
+          return null;
+
+        } catch (error) {
+          console.error('Failed to transform Qwik component:', error);
+          return null; // Let other plugins handle
+        }
+      });
+    }
+  };
 }
 
 // Remove all unnecessary keys from the document
@@ -138,4 +236,55 @@ export function compileMDX(
   return cache(cacheKey, (doc) => compile(doc, options), {
     key: "__mdx",
   });
+}
+
+/**
+ * Qwik-specific MDX compilation with automatic Qwik transformation
+ * @param context - Content collections context  
+ * @param document - Document to compile
+ * @param options - Compilation options
+ * @returns Compiled MDX code
+ */
+export async function compileMDXWithQwik(
+  context: Pick<Context, "cache">,
+  document: Document,
+  options: QwikOptions = {},
+) {
+  const { qwikOptimizer, ...mdxOptions } = options;
+  
+  console.log('🚀 Starting Qwik MDX compilation for:', document._meta.filePath);
+  
+  // Create the Qwik esbuild plugin
+  const qwikPlugin = createQwikEsbuildPlugin(qwikOptimizer);
+  
+        // Enhanced options that include the Qwik plugin in esbuild
+      const enhancedOptions: Options = {
+        ...mdxOptions,
+        esbuildOptions: (esbuildOptions) => {
+          // Apply any existing esbuild options first
+          const baseOptions = mdxOptions.esbuildOptions ? mdxOptions.esbuildOptions(esbuildOptions) : esbuildOptions;
+
+          // Add our Qwik plugin to the FRONT of the plugins array so it runs before mdx-bundler's inMemoryPlugin
+          if (!baseOptions.plugins) {
+            baseOptions.plugins = [];
+          }
+          baseOptions.plugins.unshift(qwikPlugin); // unshift instead of push to add to front
+
+          console.log('Adding Qwik optimizer plugin to esbuild (at front of plugins array)');
+
+          return baseOptions;
+        },
+        jsxConfig: {
+          jsxLib: { package: "@qwik.dev/core", varName: "Qwik" },
+          jsxRuntime: { package: "@qwik.dev/core/jsx-runtime", varName: "_jsx_runtime" },
+        },
+      };
+
+  const result = await compileMDX(context, document, enhancedOptions);
+  
+  console.log('✅ Qwik MDX compilation complete');
+  console.log('Result contains componentQrl:', result.includes('componentQrl'));
+  console.log('Result contains inlinedQrl:', result.includes('inlinedQrl'));
+  
+  return result;
 }

@@ -36,6 +36,8 @@
 		"react-dom": ">= 18"
 	},
 	"devDependencies": {
+		"@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865",
+		"@qwik.dev/router": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865",
 		"@content-collections/core": "workspace:*",
 		"@testing-library/jest-dom": "^6.5.0",
 		"@testing-library/react": "^16.0.0",

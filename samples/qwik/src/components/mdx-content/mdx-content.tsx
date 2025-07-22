@@ -11,7 +11,7 @@ export function useMDXComponent(code: string): Qwik.Component<Props> {
     Qwik,
     _jsx_runtime: {
       jsx: Qwik.jsx,
-      jsx: Qwik.jsx,
+      jsxs: Qwik.jsx,
       Fragment: Qwik.Fragment
     }
   }

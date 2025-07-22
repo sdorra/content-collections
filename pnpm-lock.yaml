@@ -272,6 +272,12 @@ importers:
       '@content-collections/core':
         specifier: workspace:*
         version: link:../core
+      '@qwik.dev/core':
+        specifier: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865
+        version: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865(vite@5.4.11)(vitest@3.0.8)'
+      '@qwik.dev/router':
+        specifier: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865
+        version: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865(typescript@5.7.2)(vite@5.4.11)'
       '@testing-library/jest-dom':
         specifier: ^6.5.0
         version: 6.5.0
@@ -709,7 +715,7 @@ importers:
         version: link:../../packages/vite
       '@qwik.dev/core':
         specifier: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865
-        version: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865(vite@5.4.11)'
+        version: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865(vite@5.4.11)(vitest@3.0.8)'
       '@qwik.dev/router':
         specifier: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865
         version: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865(typescript@5.5.4)(vite@5.4.11)'
@@ -19993,6 +19999,17 @@ packages:
       typescript: 5.5.4
     dev: true
 
+  /valibot@0.42.1(typescript@5.7.2):
+    resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 5.7.2
+    dev: true
+
   /validate-html-nesting@1.2.2:
     resolution: {integrity: sha512-hGdgQozCsQJMyfK5urgFcWEqsSSrK63Awe0t/IMR0bZ0QMtnuaiHzThW81guu3qx9abLi99NEuiaN6P9gVYsNg==}
     dev: false
@@ -20932,7 +20949,7 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865(vite@5.4.11)':
+  '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865(vite@5.4.11)(vitest@3.0.8)':
     resolution: {tarball: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865}
     id: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/core@299a865'
     name: '@qwik.dev/core'
@@ -20952,6 +20969,7 @@ packages:
       csstype: 3.1.3
       rollup: 4.45.1
       vite: 5.4.11(@types/node@20.14.9)
+      vitest: 3.0.8(@types/node@20.14.9)(happy-dom@15.11.4)
     dev: true
 
   '@pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865(typescript@5.5.4)(vite@5.4.11)':
@@ -20969,6 +20987,31 @@ packages:
       svgo: 3.3.2
       undici: 6.21.1
       valibot: 0.42.1(typescript@5.5.4)
+      vfile: 6.0.2
+      vite: 5.4.11(@types/node@20.14.9)
+      vite-imagetools: 7.1.0
+      zod: 3.22.4
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+      - typescript
+    dev: true
+
+  '@pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865(typescript@5.7.2)(vite@5.4.11)':
+    resolution: {tarball: https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865}
+    id: '@pkg.pr.new/QwikDev/qwik/@qwik.dev/router@299a865'
+    name: '@qwik.dev/router'
+    version: 2.0.0-beta.6
+    engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
+    peerDependencies:
+      vite: 5.4.11
+    dependencies:
+      '@mdx-js/mdx': 3.0.1
+      '@types/mdx': 2.0.13
+      source-map: 0.7.4
+      svgo: 3.3.2
+      undici: 6.21.1
+      valibot: 0.42.1(typescript@5.7.2)
       vfile: 6.0.2
       vite: 5.4.11(@types/node@20.14.9)
       vite-imagetools: 7.1.0

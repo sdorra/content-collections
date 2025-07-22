@@ -4,6 +4,6 @@ export default defineConfig({
   entry: ["src/index.ts", "src/react/server.tsx", "src/react/client.tsx"],
   format: ["esm", "cjs"],
   dts: true,
-  external: ["react"],
+  external: ["react", "@qwik.dev/core"],
   outDir: "dist",
 });
