@@ -419,7 +419,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       arktype:
         specifier: ^2.1.20
@@ -447,7 +447,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       zod:
         specifier: ^3.24.4
@@ -472,7 +472,7 @@ importers:
   samples/markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.4
@@ -525,7 +525,7 @@ importers:
         version: 3.24.4
     devDependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/mdx':
         specifier: 0.2.2
@@ -555,7 +555,7 @@ importers:
   samples/next:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.6
@@ -595,7 +595,7 @@ importers:
   samples/next-mdx-dynamic-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.6
@@ -656,7 +656,7 @@ importers:
   samples/next-mdx-static-import:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/next':
         specifier: 0.2.6
@@ -717,7 +717,7 @@ importers:
   samples/next-pages:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/mdx':
         specifier: 0.2.2
@@ -770,7 +770,7 @@ importers:
         specifier: ^1.13.0
         version: 1.13.0(acorn@8.15.0)(rollup@4.44.2)(typescript@5.5.4)(vite@5.4.11(@types/node@20.14.9)(terser@5.31.0))
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.6
@@ -809,7 +809,7 @@ importers:
   samples/react-markdown:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.6
@@ -849,7 +849,7 @@ importers:
   samples/react-router:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.4
@@ -932,7 +932,7 @@ importers:
         version: 3.24.4
     devDependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.6
@@ -1014,7 +1014,7 @@ importers:
         version: 3.24.4
     devDependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/remix-vite':
         specifier: 0.2.2
@@ -1065,7 +1065,7 @@ importers:
   samples/solid:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.4
@@ -1093,7 +1093,7 @@ importers:
         version: 3.24.4
     devDependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/markdown':
         specifier: 0.1.4
@@ -1151,7 +1151,7 @@ importers:
         version: 3.24.4
     devDependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.6
@@ -1184,7 +1184,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       valibot:
         specifier: ^1.1.0
@@ -1209,7 +1209,7 @@ importers:
   samples/vite:
     dependencies:
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       '@content-collections/vite':
         specifier: 0.2.6
@@ -1249,7 +1249,7 @@ importers:
         specifier: 0.1.6
         version: link:../../packages/cli
       '@content-collections/core':
-        specifier: 0.10.0
+        specifier: 0.10.1
         version: link:../../packages/core
       xml2js:
         specifier: ^0.6.2
