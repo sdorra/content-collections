@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.10.1
+
+### Patch Changes
+
+- [#629](https://github.com/sdorra/content-collections/pull/629) [`4a47b19`](https://github.com/sdorra/content-collections/commit/4a47b191f75dd1f409fc354236befe76caa85357) Thanks [@sdorra](https://github.com/sdorra)! - Accept ReadonlyArray as valid return type of transform function
+
 ## 0.10.0
 
 ### Minor Changes
