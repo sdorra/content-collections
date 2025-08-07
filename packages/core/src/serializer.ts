@@ -22,10 +22,13 @@ const literalSchema = z.union([
 
 type Literal = z.infer<typeof literalSchema>;
 
-type SchemaType = Literal | { [key: string]: SchemaType } | SchemaType[];
+type SchemaType =
+  | Literal
+  | { [key: string]: SchemaType }
+  | ReadonlyArray<SchemaType>;
 
 const schema: z.ZodType<SchemaType> = z.lazy(() =>
-  z.union([literalSchema, z.array(schema), z.record(schema)]),
+  z.union([literalSchema, z.array(schema), z.record(schema)])
 );
 
 export type NotSerializableError =
