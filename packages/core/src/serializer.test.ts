@@ -148,7 +148,7 @@ describe("serializer", () => {
         const imported = await writeAndImport(tmpdir, object);
         expect(imported).toEqual([object]);
         expect(imported[0].bigint).toBeTypeOf("bigint");
-      },
+      }
     );
 
     tmpdirTest(
@@ -161,7 +161,7 @@ describe("serializer", () => {
 
         const imported = await writeAndImport(tmpdir, object);
         expect(imported).toEqual([{ name: "sample", fso: fs }]);
-      },
+      }
     );
 
     tmpdirTest(
@@ -176,7 +176,7 @@ describe("serializer", () => {
 
         const [imported] = await writeAndImport(tmpdir, object);
         expect(imported.imports.fso).toEqual(fs);
-      },
+      }
     );
 
     tmpdirTest(
@@ -193,7 +193,7 @@ describe("serializer", () => {
         const [imported] = await writeAndImport(tmpdir, object);
         expect(imported.imports.fs).toEqual(fs);
         expect(imported.imports.path).toEqual(path);
-      },
+      }
     );
 
     tmpdirTest(
@@ -210,7 +210,7 @@ describe("serializer", () => {
         const [imported] = await writeAndImport(tmpdir, object);
         expect(imported.imports[0]).toEqual(fs);
         expect(imported.imports[1]).toEqual(path);
-      },
+      }
     );
 
     tmpdirTest(
@@ -223,7 +223,7 @@ describe("serializer", () => {
 
         const [imported] = await writeAndImport(tmpdir, object);
         expect(imported.join).toEqual(path.join);
-      },
+      }
     );
   });
 });
