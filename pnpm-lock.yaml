@@ -20,9 +20,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.8.0
         version: 19.8.0
-      '@content-collections/prettier-config':
-        specifier: workspace:*
-        version: link:utils/prettier-config
       '@playwright/test':
         specifier: ^1.47.0
         version: 1.47.0
@@ -32,6 +29,12 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      prettier-plugin-organize-imports:
+        specifier: ^4.2.0
+        version: 4.2.0(prettier@3.6.2)(typescript@5.8.3)
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.14
+        version: 0.6.14(prettier-plugin-organize-imports@4.2.0(prettier@3.6.2)(typescript@5.8.3))(prettier@3.6.2)
       turbo:
         specifier: ^2.5.4
         version: 2.5.4
@@ -1273,19 +1276,6 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@20.14.9)(happy-dom@15.11.4)(terser@5.31.0)
-
-  utils/prettier-config:
-    dependencies:
-      prettier-plugin-organize-imports:
-        specifier: ^4.2.0
-        version: 4.2.0(prettier@3.6.2)(typescript@5.8.3)
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.14
-        version: 0.6.14(prettier-plugin-organize-imports@4.2.0(prettier@3.6.2)(typescript@5.8.3))(prettier@3.6.2)
-    devDependencies:
-      prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
 
   utils/sample-theme: {}
 
