@@ -23,6 +23,8 @@ export type ResolvedCollection<T extends FileCollection> = T & {
   files: Array<CollectionFile>;
 };
 
+export type GetCollectionNames<TConfiguration extends AnyConfiguration> = keyof CollectionByName<TConfiguration>;
+
 export type CollectionByName<TConfiguration extends AnyConfiguration> = {
   [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
 };
