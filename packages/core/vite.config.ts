@@ -13,6 +13,23 @@ export default defineConfig({
       exclude: excludes,
     },
     testTimeout: isWindowsCI() ? 10_000 : 5_000,
-    poolMatchGlobs: [["**/watcher.test.ts", "forks"]],
+    projects: [
+      {
+        test: {
+          name: "core",
+          pool: "threads",
+          include: ["src/**/*.test.ts", "src/**/*.test-d.ts"],
+          exclude: ["src/watcher.test.ts"],
+        }
+      },
+      {
+        extends: true,
+        test: {
+          name: "watcher",
+          pool: 'forks',
+          include: ["src/watcher.test.ts"]
+        },
+      },
+    ],
   },
 });
