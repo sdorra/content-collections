@@ -83,6 +83,13 @@ type GetSchema<TCollection extends AnyCollection> =
     ? Prettify<TSchema>
     : never;
 
+export const skippedSymbol = Symbol("skipped");
+
+export type SkippedSignal = {
+  [skippedSymbol]: true;
+  reason?: string;
+};
+
 export type Context<TSchema = unknown> = {
   documents<TCollection extends AnyCollection>(
     collection: TCollection,
@@ -93,6 +100,7 @@ export type Context<TSchema = unknown> = {
     directory: string;
     documents: () => Promise<Array<TSchema>>;
   };
+  skip: (reason?: string) => SkippedSignal;
 };
 
 type Z = typeof z;
@@ -178,7 +186,7 @@ export function defineCollection<
   TTransformResult = never,
   TDocument = [TTransformResult] extends [never]
     ? Schema<TParser, TShape>
-    : Awaited<TTransformResult>,
+    : Exclude<Awaited<TTransformResult>, SkippedSignal>,
   TResult = TDocument extends Serializable
     ? Collection<
         TName,

@@ -608,4 +608,41 @@ describe("types", () => {
 
     expect(post).toBeTruthy();
   });
+
+  it("should exclude SkipSymbol from type", () => {
+    const collection = defineCollection({
+      name: "posts",
+      directory: "./posts",
+      include: "*.mdx",
+      schema: z.object({
+        title: z.string(),
+      }),
+      transform: (document, { skip }) => {
+        if (document.title === "Hello World") {
+          return skip("Skipping document Hello World");
+        }
+        return document;
+      },
+    });
+
+    const config = defineConfig({
+      collections: [collection],
+    });
+
+    type Post = GetTypeByName<typeof config, "posts">;
+
+    const post: Post = {
+      title: "Hello World",
+      content: "# MDX Content",
+      _meta: {
+        fileName: "hello-world.mdx",
+        filePath: "posts/hello-world.mdx",
+        directory: "posts",
+        path: "posts/hello-world",
+        extension: "mdx",
+      },
+    };
+
+    expect(post).toBeTruthy();
+  });
 });

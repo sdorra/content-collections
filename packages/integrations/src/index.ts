@@ -31,6 +31,11 @@ export function configureLogging(builder: Builder) {
     }
   });
 
+  builder.on("transformer:document-skipped", (event) => {
+    const relativePath = path.relative(process.cwd(), event.filePath);
+    console.log("... document", relativePath, "skipped", "due to", event.reason);
+  });
+
   registerErrorListeners(builder);
 
   builder.on("_error", ({ _event, error }) => {
