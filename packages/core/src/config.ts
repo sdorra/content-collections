@@ -93,6 +93,7 @@ export type Context<TSchema = unknown> = {
     directory: string;
     documents: () => Promise<Array<TSchema>>;
   };
+  skip: (reason?: string) => never;
 };
 
 type Z = typeof z;
