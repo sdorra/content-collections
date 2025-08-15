@@ -1,5 +1,4 @@
 import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
-import { StandardSchemaV1 } from "@standard-schema/spec";
 
 export type Modification = "create" | "update" | "delete";
 
@@ -24,19 +23,17 @@ export type ResolvedCollection<T extends FileCollection> = T & {
   files: Array<CollectionFile>;
 };
 
-type CollectionByName<TConfiguration extends AnyConfiguration> = {
+export type CollectionByName<TConfiguration extends AnyConfiguration> = {
   [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
 };
 
 type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<
-    any,
-    any,
-    any,
-    any,
-    any,
-    infer TDocument
-  >
+  TCollection extends Collection<any, any, any, any, any, infer TDocument>
+    ? TDocument
+    : never;
+
+export type GetTr<TCollection extends AnyCollection> =
+  TCollection extends Collection<any, any, any, any, infer TDocument, any>
     ? TDocument
     : never;
 

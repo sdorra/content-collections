@@ -1,8 +1,8 @@
 import os from "node:os";
-import { basename, dirname, extname } from "node:path";
+import { basename, dirname, extname, join } from "node:path";
 import pLimit from "p-limit";
 import { Cache, CacheManager } from "./cache";
-import { AnyCollection, Context } from "./config";
+import { AnyCollection, Context, SkippedSignal, skippedSymbol } from "./config";
 import { Emitter } from "./events";
 import { getParser } from "./parser";
 import { serializableSchema } from "./serializer";
@@ -23,6 +23,11 @@ export type TransformerEvents = {
   "transformer:error": {
     collection: AnyCollection;
     error: TransformError;
+  };
+  "transformer:document-skipped": {
+    collection: AnyCollection;
+    filePath: string;
+    reason?: string;
   };
 };
 
@@ -46,6 +51,10 @@ export class TransformError extends Error {
     super(message);
     this.type = type;
   }
+}
+
+function isSkippedSignal(signal: any): signal is SkippedSignal {
+  return signal[skippedSymbol] === true;
 }
 
 function createPath(path: string, ext: string) {
@@ -167,6 +176,10 @@ export function createTransformer(
         },
       },
       cache: cache.cacheFn,
+      skip: (reason?: string) => ({
+        [skippedSymbol]: true,
+        reason,
+      }),
     };
   }
 
@@ -181,10 +194,18 @@ export function createTransformer(
     try {
       const document = await transform(doc.document, context);
       await cache.tidyUp();
-      return {
-        ...doc,
-        document,
-      };
+      if (isSkippedSignal(document)) {
+        emitter.emit("transformer:document-skipped", {
+          collection,
+          filePath: join(collection.directory, doc.document._meta.filePath),
+          reason: document.reason,
+        });
+      } else {
+        return {
+          ...doc,
+          document,
+        };
+      }
     } catch (error) {
       if (error instanceof TransformError) {
         emitter.emit("transformer:error", {

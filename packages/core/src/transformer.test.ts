@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 import { CacheManager } from "./cache";
@@ -127,10 +128,6 @@ describe("transform", () => {
 
   it("should create two document", async () => {
     const sampleCollection = createSampleCollection(sampleOne, sampleTwo);
-const modulePath = require.resolve('zod');
-console.log(modulePath);
-
-    console.log(z.object({})["~standard"]);
 
     const [collection] = await createTransformer(
       emitter,
@@ -723,5 +720,113 @@ console.log(modulePath);
     expect(collection?.documents[0].document.docs).toHaveLength(2);
     expect(collection?.documents[0].document.docs[0].name).toBe("One");
     expect(collection?.documents[0].document.docs[1].name).toBe("Two");
+  });
+
+  it("should skip fist document", async () => {
+    const sample = defineCollection({
+      name: "sample",
+      schema: z.object({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: (document, { skip }) => {
+        if (document.name === "One") {
+          return skip("Skipping document One");
+        }
+        return document;
+      },
+    });
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager,
+    )([
+      {
+        ...sample,
+        files: [sampleOne, sampleTwo],
+      },
+    ]);
+
+    expect(collection?.documents).toHaveLength(1);
+    expect(collection?.documents[0].document.name).toBe("Two");
+  });
+
+  it("should fire document-skipped event", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: (document, { skip }) => {
+        if (document.name !== "Two") {
+          return skip(`Skipping document ${document.name}`);
+        }
+        return document;
+      },
+    });
+
+    const reasons: Array<string> = [];
+    emitter.on("transformer:document-skipped", (event) =>
+      reasons.push(`${event.filePath}: ${event.reason}`),
+    );
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager,
+    )([
+      {
+        ...posts,
+        files: [sampleOne, sampleTwo, sampleThree],
+      },
+    ]);
+
+    expect(collection?.documents).toHaveLength(1);
+    expect(collection?.documents[0].document.name).toBe("Two");
+    expect(reasons).toHaveLength(2);
+    expect(reasons[0]).toBe(
+      `${join("tests", "001.md")}: Skipping document One`,
+    );
+    expect(reasons[1]).toBe(
+      `${join("tests", "nested", "003.md")}: Skipping document Three`,
+    );
+  });
+
+  it("should fire document-skipped event without reason", async () => {
+    const posts = defineCollection({
+      name: "posts",
+      schema: z.object({
+        name: z.string(),
+      }),
+      directory: "tests",
+      include: "*.md",
+      transform: (document, { skip }) => {
+        if (document.name !== "Two") {
+          return skip();
+        }
+        return document;
+      },
+    });
+
+    const reasons: Array<string> = [];
+    emitter.on("transformer:document-skipped", (event) =>
+      reasons.push(event.reason || "No reason provided"),
+    );
+
+    const [collection] = await createTransformer(
+      emitter,
+      noopCacheManager,
+    )([
+      {
+        ...posts,
+        files: [sampleOne],
+      },
+    ]);
+
+    expect(collection?.documents).toHaveLength(0);
+    expect(reasons).toHaveLength(1);
+    expect(reasons[0]).toBe("No reason provided");
   });
 });
