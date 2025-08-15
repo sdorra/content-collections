@@ -1,10 +1,11 @@
 import fs from "node:fs/promises";
 import os from "node:os";
-import path from "node:path";
+import { dirname, join } from "node:path";
 import { AnyConfiguration } from "src/config";
 import { defaultConfigName } from "src/configurationReader";
 import { createEmitter, Emitter } from "src/events";
 import { GetCollectionNames, GetTypeByName } from "src/types";
+import { Watcher } from "src/watcher";
 import { test } from "vitest";
 import { Builder, createBuilder, createInternalBuilder } from "../builder";
 import { generateArrayConstName } from "../utils";
@@ -31,30 +32,79 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
 
   async function createFile(file: [string, string]) {
     const [relativePath, content] = file;
-    const absolutePath = path.join(directory, relativePath);
-    await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+    const absolutePath = join(directory, relativePath);
+    await fs.mkdir(dirname(absolutePath), { recursive: true });
     await fs.writeFile(absolutePath, content, { encoding: "utf-8" });
   }
 
-  async function collection(collection: string) {
-    const indexFile = path.join(
+  let counter = -1;
+
+  async function readCollectionFromIndex(collection: string) {
+    const indexFile = join(
       directory,
       // TODO: hardcoded path, should be a constant
       ".content-collections/generated/index.js",
     );
 
-    const collections = await import(`${indexFile}?t=${Date.now()}`);
+    const collections = await import(
+      `${indexFile}?t=${Date.now()}&c=${counter}`
+    );
     const name = generateArrayConstName(collection);
 
     return collections[name];
   }
 
+  async function readCollectionFromDataFile(collection: string) {
+    const name = generateArrayConstName(collection);
+    const dataFile = join(
+      directory,
+      // TODO: hardcoded path, should be a constant
+      `.content-collections/generated/${name}.js`,
+    );
+
+    const imported = await import(`${dataFile}?t=${Date.now()}&c=${counter}`);
+    return imported.default;
+  }
+
+  async function collection(collection: string) {
+    counter++;
+    // TODO: ugly hack to avoid import caching of index file
+    // The cache bust on the index file does not work,
+    // because node caches the import of the data file and that url does not change.
+    let col;
+    if (counter > 0) {
+      col = await readCollectionFromDataFile(collection);
+    } else {
+      col = await readCollectionFromIndex(collection);
+    }
+
+    return col;
+  }
+
+  function path(relativePath: string) {
+    const absolutePath = join(directory, relativePath);
+
+    return {
+      write: async (content: TemplateStringsArray | string) => {
+        await fs.mkdir(dirname(absolutePath), { recursive: true });
+        await fs.writeFile(absolutePath, createContent(content), {
+          encoding: "utf-8",
+        });
+      },
+      unlink: () => fs.unlink(absolutePath),
+    };
+  }
+
+  let builder: Builder;
+
+  function watch() {
+    return builder.watch();
+  }
+
   async function build() {
     await Promise.all(Object.entries(files).map(createFile));
 
-    const cfg = path.join(directory, configurationPath);
-
-    let builder: Builder;
+    const cfg = join(directory, configurationPath);
     if (typeof configuration === "string") {
       builder = await createBuilder(
         cfg,
@@ -112,7 +162,9 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     return {
       file,
       build,
-    } as any;
+      path,
+      watch,
+    } satisfies Workspace<any> as any;
   }
 
   return createWorkspace;
@@ -121,6 +173,11 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
 export type Workspace<TConfig extends AnyConfiguration | string> = {
   file: (relativePath: string, content: string) => void;
   build: () => Promise<Executor<TConfig>>;
+  watch: () => Promise<Watcher>;
+  path: (relativePath: string) => {
+    write: (content: string | TemplateStringsArray) => Promise<void>;
+    unlink: () => Promise<void>;
+  };
 };
 
 type CollectionNameOrString<TConfig extends AnyConfiguration | string> =
@@ -147,7 +204,7 @@ export interface WorkspaceFixture {
 async function createWorkspaceDirectory() {
   const tmpdir = os.tmpdir();
 
-  const directory = await fs.mkdtemp(path.join(tmpdir, "content-collections-"));
+  const directory = await fs.mkdtemp(join(tmpdir, "content-collections-"));
   // we need to call realpath, because mktemp returns /var/folders/... on macOS
   // but the paths which are returned by the watcher are /private/var/folders/...
   const directoryPath = await fs.realpath(directory);
