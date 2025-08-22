@@ -1,10 +1,11 @@
+import path from "node:path";
 import { describe, expect } from "vitest";
 import { z } from "zod";
-import { workspaceTest } from "./workspace";
 import { defineCollection, defineConfig } from "../config";
+import { createDefaultImport, createNamedImport } from "../import";
+import { workspaceTest } from "./workspace";
 
 describe("workspace tests", () => {
-
   workspaceTest("should transform documents", async ({ workspaceBuilder }) => {
     const posts = defineCollection({
       name: "posts",
@@ -313,6 +314,120 @@ describe("workspace tests", () => {
       expect(allPosts.map((p) => p.author)).toEqual(["Trillian McMillan"]);
     },
   );
+
+  workspaceTest(
+    "should create named import",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const characters = defineCollection({
+        name: "characters",
+        directory: "characters",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          name: z.string(),
+          displayName: z.string(),
+        }),
+        transform: async (doc) => {
+          return {
+            ...doc,
+            greet: createNamedImport<(name: string) => string>(
+              "greet",
+              path.join(workspacePath, "src/greet.ts"),
+            ),
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [characters],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "characters/trillian.yaml",
+        `name: trillian
+       displayName: Trillian McMillan
+      `,
+      );
+
+      workspace.file(
+        "src/greet.ts",
+        `export function greet(name: string) {
+         return \`Hello, \${name}!\`;
+       }
+      `,
+      );
+
+      const { collection } = await workspace.build();
+      const allCharacters = await collection("characters");
+      expect(allCharacters).toHaveLength(1);
+
+      const trillian = allCharacters[0];
+      if (!trillian) {
+        throw new Error("Trillian character not found");
+      }
+
+      expect(trillian.greet("Alice")).toBe("Hello, Alice!");
+    },
+  );
+
+  workspaceTest(
+    "should create default import",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const characters = defineCollection({
+        name: "characters",
+        directory: "characters",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          name: z.string(),
+          displayName: z.string(),
+        }),
+        transform: async (doc) => {
+          return {
+            ...doc,
+            greet: createDefaultImport<(name: string) => string>(
+              path.join(workspacePath, "src/greet.ts"),
+            ),
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [characters],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "characters/trillian.yaml",
+        `name: trillian
+       displayName: Trillian McMillan
+      `,
+      );
+
+      workspace.file(
+        "src/greet.ts",
+        `export default function greet(name: string) {
+         return \`Hello, \${name}!\`;
+       }
+      `,
+      );
+
+      const { collection } = await workspace.build();
+      const allCharacters = await collection("characters");
+      expect(allCharacters).toHaveLength(1);
+
+      const trillian = allCharacters[0];
+      if (!trillian) {
+        throw new Error("Trillian character not found");
+      }
+
+      expect(trillian.greet("Bob")).toBe("Hello, Bob!");
+    },
+  );
+
 
 
 });

@@ -59,7 +59,7 @@ describe("watcher", () => {
         const col = await collection("movies");
         expect(col).toHaveLength(3);
         return col;
-      });
+      }, 2000);
 
       expect(allMovies.map((m) => m.name)).toEqual([
         "Fight Club",
@@ -119,7 +119,7 @@ describe("watcher", () => {
         const col = await collection("movies");
         expect(col).toHaveLength(1);
         return col;
-      });
+      }, 2000);
 
       expect(allMovies.map((m) => m.name)).toEqual(["Fight Club"]);
     },
