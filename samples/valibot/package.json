@@ -9,8 +9,8 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@content-collections/cli": "0.1.6",
-    "@content-collections/core": "0.10.0",
+    "@content-collections/cli": "0.1.7",
+    "@content-collections/core": "0.11.0",
     "valibot": "^1.1.0"
   },
   "devDependencies": {

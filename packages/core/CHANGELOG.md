@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.11.0
+
+### Minor Changes
+
+- [#633](https://github.com/sdorra/content-collections/pull/633) [`86490bc`](https://github.com/sdorra/content-collections/commit/86490bc8815ba03ede8c3a9dcb45931cd686db9c) Thanks [@sdorra](https://github.com/sdorra)! - Add option to skip a document to context
+
+### Patch Changes
+
+- [#629](https://github.com/sdorra/content-collections/pull/629) [`4a47b19`](https://github.com/sdorra/content-collections/commit/4a47b191f75dd1f409fc354236befe76caa85357) Thanks [@sdorra](https://github.com/sdorra)! - Accept ReadonlyArray as valid return type of transform function
+
 ## 0.10.0
 
 ### Minor Changes
