@@ -186,6 +186,56 @@ describe("parser", () => {
   );
 
   workspaceTest(
+    "should parse with simple custom parser",
+    async ({ workspaceBuilder }) => {
+      const specialJsonParser = defineParser((fileContent) => {
+        const content = fileContent.split("\n").slice(1).join("\n");
+        return JSON.parse(content);
+      });
+
+      const movies = defineCollection({
+        name: "movies",
+        directory: "sources/movies",
+        include: "*.special.json",
+        parser: specialJsonParser,
+        schema: z.object({
+          name: z.string(),
+          year: z.number(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [movies],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/movies/fight-club.special.json",
+        `// This is a special comment
+        {
+          "name": "Fight Club",
+          "year": 1999
+        }`,
+      );
+
+      workspace.file(
+        "sources/movies/inception.special.json",
+        `// This is a special comment
+        {
+          "name": "Inception",
+          "year": 2010
+        }`,
+      );
+
+      const { collection } = await workspace.build();
+      const allMovies = await collection("movies");
+      expect(allMovies).toHaveLength(2);
+      expect(allMovies.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
+    },
+  );
+
+  workspaceTest(
     "should parse with custom parser",
     async ({ workspaceBuilder }) => {
       const specialJsonParser = defineParser({
