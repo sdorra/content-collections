@@ -2,6 +2,7 @@ import path from "node:path";
 import { describe, expect } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
+import { Events } from "../events";
 import { createDefaultImport, createNamedImport } from "../import";
 import { workspaceTest } from "./workspace";
 
@@ -428,6 +429,131 @@ describe("workspace tests", () => {
     },
   );
 
+  workspaceTest(
+    "should skip document",
+    async ({ workspaceBuilder, emitter }) => {
+      const events: Array<Events["transformer:document-skipped"]> = [];
 
+      emitter.on("transformer:document-skipped", (event) => {
+        events.push(event);
+      });
 
+      const characters = defineCollection({
+        name: "posts",
+        directory: "content/posts",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+          draft: z.boolean().optional(),
+        }),
+        transform: async (doc, { skip }) => {
+          if (doc.draft) {
+            return skip("skipped draft");
+          }
+
+          return {
+            ...doc,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [characters],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "content/posts/one.md",
+        `---
+        title: One
+        draft: true
+        ---
+
+        # One
+      `,
+      );
+
+      workspace.file(
+        "content/posts/two.md",
+        `---
+        title: Two
+        ---
+
+        # Two
+      `,
+      );
+
+      const { collection } = await workspace.build();
+      const posts = await collection("posts");
+      expect(posts.map((post) => post.title)).toEqual(["Two"]);
+
+      expect(events).toHaveLength(1);
+      expect(events[0]?.reason).toBe("skipped draft");
+    },
+  );
+
+  workspaceTest(
+    "should skip document without reason",
+    async ({ workspaceBuilder, emitter }) => {
+      const events: Array<Events["transformer:document-skipped"]> = [];
+
+      emitter.on("transformer:document-skipped", (event) => {
+        events.push(event);
+      });
+
+      const characters = defineCollection({
+        name: "posts",
+        directory: "content/posts",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+          draft: z.boolean().optional(),
+        }),
+        transform: async (doc, { skip }) => {
+          if (doc.draft) {
+            return skip();
+          }
+
+          return {
+            ...doc,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [characters],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "content/posts/one.md",
+        `---
+        title: One
+        draft: true
+        ---
+
+        # One
+      `,
+      );
+
+      workspace.file(
+        "content/posts/two.md",
+        `---
+        title: Two
+        ---
+
+        # Two
+      `,
+      );
+
+      const { collection } = await workspace.build();
+      const posts = await collection("posts");
+      expect(posts.map((post) => post.title)).toEqual(["Two"]);
+
+      expect(events).toHaveLength(1);
+      expect(events[0]?.reason).toBeUndefined();
+    },
+  );
 });
