@@ -145,7 +145,7 @@ To ensure type safety, a generic for the imported module must be passed to the `
 
 ## Skipping documents
 
-Since version 0.10.0, the `transform` function can skip a document from being added to the collection. This feature is useful for filtering out documents that do not meet specific criteria or for preventing certain documents from being processed. To skip a document, simply return the result of the `skip` function from the context object with an optional reason, for example:
+Since version 0.11.0, the `transform` function can skip a document from being added to the collection. This feature is useful for filtering out documents that do not meet specific criteria or for preventing certain documents from being processed. To skip a document, simply return the result of the `skip` function from the context object with an optional reason, for example:
 
 ```ts
 transform: (doc, { skip }) => {
