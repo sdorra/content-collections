@@ -1,5 +1,12 @@
 # @content-collections/vite
 
+## 0.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`86490bc`](https://github.com/sdorra/content-collections/commit/86490bc8815ba03ede8c3a9dcb45931cd686db9c)]:
+  - @content-collections/integrations@0.3.0
+
 ## 0.2.6
 
 ### Patch Changes

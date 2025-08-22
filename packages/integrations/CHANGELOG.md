@@ -1,5 +1,11 @@
 # @content-collections/integrations
 
+## 0.3.0
+
+### Minor Changes
+
+- [#633](https://github.com/sdorra/content-collections/pull/633) [`86490bc`](https://github.com/sdorra/content-collections/commit/86490bc8815ba03ede8c3a9dcb45931cd686db9c) Thanks [@sdorra](https://github.com/sdorra)! - Log skipped documents
+
 ## 0.2.1
 
 ### Patch Changes
