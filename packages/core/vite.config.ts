@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 
 const excludes = [
-  "**/spec/**",
+  "**/__spec__/**",
   "**/__tests__/**",
   "**/types.ts",
   "**/*.test.ts",
