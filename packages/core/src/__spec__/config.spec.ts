@@ -293,4 +293,52 @@ describe("config", () => {
       expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
     },
   );
+
+  workspaceTest(
+    "should call onSuccess after build",
+    async ({ workspaceBuilder }) => {
+      const titles: Array<string> = [];
+
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        onSuccess: (docs) => {
+          titles.push(...docs.map((d) => d.title));
+        },
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/posts/one.yaml",
+        `
+        title: First post
+    `,
+      );
+
+      workspace.file(
+        "sources/posts/two.yaml",
+        `
+        title: Second post
+    `,
+      );
+
+      await workspace.build();
+
+      expect(titles).toEqual([
+        "First post",
+        "Second post",
+      ]);
+    },
+  );
+
 });

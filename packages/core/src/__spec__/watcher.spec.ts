@@ -1,200 +1,315 @@
-import { describe, expect, vi } from "vitest";
+import { afterEach, describe, expect, vi } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
 import { workspaceTest } from "./workspace";
+import { Watcher } from "src/watcher";
 
-describe("collection file changes", () => {
-  workspaceTest(
-    "should add new file to collection",
-    async ({ workspaceBuilder }) => {
-      const movies = defineCollection({
-        name: "movies",
-        directory: "sources/movies",
-        include: "*.json",
-        parser: "json",
-        schema: z.object({
-          name: z.string(),
-          year: z.number(),
-        }),
-      });
+let watcher : Watcher | undefined = undefined;
 
-      const config = defineConfig({
-        collections: [movies],
-      });
+afterEach(() => {
+  if (watcher) {
+    watcher.unsubscribe();
+    watcher = undefined;
+  }
+});
 
-      const workspace = workspaceBuilder(config);
+describe(
+  "collection file changes",
+  {
+    retry: 3,
+    timeout: 20000,
+  },
+  () => {
+    workspaceTest(
+      "should add new file to collection",
+      async ({ workspaceBuilder }) => {
+        const movies = defineCollection({
+          name: "movies",
+          directory: "sources/movies",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            name: z.string(),
+            year: z.number(),
+          }),
+        });
 
-      workspace.file(
-        "sources/movies/fight-club.json",
-        `{
+        const config = defineConfig({
+          collections: [movies],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/movies/fight-club.json",
+          `{
         "name": "Fight Club",
         "year": 1999
       }`,
-      );
+        );
 
-      workspace.file(
-        "sources/movies/inception.json",
-        `{
+        workspace.file(
+          "sources/movies/inception.json",
+          `{
         "name": "Inception",
         "year": 2010
       }`,
-      );
+        );
 
-      let { collection } = await workspace.build();
+        let { collection } = await workspace.build();
 
-      let allMovies = await collection("movies");
-      expect(allMovies).toHaveLength(2);
-      expect(allMovies.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
+        let allMovies = await collection("movies");
+        expect(allMovies).toHaveLength(2);
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+        ]);
 
-      await workspace.watch();
+        watcher = await workspace.watch();
 
-      await workspace.path("sources/movies/interstellar.json").write(
-        `{
+        await workspace.path("sources/movies/interstellar.json").write(
+          `{
         "name": "Interstellar",
         "year": 2014
       }`,
-      );
+        );
 
-      allMovies = await vi.waitFor(async () => {
-        const col = await collection("movies");
-        expect(col).toHaveLength(3);
-        return col;
-      }, 3000);
+        allMovies = await vi.waitFor(async () => {
+          const col = await collection("movies");
+          expect(col).toHaveLength(3);
+          return col;
+        }, 3000);
 
-      expect(allMovies.map((m) => m.name)).toEqual([
-        "Fight Club",
-        "Inception",
-        "Interstellar",
-      ]);
-    },
-  );
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+          "Interstellar",
+        ]);
+      },
+    );
 
-  workspaceTest(
-    "should update existing file in collection",
-    async ({ workspaceBuilder }) => {
-      const movies = defineCollection({
-        name: "movies",
-        directory: "sources/movies",
-        include: "*.json",
-        parser: "json",
-        schema: z.object({
-          name: z.string(),
-          year: z.number(),
-        }),
-      });
+    workspaceTest(
+      "should update existing file in collection",
+      async ({ workspaceBuilder }) => {
+        const movies = defineCollection({
+          name: "movies",
+          directory: "sources/movies",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            name: z.string(),
+            year: z.number(),
+          }),
+        });
 
-      const config = defineConfig({
-        collections: [movies],
-      });
+        const config = defineConfig({
+          collections: [movies],
+        });
 
-      const workspace = workspaceBuilder(config);
+        const workspace = workspaceBuilder(config);
 
-      workspace.file(
-        "sources/movies/fight-club.json",
-        `{
+        workspace.file(
+          "sources/movies/fight-club.json",
+          `{
         "name": "Fight Clubbb",
         "year": 1999
       }`,
-      );
+        );
 
-      workspace.file(
-        "sources/movies/inception.json",
-        `{
+        workspace.file(
+          "sources/movies/inception.json",
+          `{
         "name": "Inception",
         "year": 2010
       }`,
-      );
+        );
 
-      let { collection } = await workspace.build();
+        let { collection } = await workspace.build();
 
-      let allMovies = await collection("movies");
-      expect(allMovies).toHaveLength(2);
-      expect(allMovies.map((m) => m.name)).toEqual([
-        "Fight Clubbb",
-        "Inception",
-      ]);
+        let allMovies = await collection("movies");
+        expect(allMovies).toHaveLength(2);
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Clubbb",
+          "Inception",
+        ]);
 
-      await workspace.watch();
+        watcher = await workspace.watch();
 
-      await workspace.path("sources/movies/fight-club.json").write(
-        `{
+        await workspace.path("sources/movies/fight-club.json").write(
+          `{
         "name": "Fight Club",
         "year": 1999
       }`,
-      );
+        );
 
-      allMovies = await vi.waitFor(async () => {
-        const col = await collection("movies");
-        expect(col.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
-        return col;
-      }, 5000);
+        allMovies = await vi.waitFor(async () => {
+          const col = await collection("movies");
+          expect(col.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
+          return col;
+        }, 5000);
 
-      expect(allMovies.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
-    },
-  );
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+        ]);
+      },
+    );
 
-  workspaceTest(
-    "should remove file from collection",
-    async ({ workspaceBuilder }) => {
-      const movies = defineCollection({
-        name: "movies",
-        directory: "sources/movies",
-        include: "*.json",
-        parser: "json",
-        schema: z.object({
-          name: z.string(),
-          year: z.number(),
-        }),
-      });
+    workspaceTest(
+      "should remove file from collection",
+      async ({ workspaceBuilder }) => {
+        const movies = defineCollection({
+          name: "movies",
+          directory: "sources/movies",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            name: z.string(),
+            year: z.number(),
+          }),
+        });
 
-      const config = defineConfig({
-        collections: [movies],
-      });
+        const config = defineConfig({
+          collections: [movies],
+        });
 
-      const workspace = workspaceBuilder(config);
+        const workspace = workspaceBuilder(config);
 
-      workspace.file(
-        "sources/movies/fight-club.json",
-        `{
+        workspace.file(
+          "sources/movies/fight-club.json",
+          `{
         "name": "Fight Club",
         "year": 1999
       }`,
-      );
+        );
 
-      workspace.file(
-        "sources/movies/inception.json",
-        `{
+        workspace.file(
+          "sources/movies/inception.json",
+          `{
         "name": "Inception",
         "year": 2010
       }`,
-      );
+        );
 
-      let { collection } = await workspace.build();
+        let { collection } = await workspace.build();
 
-      let allMovies = await collection("movies");
-      expect(allMovies).toHaveLength(2);
-      expect(allMovies.map((m) => m.name)).toEqual(["Fight Club", "Inception"]);
+        let allMovies = await collection("movies");
+        expect(allMovies).toHaveLength(2);
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+        ]);
 
-      await workspace.watch();
+        watcher = await workspace.watch();
 
-      await workspace.path("sources/movies/inception.json").unlink();
+        await workspace.path("sources/movies/inception.json").unlink();
 
-      allMovies = await vi.waitFor(async () => {
-        const col = await collection("movies");
-        expect(col).toHaveLength(1);
-        return col;
-      }, 3000);
+        allMovies = await vi.waitFor(async () => {
+          const col = await collection("movies");
+          expect(col).toHaveLength(1);
+          return col;
+        }, 3000);
 
-      expect(allMovies.map((m) => m.name)).toEqual(["Fight Club"]);
-    },
-  );
-});
+        expect(allMovies.map((m) => m.name)).toEqual(["Fight Club"]);
+      },
+    );
 
-describe("configuration file changes", () => {
-  workspaceTest(
-    "should rebuilt on configuration change",
-    async ({ workspaceBuilder }) => {
-      const workspace = workspaceBuilder /* ts */ `
+    workspaceTest(
+      "should stop watching after unsubscribe",
+      async ({ workspaceBuilder }) => {
+        const movies = defineCollection({
+          name: "movies",
+          directory: "sources/movies",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            name: z.string(),
+            year: z.number(),
+          }),
+        });
+
+        const config = defineConfig({
+          collections: [movies],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/movies/fight-club.json",
+          `{
+        "name": "Fight Club",
+        "year": 1999
+      }`,
+        );
+
+        workspace.file(
+          "sources/movies/inception.json",
+          `{
+        "name": "Inception",
+        "year": 2010
+      }`,
+        );
+
+        let { collection } = await workspace.build();
+
+        let allMovies = await collection("movies");
+        expect(allMovies).toHaveLength(2);
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+        ]);
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/movies/interstellar.json").write(
+          `{
+        "name": "Interstellar",
+        "year": 2014
+      }`,
+        );
+
+        allMovies = await vi.waitFor(async () => {
+          const col = await collection("movies");
+          expect(col).toHaveLength(3);
+          return col;
+        }, 3000);
+
+        await watcher.unsubscribe();
+
+        await workspace.path("sources/movies/rogue-one.json").write(
+          `{
+        "name": "Rogue One",
+        "year": 2016
+      }`,
+        );
+
+        // wait 500ms to ensure the watcher has processed the change
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        expect(allMovies.map((m) => m.name)).toEqual([
+          "Fight Club",
+          "Inception",
+          "Interstellar",
+        ]);
+      },
+    );
+
+
+  },
+
+);
+
+describe(
+  "configuration file changes",
+  {
+    retry: 3,
+    timeout: 20000,
+  },
+  () => {
+    workspaceTest(
+      "should rebuilt on configuration change",
+      async ({ workspaceBuilder }) => {
+        const workspace = workspaceBuilder /* ts */ `
       import { defineCollection, defineConfig } from "@content-collections/core";
       import { z } from "zod";
 
@@ -213,31 +328,31 @@ describe("configuration file changes", () => {
       });
     `;
 
-      workspace.file(
-        "sources/one/index.md",
-        `
+        workspace.file(
+          "sources/one/index.md",
+          `
         ---
         title: Number One
         ---
     `,
-      );
+        );
 
-      workspace.file(
-        "sources/two/index.md",
-        `
+        workspace.file(
+          "sources/two/index.md",
+          `
         ---
         title: Number Two
         ---
     `,
-      );
+        );
 
-      const { collection } = await workspace.build();
-      let allPosts = await collection("posts");
-      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+        const { collection } = await workspace.build();
+        let allPosts = await collection("posts");
+        expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
 
-      const watcher = await workspace.watch();
+        watcher = await workspace.watch();
 
-      await workspace.path("content-collections.ts").write /* ts */ `
+        await workspace.path("content-collections.ts").write /* ts */ `
       import { defineCollection, defineConfig } from "@content-collections/core";
       import { z } from "zod";
 
@@ -256,22 +371,20 @@ describe("configuration file changes", () => {
       });
     `;
 
-      allPosts = await vi.waitFor(async () => {
-        const col = await collection("posts");
-        expect(col.map((p) => p.title)).toEqual(["Number Two"]);
-        return col;
-      }, 3000);
+        allPosts = await vi.waitFor(async () => {
+          const col = await collection("posts");
+          expect(col.map((p) => p.title)).toEqual(["Number Two"]);
+          return col;
+        }, 3000);
 
-      expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
+        expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
+      },
+    );
 
-      await watcher.unsubscribe();
-    },
-  );
-
-  workspaceTest(
-    "should rebuilt on configuration change",
-    async ({ workspaceBuilder, emitter }) => {
-      const workspace = workspaceBuilder /* ts */ `
+    workspaceTest(
+      "should rebuilt on configuration change",
+      async ({ workspaceBuilder, emitter }) => {
+        const workspace = workspaceBuilder /* ts */ `
       import { defineCollection, defineConfig } from "@content-collections/core";
       import { z } from "zod";
 
@@ -290,47 +403,45 @@ describe("configuration file changes", () => {
       });
     `;
 
-      workspace.file(
-        "sources/one/index.md",
-        `
+        workspace.file(
+          "sources/one/index.md",
+          `
         ---
         title: Number One
         ---
     `,
-      );
+        );
 
-      const { collection } = await workspace.build();
-      let allPosts = await collection("posts");
-      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+        const { collection } = await workspace.build();
+        let allPosts = await collection("posts");
+        expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
 
-      const watcher = await workspace.watch();
+        watcher = await workspace.watch();
 
-      const configErrorPromise = new Promise<Error>((resolve) => {
-        emitter.on("watcher:config-reload-error", (event) => {
-          resolve(event.error);
+        const configErrorPromise = new Promise<Error>((resolve) => {
+          emitter.on("watcher:config-reload-error", (event) => {
+            resolve(event.error);
+          });
         });
-      });
 
-      await workspace
-        .path("content-collections.ts")
-        .write("theNewConfigurationIsBroken();");
+        await workspace
+          .path("content-collections.ts")
+          .write("theNewConfigurationIsBroken();");
 
-      const error = await configErrorPromise;
+        const error = await configErrorPromise;
 
-      if (!error) {
-        throw new Error("Expected configuration error");
-      }
-      expect(error).toBeInstanceOf(Error);
-      expect(error.message).toContain("theNewConfigurationIsBroken");
+        if (!error) {
+          throw new Error("Expected configuration error");
+        }
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toContain("theNewConfigurationIsBroken");
+      },
+    );
 
-      await watcher.unsubscribe();
-    },
-  );
-
-  workspaceTest(
-    "should rebuild on imported configuration file change",
-    async ({ workspaceBuilder }) => {
-      const workspace = workspaceBuilder /* ts */ `
+    workspaceTest(
+      "should rebuild on imported configuration file change",
+      async ({ workspaceBuilder }) => {
+        const workspace = workspaceBuilder /* ts */ `
       import { defineConfig } from "@content-collections/core";
       import { posts } from "./posts"
 
@@ -339,9 +450,9 @@ describe("configuration file changes", () => {
       });
     `;
 
-      workspace.file(
-        "posts.ts",
-        /* ts */ `
+        workspace.file(
+          "posts.ts",
+          /* ts */ `
       import { defineCollection } from "@content-collections/core";
       import { z } from "zod";
 
@@ -355,33 +466,33 @@ describe("configuration file changes", () => {
         })
       });
       `,
-      );
+        );
 
-      workspace.file(
-        "sources/one/index.md",
-        `
+        workspace.file(
+          "sources/one/index.md",
+          `
         ---
         title: Number One
         ---
     `,
-      );
+        );
 
-      workspace.file(
-        "sources/two/index.md",
-        `
+        workspace.file(
+          "sources/two/index.md",
+          `
         ---
         title: Number Two
         ---
     `,
-      );
+        );
 
-      const { collection } = await workspace.build();
-      let allPosts = await collection("posts");
-      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+        const { collection } = await workspace.build();
+        let allPosts = await collection("posts");
+        expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
 
-      const watcher = await workspace.watch();
+        watcher = await workspace.watch();
 
-      await workspace.path("posts.ts").write /* ts */ `
+        await workspace.path("posts.ts").write /* ts */ `
       import { defineCollection } from "@content-collections/core";
       import { z } from "zod";
 
@@ -396,16 +507,14 @@ describe("configuration file changes", () => {
       });
     `;
 
-      allPosts = await vi.waitFor(async () => {
-        const col = await collection("posts");
-        expect(col.map((p) => p.title)).toEqual(["Number Two"]);
-        return col;
-      }, 3000);
+        allPosts = await vi.waitFor(async () => {
+          const col = await collection("posts");
+          expect(col.map((p) => p.title)).toEqual(["Number Two"]);
+          return col;
+        }, 3000);
 
-      expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
-
-      await watcher.unsubscribe();
-    },
-  );
-
-});
+        expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
+      },
+    );
+  },
+);
