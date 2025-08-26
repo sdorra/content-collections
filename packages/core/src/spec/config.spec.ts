@@ -133,4 +133,164 @@ describe("config", () => {
       ]);
     },
   );
+
+  workspaceTest(
+    "should create collection from configuration file",
+    async ({ workspaceBuilder }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineCollection, defineConfig } from "@content-collections/core";
+      import { z } from "zod";
+
+      const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/posts",
+        include: "**/*.md(x)?",
+        schema: z.object({
+          title: z.string(),
+          author: z.string()
+        })
+      });
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "sources/posts/one.md",
+        `
+        ---
+        title: First post
+        author: trillian
+        ---
+
+        # First post
+    `,
+      );
+
+      workspace.file(
+        "sources/posts/two.md",
+        `
+        ---
+        title: Second post
+        author: trillian
+        ---
+
+        # Second post
+    `,
+      );
+
+      const { collection } = await workspace.build();
+
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual([
+        "First post",
+        "Second post",
+      ]);
+    },
+  );
+
+  workspaceTest(
+    "should read configuration with import",
+    async ({ workspaceBuilder }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineConfig } from "@content-collections/core";
+      import { posts } from "./posts"
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "posts.ts",
+        /* ts */ `
+      import { defineCollection } from "@content-collections/core";
+      import { z } from "zod";
+
+      export const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/one",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+      `,
+      );
+
+      workspace.file(
+        "sources/one/index.md",
+        `
+        ---
+        title: Number One
+        ---
+    `,
+      );
+
+      const { collection } = await workspace.build();
+      let allPosts = await collection("posts");
+      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+    },
+  );
+
+  workspaceTest(
+    "should respect tsconfigPath for configuration imports",
+    async ({ workspaceBuilder }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineConfig } from "@content-collections/core";
+      import { posts } from "@posts"
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "tsconfig.json",
+        /* json */ `{
+        "compilerOptions": {
+          "baseUrl": ".",
+          "paths": {
+            "@posts": ["./posts"]
+          }
+        }
+      }`,
+      );
+
+      workspace.file(
+        "posts.ts",
+        /* ts */ `
+      import { defineCollection } from "@content-collections/core";
+      import { z } from "zod";
+
+      export const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/one",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+      `,
+      );
+
+      workspace.file(
+        "sources/one/index.md",
+        `
+        ---
+        title: Number One
+        ---
+    `,
+      );
+
+      const { collection } = await workspace.build();
+      let allPosts = await collection("posts");
+      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+    },
+  );
 });

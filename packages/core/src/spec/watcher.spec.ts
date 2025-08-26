@@ -3,7 +3,7 @@ import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
 import { workspaceTest } from "./workspace";
 
-describe("watcher", () => {
+describe("collection file changes", () => {
   workspaceTest(
     "should add new file to collection",
     async ({ workspaceBuilder }) => {
@@ -188,4 +188,224 @@ describe("watcher", () => {
       expect(allMovies.map((m) => m.name)).toEqual(["Fight Club"]);
     },
   );
+});
+
+describe("configuration file changes", () => {
+  workspaceTest(
+    "should rebuilt on configuration change",
+    async ({ workspaceBuilder }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineCollection, defineConfig } from "@content-collections/core";
+      import { z } from "zod";
+
+      const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/one",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "sources/one/index.md",
+        `
+        ---
+        title: Number One
+        ---
+    `,
+      );
+
+      workspace.file(
+        "sources/two/index.md",
+        `
+        ---
+        title: Number Two
+        ---
+    `,
+      );
+
+      const { collection } = await workspace.build();
+      let allPosts = await collection("posts");
+      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+
+      const watcher = await workspace.watch();
+
+      await workspace.path("content-collections.ts").write /* ts */ `
+      import { defineCollection, defineConfig } from "@content-collections/core";
+      import { z } from "zod";
+
+      const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/two",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      allPosts = await vi.waitFor(async () => {
+        const col = await collection("posts");
+        expect(col.map((p) => p.title)).toEqual(["Number Two"]);
+        return col;
+      }, 3000);
+
+      expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
+
+      await watcher.unsubscribe();
+    },
+  );
+
+  workspaceTest(
+    "should rebuilt on configuration change",
+    async ({ workspaceBuilder, emitter }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineCollection, defineConfig } from "@content-collections/core";
+      import { z } from "zod";
+
+      const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/one",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "sources/one/index.md",
+        `
+        ---
+        title: Number One
+        ---
+    `,
+      );
+
+      const { collection } = await workspace.build();
+      let allPosts = await collection("posts");
+      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+
+      const watcher = await workspace.watch();
+
+      const configErrorPromise = new Promise<Error>((resolve) => {
+        emitter.on("watcher:config-reload-error", (event) => {
+          resolve(event.error);
+        });
+      });
+
+      await workspace
+        .path("content-collections.ts")
+        .write("theNewConfigurationIsBroken();");
+
+      const error = await configErrorPromise;
+
+      if (!error) {
+        throw new Error("Expected configuration error");
+      }
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toContain("theNewConfigurationIsBroken");
+
+      await watcher.unsubscribe();
+    },
+  );
+
+  workspaceTest(
+    "should rebuild on imported configuration file change",
+    async ({ workspaceBuilder }) => {
+      const workspace = workspaceBuilder /* ts */ `
+      import { defineConfig } from "@content-collections/core";
+      import { posts } from "./posts"
+
+      export default defineConfig({
+        collections: [posts],
+      });
+    `;
+
+      workspace.file(
+        "posts.ts",
+        /* ts */ `
+      import { defineCollection } from "@content-collections/core";
+      import { z } from "zod";
+
+      export const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/one",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+      `,
+      );
+
+      workspace.file(
+        "sources/one/index.md",
+        `
+        ---
+        title: Number One
+        ---
+    `,
+      );
+
+      workspace.file(
+        "sources/two/index.md",
+        `
+        ---
+        title: Number Two
+        ---
+    `,
+      );
+
+      const { collection } = await workspace.build();
+      let allPosts = await collection("posts");
+      expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
+
+      const watcher = await workspace.watch();
+
+      await workspace.path("posts.ts").write /* ts */ `
+      import { defineCollection } from "@content-collections/core";
+      import { z } from "zod";
+
+      export const posts = defineCollection({
+        name: "posts",
+        typeName: "Post",
+        directory: "sources/two",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+        })
+      });
+    `;
+
+      allPosts = await vi.waitFor(async () => {
+        const col = await collection("posts");
+        expect(col.map((p) => p.title)).toEqual(["Number Two"]);
+        return col;
+      }, 3000);
+
+      expect(allPosts.map((p) => p.title)).toEqual(["Number Two"]);
+
+      await watcher.unsubscribe();
+    },
+  );
+
 });
