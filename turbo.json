@@ -16,7 +16,8 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "env": ["CC_OS", "GITHUB_ACTIONS"]
+      "env": ["CC_OS", "GITHUB_ACTIONS"],
+      "outputs": ["coverage/**"]
     },
     "typecheck": {
       "dependsOn": ["^build", "^test"]
