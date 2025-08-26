@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect } from "vitest";
 import { z } from "zod";
@@ -185,6 +186,191 @@ describe("workspace tests", () => {
       // counter should be 2, because the transform function is called for each document
       // if the cache was not used, it would be 4
       expect(counter).toBe(2);
+    },
+  );
+
+  workspaceTest(
+    "should recompute cached values",
+    async ({ workspaceBuilder }) => {
+      let counter = 0;
+
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const val = await cache(++counter, (c) => {
+            return `${c}: ${doc.title}`;
+          });
+
+          return {
+            ...doc,
+            title: val,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file("sources/posts/one.yaml", "title: Post One");
+
+      // build the workspace twice to test the cache
+      await workspace.build();
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual(["2: Post One"]);
+    },
+  );
+
+  workspaceTest(
+    "should recompute cached values with additional cache key",
+    async ({ workspaceBuilder }) => {
+      let counter = 0;
+
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const val = await cache(doc.title, (title) => {
+            counter++;
+            return title.toLowerCase();
+          }, {
+            key: String(counter)
+          });
+
+          return {
+            ...doc,
+            title: val,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file("sources/posts/one.yaml", "title: Post One");
+
+      // build the workspace twice to test the cache
+      await workspace.build();
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual(["post one"]);
+      expect(counter).toBe(2);
+    },
+  );
+
+  workspaceTest(
+    "should recreate broken cache mapping file",
+    async ({ workspaceBuilder }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const val = await cache(doc.title, (title) => title.toUpperCase());
+
+          return {
+            ...doc,
+            title: val,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file("sources/posts/one.yaml", "title: Post One");
+
+      // build the workspace twice to test the cache
+      await workspace.build();
+
+      await workspace
+        .path(".content-collections/cache/mapping.json")
+        .write("broken json");
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual(["POST ONE"]);
+    },
+  );
+
+  workspaceTest(
+    "should recreate broken cache file",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const val = await cache(doc.title, (title) => title.toUpperCase());
+
+          return {
+            ...doc,
+            title: val,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file("sources/posts/one.yaml", "title: Post One");
+
+      // build the workspace twice to test the cache
+      await workspace.build();
+
+      // break all cache files
+      await fs
+        .readdir(path.join(workspacePath, ".content-collections/cache/posts/one"))
+        .then((files) =>
+          files
+            .filter((f) => f.endsWith(".cache"))
+            .map((f) =>
+              workspace
+                .path(`.content-collections/cache/posts/one/${f}`)
+                .write("broken json"),
+            ),
+        );
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual(["POST ONE"]);
     },
   );
 
