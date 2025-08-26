@@ -519,7 +519,8 @@ describe("workspace tests", () => {
             ...doc,
             greet: createNamedImport<(name: string) => string>(
               "greet",
-              path.join(workspacePath, "src/greet.ts"),
+              // TODO: should createNamedImport handle the slash replacement on windows?
+              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/")
             ),
           };
         },
@@ -575,7 +576,8 @@ describe("workspace tests", () => {
           return {
             ...doc,
             greet: createDefaultImport<(name: string) => string>(
-              path.join(workspacePath, "src/greet.ts"),
+              // TODO: should createDefaultImport handle the slash replacement on windows?
+              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/")
             ),
           };
         },
