@@ -101,18 +101,23 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     return builder.watch();
   }
 
+  let outputDir: string | undefined = undefined;
+
   async function build() {
     await Promise.all(Object.entries(files).map(createFile));
 
+    const options = {
+      configName: defaultConfigName,
+    };
+
+    if (outputDir) {
+      // @ts-expect-error not typed yet
+      options.outputDir = join(directory, outputDir);
+    }
+
     const cfg = join(directory, configurationPath);
     if (typeof configuration === "string") {
-      builder = await createBuilder(
-        cfg,
-        {
-          configName: defaultConfigName,
-        },
-        emitter,
-      );
+      builder = await createBuilder(cfg, options, emitter);
     } else {
       builder = await createInternalBuilder(
         {
@@ -123,9 +128,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
           checksum: "",
         },
         directory,
-        {
-          configName: defaultConfigName,
-        },
+        options,
         emitter,
       );
     }
@@ -139,14 +142,22 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     };
   }
 
+  type Options = {
+    configurationPath?: string;
+    outputDir?: string;
+  };
+
   function createWorkspace<
     TConfiguration extends AnyConfiguration | TemplateStringsArray | string,
   >(
     inputConfiguration: TConfiguration,
-    relativePath = "content-collections.ts",
+    options: Options = {},
   ): TConfiguration extends AnyConfiguration
     ? Workspace<TConfiguration>
     : Workspace<any> {
+    const relativePath = options.configurationPath || "content-collections.ts";
+    outputDir = options.outputDir;
+
     configurationPath = relativePath;
 
     if (typeof inputConfiguration === "string") {

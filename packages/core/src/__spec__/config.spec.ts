@@ -1,8 +1,10 @@
+import fs from "node:fs";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
 import { defineCollection, defineConfig } from "../config";
 import { workspaceTest } from "./workspace";
+import { join } from "node:path";
 
 describe("config", () => {
   test("should fail with non existing configuration file", async () => {
@@ -334,11 +336,41 @@ describe("config", () => {
 
       await workspace.build();
 
-      expect(titles).toEqual([
-        "First post",
-        "Second post",
-      ]);
+      expect(titles).toEqual(["First post", "Second post"]);
     },
   );
 
+  workspaceTest(
+    "should use specified output directory",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config, {
+        outputDir: "build",
+      });
+
+      workspace.file(
+        "sources/posts/one.yaml",
+        `
+        title: First post
+    `,
+      );
+
+      await workspace.build();
+
+      expect(fs.existsSync(join(workspacePath, "build/allPosts.js"))).toBe(true);
+    },
+  );
 });
