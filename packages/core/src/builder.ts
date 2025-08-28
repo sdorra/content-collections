@@ -4,10 +4,12 @@ import {
   Options as ConfigurationOptions,
   createConfigurationReader,
   defaultConfigName,
+  InternalConfiguration,
 } from "./configurationReader";
 import { type Emitter, createEmitter } from "./events";
 import { Modification } from "./types";
 import { createWatcher, Watcher } from "./watcher";
+import { AnyConfiguration } from "./config";
 
 // TODO: get rid of namespaces at all
 export type BuilderEvents = BuildEvents & {
@@ -59,6 +61,26 @@ export async function createBuilder(
 ) {
   const readConfiguration = createConfigurationReader();
   const baseDirectory = path.dirname(configurationPath);
+
+  const configuration = await readConfiguration(configurationPath, options);
+
+  return createInternalBuilder(
+    configuration,
+    baseDirectory,
+    options,
+    emitter
+  );
+}
+
+export async function createInternalBuilder(
+  initialConfiguration: InternalConfiguration,
+  baseDirectory: string,
+  options: Options,
+  emitter: Emitter
+) {
+  const readConfiguration = createConfigurationReader();
+
+  const configurationPath = initialConfiguration.path;
   const outputDirectory = resolveOutputDir(baseDirectory, options);
 
   emitter.emit("builder:created", {
@@ -67,7 +89,7 @@ export async function createBuilder(
     outputDirectory: outputDirectory,
   });
 
-  let configuration = await readConfiguration(configurationPath, options);
+  let configuration = initialConfiguration;
 
   let watcher: Watcher | null = null;
   let context = await createBuildContext({
