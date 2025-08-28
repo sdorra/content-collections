@@ -101,3 +101,10 @@ export function defineParser<TArgument extends Parser | ParseFn>(
 
   return parser as DefineParserResult<TArgument>;
 }
+
+export function isValidParser(parser: ConfiguredParser): parser is Parser {
+  if (typeof parser === "string") {
+    return parser in parsers;
+  }
+  return "hasContent" in parser && typeof parser.parse === "function";
+}

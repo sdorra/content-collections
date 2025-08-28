@@ -4,12 +4,14 @@ import { CacheFn } from "./cache";
 import { GetTypeOfImport, Import } from "./import";
 import {
   ConfiguredParser,
+  isValidParser,
   PredefinedParser,
   PredefinedParsers,
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
 import { warnDeprecated } from "./warn";
+import { ConfigurationError } from "./configurationReader";
 
 // Export all zod types to fix type errors,
 // if declaration is set to true in tsconfig.json.
@@ -214,6 +216,11 @@ export function defineCollection<
   let parser = collection.parser;
   if (!parser) {
     parser = "frontmatter" as TParser;
+  } else if (!isValidParser(parser)) {
+    throw new ConfigurationError(
+      "Read",
+      `Parser ${parser} is not valid a parser`,
+    );
   }
   let schema: any = collection.schema;
   if (!schema["~standard"]) {

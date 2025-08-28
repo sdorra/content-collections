@@ -1,4 +1,4 @@
-import { describe, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
 import { defineParser } from "../parser";
@@ -288,11 +288,9 @@ describe("parser", () => {
     },
   );
 
-  // TODO: it looks the parser is not checked before the build, it throws for every document
-  workspaceTest.skip(
-    "should throw an error if parser does not exist",
-    async ({ workspaceBuilder }) => {
-      const posts = defineCollection({
+  test("should throw an error if parser does not exist", () => {
+    expect(() =>
+      defineCollection({
         name: "posts",
         directory: "sources/posts",
         include: "*.md",
@@ -302,18 +300,9 @@ describe("parser", () => {
           title: z.string(),
           content: z.string(),
         }),
-      });
-
-      const config = defineConfig({
-        collections: [posts],
-      });
-
-      const workspace = workspaceBuilder(config);
-      await expect(() => workspace.build()).rejects.toThrowError(
-        "Parser non-existing-parser does not exist",
-      );
-    },
-  );
+      }),
+    ).toThrowError("Parser non-existing-parser is not valid a parser");
+  });
 
   workspaceTest(
     "should exclude non parsable documents",
