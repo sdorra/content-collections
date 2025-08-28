@@ -9,8 +9,8 @@ type Deprecation = keyof typeof deprecations;
 
 const _suppressDeprecatedWarnings: Array<Deprecation> = [];
 
-export function suppressDeprecatedWarnings(...deprecations: Array<Deprecation | "all">) {
-  for (const deprecation of deprecations) {
+export function suppressDeprecatedWarnings(...suppresses: Array<Deprecation | "all">) {
+  for (const deprecation of suppresses) {
     if (deprecation === "all") {
       _suppressDeprecatedWarnings.push(
         ...(Object.keys(deprecations) as Array<Deprecation>),

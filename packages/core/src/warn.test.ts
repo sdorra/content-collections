@@ -1,5 +1,4 @@
-import { beforeEach } from "node:test";
-import { describe, expect, it, vitest } from "vitest";
+import { beforeEach, describe, expect, it, vitest } from "vitest";
 import {
   clearSuppressedWarnings,
   suppressDeprecatedWarnings,
