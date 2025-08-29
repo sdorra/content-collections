@@ -1,6 +1,5 @@
 import matter from "gray-matter";
 import { parse, stringify } from "yaml";
-import { ConfigurationError } from "./configurationReader";
 
 type ParseFn = (
   content: string,
@@ -67,14 +66,7 @@ export const parsers = {
 
 export function getParser(configuredParser: ConfiguredParser): Parser {
   if (typeof configuredParser === "string") {
-    const parser = parsers[configuredParser];
-    if (!parser) {
-      throw new ConfigurationError(
-        "Read",
-        `Parser ${configuredParser} does not exist`,
-      );
-    }
-    return parser;
+    return parsers[configuredParser];
   }
   return configuredParser;
 }
