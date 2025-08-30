@@ -10,7 +10,7 @@
   "dependencies": {
     "@content-collections/core": "0.11.1",
     "@content-collections/next": "0.2.7",
-    "next": "14.2.26",
+    "next": "14.2.32",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.24.4"
