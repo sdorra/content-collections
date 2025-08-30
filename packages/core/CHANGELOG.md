@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.11.1
+
+### Patch Changes
+
+- [`475b888`](https://github.com/sdorra/content-collections/commit/475b888c3554ca38fbbe7f1a8f55e4133ea22577) Thanks [@sdorra](https://github.com/sdorra)! - Throw an error if a collection is defined with invalid parser
+
+- [`7129c62`](https://github.com/sdorra/content-collections/commit/7129c62872f8d77f83ed871b5959f01b3e8d1716) Thanks [@sdorra](https://github.com/sdorra)! - Fix suppressing of all deprecation warnings
+
 ## 0.11.0
 
 ### Minor Changes

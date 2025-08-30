@@ -19,7 +19,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "@content-collections/core": "0.11.0",
+    "@content-collections/core": "0.11.1",
     "@content-collections/remix-vite": "0.2.2",
     "@remix-run/dev": "^2.16.5",
     "@types/react": "^18.3.3",
