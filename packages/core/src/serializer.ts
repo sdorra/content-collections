@@ -1,10 +1,6 @@
 import serializeJs from "serialize-javascript";
-import z from "zod";
-import { Import, isImport } from "./import";
-
-// TODO: if we do not longer ship zod as part of the package,
-// we should add a smaller tree shakeable validation library as dev dependency
-// such as valibot or @zod/mini (part of zod 4)
+import * as z from "zod/mini";
+import { importSchema, isImport, type Import } from "./import";
 
 const literalSchema = z.union([
   // json
@@ -18,6 +14,9 @@ const literalSchema = z.union([
   z.map(z.unknown(), z.unknown()),
   z.set(z.unknown()),
   z.bigint(),
+
+  // imports
+  importSchema,
 ]);
 
 type Literal = z.infer<typeof literalSchema>;
@@ -27,8 +26,8 @@ type SchemaType =
   | { [key: string]: SchemaType }
   | ReadonlyArray<SchemaType>;
 
-const schema: z.ZodType<SchemaType> = z.lazy(() =>
-  z.union([literalSchema, z.array(schema), z.record(schema)])
+const schema: z.ZodMiniType<SchemaType> = z.lazy(() =>
+  z.union([literalSchema, z.array(schema), z.record(z.string(), schema)]),
 );
 
 export type NotSerializableError =
@@ -39,7 +38,7 @@ The following type is not valid:`;
 
 export const extension = "js";
 
-export const serializableSchema = z.record(schema);
+export const serializableSchema = z.record(z.string(), schema);
 
 export type Serializable = z.infer<typeof serializableSchema>;
 

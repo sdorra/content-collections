@@ -1,5 +1,4 @@
 import { StandardSchemaV1 } from "@standard-schema/spec";
-import { z, ZodObject, ZodRawShape } from "zod";
 import { CacheFn } from "./cache";
 import { GetTypeOfImport, Import } from "./import";
 import {
@@ -10,13 +9,8 @@ import {
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
-import { warnDeprecated } from "./warn";
+import { retired } from "./features";
 import { ConfigurationError } from "./configurationReader";
-
-// Export all zod types to fix type errors,
-// if declaration is set to true in tsconfig.json.
-// @see https://github.com/microsoft/TypeScript/issues/42873
-export type * from "zod";
 
 export type Meta = {
   filePath: string;
@@ -42,26 +36,12 @@ type GetParser<TParser extends ConfiguredParser> =
 type HasContent<TParser extends ConfiguredParser> =
   GetParser<TParser>["hasContent"];
 
-type LegacySchema<TResult extends ZodRawShape = ZodRawShape> = (
-  z: Z,
-) => TResult;
-
-type TSchemaProp = StandardSchemaV1 | LegacySchema;
-
-type GetLegacySchemaShape<LegacySchema> = LegacySchema extends (
-  z: Z,
-) => infer TObjectShape
-  ? TObjectShape
-  : never;
+type TSchemaProp = StandardSchemaV1;
 
 type GetOutputShape<TShape extends TSchemaProp> =
   TShape extends StandardSchemaV1
     ? StandardSchemaV1.InferOutput<TShape>
-    : TShape extends ZodObject<any>
-      ? z.infer<TShape>
-      : TShape extends LegacySchema
-        ? z.infer<ZodObject<GetLegacySchemaShape<TShape>>>
-        : never;
+    : never;
 
 type GetOutput<
   TParser extends ConfiguredParser,
@@ -104,8 +84,6 @@ export type Context<TSchema = unknown> = {
   };
   skip: (reason?: string) => SkippedSignal;
 };
-
-type Z = typeof z;
 
 export type CollectionRequest<
   TName extends string,
@@ -224,8 +202,7 @@ export function defineCollection<
   }
   let schema: any = collection.schema;
   if (!schema["~standard"]) {
-    warnDeprecated("legacySchema");
-    schema = z.object(schema(z));
+    retired("legacySchema");
   }
   return {
     ...collection,
