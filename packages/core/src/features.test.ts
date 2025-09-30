@@ -2,17 +2,18 @@ import { beforeEach, describe, expect, it, vitest } from "vitest";
 import {
   clearSuppressedWarnings,
   suppressDeprecatedWarnings,
-  warnDeprecated,
-} from "./warn";
+  deprecated,
+  retired,
+} from "./features";
 
-describe("warnDeprecated", () => {
+describe("deprecated", () => {
   beforeEach(() => {
     clearSuppressedWarnings();
   });
 
   it("should log deprecated warning", () => {
     const logger = vitest.fn();
-    warnDeprecated("legacySchema", logger);
+    deprecated("legacySchema", logger);
     expect(logger).toHaveBeenCalled();
     //@ts-expect-error
     const message = logger.mock.calls[0][0];
@@ -23,14 +24,14 @@ describe("warnDeprecated", () => {
   it("should not log when deprecation is disabled", () => {
     suppressDeprecatedWarnings("legacySchema");
     const logger = vitest.fn();
-    warnDeprecated("legacySchema", logger);
+    deprecated("legacySchema", logger);
     expect(logger).not.toHaveBeenCalled();
   });
 
   it("should not log when all deprecations are disabled", () => {
     suppressDeprecatedWarnings("all");
     const logger = vitest.fn();
-    warnDeprecated("legacySchema", logger);
+    deprecated("legacySchema", logger);
     expect(logger).not.toHaveBeenCalled();
   });
 
@@ -38,7 +39,14 @@ describe("warnDeprecated", () => {
     suppressDeprecatedWarnings("legacySchema");
     clearSuppressedWarnings();
     const logger = vitest.fn();
-    warnDeprecated("legacySchema", logger);
+    deprecated("legacySchema", logger);
     expect(logger).toHaveBeenCalled();
+  });
+});
+
+describe("retired", () => {
+  it("should throw an error", () => {
+    expect(() => retired("legacySchema")).toThrow(/This feature has been removed/);
+    expect(() => retired("legacySchema")).toThrow(/StandardSchema/);
   });
 });

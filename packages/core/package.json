@@ -26,7 +26,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts -d dist",
+    "build": "tsdown",
     "typecheck": "tsc",
     "test": "vitest --run --coverage --typecheck",
     "prepack": "cp ../../README.md ./README.md",
@@ -44,7 +44,8 @@
     "bundle-require": "^5.0.0",
     "tsdown": "^0.15.6",
     "typescript": "^5.5.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "zod": "^4.1.11"
   },
   "dependencies": {
     "@standard-schema/spec": "^1.0.0",
@@ -57,7 +58,6 @@
     "pluralize": "^8.0.0",
     "serialize-javascript": "^6.0.2",
     "tinyglobby": "^0.2.5",
-    "yaml": "^2.4.5",
-    "zod": "^3.24.4"
+    "yaml": "^2.4.5"
   }
 }

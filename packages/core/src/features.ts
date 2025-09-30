@@ -1,5 +1,5 @@
 const deprecations = {
-  legacySchema: `The use of a function as a schema is deprecated.
+  legacySchema: `The use of a function as a schema is retired.
 Please use a StandardSchema compliant library directly.
 For more information, see:
 https://content-collections.dev/docs/deprecations/schema-as-function`,
@@ -28,7 +28,7 @@ export function clearSuppressedWarnings() {
 
 type Logger = (message: string) => void;
 
-export function warnDeprecated(
+export function deprecated(
   deprecation: Deprecation,
   logger: Logger = console.warn,
 ) {
@@ -36,4 +36,8 @@ export function warnDeprecated(
     return;
   }
   logger(`[CC DEPRECATED]: ${deprecations[deprecation]}`);
+}
+
+export function retired(deprecation: Deprecation) {
+  throw new Error(`This feature has been removed:\n${deprecations[deprecation]}`);
 }

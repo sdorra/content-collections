@@ -15,7 +15,7 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "build"],
       "env": ["CC_OS", "GITHUB_ACTIONS"],
       "outputs": ["coverage/** ", "playwright-report/**", "test-results/**"]
     },
