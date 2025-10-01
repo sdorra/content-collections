@@ -1,5 +1,5 @@
 import LogoImage from "@/assets/logo.png";
-import type { DocsLayoutProps } from "fumadocs-ui/layout";
+import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
 import { Book, HandCoins, SwatchBook } from "lucide-react";
 import Image from "next/image";
 

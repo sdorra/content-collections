@@ -20,7 +20,6 @@ export default async function Page({
 
   if (!page) notFound();
 
-  // @ts-expect-error see https://github.com/fuma-nama/fumadocs/issues/896
   const toc: TableOfContents = page.data.toc;
 
   return (
