@@ -3,7 +3,7 @@ import { Editor } from "@/components/Editor";
 import { codeToJsx } from "@/lib/codeToJsx";
 import { Content, Section, Title } from "./Section";
 
-const simleTypeSafeAPI = `
+const simpleTypeSafeAPI = /* tsx */ `
 import { allPosts } from "content-collections";
 
 export function Posts() {
@@ -35,7 +35,7 @@ function TsLogo() {
 }
 
 export async function TypeSafeApiSection() {
-  const api = await codeToJsx(simleTypeSafeAPI, {
+  const api = await codeToJsx(simpleTypeSafeAPI, {
     lang: "tsx",
     transformers: [commentTransformer()],
   });

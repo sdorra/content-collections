@@ -1,23 +1,14 @@
 import { Editor } from "@/components/Editor";
-import { commentComponentTransformer } from "@/components/commentComponentTransformer";
 import { ExternalLink } from "@/components/links";
-import { codeToJsx } from "@/lib/codeToJsx";
 import { CodeMotion } from "./CodeMotion";
 import { Content, Section, Title } from "./Section";
 
-const code = `/* cmp-line:imports */
+const beer = /* ts */ `import { z } from "zod";
 
-const samples = defineCollection({
-  name: "samples",
-  directory: "src/samples",
+const beer = defineCollection({
+  name: "beer",
+  directory: "src/beer",
   include: "**/*.md",
-  /* cmp-line:samples */
-});
-`;
-
-const beer = {
-  import: `import { z } from "zod";`,
-  code: `defineCollection({
   schema: z.object({
     name: z.string(),
     volume: z.number().positive(),
@@ -25,12 +16,14 @@ const beer = {
     ingredients: z.array(z.string()),
     description: z.string().optional(),
   })
-})`
-};
+});`;
 
-const post = {
-  import: `import * as v from "valibot";`,
-  code: `defineCollection({
+const post = /* ts */ `import * as v from "valibot";
+
+const posts = defineCollection({
+  name: "posts",
+  directory: "src/posts",
+  include: "**/*.md",
   schema: v.object({
     title: v.pipe(v.string(), v.maxLength(160)),
     summary: v.optional(v.string()),
@@ -38,61 +31,32 @@ const post = {
     tags: v.array(v.string()),
     publishedAt: v.date(),
   })
-})`
-};
+});`;
 
-const author = {
-  import: `import { type } from "arktype";`,
-  code: `defineCollection({
+const author = /* ts */ `import { type } from "arktype";
+
+const authors = defineCollection({
+  name: "authors",
+  directory: "src/authors",
+  include: "**/*.md",
   schema: type({
     id: "number > 0",
     email: "string.email",
     displayName: "10 < string <= 120",
-    birthday: /\\d{4}-\\d{2}-\\d{2}/,
+    birthday: /\d{4}-\d{2}-\d{2}/,
   })
-})`
-};
+});`;
 
-const sampleSnippets = [beer, post, author];
+const snippets = [beer, post, author];
 
-export async function ValidationSection() {
-  const samples = await Promise.all(
-    sampleSnippets.map((sample) =>
-      codeToJsx(sample.code.trim(), {
-        lang: "ts",
-        type: "inline",
-        log: false,
-        removeFirstLine: true,
-        removeLastLine: true,
-      }),
-    ),
-  );
 
-  const importsCode = await Promise.all(
-    sampleSnippets.map((sample) =>
-      codeToJsx(sample.import.trim(), {
-        lang: "ts",
-        type: "inline",
-        log: false,
-      }),
-    ),
-  );
-
-  const api = await codeToJsx(code, {
-    lang: "ts",
-    log: false,
-    transformers: [
-      commentComponentTransformer({
-        imports: <CodeMotion>{importsCode}</CodeMotion>,
-        samples: <CodeMotion>{samples}</CodeMotion>,
-      }),
-    ],
-  });
-
+export function ValidationSection() {
   return (
     <Section>
       <Content className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-        <Editor className="order-2 h-[25rem] md:order-none">{api}</Editor>
+        <Editor className="order-2 h-[25rem] md:order-none">
+          <CodeMotion snippets={snippets} />
+        </Editor>
         <div className="flex flex-col gap-5">
           <Title>Powerful Validation</Title>
           <p>

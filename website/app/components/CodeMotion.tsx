@@ -1,58 +1,64 @@
-"use client";
+import { createHighlighter } from "shiki";
+import {
+  codeToKeyedTokens,
+  createMagicMoveMachine,
+  type KeyedTokensInfo,
+} from "shiki-magic-move/core";
+import { CodeMotionClient } from "./CodeMotionClient";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
-
-type Props = {
-  children: ReactNode[];
+const themes = {
+  light: "github-light",
+  dark: "github-dark",
 };
 
-function isElement(node: ReactNode): node is ReactElement {
-  return (node as ReactElement).props !== undefined;
+const lang = "typescript";
+
+export type MotionCodeSnippets = {
+  light: KeyedTokensInfo[];
+  dark: KeyedTokensInfo[];
+};
+
+export async function createMotionCodeSnippets(snippets: string[]) {
+  const shiki = await createHighlighter({
+    langs: [lang],
+    themes: [themes.light, themes.dark],
+  });
+
+  const machineOptions = {
+    lineNumbers: false,
+  };
+
+  const light = createMagicMoveMachine(
+    (code) =>
+      codeToKeyedTokens(shiki, code, {
+        lang: lang,
+        theme: themes.light,
+      }),
+    machineOptions,
+  );
+
+  const dark = createMagicMoveMachine(
+    (code) =>
+      codeToKeyedTokens(shiki, code, {
+        lang: lang,
+        theme: themes.dark,
+      }),
+    machineOptions,
+  );
+
+  return {
+    light: snippets.map((code) => light.commit(code).current),
+    dark: snippets.map((code) => dark.commit(code).current),
+  };
 }
 
-const lineHeight = 24;
+type Props = {
+  snippets: string[];
+};
 
-function calculateHeight(node: ReactNode) {
-  if (isElement(node)) {
-    const children = node.props.children;
-    if (Array.isArray(children)) {
-      // divide by 2 because each line is followed by a line break
-      return `${(children.length / 2) * lineHeight}px`;
-    }
-  }
-  return "auto";
-}
-
-export function CodeMotion({ children }: Props) {
-  const [sample, setSample] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSample((sample) => (sample + 1) % children.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [children]);
-
-  const height = calculateHeight(children[sample]);
-
+export async function CodeMotion({ snippets }: Props) {
+  const motionSnippets = await createMotionCodeSnippets(snippets);
   return (
-    <motion.div
-      initial={false}
-      animate={{ height }}
-      className="overflow-hidden"
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={sample}
-          initial={false}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{ opacity: 0 }}
-        >
-          {children[sample]}
-        </motion.div>
-      </AnimatePresence>
-    </motion.div>
+    <CodeMotionClient light={motionSnippets.light} dark={motionSnippets.dark} />
   );
 }

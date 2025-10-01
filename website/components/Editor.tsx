@@ -11,7 +11,7 @@ export function Editor({ className, children }: Props) {
   return (
     <div
       className={cn(
-        "dark:border-base-600/50 scrollbar-hide overflow-x-scroll rounded-md border bg-white shadow-md dark:bg-[#24292E]",
+        "dark:border-base-600/50 scrollbar-hide overflow-x-scroll rounded-md border bg-white shadow-md dark:bg-[#24292E] flex flex-col",
         className,
       )}
     >
@@ -20,7 +20,7 @@ export function Editor({ className, children }: Props) {
         <Circle className="size-3 fill-current text-amber-500" />
         <Circle className="size-3 fill-current text-emerald-500" />
       </header>
-      <div className="p-5">{children}</div>
+      <div className="p-5 grow">{children}</div>
     </div>
   );
 }
