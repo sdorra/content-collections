@@ -10,7 +10,9 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
   ],
-  presets: [createPreset({ preset: "ocean", addGlobalColors: true })],
+  presets: [
+    createPreset({ preset: "ocean", addGlobalColors: true, cssPrefix: "" }),
+  ],
   theme: {
     extend: {
       colors: {

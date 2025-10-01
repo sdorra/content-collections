@@ -40,7 +40,7 @@ export default async function Page({ params: { name } }: Props) {
   }
 
   return (
-    <main className="max-w-container mx-auto w-full px-4 py-8">
+    <main className="container mx-auto w-full px-4 py-12">
       <Link
         href="/samples"
         className="text-muted-foreground hover:text-accent-foreground mb-8 inline-flex items-center gap-1 text-sm"

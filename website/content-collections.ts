@@ -3,10 +3,9 @@ import {
   defineCollection,
   defineConfig,
   type Document,
-  suppressDeprecatedWarnings
-} from "@content-collections/core";
+  } from "@content-collections/core";
 import {
-  createMetaSchema,
+  metaSchema,
   transformMDX
 } from "@fumadocs/content-collections/configuration";
 import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
@@ -18,8 +17,6 @@ import path from "node:path";
 import { promisify } from "node:util";
 import {z} from "zod";
 
-// createMetaSchema of Fumadocs does not yet support the new schema
-suppressDeprecatedWarnings("legacySchema");
 
 const exec = promisify(cpExec);
 
@@ -119,6 +116,9 @@ const docs = defineCollection({
               remarkInstall,
               {
                 Tabs: "InstallTabs",
+                persist: {
+                  id: "package-manager"
+                },
               } satisfies RemarkInstallOptions,
             ],
           ],
@@ -138,7 +138,7 @@ const metas = defineCollection({
   name: "meta",
   directory: "../docs",
   include: "**/*.json",
-  schema: createMetaSchema,
+  schema: metaSchema,
   parser: "json",
 });
 
@@ -149,8 +149,8 @@ const sponsors = defineCollection({
   parser: "yaml",
   schema: z.object({
     name: z.string(),
-    avatarUrl: z.string().url(),
-    url: z.string().url(),
+    avatarUrl: z.url(),
+    url: z.url(),
     isActive: z.boolean(),
     order: z.number(),
   }),
