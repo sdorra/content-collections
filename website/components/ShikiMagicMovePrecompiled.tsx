@@ -33,15 +33,15 @@ export function ShikiMagicMovePrecompiled({
   onStart,
   onEnd,
 }: ShikiMagicMovePrecompiledProps) {
-  const [previous, setPrevious] = React.useState(EMPTY);
+  const previousRef = React.useRef(EMPTY);
 
   const result = React.useMemo(() => {
     const res = syncTokenKeys(
-      previous,
+      previousRef.current,
       steps[Math.min(step, steps.length - 1)],
       options,
     );
-    setPrevious(res.to);
+    previousRef.current = res.to;
     return res;
   }, [steps, step, options]);
 
