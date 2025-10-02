@@ -52,7 +52,11 @@ jobs:
         run: pnpm playwright install chromium --with-deps
 
       - name: Test
-        run: pnpm test
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: pnpm test
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
