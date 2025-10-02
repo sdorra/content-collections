@@ -1,0 +1,7 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        # do not fail if test coverage decreases by less than 1%
+        threshold: 1%
