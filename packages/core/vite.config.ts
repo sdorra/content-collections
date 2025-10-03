@@ -20,6 +20,13 @@ export default defineConfig({
       include: ["src/**/*.ts"],
       exclude: excludes,
     },
+    reporters: [
+      "default",
+      [
+        "junit",
+        { outputFile: "test-results/junit.xml" },
+      ],
+    ],
     testTimeout: 10_000,
   },
 });
