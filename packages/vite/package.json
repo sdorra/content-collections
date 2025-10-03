@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts -d dist"
+    "build": "tsdown src/index.ts --format esm --dts -d dist"
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*"
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@content-collections/core": "workspace:*",
     "@types/node": "20.x",
-    "tsup": "^8.2.4",
+    "tsdown": "^0.15.6",
     "typescript": "^5.5.4",
     "vite": "^5.4.20"
   },

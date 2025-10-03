@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts -d dist",
+    "build": "tsdown src/index.ts --format esm --dts -d dist",
     "test": "vitest ./src --run",
     "gen-content": "tsx ./scripts/gen-content.ts",
     "typecheck": "tsc --noEmit"
@@ -34,7 +34,7 @@
     "@types/cross-spawn": "^6.0.6",
     "@types/node": "^20.14.9",
     "@vitest/coverage-v8": "^3.2.4",
-    "tsup": "^8.2.4",
+    "tsdown": "^0.15.6",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
     "vitest": "^3.2.4",

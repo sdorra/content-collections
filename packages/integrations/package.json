@@ -24,12 +24,12 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts -d dist"
+    "build": "tsdown src/index.ts --format esm,cjs --dts -d dist"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
     "@types/node": "20",
-    "tsup": "^8.2.4",
+    "tsdown": "^0.15.6",
     "typescript": "^5.5.4"
   },
   "peerDependencies": {
