@@ -64,3 +64,9 @@ jobs:
           directory: ./packages/core/coverage
           token: ${{ secrets.CODECOV_TOKEN }}
         if: matrix.os == 'ubuntu-latest'
+
+      - name: Upload test results to Codecov
+        if: matrix.os == 'ubuntu-latest' && !cancelled()
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
