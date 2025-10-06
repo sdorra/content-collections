@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
-    "next": "^14.2.32",
+    "next": "^15.5.4",
     "tsdown": "^0.15.6",
     "typescript": "^5.5.4"
   }
