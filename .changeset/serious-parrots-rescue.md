@@ -2,4 +2,4 @@
 "@content-collections/next": patch
 ---
 
-Fix development mode detection using Next.js phase constants instead of argv parsing
+Fix Content Collections build not starting on Next.js 16
