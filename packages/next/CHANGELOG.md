@@ -1,5 +1,11 @@
 # @content-collections/next
 
+## 0.2.8
+
+### Patch Changes
+
+- [#671](https://github.com/sdorra/content-collections/pull/671) [`3070464`](https://github.com/sdorra/content-collections/commit/3070464f08df4b50388a5a469c1c02303defad35) Thanks [@icyJoseph](https://github.com/icyJoseph)! - Fix Content Collections build not starting on Next.js 16
+
 ## 0.2.7
 
 ### Patch Changes
