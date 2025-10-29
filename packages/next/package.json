@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "@content-collections/core": "0.x",
-    "next": "^12 || ^13 || ^14 || ^15"
+    "next": "^12 || ^13 || ^14 || ^15 || ^16"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
