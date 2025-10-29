@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@content-collections/core": "0.11.1",
-    "@content-collections/next": "0.2.8",
+    "@content-collections/next": "0.2.9",
     "@content-collections/sample-theme": "0.1.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",

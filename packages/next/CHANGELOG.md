@@ -1,5 +1,11 @@
 # @content-collections/next
 
+## 0.2.9
+
+### Patch Changes
+
+- [`0c937e8`](https://github.com/sdorra/content-collections/commit/0c937e8766ae5f1d08c403e9674fb23719fc72db) Thanks [@sdorra](https://github.com/sdorra)! - Add support for Next.js 16
+
 ## 0.2.8
 
 ### Patch Changes
