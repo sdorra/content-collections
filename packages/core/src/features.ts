@@ -1,9 +1,8 @@
 const deprecations = {
-  // TODO: remove and test agaings another deprecation
-  legacySchema: `The use of a function as a schema is retired.
-Please use a StandardSchema compliant library directly.
+  implicitContentProperty: `The implicit addition of a content property to schemas is deprecated.
+Please add an explicit content property to your schema.
 For more information, see:
-https://content-collections.dev/docs/deprecations/schema-as-function`,
+https://content-collections.dev/docs/deprecations/implicit-content-property`,
 };
 
 type Deprecation = keyof typeof deprecations;

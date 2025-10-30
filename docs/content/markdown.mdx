@@ -32,6 +32,7 @@ const posts = defineCollection({
   include: "*.md",
   schema: z.object({
     title: z.string(),
+    content: z.string(),
   }),
   transform: async (document, context) => {
     const html = await compileMarkdown(context, document);

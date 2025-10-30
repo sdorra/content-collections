@@ -1,0 +1,59 @@
+---
+title: Deprecated Implicit Content Property
+---
+
+With version `0.12.0`, Content Collections deprecates the automatic addition of the content property to the document when using the frontmatter parser (the default parser).
+
+Current behavior:
+
+```ts
+const posts = defineCollection({
+  name: "posts",
+  directory: "content",
+  // If no parser is defined, frontmatter is used by default
+  parser: "frontmatter",
+  include: "*.md",
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),
+  }),
+});
+
+// ...
+allPosts.forEach((post) => {
+  // The content property is not defined in the schema,
+  // but it is automatically added,
+  // making the following line valid.
+  console.log(post.content);
+});
+```
+
+With version `0.12.0`, this automatic behavior is deprecated, and a warning will appear when it is used. In a future release, this behavior will be removed.
+
+Instead, use a schema that explicitly defines the `content` property:
+
+```ts
+const posts = defineCollection({
+  name: "posts",
+  directory: "content",
+  include: "*.md",
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),
+    // content must now be explicitly defined
+    content: z.string(),
+  }),
+});
+```
+
+That's it! You can now access the `content` property without any deprecation warnings.
+
+## Suppressing Deprecation Warning
+
+If you are not ready to add the explicit property, you can suppress the deprecation warning by setting the `suppressDeprecationWarnings` option in your configuration:
+
+```ts
+import { suppressDeprecatedWarnings } from "@content-collections/core";
+
+suppressDeprecatedWarnings("implicitContentProperty");
+```

@@ -31,12 +31,12 @@ The parser property is optional, and `frontmatter` is the default value.
 
 The parser used to read the documents. The parser must be one of the following values:
 
-| Type               | Description                                                             |
-| ------------------ | ----------------------------------------------------------------------- |
-| `frontmatter`      | Parses documents with frontmatter and content such as markdown or MDX.  |
-| `json`             | Parses JSON documents                                                   |
-| `yaml`             | Parses YAML documents                                                   |
-| `frontmatter-only` | Like `frontmatter`, but without content. Available since version 0.8.0. |
+| Type               | Description                                                                                                                                                                     |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `frontmatter`      | Parses documents with frontmatter and content such as markdown or MDX. If the frontmatter parser is used a `content` property of type `string` should be defined in the schema. |
+| `json`             | Parses JSON documents                                                                                                                                                           |
+| `yaml`             | Parses YAML documents                                                                                                                                                           |
+| `frontmatter-only` | Like `frontmatter`, but without content. Available since version 0.8.0.                                                                                                         |
 
 The `frontmatter-only` parser is especially useful when only the metadata of a document is utilized with Content Collections, while the content is rendered by another source.
 
@@ -65,7 +65,7 @@ const movies = defineCollection({
   parser: customParser,
   schema: z.object({
     title: z.string(),
-    description: z.string()
+    description: z.string(),
   }),
 });
 
@@ -76,16 +76,25 @@ export default defineConfig({
 
 If you want to see a complete example of a custom parser, check the [Xml example](/samples/xml).
 
+<Callout type="warn" title="Deprecation Notice">
+  Adding the implicit content property to the resulting document is [deprecated](/docs/deprecations/implicit-content-property) and will be removed in the future.
+  Once this feature is removed, the `hasContent` property in the custom parser will no longer be needed and will also be marked as deprecated.
+  Therefore, if you want to use a custom parser, utilize the function-only syntax of `defineParser` to ensure your code remains future-proof.
+</Callout>
+
 ### `typeName` (optional)
 
 The name of the generated TypeScript type. If the `typeName` property is not provided, the type name is generated from the collection name.
 
 ### `schema` (required)
+
 The `schema` property defines the structure of the documents collected by Content Collections. You can define the schema using any [Standard Schema](https://standardschema.dev/) [compatible library](https://standardschema.dev/#what-schema-libraries-implement-the-spec), such as [Zod](https://zod.dev/) or [Valibot](https://valibot.dev/). This schema validates the documents before they are added to the collection.
 
 You can adjust the structure using the `transform` function. If not provided, TypeScript infers the type from the shape, which should consist only of [serializable](/docs/serialization) types.
 
-The resulting shape validates the documents in the collection. When using the `frontmatter` parser, a `content` property of type `string` is automatically included in the shape. To validate content, you can explicitly add a `content` property to the shape.
+The resulting shape validates the documents in the collection.
+When using the `frontmatter` parser, the schema is validated against both the frontmatter and the document's content.
+Therefore, a `content` property should exist alongside the frontmatter properties in the schema for the `frontmatter` parser.
 
 Examples:
 
@@ -96,14 +105,14 @@ Examples:
 import { z } from "zod";
 
 // ...
-
 schema: z.object({
   firstName: z.string(),
   lastName: z.string(),
   middleName: z.string().optional(),
   age: z.number(),
   email: z.string().email(),
-})
+  content: z.string(),
+});
 ```
 
 </Tab>
@@ -113,14 +122,14 @@ schema: z.object({
 import * as v from "valibot";
 
 // ...
-
 schema: v.object({
   firstName: v.string(),
   lastName: v.string(),
   middleName: v.optional(v.string()),
   age: v.number(),
   email: v.pipe(v.string(), v.email()),
-})
+  content: v.string(),
+});
 ```
 
 </Tab>
@@ -130,15 +139,16 @@ schema: v.object({
 import { type } from "arktype";
 
 // ...
-
 schema: type({
   firstName: "string",
   lastName: "string",
   middleName: "string?",
   age: "number",
   email: "string.email",
-})
+  content: "string",
+});
 ```
+
 </Tab>
 </Tabs>
 
@@ -191,7 +201,8 @@ import { z } from "zod";
 const authors = defineCollection({
   name: "authors",
   directory: "content/authors",
-  include: "**/*.md",
+  parser: "yaml",
+  include: "**/*.yaml",
   schema: z.object({
     firstName: z.string(),
     lastName: z.string(),

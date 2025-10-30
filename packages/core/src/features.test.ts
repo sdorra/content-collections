@@ -14,33 +14,33 @@ describe("deprecated", () => {
 
   it("should log deprecated warning", () => {
     const logger = vitest.fn();
-    deprecated("legacySchema", logger);
+    deprecated("implicitContentProperty", logger);
     expect(logger).toHaveBeenCalled();
     //@ts-expect-error
     const message = logger.mock.calls[0][0];
     expect(message).toMatch(/\[CC DEPRECATED\]./);
-    expect(message).toMatch(/StandardSchema/);
+    expect(message).toMatch(/implicit-content-property/);
   });
 
   it("should not log when deprecation is disabled", () => {
-    suppressDeprecatedWarnings("legacySchema");
+    suppressDeprecatedWarnings("implicitContentProperty");
     const logger = vitest.fn();
-    deprecated("legacySchema", logger);
+    deprecated("implicitContentProperty", logger);
     expect(logger).not.toHaveBeenCalled();
   });
 
   it("should not log when all deprecations are disabled", () => {
     suppressDeprecatedWarnings("all");
     const logger = vitest.fn();
-    deprecated("legacySchema", logger);
+    deprecated("implicitContentProperty", logger);
     expect(logger).not.toHaveBeenCalled();
   });
 
   it("should log after clearing suppressed warnings", () => {
-    suppressDeprecatedWarnings("legacySchema");
+    suppressDeprecatedWarnings("implicitContentProperty");
     clearSuppressedWarnings();
     const logger = vitest.fn();
-    deprecated("legacySchema", logger);
+    deprecated("implicitContentProperty", logger);
     expect(logger).toHaveBeenCalled();
   });
 });

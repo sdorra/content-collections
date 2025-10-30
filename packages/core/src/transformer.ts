@@ -4,6 +4,7 @@ import pLimit from "p-limit";
 import { Cache, CacheManager } from "./cache";
 import { AnyCollection, Context, SkippedSignal, skippedSymbol } from "./config";
 import { Emitter } from "./events";
+import { deprecated } from "./features";
 import { getParser } from "./parser";
 import { serializableSchema } from "./serializer";
 import { CollectionFile } from "./types";
@@ -65,17 +66,36 @@ function createPath(path: string, ext: string) {
   return p;
 }
 
+type WithContent = {
+  content: unknown;
+};
+
+function isContentDefined(value: unknown): value is WithContent {
+  return value !== null && typeof value === "object" && "content" in value;
+}
+
 export function createTransformer(
   emitter: Emitter,
   cacheManager: CacheManager,
 ) {
+  const deprecatedWarnings = new Set<string>();
+
+  function warnImplicitContentProperty(collection: AnyCollection) {
+    const key = `implicitContentProperty:${collection.name}`;
+    if (deprecatedWarnings.has(key)) {
+      return;
+    }
+    deprecatedWarnings.add(key);
+    deprecated("implicitContentProperty");
+  }
+
   async function parseFile(
     collection: AnyCollection,
     file: CollectionFile,
   ): Promise<ParsedFile | null> {
     const { data, path } = file;
 
-    let parsedData = await collection.schema["~standard"].validate(data);
+    const parsedData = await collection.schema["~standard"].validate(data);
     if (parsedData.issues) {
       emitter.emit("transformer:validation-error", {
         collection,
@@ -92,11 +112,13 @@ export function createTransformer(
     let values = parsedData.value;
 
     const parser = getParser(collection.parser);
-    if (parser.hasContent) {
-      // TODO: validate content property
-      // we have to check if schema the schema already defines a content property
-      // if not, we have to check if the content property is a defined string
 
+    // if the parser has content and the content property is not defined in the schema
+    // we add it implicitly from the raw data, but warn the user that this is deprecated
+    if (parser.hasContent && !isContentDefined(values)) {
+      warnImplicitContentProperty(collection);
+
+      // if the content property is implicitly added, we need to validate its type
       if (typeof data.content !== "string") {
         emitter.emit("transformer:validation-error", {
           collection,

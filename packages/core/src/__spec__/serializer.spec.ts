@@ -14,6 +14,7 @@ describe("serializer", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
         transform: (doc) => {
           return {

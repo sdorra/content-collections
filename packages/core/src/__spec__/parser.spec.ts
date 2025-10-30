@@ -94,6 +94,7 @@ describe("parser", () => {
         schema: z.object({
           name: z.string(),
           year: z.number(),
+          content: z.string(),
         }),
       });
 
