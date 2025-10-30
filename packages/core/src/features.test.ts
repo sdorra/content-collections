@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vitest } from "vitest";
 import {
   clearSuppressedWarnings,
-  suppressDeprecatedWarnings,
   deprecated,
+  isRetiredFeatureError,
   retired,
+  suppressDeprecatedWarnings,
 } from "./features";
 
 describe("deprecated", () => {
@@ -46,7 +47,27 @@ describe("deprecated", () => {
 
 describe("retired", () => {
   it("should throw an error", () => {
-    expect(() => retired("legacySchema")).toThrow(/This feature has been removed/);
+    expect(() => retired("legacySchema")).toThrow(
+      /This feature has been removed/,
+    );
     expect(() => retired("legacySchema")).toThrow(/StandardSchema/);
+  });
+
+  it("should throw an RetiredFeatureError", () => {
+    expect(() => retired("legacySchema")).toThrowError(
+      expect.toSatisfy(
+        (err) => isRetiredFeatureError(err),
+        "is RetiredFeatureError",
+      ),
+    );
+  });
+
+  it("should keep the id of the retired feature", () => {
+    expect(() => retired("legacySchema")).toThrowError(
+      expect.toSatisfy(
+        (err) => err.feature === "legacySchema",
+        "is RetiredFeatureError",
+      ),
+    );
   });
 });

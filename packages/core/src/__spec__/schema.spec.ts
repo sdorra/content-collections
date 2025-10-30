@@ -1,6 +1,7 @@
 import { describe, expect } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
+import { isRetiredFeatureError } from "../features";
 import { workspaceTest } from "./workspace";
 
 describe("schema", () => {
@@ -68,7 +69,11 @@ describe("schema", () => {
           year: z.number(),
         }),
       }),
-      // TODO check for specific error
-    ).toThrowError();
+    ).toThrowError(
+      expect.toSatisfy(
+        (err) => isRetiredFeatureError(err) && err.feature === "legacySchema",
+        "is RetiredFeatureError",
+      ),
+    );
   });
 });

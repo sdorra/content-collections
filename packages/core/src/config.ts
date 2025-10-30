@@ -1,5 +1,7 @@
 import { StandardSchemaV1 } from "@standard-schema/spec";
 import { CacheFn } from "./cache";
+import { ConfigurationError } from "./configurationReader";
+import { retired } from "./features";
 import { GetTypeOfImport, Import } from "./import";
 import {
   ConfiguredParser,
@@ -9,8 +11,6 @@ import {
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
-import { retired } from "./features";
-import { ConfigurationError } from "./configurationReader";
 
 export type Meta = {
   filePath: string;
