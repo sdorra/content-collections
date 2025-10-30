@@ -4,11 +4,12 @@ title: Deprecated Schema as Function
 
 With version `0.9.0`, Content Collections now uses [Standard Schema](https://standardschema.dev/) for the `schema` property. This change allows you to utilize any [Standard Schema compatible library](https://standardschema.dev/#what-schema-libraries-implement-the-spec), such as [Zod](https://zod.dev/) or [Valibot](https://valibot.dev/), to define the schema.
 
-Starting with this version, using a function as a schema is deprecated. The function-based schema will continue to work for now, but it will be removed in a future version. To adopt the new schema, you must install your chosen library and update the schema definition in your configuration.
+Using a function as a schema was deprecated with version `0.9.0` and is removed within version `0.12.0`.
+To adopt the new schema, you must install your chosen library and update the schema definition in your configuration.
 
 Let's examine the following example:
 
-The old, deprecated way of defining the schema:
+The old, removed way of defining the schema:
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
@@ -56,13 +57,3 @@ export default defineConfig({
 ```
 
 And that's it! You have successfully migrated to the new schema format.
-
-## Suppressing Deprecation Warning
-
-If you are not ready to migrate yet, you can suppress the deprecation warning by setting the `suppressDeprecationWarnings` option in your configuration:
-
-```ts
-import { suppressDeprecatedWarnings } from "@content-collections/core";
-
-suppressDeprecatedWarnings("legacySchema");
-```
