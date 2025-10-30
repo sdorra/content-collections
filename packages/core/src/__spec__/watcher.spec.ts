@@ -1,10 +1,10 @@
+import { Watcher } from "src/watcher";
 import { afterEach, describe, expect, vi } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
 import { workspaceTest } from "./workspace";
-import { Watcher } from "src/watcher";
 
-let watcher : Watcher | undefined = undefined;
+let watcher: Watcher | undefined = undefined;
 
 afterEach(() => {
   if (watcher) {
@@ -293,10 +293,7 @@ describe(
         ]);
       },
     );
-
-
   },
-
 );
 
 describe(
@@ -320,6 +317,7 @@ describe(
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
 
@@ -363,6 +361,7 @@ describe(
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
 
@@ -395,6 +394,7 @@ describe(
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
 
@@ -463,6 +463,7 @@ describe(
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
       `,
@@ -503,6 +504,7 @@ describe(
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
     `;

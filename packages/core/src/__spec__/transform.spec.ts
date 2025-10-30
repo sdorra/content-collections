@@ -16,6 +16,7 @@ describe("workspace tests", () => {
       schema: z.object({
         title: z.string(),
         author: z.string(),
+        content: z.string(),
       }),
       transform: (doc) => {
         return {
@@ -71,6 +72,7 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
         transform: (doc) => {
           if (doc.title.toLowerCase().includes("one")) {
@@ -130,6 +132,7 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
         transform: async (doc, { cache }) => {
           const val = await cache(doc.title, (title) => {
@@ -246,12 +249,16 @@ describe("workspace tests", () => {
           title: z.string(),
         }),
         transform: async (doc, { cache }) => {
-          const val = await cache(doc.title, (title) => {
-            counter++;
-            return title.toLowerCase();
-          }, {
-            key: String(counter)
-          });
+          const val = await cache(
+            doc.title,
+            (title) => {
+              counter++;
+              return title.toLowerCase();
+            },
+            {
+              key: String(counter),
+            },
+          );
 
           return {
             ...doc,
@@ -356,7 +363,9 @@ describe("workspace tests", () => {
 
       // break all cache files
       await fs
-        .readdir(path.join(workspacePath, ".content-collections/cache/posts/one"))
+        .readdir(
+          path.join(workspacePath, ".content-collections/cache/posts/one"),
+        )
         .then((files) =>
           files
             .filter((f) => f.endsWith(".cache"))
@@ -384,6 +393,7 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
         transform: async (doc, { collection }) => {
           const docs = await collection.documents();
@@ -454,11 +464,10 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
         transform: async (doc, { documents }) => {
-          const author = await documents(authors).find(
-            (a) => a.name === doc.author,
-          );
+          const author = documents(authors).find((a) => a.name === doc.author);
           if (!author) {
             throw new Error(`Author ${doc.author} not found`);
           }
@@ -520,7 +529,7 @@ describe("workspace tests", () => {
             greet: createNamedImport<(name: string) => string>(
               "greet",
               // TODO: should createNamedImport handle the slash replacement on windows?
-              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/")
+              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/"),
             ),
           };
         },
@@ -577,7 +586,7 @@ describe("workspace tests", () => {
             ...doc,
             greet: createDefaultImport<(name: string) => string>(
               // TODO: should createDefaultImport handle the slash replacement on windows?
-              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/")
+              path.join(workspacePath, "src/greet.ts").replace(/\\/g, "/"),
             ),
           };
         },
@@ -633,6 +642,7 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           draft: z.boolean().optional(),
+          content: z.string(),
         }),
         transform: async (doc, { skip }) => {
           if (doc.draft) {
@@ -697,6 +707,7 @@ describe("workspace tests", () => {
         schema: z.object({
           title: z.string(),
           draft: z.boolean().optional(),
+          content: z.string(),
         }),
         transform: async (doc, { skip }) => {
           if (doc.draft) {

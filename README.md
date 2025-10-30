@@ -47,6 +47,7 @@ If your framework is not listed, you can still use Content Collections by using 
      schema: (z) => ({
        title: z.string(),
        summary: z.string(),
+       content: z.string(),
      }),
    });
 

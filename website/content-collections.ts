@@ -3,10 +3,10 @@ import {
   defineCollection,
   defineConfig,
   type Document,
-  } from "@content-collections/core";
+} from "@content-collections/core";
 import {
   metaSchema,
-  transformMDX
+  transformMDX,
 } from "@fumadocs/content-collections/configuration";
 import { remarkInstall, type RemarkInstallOptions } from "fumadocs-docgen";
 import GithubSlugger from "github-slugger";
@@ -15,8 +15,7 @@ import { selectAll } from "hast-util-select";
 import { exec as cpExec } from "node:child_process";
 import path from "node:path";
 import { promisify } from "node:util";
-import {z} from "zod";
-
+import { z } from "zod";
 
 const exec = promisify(cpExec);
 
@@ -61,6 +60,7 @@ const samples = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    content: z.string(),
     tags: z.array(z.string()),
     adapter: z.string(),
     stackBlitz: z
@@ -95,6 +95,7 @@ const docs = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    content: z.string(),
     icon: z.string().optional(),
     linkText: z.string().optional(),
     full: z.boolean().optional(),
@@ -117,7 +118,7 @@ const docs = defineCollection({
               {
                 Tabs: "InstallTabs",
                 persist: {
-                  id: "package-manager"
+                  id: "package-manager",
                 },
               } satisfies RemarkInstallOptions,
             ],

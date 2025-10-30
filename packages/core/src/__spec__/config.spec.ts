@@ -1,10 +1,10 @@
 import fs from "node:fs";
+import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
 import { defineCollection, defineConfig } from "../config";
 import { workspaceTest } from "./workspace";
-import { join } from "node:path";
 
 describe("config", () => {
   test("should fail with non existing configuration file", async () => {
@@ -39,7 +39,8 @@ describe("config", () => {
         include: "**/*.md(x)?",
         schema: z.object({
           title: z.string(),
-          author: z.string()
+          author: z.string(),
+          content: z.string()
         })
       });
 
@@ -93,6 +94,7 @@ describe("config", () => {
         schema: z.object({
           title: z.string(),
           author: z.string(),
+          content: z.string(),
         }),
       });
 
@@ -150,7 +152,8 @@ describe("config", () => {
         include: "**/*.md(x)?",
         schema: z.object({
           title: z.string(),
-          author: z.string()
+          author: z.string(),
+          content: z.string()
         })
       });
 
@@ -219,6 +222,7 @@ describe("config", () => {
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
       `,
@@ -276,6 +280,7 @@ describe("config", () => {
         include: "*.md",
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         })
       });
       `,
@@ -370,7 +375,9 @@ describe("config", () => {
 
       await workspace.build();
 
-      expect(fs.existsSync(join(workspacePath, "build/allPosts.js"))).toBe(true);
+      expect(fs.existsSync(join(workspacePath, "build/allPosts.js"))).toBe(
+        true,
+      );
     },
   );
 });

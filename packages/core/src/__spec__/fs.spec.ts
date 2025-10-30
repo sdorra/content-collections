@@ -13,6 +13,7 @@ describe("fs", () => {
         include: ["published/*.md", "drafts/*.md"],
         schema: z.object({
           title: z.string(),
+          content: z.string(),
         }),
       });
 

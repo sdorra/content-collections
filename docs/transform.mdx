@@ -224,6 +224,7 @@ const authors = defineCollection({
     ref: z.string(),
     displayName: z.string(),
     email: z.string().email(),
+    content: z.string(),
   }),
 });
 
@@ -234,6 +235,7 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     author: z.string(),
+    content: z.string(),
   }),
   transform: async (document, context) => {
     const author = await context

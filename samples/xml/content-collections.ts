@@ -3,8 +3,8 @@ import {
   defineConfig,
   defineParser,
 } from "@content-collections/core";
-import { z } from "zod";
 import xml2js from "xml2js";
+import { z } from "zod";
 
 const xmlParser = new xml2js.Parser({
   explicitRoot: false,

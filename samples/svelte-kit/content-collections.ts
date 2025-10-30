@@ -11,6 +11,7 @@ const characters = defineCollection({
     origin: z.string().min(1),
     species: z.string().min(1),
     source: z.string().min(1).url(),
+    content: z.string(),
   }),
   transform: async (document, context) => {
     const content = await compileMarkdown(context, document);

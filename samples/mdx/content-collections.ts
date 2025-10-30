@@ -8,6 +8,7 @@ const posts = defineCollection({
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
+    content: z.string(),
   }),
   transform: async (post, ctx) => {
     const content = await compileMDX(ctx, post);

@@ -11,6 +11,7 @@ const posts = defineCollection({
     summary: z.string(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     author: z.string(),
+    content: z.string(),
   }),
   transform: async (post, ctx) => {
     const content = await compileMarkdown(ctx, post);
