@@ -42,7 +42,7 @@
     "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^4.0.6",
     "bundle-require": "^5.0.0",
-    "tsdown": "^0.15.6",
+    "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
     "vitest": "^4.0.6",
     "zod": "^4.1.11"

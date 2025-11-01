@@ -34,7 +34,7 @@
     "@types/cross-spawn": "^6.0.6",
     "@types/node": "^20.14.9",
     "@vitest/coverage-v8": "^4.0.6",
-    "tsdown": "^0.15.6",
+    "tsdown": "^0.15.12",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
     "vitest": "^4.0.6",
