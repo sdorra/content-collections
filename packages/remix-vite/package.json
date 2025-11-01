@@ -31,7 +31,7 @@
     "@types/node": "20.x",
     "tsdown": "^0.15.6",
     "typescript": "^5.5.4",
-    "vite": "^5.4.21"
+    "vite": "^6.4.1"
   },
   "peerDependencies": {
     "@content-collections/core": "^0.x",
