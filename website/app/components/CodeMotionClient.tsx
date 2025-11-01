@@ -1,12 +1,11 @@
 "use client";
 
-import { ShikiMagicMovePrecompiled } from "@/components/ShikiMagicMovePrecompiled";
 import { useTheme } from "@/lib/useTheme";
 import { LoaderCircle } from "lucide-react";
-import {  useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import "shiki-magic-move/dist/style.css";
-import { KeyedTokensInfo } from "shiki-magic-move/types";
+import { ShikiMagicMovePrecompiled } from "shiki-magic-move/react";
+import type { KeyedTokensInfo } from "shiki-magic-move/types";
 
 type Props = {
   light: KeyedTokensInfo[];

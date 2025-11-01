@@ -24,8 +24,8 @@
     "next": "14.2.32",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "shiki": "^3.13.0",
-    "shiki-magic-move": "^1.2.0",
+    "shiki": "^3.14.0",
+    "shiki-magic-move": "^1.2.1",
     "tailwind-merge": "^2.5.2",
     "typewriter-effect": "^2.21.0",
     "zod": "^4.1.11"
@@ -34,8 +34,8 @@
     "@content-collections/core": "workspace:*",
     "@content-collections/mdx": "workspace:*",
     "@content-collections/next": "workspace:*",
-    "@shikijs/transformers": "^3.13.0",
-    "@tailwindcss/typography": "^0.5.16",
+    "@shikijs/transformers": "^3.14.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/hast": "^3.0.4",
     "@types/node": "^20",
     "@types/react": "^18.3.3",
@@ -48,7 +48,7 @@
     "hast-util-select": "^6.0.2",
     "hast-util-to-jsx-runtime": "^2.3.0",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.4",
+    "tailwindcss": "^3.4.18",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   }
