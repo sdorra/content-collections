@@ -2,7 +2,7 @@
 "@content-collections/core": minor
 ---
 
-Remove deprecated schema as a function feature.
+**Breaking:** Remove deprecated schema as a function feature.
 See [Deprecated Schema as Function](https://www.content-collections.dev/docs/deprecations/schema-as-function) for  more details.
 
 This change will also remove the dependency on Zod.
