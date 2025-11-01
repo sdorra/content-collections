@@ -8,7 +8,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.11.1",
+    "@content-collections/core": "0.12.0",
     "@content-collections/mdx": "0.2.2",
     "@content-collections/next": "0.2.9",
     "@content-collections/sample-theme": "0.1.0",
