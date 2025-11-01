@@ -1,14 +1,14 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import { dirname, join } from "node:path";
-import { AnyConfiguration } from "src/config";
-import { defaultConfigName } from "src/configurationReader";
-import { createEmitter, Emitter } from "src/events";
-import { GetCollectionNames, GetTypeByName } from "src/types";
-import { Watcher } from "src/watcher";
 import { test } from "vitest";
-import { Builder, createBuilder, createInternalBuilder } from "../builder";
+import { type Builder, createBuilder, createInternalBuilder } from "../builder";
+import type { AnyConfiguration } from "../config";
+import { defaultConfigName } from "../configurationReader";
+import { createEmitter, type Emitter } from "../events";
+import type { GetCollectionNames, GetTypeByName } from "../types";
 import { generateArrayConstName } from "../utils";
+import type { Watcher } from "../watcher";
 
 function isTemplateStringArray(input: any): input is TemplateStringsArray {
   // @ts-expect-error not yet typed

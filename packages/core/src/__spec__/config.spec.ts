@@ -238,7 +238,7 @@ describe("config", () => {
       );
 
       const { collection } = await workspace.build();
-      let allPosts = await collection("posts");
+      const allPosts = await collection("posts");
       expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
     },
   );
@@ -296,7 +296,7 @@ describe("config", () => {
       );
 
       const { collection } = await workspace.build();
-      let allPosts = await collection("posts");
+      const allPosts = await collection("posts");
       expect(allPosts.map((p) => p.title)).toEqual(["Number One"]);
     },
   );

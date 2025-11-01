@@ -1,7 +1,7 @@
-import { defineCollection, defineConfig } from "src/config";
-import type { Events } from "src/events";
 import { describe, expect } from "vitest";
 import { z } from "zod";
+import { defineCollection, defineConfig } from "../config";
+import type { Events } from "../events";
 import { workspaceTest } from "./workspace";
 
 describe("events", () => {
