@@ -8,7 +8,7 @@
     "build": "vinxi build"
   },
   "dependencies": {
-    "@content-collections/core": "0.11.1",
+    "@content-collections/core": "0.12.0",
     "@content-collections/markdown": "0.1.4",
     "@content-collections/vinxi": "0.1.2",
     "@solidjs/start": "^1.0.11",

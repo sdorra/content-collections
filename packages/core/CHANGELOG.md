@@ -1,5 +1,20 @@
 # @content-collections/core
 
+## 0.12.0
+
+### Minor Changes
+
+- [#668](https://github.com/sdorra/content-collections/pull/668) [`a56192f`](https://github.com/sdorra/content-collections/commit/a56192f22f2712ed2251ca57c4fcfebd65e6b0aa) Thanks [@sdorra](https://github.com/sdorra)! - **Breaking:** Remove deprecated schema as a function feature.
+  See [Deprecated Schema as Function](https://www.content-collections.dev/docs/deprecations/schema-as-function) for more details.
+
+  This change will also remove the dependency on Zod.
+  See [Issue #656](https://github.com/sdorra/content-collections/issues/656) for more details.
+
+### Patch Changes
+
+- [#687](https://github.com/sdorra/content-collections/pull/687) [`b4ae2cd`](https://github.com/sdorra/content-collections/commit/b4ae2cd9dbe150af4c78552ebee03576afd23a3c) Thanks [@sdorra](https://github.com/sdorra)! - Deprecate the implicit addition of the content property to the document when using the frontmatter parser (the default parser).
+  For more information and migration instructions, see [Deprecated Implicit Content Property](https://content-collections.dev/docs/deprecations/implicit-content-property).
+
 ## 0.11.1
 
 ### Patch Changes
