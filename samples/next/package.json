@@ -10,7 +10,7 @@
   "dependencies": {
     "@content-collections/core": "0.12.0",
     "@content-collections/next": "0.2.9",
-    "next": "14.2.32",
+    "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.24.4"
@@ -20,7 +20,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8",
-    "eslint-config-next": "14.2.26",
+    "eslint-config-next": "14.2.35",
     "typescript": "^5"
   }
 }

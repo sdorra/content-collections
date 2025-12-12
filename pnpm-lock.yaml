@@ -331,8 +331,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       next:
-        specifier: ^14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tsdown:
         specifier: ^0.15.12
         version: 0.15.12(typescript@5.8.3)
@@ -558,8 +558,8 @@ importers:
         specifier: 0.2.9
         version: link:../../packages/next
       next:
-        specifier: 14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -583,8 +583,8 @@ importers:
         specifier: ^8
         version: 8.57.0
       eslint-config-next:
-        specifier: 14.2.26
-        version: 14.2.26(eslint@8.57.0)(typescript@5.8.3)
+        specifier: 14.2.35
+        version: 14.2.35(eslint@8.57.0)(typescript@5.8.3)
       typescript:
         specifier: ^5
         version: 5.8.3
@@ -607,14 +607,14 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(@types/react@18.3.3)(react@18.3.1)
       '@next/mdx':
-        specifier: ^14.2.26
-        version: 14.2.26(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))
+        specifier: ^14.2.35
+        version: 14.2.35(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
       next:
-        specifier: 14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -638,8 +638,8 @@ importers:
         specifier: ^8
         version: 8.57.0
       eslint-config-next:
-        specifier: 14.2.26
-        version: 14.2.26(eslint@8.57.0)(typescript@5.8.3)
+        specifier: 14.2.35
+        version: 14.2.35(eslint@8.57.0)(typescript@5.8.3)
       remark-frontmatter:
         specifier: ^5.0.0
         version: 5.0.0
@@ -668,14 +668,14 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(@types/react@18.3.3)(react@18.3.1)
       '@next/mdx':
-        specifier: 14.2.26
-        version: 14.2.26(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))
+        specifier: 14.2.35
+        version: 14.2.35(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
       next:
-        specifier: 14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -699,8 +699,8 @@ importers:
         specifier: ^8
         version: 8.57.0
       eslint-config-next:
-        specifier: 14.2.26
-        version: 14.2.26(eslint@8.57.0)(typescript@5.8.3)
+        specifier: 14.2.35
+        version: 14.2.35(eslint@8.57.0)(typescript@5.8.3)
       remark-frontmatter:
         specifier: ^5.0.0
         version: 5.0.0
@@ -726,8 +726,8 @@ importers:
         specifier: 0.1.0
         version: link:../../utils/sample-theme
       next:
-        specifier: 14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -1280,7 +1280,7 @@ importers:
     dependencies:
       '@fumadocs/content-collections':
         specifier: ^1.2.2
-        version: 1.2.2(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 1.2.2(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
         version: 1.1.15(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1304,19 +1304,19 @@ importers:
         version: 3.7.0
       fumadocs-core:
         specifier: ^14.7.7
-        version: 14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       fumadocs-docgen:
         specifier: ^1.3.8
         version: 1.3.8(typescript@5.8.3)
       fumadocs-ui:
         specifier: ^14.7.7
-        version: 14.7.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.18)
+        version: 14.7.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.18)
       lucide-react:
         specifier: ^0.414.0
         version: 0.414.0(react@18.3.1)
       next:
-        specifier: 14.2.32
-        version: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.2.35
+        version: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1376,8 +1376,8 @@ importers:
         specifier: ^8
         version: 8.57.0
       eslint-config-next:
-        specifier: 14.2.26
-        version: 14.2.26(eslint@8.57.0)(typescript@5.8.3)
+        specifier: 14.2.35
+        version: 14.2.35(eslint@8.57.0)(typescript@5.8.3)
       github-slugger:
         specifier: ^2.0.0
         version: 2.0.0
@@ -3233,11 +3233,17 @@ packages:
   '@next/env@14.2.32':
     resolution: {integrity: sha512-n9mQdigI6iZ/DF6pCTwMKeWgF2e8lg7qgt5M7HXMLtyhZYMnf/u905M18sSpPmHL9MKp9JHo56C6jrD2EvWxng==}
 
+  '@next/env@14.2.35':
+    resolution: {integrity: sha512-DuhvCtj4t9Gwrx80dmz2F4t/zKQ4ktN8WrMwOuVzkJfBilwAwGr6v16M5eI8yCuZ63H9TTuEU09Iu2HqkzFPVQ==}
+
   '@next/eslint-plugin-next@14.2.26':
     resolution: {integrity: sha512-SPEj1O5DAVTPaWD9XPupelfT2APNIgcDYD2OzEm328BEmHaglhmYNUvxhzfJYDr12AgAfW4V3UHSV93qaeELJA==}
 
-  '@next/mdx@14.2.26':
-    resolution: {integrity: sha512-Sw28KDWr57wzZa7mPfpCxGoLdlROllOAiTlZx0dcnDDwOctOrlr83ifkvOVZ7C3+YCbYZHqzxB8Dhu0q+47qDg==}
+  '@next/eslint-plugin-next@14.2.35':
+    resolution: {integrity: sha512-Jw9A3ICz2183qSsqwi7fgq4SBPiNfmOLmTPXKvlnzstUwyvBrtySiY+8RXJweNAs9KThb1+bYhZh9XWcNOr2zQ==}
+
+  '@next/mdx@14.2.35':
+    resolution: {integrity: sha512-Pekqjb1Rm4mm0wJgRRmVIdN8eCEMMdDeCCa+REHYb8lZ9K7vYsEAVHJ8XBq8XaLKp110p8k6JdUT64sFE/y8Uw==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
@@ -3253,8 +3259,20 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@next/swc-darwin-arm64@14.2.33':
+    resolution: {integrity: sha512-HqYnb6pxlsshoSTubdXKu15g3iivcbsMXg4bYpjL2iS/V6aQot+iyF4BUc2qA/J/n55YtvE4PHMKWBKGCF/+wA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
   '@next/swc-darwin-x64@14.2.32':
     resolution: {integrity: sha512-P9NpCAJuOiaHHpqtrCNncjqtSBi1f6QUdHK/+dNabBIXB2RUFWL19TY1Hkhu74OvyNQEYEzzMJCMQk5agjw1Qg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@next/swc-darwin-x64@14.2.33':
+    resolution: {integrity: sha512-8HGBeAE5rX3jzKvF593XTTFg3gxeU4f+UWnswa6JPhzaR6+zblO5+fjltJWIZc4aUalqTclvN2QtTC37LxvZAA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -3265,8 +3283,20 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@next/swc-linux-arm64-gnu@14.2.33':
+    resolution: {integrity: sha512-JXMBka6lNNmqbkvcTtaX8Gu5by9547bukHQvPoLe9VRBx1gHwzf5tdt4AaezW85HAB3pikcvyqBToRTDA4DeLw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
   '@next/swc-linux-arm64-musl@14.2.32':
     resolution: {integrity: sha512-tA6sIKShXtSJBTH88i0DRd6I9n3ZTirmwpwAqH5zdJoQF7/wlJXR8DkPmKwYl5mFWhEKr5IIa3LfpMW9RRwKmQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@next/swc-linux-arm64-musl@14.2.33':
+    resolution: {integrity: sha512-Bm+QulsAItD/x6Ih8wGIMfRJy4G73tu1HJsrccPW6AfqdZd0Sfm5Imhgkgq2+kly065rYMnCOxTBvmvFY1BKfg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -3277,8 +3307,20 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@next/swc-linux-x64-gnu@14.2.33':
+    resolution: {integrity: sha512-FnFn+ZBgsVMbGDsTqo8zsnRzydvsGV8vfiWwUo1LD8FTmPTdV+otGSWKc4LJec0oSexFnCYVO4hX8P8qQKaSlg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
   '@next/swc-linux-x64-musl@14.2.32':
     resolution: {integrity: sha512-OHHC81P4tirVa6Awk6eCQ6RBfWl8HpFsZtfEkMpJ5GjPsJ3nhPe6wKAJUZ/piC8sszUkAgv3fLflgzPStIwfWg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@next/swc-linux-x64-musl@14.2.33':
+    resolution: {integrity: sha512-345tsIWMzoXaQndUTDv1qypDRiebFxGYx9pYkhwY4hBRaOLt8UGfiWKr9FSSHs25dFIf8ZqIFaPdy5MljdoawA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -3289,14 +3331,32 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@next/swc-win32-arm64-msvc@14.2.33':
+    resolution: {integrity: sha512-nscpt0G6UCTkrT2ppnJnFsYbPDQwmum4GNXYTeoTIdsmMydSKFz9Iny2jpaRupTb+Wl298+Rh82WKzt9LCcqSQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
   '@next/swc-win32-ia32-msvc@14.2.32':
     resolution: {integrity: sha512-jHUeDPVHrgFltqoAqDB6g6OStNnFxnc7Aks3p0KE0FbwAvRg6qWKYF5mSTdCTxA3axoSAUwxYdILzXJfUwlHhA==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
 
+  '@next/swc-win32-ia32-msvc@14.2.33':
+    resolution: {integrity: sha512-pc9LpGNKhJ0dXQhZ5QMmYxtARwwmWLpeocFmVG5Z0DzWq5Uf0izcI8tLc+qOpqxO1PWqZ5A7J1blrUIKrIFc7Q==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+
   '@next/swc-win32-x64-msvc@14.2.32':
     resolution: {integrity: sha512-2N0lSoU4GjfLSO50wvKpMQgKd4HdI2UHEhQPPPnlgfBJlOgJxkjpkYBqzk08f1gItBB6xF/n+ykso2hgxuydsA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@next/swc-win32-x64-msvc@14.2.33':
+    resolution: {integrity: sha512-nOjfZMy8B94MdisuzZo9/57xuFVLHJaDj5e/xrduJp9CV2/HrfxTRH2fbyLe+K9QT41WBLUd4iXX3R7jBp0EUg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -6594,6 +6654,15 @@ packages:
       typescript:
         optional: true
 
+  eslint-config-next@14.2.35:
+    resolution: {integrity: sha512-BpLsv01UisH193WyT/1lpHqq5iJ/Orfz9h/NOOlAmTUq4GY349PextQ62K4XpnaM9supeiEn3TaOTeQO07gURg==}
+    peerDependencies:
+      eslint: ^7.23.0 || ^8.0.0
+      typescript: '>=3.3.1'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   eslint-config-prettier@9.1.0:
     resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
     hasBin: true
@@ -8637,6 +8706,24 @@ packages:
 
   next@14.2.32:
     resolution: {integrity: sha512-fg5g0GZ7/nFc09X8wLe6pNSU8cLWbLRG3TZzPJ1BJvi2s9m7eF991se67wliM9kR5yLHRkyGKU49MMx58s3LJg==}
+    engines: {node: '>=18.17.0'}
+    hasBin: true
+    peerDependencies:
+      '@opentelemetry/api': ^1.1.0
+      '@playwright/test': ^1.41.2
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      sass: ^1.3.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+      '@playwright/test':
+        optional: true
+      sass:
+        optional: true
+
+  next@14.2.35:
+    resolution: {integrity: sha512-KhYd2Hjt/O1/1aZVX3dCwGXM1QmOV4eNM2UTacK5gipDdPN/oHHK/4oVGy7X8GMfPMsUTUEmGlsy0EY1YGAkig==}
     engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
@@ -12703,11 +12790,11 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@fumadocs/content-collections@1.2.2(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@fumadocs/content-collections@1.2.2(@content-collections/core@packages+core)(@content-collections/mdx@packages+mdx)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@content-collections/core': link:packages/core
       '@content-collections/mdx': link:packages/mdx
-      fumadocs-core: 14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      fumadocs-core: 14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -13184,11 +13271,17 @@ snapshots:
 
   '@next/env@14.2.32': {}
 
+  '@next/env@14.2.35': {}
+
   '@next/eslint-plugin-next@14.2.26':
     dependencies:
       glob: 10.3.10
 
-  '@next/mdx@14.2.26(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))':
+  '@next/eslint-plugin-next@14.2.35':
+    dependencies:
+      glob: 10.3.10
+
+  '@next/mdx@14.2.35(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@18.3.3)(react@18.3.1))':
     dependencies:
       source-map: 0.7.6
     optionalDependencies:
@@ -13198,28 +13291,55 @@ snapshots:
   '@next/swc-darwin-arm64@14.2.32':
     optional: true
 
+  '@next/swc-darwin-arm64@14.2.33':
+    optional: true
+
   '@next/swc-darwin-x64@14.2.32':
+    optional: true
+
+  '@next/swc-darwin-x64@14.2.33':
     optional: true
 
   '@next/swc-linux-arm64-gnu@14.2.32':
     optional: true
 
+  '@next/swc-linux-arm64-gnu@14.2.33':
+    optional: true
+
   '@next/swc-linux-arm64-musl@14.2.32':
+    optional: true
+
+  '@next/swc-linux-arm64-musl@14.2.33':
     optional: true
 
   '@next/swc-linux-x64-gnu@14.2.32':
     optional: true
 
+  '@next/swc-linux-x64-gnu@14.2.33':
+    optional: true
+
   '@next/swc-linux-x64-musl@14.2.32':
+    optional: true
+
+  '@next/swc-linux-x64-musl@14.2.33':
     optional: true
 
   '@next/swc-win32-arm64-msvc@14.2.32':
     optional: true
 
+  '@next/swc-win32-arm64-msvc@14.2.33':
+    optional: true
+
   '@next/swc-win32-ia32-msvc@14.2.32':
     optional: true
 
+  '@next/swc-win32-ia32-msvc@14.2.33':
+    optional: true
+
   '@next/swc-win32-x64-msvc@14.2.32':
+    optional: true
+
+  '@next/swc-win32-x64-msvc@14.2.33':
     optional: true
 
   '@nodelib/fs.scandir@2.1.5':
@@ -17528,6 +17648,26 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
+  eslint-config-next@14.2.35(eslint@8.57.0)(typescript@5.8.3):
+    dependencies:
+      '@next/eslint-plugin-next': 14.2.35
+      '@rushstack/eslint-patch': 1.11.0
+      '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.8.3))(eslint@8.57.0)(typescript@5.8.3)
+      '@typescript-eslint/parser': 6.21.0(eslint@8.57.0)(typescript@5.8.3)
+      eslint: 8.57.0
+      eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.8.3))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.8.3))(eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.8.3))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.0)
+      eslint-plugin-react: 7.37.4(eslint@8.57.0)
+      eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - eslint-import-resolver-webpack
+      - eslint-plugin-import-x
+      - supports-color
+
   eslint-config-prettier@9.1.0(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
@@ -18128,7 +18268,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.10
       '@orama/orama': 2.1.1
@@ -18146,7 +18286,7 @@ snapshots:
       shiki: 2.5.0
       unist-util-visit: 5.0.0
     optionalDependencies:
-      next: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
@@ -18182,7 +18322,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  fumadocs-ui@14.7.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.18):
+  fumadocs-ui@14.7.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(fumadocs-core@14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.18):
     dependencies:
       '@radix-ui/react-accordion': 1.2.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-collapsible': 1.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -18194,10 +18334,10 @@ snapshots:
       '@radix-ui/react-slot': 1.2.3(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-tabs': 1.1.13(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority: 0.7.1
-      fumadocs-core: 14.7.7(@types/react@18.3.3)(next@14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      fumadocs-core: 14.7.7(@types/react@18.3.3)(next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lodash.merge: 4.6.2
       lucide-react: 0.473.0(react@18.3.1)
-      next: 14.2.32(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes: 0.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       postcss-selector-parser: 7.1.0
       react: 18.3.1
@@ -20370,9 +20510,35 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@14.2.32(@playwright/test@1.47.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@14.2.35(@playwright/test@1.47.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@next/env': 14.2.32
+      '@next/env': 14.2.35
+      '@swc/helpers': 0.5.5
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001746
+      graceful-fs: 4.2.11
+      postcss: 8.4.31
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      styled-jsx: 5.1.1(react@18.3.1)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 14.2.33
+      '@next/swc-darwin-x64': 14.2.33
+      '@next/swc-linux-arm64-gnu': 14.2.33
+      '@next/swc-linux-arm64-musl': 14.2.33
+      '@next/swc-linux-x64-gnu': 14.2.33
+      '@next/swc-linux-x64-musl': 14.2.33
+      '@next/swc-win32-arm64-msvc': 14.2.33
+      '@next/swc-win32-ia32-msvc': 14.2.33
+      '@next/swc-win32-x64-msvc': 14.2.33
+      '@playwright/test': 1.47.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
+  next@14.2.35(@playwright/test@1.47.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      '@next/env': 14.2.35
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
       caniuse-lite: 1.0.30001746
@@ -20382,15 +20548,15 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
       styled-jsx: 5.1.1(react@19.1.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.32
-      '@next/swc-darwin-x64': 14.2.32
-      '@next/swc-linux-arm64-gnu': 14.2.32
-      '@next/swc-linux-arm64-musl': 14.2.32
-      '@next/swc-linux-x64-gnu': 14.2.32
-      '@next/swc-linux-x64-musl': 14.2.32
-      '@next/swc-win32-arm64-msvc': 14.2.32
-      '@next/swc-win32-ia32-msvc': 14.2.32
-      '@next/swc-win32-x64-msvc': 14.2.32
+      '@next/swc-darwin-arm64': 14.2.33
+      '@next/swc-darwin-x64': 14.2.33
+      '@next/swc-linux-arm64-gnu': 14.2.33
+      '@next/swc-linux-arm64-musl': 14.2.33
+      '@next/swc-linux-x64-gnu': 14.2.33
+      '@next/swc-linux-x64-musl': 14.2.33
+      '@next/swc-win32-arm64-msvc': 14.2.33
+      '@next/swc-win32-ia32-msvc': 14.2.33
+      '@next/swc-win32-x64-msvc': 14.2.33
       '@playwright/test': 1.47.0
     transitivePeerDependencies:
       - '@babel/core'
