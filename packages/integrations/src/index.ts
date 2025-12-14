@@ -2,7 +2,19 @@ import { Builder } from "@content-collections/core";
 import path from "node:path";
 import { isUnknownError, registerErrorListeners } from "./errors.js";
 
-export function configureLogging(builder: Builder) {
+type Options = {
+  handleError?: (error: Error) => void;
+};
+
+const defaultOptions: Options = {
+  handleError: () => {
+    if (process.env.NODE_ENV === "production") {
+      process.exit(1);
+    }
+  },
+};
+
+export function configureLogging(builder: Builder, options: Options = defaultOptions) {
   builder.on("builder:start", () => {
     console.log("build started ...");
   });
@@ -42,5 +54,6 @@ export function configureLogging(builder: Builder) {
     if (isUnknownError(_event)) {
       console.log("... error", error.message);
     }
+    options.handleError?.(error);
   });
 }
