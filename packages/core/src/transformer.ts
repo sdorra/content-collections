@@ -1,3 +1,4 @@
+import { StandardSchemaV1 } from "@standard-schema/spec";
 import os from "node:os";
 import { basename, dirname, extname, join } from "node:path";
 import pLimit from "p-limit";
@@ -74,6 +75,16 @@ function isContentDefined(value: unknown): value is WithContent {
   return value !== null && typeof value === "object" && "content" in value;
 }
 
+function formatValidationErrorMessage(
+  issues: ReadonlyArray<StandardSchemaV1.Issue>,
+): string {
+  return issues
+    // we have always a path, the only case where it is empty is when the root type is wrong
+    // and we enforce object as root type
+    .map((issue) => `- ${issue.path}: ${issue.message}`)
+    .join("\n");
+}
+
 export function createTransformer(
   emitter: Emitter,
   cacheManager: CacheManager,
@@ -100,10 +111,9 @@ export function createTransformer(
       emitter.emit("transformer:validation-error", {
         collection,
         file,
-        // TODO: check for better issue formatting
         error: new TransformError(
           "Validation",
-          parsedData.issues.map((issue) => issue.message).join(", "),
+          formatValidationErrorMessage(parsedData.issues),
         ),
       });
       return null;
