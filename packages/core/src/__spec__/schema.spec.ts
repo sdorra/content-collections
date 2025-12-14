@@ -1,3 +1,4 @@
+import { TransformError } from "src/transformer";
 import { describe, expect, vi } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig } from "../config";
@@ -53,6 +54,51 @@ describe("schema", () => {
 
       expect(allPosts).toHaveLength(1);
       expect(allPosts.map((p) => p.title)).toEqual(["Post One"]);
+    },
+  );
+
+  workspaceTest(
+    "should include the path of the invalid property in validation error",
+    async ({ workspaceBuilder, emitter }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.md",
+        schema: z.object({
+          title: z.string(),
+          author: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/posts/one.md",
+        `
+        ---
+        titlee: Post One
+        author: trillian
+        ---
+
+        # First post
+    `,
+      );
+
+      const errors: TransformError[] = [];
+
+      emitter.on("transformer:validation-error", (event) => {
+        errors.push(event.error);
+      });
+
+      const { collection } = await workspace.build();
+      await collection("posts");
+
+      expect(errors).toHaveLength(1);
+      expect(errors[0]?.message).toContain("title");
     },
   );
 
@@ -220,6 +266,7 @@ describe("schema", () => {
       ]);
     },
   );
+
   workspaceTest(
     "should end with an error, if legacy schema is used",
     async ({}) => {
