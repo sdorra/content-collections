@@ -1,5 +1,11 @@
 # @content-collections/integrations
 
+## 0.4.0
+
+### Minor Changes
+
+- [#695](https://github.com/sdorra/content-collections/pull/695) [`92abb38`](https://github.com/sdorra/content-collections/commit/92abb380a8c39c558a5fc10ac347008b8a4ceb03) Thanks [@sdorra](https://github.com/sdorra)! - Fix regression: (#692) exit the build on validation errors in production
+
 ## 0.3.0
 
 ### Minor Changes
