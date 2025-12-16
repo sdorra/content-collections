@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/next",
   "type": "module",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Use content-collection with Next.js",
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",

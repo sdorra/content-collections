@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.13.0
+
+### Minor Changes
+
+- [#695](https://github.com/sdorra/content-collections/pull/695) [`92abb38`](https://github.com/sdorra/content-collections/commit/92abb380a8c39c558a5fc10ac347008b8a4ceb03) Thanks [@sdorra](https://github.com/sdorra)! - Fix regression: (#692) exit the build on validation errors in production
+
+### Patch Changes
+
+- [#695](https://github.com/sdorra/content-collections/pull/695) [`1457630`](https://github.com/sdorra/content-collections/commit/1457630ef3c109dfb54179f578e9db1272d73834) Thanks [@sdorra](https://github.com/sdorra)! - Improve validation error messages by including the property path
+
 ## 0.12.0
 
 ### Minor Changes
