@@ -26,10 +26,10 @@
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*",
-    "@clerc/core": "^0.44.0",
-    "@clerc/plugin-completions": "^0.44.0",
-    "@clerc/plugin-help": "^0.44.0",
-    "@clerc/plugin-version": "^0.44.0"
+    "@clerc/core": "^1.0.2",
+    "@clerc/plugin-completions": "^1.0.2",
+    "@clerc/plugin-help": "^1.0.2",
+    "@clerc/plugin-version": "^1.0.2"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
