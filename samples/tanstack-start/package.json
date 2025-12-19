@@ -18,7 +18,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "@content-collections/core": "0.13.0",
+    "@content-collections/core": "0.13.1",
     "@content-collections/vite": "0.2.8",
     "@types/node": "^22.5.4",
     "@types/react": "^19.1.8",

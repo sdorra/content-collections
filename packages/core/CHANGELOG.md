@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.13.1
+
+### Patch Changes
+
+- [#699](https://github.com/sdorra/content-collections/pull/699) [`6aa4fec`](https://github.com/sdorra/content-collections/commit/6aa4fecb6d56f6f70925ca515ad3e0e963cc18bd) Thanks [@fauziralpiandi](https://github.com/fauziralpiandi)! - Handle Windows backslashes in import paths by automatically normalizing them to forward slashes in import creator functions.
+
 ## 0.13.0
 
 ### Minor Changes
