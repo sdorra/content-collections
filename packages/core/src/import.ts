@@ -17,14 +17,14 @@ export function isImport(value: any): value is Import<any> {
 export function createDefaultImport<T>(path: string): Import<T> {
   return {
     __cc_import: true,
-    path,
+    path: path.replace(/\\/g, "/"),
   };
 }
 
 export function createNamedImport<T>(name: string, path: string): Import<T> {
   return {
     __cc_import: true,
-    path,
+    path: path.replace(/\\/g, "/"),
     name,
   };
 }
