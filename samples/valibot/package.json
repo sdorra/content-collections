@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@content-collections/cli": "0.1.8",
-    "@content-collections/core": "0.13.0",
+    "@content-collections/core": "0.13.1",
     "valibot": "^1.2.0"
   },
   "devDependencies": {
