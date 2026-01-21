@@ -7,7 +7,7 @@ import type { AnyConfiguration } from "../config";
 import { defaultConfigName } from "../configurationReader";
 import { createEmitter, type Emitter } from "../events";
 import type { GetCollectionNames, GetTypeByName } from "../types";
-import { generateArrayConstName } from "../utils";
+import { generateArrayConstName, generateSingletonConstName } from "../utils";
 import type { Watcher } from "../watcher";
 
 function isTemplateStringArray(input: any): input is TemplateStringsArray {
@@ -39,6 +39,30 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
 
   let counter = -1;
 
+  async function resolveConfiguration(): Promise<AnyConfiguration | null> {
+    if (typeof configuration !== "string") {
+      return configuration;
+    }
+
+    // For string/template configurations, load the compiled config output that the builder produced.
+    const compiledConfig = join(directory, ".content-collections/cache", defaultConfigName);
+    try {
+      const module = await import(`${compiledConfig}?t=${Date.now()}&c=${counter}`);
+      return module.default as AnyConfiguration;
+    } catch {
+      return null;
+    }
+  }
+
+  async function resolveExportName(collectionName: string): Promise<string> {
+    const cfg = await resolveConfiguration();
+    const defined = cfg?.collections?.find((c: any) => c?.name === collectionName);
+    if (defined?.type === "singleton") {
+      return generateSingletonConstName(defined.typeName);
+    }
+    return generateArrayConstName(collectionName);
+  }
+
   async function readCollectionFromIndex(collection: string) {
     const indexFile = join(
       directory,
@@ -49,13 +73,13 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     const collections = await import(
       `${indexFile}?t=${Date.now()}&c=${counter}`
     );
-    const name = generateArrayConstName(collection);
+    const name = await resolveExportName(collection);
 
     return collections[name];
   }
 
   async function readCollectionFromDataFile(collection: string) {
-    const name = generateArrayConstName(collection);
+    const name = await resolveExportName(collection);
     const dataFile = join(
       directory,
       // TODO: hardcoded path, should be a constant
@@ -125,6 +149,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
           // TODO: do we need a better way here to simulate internal configuration?
           path: cfg,
           inputPaths: [cfg],
+          generateTypes: true,
           checksum: "",
         },
         directory,
@@ -154,7 +179,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     options: Options = {},
   ): TConfiguration extends AnyConfiguration
     ? Workspace<TConfiguration>
-    : Workspace<any> {
+    : Workspace<string> {
     const relativePath = options.configurationPath || "content-collections.ts";
     outputDir = options.outputDir;
 
@@ -175,7 +200,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
       build,
       path,
       watch,
-    } satisfies Workspace<any> as any;
+    } satisfies Workspace<string> as any;
   }
 
   return createWorkspace;
@@ -194,8 +219,10 @@ export type Workspace<TConfig extends AnyConfiguration | string> = {
 type CollectionNameOrString<TConfig extends AnyConfiguration | string> =
   TConfig extends AnyConfiguration ? GetCollectionNames<TConfig> : string;
 
+type UnknownDocument = Record<string, any>;
+
 type GeneratedReturnType<TConfig, TCollection> =
-  TConfig extends AnyConfiguration ? GetTypeByName<TConfig, TCollection> : any;
+  TConfig extends AnyConfiguration ? GetTypeByName<TConfig, TCollection> : UnknownDocument;
 
 export type Executor<TConfig extends AnyConfiguration | string> = {
   configurationPath: string;

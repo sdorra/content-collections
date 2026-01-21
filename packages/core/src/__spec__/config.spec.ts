@@ -380,4 +380,93 @@ describe("config", () => {
       );
     },
   );
+
+  workspaceTest(
+    "should support singleton collections (missing => undefined)",
+    async ({ workspaceBuilder, emitter, workspacePath }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+
+      const settings = defineCollection({
+        name: "settings",
+        type: "singleton",
+        typeName: "Settings",
+        directory: "sources",
+        include: "settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      const { collection } = await workspace.build();
+
+      const loaded = (await collection("settings")) as any;
+      expect(loaded).toBeUndefined();
+
+      expect(warnings.some((w) => w.kind === "missing")).toBe(true);
+
+      const dts = fs.readFileSync(
+        join(workspacePath, ".content-collections/generated/index.d.ts"),
+        "utf-8",
+      );
+      expect(dts).toContain("export declare const settings: Settings | undefined;");
+    },
+  );
+
+  workspaceTest(
+    "should support singleton collections (multiple => pick first + warning)",
+    async ({ workspaceBuilder, emitter }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+
+      const settings = defineCollection({
+        name: "settings",
+        type: "singleton",
+        typeName: "Settings",
+        directory: "sources",
+        include: "settings/*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings/a.yaml",
+        `
+        title: A
+      `,
+      );
+
+      workspace.file(
+        "sources/settings/b.yaml",
+        `
+        title: B
+      `,
+      );
+
+      const { collection } = await workspace.build();
+
+      const loaded = (await collection("settings")) as any;
+      expect(loaded?.title).toBe("A");
+
+      const multiple = warnings.find((w) => w.kind === "multiple");
+      expect(Boolean(multiple)).toBe(true);
+      expect(multiple.documentCount).toBe(2);
+      expect(multiple.filePaths).toHaveLength(2);
+    },
+  );
 });
