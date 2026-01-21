@@ -94,6 +94,7 @@ export type CollectionRequest<
   TDocument,
 > = {
   name: TName;
+  type?: "collection" | "singleton";
   parser?: TParser;
   typeName?: string;
   schema: TShape;
@@ -122,6 +123,7 @@ export type Collection<
   >,
   "schema"
 > & {
+  type: "collection" | "singleton";
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
@@ -187,6 +189,7 @@ export function defineCollection<
     TDocument
   >,
 ): TResult {
+  const type = collection.type ?? "collection";
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
@@ -206,6 +209,7 @@ export function defineCollection<
   }
   return {
     ...collection,
+    type,
     typeName,
     parser,
     schema,

@@ -17,6 +17,12 @@ export type TransformerEvents = {
     file: CollectionFile;
     error: TransformError;
   };
+  "transformer:singleton-warning": {
+    collection: AnyCollection;
+    kind: "missing" | "multiple";
+    documentCount: number;
+    filePaths?: Array<string>;
+  };
   "transformer:result-error": {
     collection: AnyCollection;
     document: any;
@@ -303,6 +309,26 @@ export function createTransformer(
     for (const collection of collections) {
       const documents = await transformCollection(collections, collection);
       collection.documents = await validateDocuments(collection, documents);
+
+      if (collection.type === "singleton") {
+        const documentCount = collection.documents.length;
+        if (documentCount === 0) {
+          emitter.emit("transformer:singleton-warning", {
+            collection,
+            kind: "missing",
+            documentCount,
+          });
+        } else if (documentCount > 1) {
+          emitter.emit("transformer:singleton-warning", {
+            collection,
+            kind: "multiple",
+            documentCount,
+            filePaths: collection.documents.map((doc) =>
+              join(collection.directory, doc.document._meta.filePath)
+            ),
+          });
+        }
+      }
     }
 
     return collections;

@@ -8,6 +8,22 @@ export function isUnknownError(event: string) {
 }
 
 export function registerErrorListeners(builder: Builder) {
+  builder.on("transformer:singleton-warning", (event) => {
+    console.log();
+    if (event.kind === "missing") {
+      console.log(`Singleton collection "${event.collection.name}" matched no documents. Export will be undefined.`);
+    } else {
+      console.log(`Singleton collection "${event.collection.name}" matched ${event.documentCount} documents. Using the first match and the rest is ignored.`);
+      if (event.filePaths?.length) {
+        console.log("Matches:");
+        for (const filePath of event.filePaths) {
+          console.log("-", path.join(filePath));
+        }
+      }
+    }
+    console.log();
+  });
+
   builder.on("transformer:validation-error", (event) => {
     console.log();
     console.log(
