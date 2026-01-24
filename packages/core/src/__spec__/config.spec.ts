@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { workspaceTest } from "./workspace";
 
 describe("config", () => {
@@ -387,12 +387,10 @@ describe("config", () => {
       const warnings: Array<any> = [];
       emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
 
-      const settings = defineCollection({
+      const settings = defineSingleton({
         name: "settings",
-        type: "singleton",
         typeName: "Settings",
-        directory: "sources",
-        include: "settings.yaml",
+        filePath: "sources/settings.yaml",
         parser: "yaml",
         schema: z.object({
           title: z.string(),
@@ -421,17 +419,15 @@ describe("config", () => {
   );
 
   workspaceTest(
-    "should support singleton collections (multiple => pick first + warning)",
+    "should support singleton collections (multiple => pick first + no warning)",
     async ({ workspaceBuilder, emitter }) => {
       const warnings: Array<any> = [];
       emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
 
-      const settings = defineCollection({
+      const settings = defineSingleton({
         name: "settings",
-        type: "singleton",
         typeName: "Settings",
-        directory: "sources",
-        include: "settings/*.yaml",
+        filePath: "sources/settings.yaml",
         parser: "yaml",
         schema: z.object({
           title: z.string(),
@@ -445,16 +441,9 @@ describe("config", () => {
       const workspace = workspaceBuilder(config);
 
       workspace.file(
-        "sources/settings/a.yaml",
+        "sources/settings.yaml",
         `
         title: A
-      `,
-      );
-
-      workspace.file(
-        "sources/settings/b.yaml",
-        `
-        title: B
       `,
       );
 
@@ -462,11 +451,7 @@ describe("config", () => {
 
       const loaded = (await collection("settings")) as any;
       expect(loaded?.title).toBe("A");
-
-      const multiple = warnings.find((w) => w.kind === "multiple");
-      expect(Boolean(multiple)).toBe(true);
-      expect(multiple.documentCount).toBe(2);
-      expect(multiple.filePaths).toHaveLength(2);
+      expect(warnings).toHaveLength(0);
     },
   );
 });

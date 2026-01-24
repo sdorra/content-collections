@@ -1,6 +1,7 @@
 import { readFile } from "fs/promises";
 import path from "node:path";
 import { glob } from "tinyglobby";
+import { AnyContent, isSingleton } from "./config";
 import { Emitter } from "./events";
 import { getParser, parsers } from "./parser";
 import { CollectionFile, FileCollection } from "./types";
@@ -40,7 +41,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
-  async function collectFile<T extends FileCollection>(
+  async function collectCollectionFile<T extends FileCollection>(
     collection: T,
     filePath: string,
   ): Promise<CollectionFile | null> {
@@ -72,6 +73,38 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     }
   }
 
+  async function collectSingletonFile(
+    singleton: Extract<AnyContent, { filePath: string }>,
+  ): Promise<CollectionFile | null> {
+    const absolutePath = path.join(baseDirectory, singleton.filePath);
+    const file = await read(absolutePath);
+    if (!file) {
+      return null;
+    }
+
+    try {
+      const parser = getParser(singleton.parser);
+      const data = await parser.parse(file);
+      return {
+        data,
+        path: path.basename(singleton.filePath),
+      };
+    } catch (error) {
+      emitter.emit("collector:parse-error", {
+        filePath: singleton.filePath,
+        error: new CollectError("Parse", String(error)),
+      });
+      return null;
+    }
+  }
+
+  async function collectFile(source: AnyContent, filePath: string) {
+    if (isSingleton(source)) {
+      return collectSingletonFile(source);
+    }
+    return collectCollectionFile(source, filePath);
+  }
+
   function createIgnorePattern<T extends FileCollection>(
     collection: T,
   ): Array<string> | undefined {
@@ -99,7 +132,7 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
       ignore: createIgnorePattern(collection),
     });
     const promises = filePaths.map((filePath) =>
-      collectFile(collection, posixToNativePath(filePath)),
+      collectCollectionFile(collection, posixToNativePath(filePath)),
     );
 
     const files = await Promise.all(promises);
@@ -110,12 +143,21 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     };
   }
 
-  async function collect<T extends FileCollection>(
-    unresolvedCollections: Array<T>,
-  ) {
-    const promises = unresolvedCollections.map((collection) =>
-      resolveCollection(collection),
-    );
+  async function resolveSingleton(singleton: Extract<AnyContent, { filePath: string }>) {
+    const file = await collectSingletonFile(singleton);
+    return {
+      ...singleton,
+      files: file ? [file] : [],
+    };
+  }
+
+  async function collect(unresolvedCollections: Array<AnyContent>) {
+    const promises = unresolvedCollections.map((collection) => {
+      if (isSingleton(collection)) {
+        return resolveSingleton(collection);
+      }
+      return resolveCollection(collection);
+    });
     return await Promise.all(promises);
   }
 

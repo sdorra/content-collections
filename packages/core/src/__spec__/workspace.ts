@@ -57,7 +57,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
   async function resolveExportName(collectionName: string): Promise<string> {
     const cfg = await resolveConfiguration();
     const defined = cfg?.collections?.find((c: any) => c?.name === collectionName);
-    if (defined?.type === "singleton") {
+    if (defined && typeof defined === "object" && "filePath" in defined) {
       return generateSingletonConstName(defined.typeName);
     }
     return generateArrayConstName(collectionName);

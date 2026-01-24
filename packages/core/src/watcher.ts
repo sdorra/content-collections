@@ -3,6 +3,7 @@ import path, { dirname, resolve } from "node:path";
 import { Emitter } from "./events";
 import { Modification } from "./types";
 import { isDefined, removeChildPaths, toError } from "./utils";
+import { isSingleton } from "./config";
 
 export type WatcherEvents = {
   "watcher:subscribe-error": {
@@ -25,7 +26,7 @@ type WatchableCollection = {
 
 type WatcherConfiguration = {
   inputPaths: Array<string>;
-  collections: Array<WatchableCollection>;
+  collections: Array<WatchableCollection | { filePath: string }>;
 };
 
 export async function createWatcher(
@@ -36,7 +37,12 @@ export async function createWatcher(
 ) {
   const paths = removeChildPaths([
     ...configuration.collections
-      .map((collection) => path.join(baseDirectory, collection.directory))
+      .map((collection) => {
+        const directory = isSingleton(collection as any)
+          ? path.dirname((collection as any).filePath)
+          : (collection as any).directory;
+        return path.join(baseDirectory, directory);
+      })
       .map((p) => resolve(p)),
     ...configuration.inputPaths.map((p) => dirname(p)),
   ]);

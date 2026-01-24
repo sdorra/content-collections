@@ -1,13 +1,11 @@
-import { defineCollection, defineConfig } from "@content-collections/core";
+import { defineConfig, defineSingleton } from "@content-collections/core";
 import { z } from "zod";
 
 
-const settings = defineCollection({
+const settings = defineSingleton({
   name: "settings",
-  type: "singleton",
   typeName: "Settings",
-  directory: "content",
-  include: "settings.yaml",
+  filePath: "content/settings.yaml",
   parser: "yaml",
   schema: z.object({
     siteName: z.string(),

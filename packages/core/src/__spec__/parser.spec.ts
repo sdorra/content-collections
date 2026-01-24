@@ -302,7 +302,7 @@ describe("parser", () => {
           content: z.string(),
         }),
       }),
-    ).toThrowError("Parser non-existing-parser is not valid a parser");
+    ).toThrowError("Parser non-existing-parser is not a valid parser");
   });
 
   workspaceTest(

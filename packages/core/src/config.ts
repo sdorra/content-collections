@@ -60,10 +60,12 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, infer TSchema, any, any>
+type GetSchema<TSource extends AnyContent> =
+  TSource extends Collection<any, any, any, infer TSchema, any, any>
     ? Prettify<TSchema>
-    : never;
+    : TSource extends Singleton<any, any, any, infer TSchema, any, any>
+      ? Prettify<TSchema>
+      : never;
 
 export const skippedSymbol = Symbol("skipped");
 
@@ -73,9 +75,9 @@ export type SkippedSignal = {
 };
 
 export type Context<TSchema = unknown> = {
-  documents<TCollection extends AnyCollection>(
-    collection: TCollection,
-  ): Array<GetSchema<TCollection>>;
+  documents<TSource extends AnyContent>(
+    source: TSource,
+  ): Array<GetSchema<TSource>>;
   cache: CacheFn;
   collection: {
     name: string;
@@ -94,7 +96,6 @@ export type CollectionRequest<
   TDocument,
 > = {
   name: TName;
-  type?: "collection" | "singleton";
   parser?: TParser;
   typeName?: string;
   schema: TShape;
@@ -123,7 +124,6 @@ export type Collection<
   >,
   "schema"
 > & {
-  type: "collection" | "singleton";
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
@@ -137,6 +137,61 @@ export type AnyCollection = Collection<
   any,
   any
 >;
+
+export type SingletonRequest<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser,
+  TSchema,
+  TTransformResult,
+  TDocument,
+> = {
+  name: TName;
+  filePath: string;
+  parser?: TParser;
+  typeName?: string;
+  schema: TShape;
+  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
+  onSuccess?: (document: TDocument | undefined) => void | Promise<void>;
+};
+
+export type Singleton<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser extends ConfiguredParser,
+  TSchema,
+  TTransformResult,
+  TDocument,
+> = Omit<
+  SingletonRequest<
+    TName,
+    TShape,
+    TParser,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >,
+  "schema"
+> & {
+  typeName: string;
+  schema: StandardSchemaV1;
+  parser: TParser;
+};
+
+export type AnySingleton = Singleton<
+  any,
+  TSchemaProp,
+  ConfiguredParser,
+  any,
+  any,
+  any
+>;
+
+export type AnyContent = AnyCollection | AnySingleton;
+
+export function isSingleton(source: AnyContent): source is AnySingleton {
+  return "filePath" in source;
+}
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
 
@@ -189,7 +244,6 @@ export function defineCollection<
     TDocument
   >,
 ): TResult {
-  const type = collection.type ?? "collection";
   let typeName = collection.typeName;
   if (!typeName) {
     typeName = generateTypeName(collection.name);
@@ -200,7 +254,7 @@ export function defineCollection<
   } else if (!isValidParser(parser)) {
     throw new ConfigurationError(
       "Read",
-      `Parser ${parser} is not valid a parser`,
+      `Parser ${parser} is not a valid parser`,
     );
   }
   let schema: any = collection.schema;
@@ -209,7 +263,64 @@ export function defineCollection<
   }
   return {
     ...collection,
-    type,
+    typeName,
+    parser,
+    schema,
+  } as TResult;
+}
+
+
+export function defineSingleton<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser extends ConfiguredParser = "frontmatter",
+  TSchema = Schema<TParser, TShape>,
+  TTransformResult = never,
+  TDocument = [TTransformResult] extends [never]
+    ? Schema<TParser, TShape>
+    : Exclude<Awaited<TTransformResult>, SkippedSignal>,
+  TResult = TDocument extends Serializable
+    ? Singleton<
+        TName,
+        TShape,
+        TParser,
+        TSchema,
+        TTransformResult,
+        ResolveImports<TDocument>
+      >
+    : InvalidReturnType<NotSerializableError, TDocument>,
+>(
+  singleton: SingletonRequest<
+    TName,
+    TShape,
+    TParser,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >,
+): TResult {
+  let typeName = singleton.typeName;
+  if (!typeName) {
+    typeName = generateTypeName(singleton.name);
+  }
+
+  let parser = singleton.parser;
+  if (!parser) {
+    parser = "frontmatter" as TParser;
+  } else if (!isValidParser(parser)) {
+    throw new ConfigurationError(
+      "Read",
+      `Parser ${parser} is not a valid parser`,
+    );
+  }
+
+  let schema: any = singleton.schema;
+  if (!schema["~standard"]) {
+    retired("legacySchema");
+  }
+
+  return {
+    ...singleton,
     typeName,
     parser,
     schema,
@@ -218,12 +329,12 @@ export function defineCollection<
 
 type Cache = "memory" | "file" | "none";
 
-export type Configuration<TCollections extends Array<AnyCollection>> = {
+export type Configuration<TCollections extends Array<AnyContent>> = {
   collections: TCollections;
   cache?: Cache;
 };
 
-export type AnyConfiguration = Configuration<Array<AnyCollection>>;
+export type AnyConfiguration = Configuration<Array<AnyContent>>;
 
 export function defineConfig<TConfig extends AnyConfiguration>(
   config: TConfig,
