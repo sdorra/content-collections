@@ -408,7 +408,7 @@ describe("config", () => {
       const loaded = (await collection("settings")) as any;
       expect(loaded).toBeUndefined();
 
-      expect(warnings.some((w) => w.kind === "missing")).toBe(true);
+      expect(warnings).toHaveLength(1);
 
       const dts = fs.readFileSync(
         join(workspacePath, ".content-collections/generated/index.d.ts"),
