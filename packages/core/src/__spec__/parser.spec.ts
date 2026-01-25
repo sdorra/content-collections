@@ -360,4 +360,35 @@ describe("parser", () => {
       expect(allMovies.map((m) => m.name)).toEqual(["Inception"]);
     },
   );
+
+  workspaceTest(
+    "non parsable documents should result in undefined singleton",
+    async ({ workspaceBuilder }) => {
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.json",
+        parser: "json",
+        schema: z.object({
+          name: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.json",
+        `// This is a non valid JSON file
+          "name": "Invalid Settings"
+        }`,
+      );
+
+      const { collection } = await workspace.build();
+      const settingsCollection = await collection("settings");
+      expect(settingsCollection).toBeUndefined();
+    },
+  );
 });

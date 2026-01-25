@@ -346,6 +346,42 @@ describe("config", () => {
   );
 
   workspaceTest(
+    "should call onSuccess after build",
+    async ({ workspaceBuilder }) => {
+      const titles: Array<string | undefined> = [];
+
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        onSuccess: (doc) => {
+          titles.push(doc?.title);
+        },
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.yaml",
+        `
+        title: A
+    `,
+      );
+
+      await workspace.build();
+
+      expect(titles).toEqual(["A"]);
+    },
+  );
+
+  workspaceTest(
     "should use specified output directory",
     async ({ workspaceBuilder, workspacePath }) => {
       const posts = defineCollection({
