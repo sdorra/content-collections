@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { defineParser } from "../parser";
 import { workspaceTest } from "./workspace";
 
@@ -295,6 +295,19 @@ describe("parser", () => {
         name: "posts",
         directory: "sources/posts",
         include: "*.md",
+        // @ts-expect-error non existing parser
+        parser: "non-existing-parser",
+        schema: z.object({
+          title: z.string(),
+          content: z.string(),
+        }),
+      }),
+    ).toThrowError("Parser non-existing-parser is not a valid parser");
+
+    expect(() =>
+      defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.md",
         // @ts-expect-error non existing parser
         parser: "non-existing-parser",
         schema: z.object({

@@ -426,9 +426,7 @@ describe("config", () => {
 
       const settings = defineSingleton({
         name: "settings",
-        typeName: "Settings",
-        filePath: "sources/settings.yaml",
-        parser: "yaml",
+        filePath: "sources/settings.md",
         schema: z.object({
           title: z.string(),
         }),
@@ -441,9 +439,11 @@ describe("config", () => {
       const workspace = workspaceBuilder(config);
 
       workspace.file(
-        "sources/settings.yaml",
+        "sources/settings.md",
         `
+        ---
         title: A
+        ---
       `,
       );
 
