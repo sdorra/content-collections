@@ -1,6 +1,7 @@
 import { createCacheManager } from "./cache";
 import { createCollector } from "./collector";
 import { InternalConfiguration } from "./configurationReader";
+import { isSingleton } from "./config";
 import { Emitter } from "./events";
 import { createSynchronizer } from "./synchronizer";
 import { createTransformer } from "./transformer";
@@ -84,7 +85,9 @@ export async function build({
   const pendingOnSuccess = collections
     .filter((collection) => Boolean(collection.onSuccess))
     .map((collection) =>
-      collection.onSuccess?.(collection.documents.map((doc) => doc.document)),
+      isSingleton(collection)
+        ? (collection as any).onSuccess?.(collection.documents[0]?.document)
+        : (collection as any).onSuccess?.(collection.documents.map((doc) => doc.document)),
     );
 
   await Promise.all(pendingOnSuccess.filter(isDefined));

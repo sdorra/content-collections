@@ -1,4 +1,4 @@
-import { AnyCollection, AnyConfiguration, Collection, Meta } from "./config";
+import { AnyCollection, AnyConfiguration, AnyContent, Collection, Meta, Singleton } from "./config";
 
 export type Modification = "create" | "update" | "delete";
 
@@ -29,10 +29,12 @@ export type CollectionByName<TConfiguration extends AnyConfiguration> = {
   [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
 };
 
-type GetDocument<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, any, any, infer TDocument>
+type GetDocument<TSource extends AnyContent> =
+  TSource extends Collection<any, any, any, any, any, infer TDocument>
     ? TDocument
-    : never;
+    : TSource extends Singleton<any, any, any, any, any, infer TDocument>
+      ? TDocument
+      : never;
 
 export type GetTr<TCollection extends AnyCollection> =
   TCollection extends Collection<any, any, any, any, infer TDocument, any>
@@ -43,4 +45,4 @@ export type GetTypeByName<
   TConfiguration extends AnyConfiguration,
   TName extends keyof CollectionByName<TConfiguration>,
   TCollection = CollectionByName<TConfiguration>[TName],
-> = TCollection extends AnyCollection ? GetDocument<TCollection> : never;
+> = TCollection extends AnyContent ? GetDocument<TCollection> : never;

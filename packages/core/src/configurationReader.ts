@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { AnyCollection } from "./config";
+import { AnyContent } from "./config";
 import { compile } from "./esbuild";
 
 export type ErrorType = "Read" | "Compile";
@@ -16,7 +16,7 @@ export class ConfigurationError extends Error {
 }
 
 export type InternalConfiguration = {
-  collections: Array<AnyCollection>;
+  collections: Array<AnyContent>;
   path: string;
   inputPaths: Array<string>;
   checksum: string;

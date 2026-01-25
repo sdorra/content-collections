@@ -1,7 +1,7 @@
 import { Watcher } from "src/watcher";
 import { afterEach, describe, expect, vi } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { workspaceTest } from "./workspace";
 
 let watcher: Watcher | undefined = undefined;
@@ -156,6 +156,54 @@ describe(
     );
 
     workspaceTest(
+      "should update existing singleton on file update",
+      async ({ workspaceBuilder }) => {
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.json",
+          parser: "json",
+          schema: z.object({
+            theme: z.enum(["dark", "light"]),
+          }),
+        });
+
+        const config = defineConfig({
+          collections: [settings],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/settings.json",
+          `{
+        "theme": "dark"
+      }`,
+        );
+
+        let { collection } = await workspace.build();
+
+        let setting = (await collection("settings") as any);
+        expect(setting?.theme).toBe("dark");
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/settings.json").write(
+          `{
+        "theme": "light"
+      }`,
+        );
+
+        setting = await vi.waitFor(async () => {
+          let set = (await collection("settings") as any);
+          expect(set?.theme).toBe("light");
+          return set;
+        }, 5000);
+
+        expect(setting?.theme).toBe("light");
+      },
+    );
+
+    workspaceTest(
       "should remove file from collection",
       async ({ workspaceBuilder }) => {
         const movies = defineCollection({
@@ -211,6 +259,50 @@ describe(
         }, 3000);
 
         expect(allMovies.map((m) => m.name)).toEqual(["Fight Club"]);
+      },
+    );
+
+    workspaceTest(
+      "singleton should be undefined after remove file",
+      async ({ workspaceBuilder }) => {
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.json",
+          parser: "json",
+          schema: z.object({
+            theme: z.enum(["dark", "light"]),
+          }),
+        });
+
+        const config = defineConfig({
+          collections: [settings],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/settings.json",
+          `{
+        "theme": "dark"
+      }`,
+        );
+
+        let { collection } = await workspace.build();
+
+        let setting = (await collection("settings") as any);
+        expect(setting?.theme).toBe("dark");
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/settings.json").unlink();
+
+        setting = await vi.waitFor(async () => {
+          const set = await collection("settings");
+          expect(set).toBeUndefined();
+          return set;
+        }, 3000);
+
+        expect(setting).toBeUndefined();
       },
     );
 

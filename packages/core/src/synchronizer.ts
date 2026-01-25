@@ -1,21 +1,26 @@
 import path from "node:path";
 import picomatch from "picomatch";
-import { CollectionFile, FileCollection, ResolvedCollection } from "./types";
+import { AnyContent, isSingleton } from "./config";
+import { CollectionFile } from "./types";
 import { orderByPath } from "./utils";
 
-type CollectionFileReader<T extends FileCollection> = (
-  collection: T,
-  filePath: string,
-) => Promise<CollectionFile | null>;
+type ResolvedSource = AnyContent & { files: Array<CollectionFile> };
 
-export function createSynchronizer<T extends FileCollection>(
-  readCollectionFile: CollectionFileReader<T>,
-  collections: Array<ResolvedCollection<T>>,
+type AnyFileReader = (source: AnyContent, filePath: string) => Promise<CollectionFile | null>;
+
+export function createSynchronizer(
+  readCollectionFile: AnyFileReader,
+  collections: Array<ResolvedSource>,
   baseDirectory: string = ".",
 ) {
   function findCollections(filePath: string) {
     const resolvedFilePath = path.resolve(filePath);
     return collections.filter((collection) => {
+      if (isSingleton(collection)) {
+        return (
+          resolvedFilePath === path.resolve(baseDirectory, collection.filePath)
+        );
+      }
       return resolvedFilePath.startsWith(
         path.resolve(baseDirectory, collection.directory),
       );
@@ -38,13 +43,18 @@ export function createSynchronizer<T extends FileCollection>(
 
     return collections
       .map((collection) => {
-        const relativePath = createRelativePath(collection.directory, filePath);
+        const relativePath = isSingleton(collection)
+          ? path.basename(collection.filePath)
+          : createRelativePath(collection.directory, filePath);
         return {
           collection,
           relativePath,
         };
       })
       .filter(({ collection, relativePath }) => {
+        if (isSingleton(collection)) {
+          return true;
+        }
         return picomatch.isMatch(relativePath, collection.include, {
           // @see https://github.com/sdorra/content-collections/issues/602
           windows: process.platform === "win32",
@@ -62,6 +72,13 @@ export function createSynchronizer<T extends FileCollection>(
 
     let changed = false;
     for (const { collection, relativePath } of resolvedCollections) {
+      if (isSingleton(collection)) {
+        if (collection.files.length > 0) {
+          collection.files = [];
+          changed = true;
+        }
+        continue;
+      }
       const index = collection.files.findIndex(
         (file) => file.path === relativePath,
       );
@@ -84,20 +101,22 @@ export function createSynchronizer<T extends FileCollection>(
     let changed = false;
 
     for (const { collection, relativePath } of resolvedCollections) {
-      const index = collection.files.findIndex(
-        (file) => file.path === relativePath,
-      );
+      const index = collection.files.findIndex((file) => file.path === relativePath);
 
       const file = await readCollectionFile(collection, relativePath);
 
       if (file) {
         changed = true;
 
-        if (index === -1) {
-          collection.files.push(file);
-          collection.files.sort(orderByPath);
+        if (isSingleton(collection)) {
+          collection.files = [file];
         } else {
-          collection.files[index] = file;
+          if (index === -1) {
+            collection.files.push(file);
+            collection.files.sort(orderByPath);
+          } else {
+            collection.files[index] = file;
+          }
         }
       }
     }

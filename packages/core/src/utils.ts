@@ -13,6 +13,10 @@ export function generateArrayConstName(name: string) {
   return "all" + pluralize(suffix);
 }
 
+export function generateSingletonConstName(typeName: string) {
+  return camelcase(typeName, { pascalCase: false });
+}
+
 export function isDefined<T>(value: T | undefined | null): value is T {
   return value !== undefined && value !== null;
 }

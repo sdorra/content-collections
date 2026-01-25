@@ -3,7 +3,7 @@ import os from "node:os";
 import { basename, dirname, extname, join } from "node:path";
 import pLimit from "p-limit";
 import { Cache, CacheManager } from "./cache";
-import { AnyCollection, Context, SkippedSignal, skippedSymbol } from "./config";
+import { AnyContent, Context, SkippedSignal, isSingleton, skippedSymbol } from "./config";
 import { Emitter } from "./events";
 import { deprecated } from "./features";
 import { getParser } from "./parser";
@@ -13,21 +13,24 @@ import { isDefined } from "./utils";
 
 export type TransformerEvents = {
   "transformer:validation-error": {
-    collection: AnyCollection;
+    collection: AnyContent;
     file: CollectionFile;
     error: TransformError;
   };
+  "transformer:singleton-warning": {
+    collection: AnyContent;
+  };
   "transformer:result-error": {
-    collection: AnyCollection;
+    collection: AnyContent;
     document: any;
     error: TransformError;
   };
   "transformer:error": {
-    collection: AnyCollection;
+    collection: AnyContent;
     error: TransformError;
   };
   "transformer:document-skipped": {
-    collection: AnyCollection;
+    collection: AnyContent;
     filePath: string;
     reason?: string;
   };
@@ -37,11 +40,11 @@ type ParsedFile = {
   document: any;
 };
 
-export type ResolvedCollection = AnyCollection & {
+export type ResolvedCollection = AnyContent & {
   files: Array<CollectionFile>;
 };
 
-export type TransformedCollection = AnyCollection & {
+export type TransformedCollection = AnyContent & {
   documents: Array<any>;
 };
 
@@ -91,7 +94,7 @@ export function createTransformer(
 ) {
   const deprecatedWarnings = new Set<string>();
 
-  function warnImplicitContentProperty(collection: AnyCollection) {
+  function warnImplicitContentProperty(collection: AnyContent) {
     const key = `implicitContentProperty:${collection.name}`;
     if (deprecatedWarnings.has(key)) {
       return;
@@ -101,7 +104,7 @@ export function createTransformer(
   }
 
   async function parseFile(
-    collection: AnyCollection,
+    collection: AnyContent,
     file: CollectionFile,
   ): Promise<ParsedFile | null> {
     const { data, path } = file;
@@ -189,20 +192,23 @@ export function createTransformer(
     collection: TransformedCollection,
     cache: Cache,
   ): Context<unknown> {
+    const sourceDirectory = isSingleton(collection)
+      ? dirname(collection.filePath)
+      : collection.directory;
     return {
-      documents: (collection) => {
-        const resolved = collections.find((c) => c.name === collection.name);
+      documents: (source) => {
+        const resolved = collections.find((c) => c.name === source.name);
         if (!resolved) {
           throw new TransformError(
             "Configuration",
-            `Collection ${collection.name} not found, do you have registered it in your configuration?`,
+            `Collection ${source.name} not found, do you have registered it in your configuration?`,
           );
         }
         return resolved.documents.map((doc) => doc.document);
       },
       collection: {
         name: collection.name,
-        directory: collection.directory,
+        directory: sourceDirectory,
         documents: async () => {
           return collection.documents.map((doc) => doc.document);
         },
@@ -229,7 +235,12 @@ export function createTransformer(
       if (isSkippedSignal(document)) {
         emitter.emit("transformer:document-skipped", {
           collection,
-          filePath: join(collection.directory, doc.document._meta.filePath),
+          filePath: join(
+            isSingleton(collection)
+              ? dirname(collection.filePath)
+              : collection.directory,
+            doc.document._meta.filePath
+          ),
           reason: document.reason,
         });
       } else {
@@ -275,7 +286,7 @@ export function createTransformer(
   }
 
   async function validateDocuments(
-    collection: AnyCollection,
+    collection: AnyContent,
     documents: Array<any>,
   ) {
     const docs = [];
@@ -303,6 +314,15 @@ export function createTransformer(
     for (const collection of collections) {
       const documents = await transformCollection(collections, collection);
       collection.documents = await validateDocuments(collection, documents);
+
+      if (isSingleton(collection)) {
+        
+        if (collection.documents.length === 0) {
+          emitter.emit("transformer:singleton-warning", {
+            collection,
+          });
+        }
+      }
     }
 
     return collections;

@@ -1,7 +1,7 @@
 import { TransformError } from "src/transformer";
 import { describe, expect, vi } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { isRetiredFeatureError } from "../features";
 import { workspaceTest } from "./workspace";
 
@@ -275,6 +275,24 @@ describe("schema", () => {
           name: "movies",
           directory: "sources/movies",
           include: "*.json",
+          parser: "json",
+          // @ts-expect-error legacy schema
+          schema: (z) => ({
+            name: z.string(),
+            year: z.number(),
+          }),
+        }),
+      ).toThrowError(
+        expect.toSatisfy(
+          (err) => isRetiredFeatureError(err) && err.feature === "legacySchema",
+          "is RetiredFeatureError",
+        ),
+      );
+
+      expect(() =>
+        defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.json",
           parser: "json",
           // @ts-expect-error legacy schema
           schema: (z) => ({

@@ -50,26 +50,33 @@ function createImport(imp: Import<unknown>, variableName: string): string {
   return `import ${variableDeclaration} from "${imp.path}";\n`;
 }
 
-export function serialize(value: Array<unknown>): string {
+export function serialize(value: unknown): string {
   let serializedValue = "";
   let counter = 0;
 
   function handleImports(item: any) {
-    if (item instanceof Object) {
-      Object.entries(item).forEach(([key, value]) => {
-        if (isImport(value)) {
-          counter++;
-          const variableName = `__v_${counter}`;
-          serializedValue += createImport(value, variableName);
-          item[key] = variableName;
-        } else if (value instanceof Object) {
-          handleImports(value);
-        }
-      });
+    if (!item || typeof item !== "object") {
+      return;
     }
+
+    if (Array.isArray(item)) {
+      item.forEach(handleImports);
+      return;
+    }
+
+    Object.entries(item).forEach(([key, value]) => {
+      if (isImport(value)) {
+        counter++;
+        const variableName = `__v_${counter}`;
+        serializedValue += createImport(value, variableName);
+        item[key] = variableName;
+      } else {
+        handleImports(value);
+      }
+    });
   }
 
-  value.forEach(handleImports);
+  handleImports(value);
 
   serializedValue += "\n";
 

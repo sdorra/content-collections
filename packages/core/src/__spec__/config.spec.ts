@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { workspaceTest } from "./workspace";
 
 describe("config", () => {
@@ -346,6 +346,42 @@ describe("config", () => {
   );
 
   workspaceTest(
+    "should call onSuccess after build",
+    async ({ workspaceBuilder }) => {
+      const titles: Array<string | undefined> = [];
+
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        onSuccess: (doc) => {
+          titles.push(doc?.title);
+        },
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.yaml",
+        `
+        title: A
+    `,
+      );
+
+      await workspace.build();
+
+      expect(titles).toEqual(["A"]);
+    },
+  );
+
+  workspaceTest(
     "should use specified output directory",
     async ({ workspaceBuilder, workspacePath }) => {
       const posts = defineCollection({
@@ -378,6 +414,80 @@ describe("config", () => {
       expect(fs.existsSync(join(workspacePath, "build/allPosts.js"))).toBe(
         true,
       );
+    },
+  );
+
+  workspaceTest(
+    "should support singleton collections (missing => undefined)",
+    async ({ workspaceBuilder, emitter, workspacePath }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+
+      const settings = defineSingleton({
+        name: "settings",
+        typeName: "Settings",
+        filePath: "sources/settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      const { collection } = await workspace.build();
+
+      const loaded = (await collection("settings")) as any;
+      expect(loaded).toBeUndefined();
+
+      expect(warnings).toHaveLength(1);
+
+      const dts = fs.readFileSync(
+        join(workspacePath, ".content-collections/generated/index.d.ts"),
+        "utf-8",
+      );
+      expect(dts).toContain("export declare const settings: Settings | undefined;");
+    },
+  );
+
+  workspaceTest(
+    "should support singleton collections (multiple => pick first + no warning)",
+    async ({ workspaceBuilder, emitter }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.md",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        collections: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.md",
+        `
+        ---
+        title: A
+        ---
+      `,
+      );
+
+      const { collection } = await workspace.build();
+
+      const loaded = (await collection("settings")) as any;
+      expect(loaded?.title).toBe("A");
+      expect(warnings).toHaveLength(0);
     },
   );
 });
