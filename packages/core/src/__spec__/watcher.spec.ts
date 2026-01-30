@@ -168,7 +168,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [settings],
+          content: [settings],
         });
 
         const workspace = workspaceBuilder(config);
@@ -180,9 +180,9 @@ describe(
       }`,
         );
 
-        let { collection } = await workspace.build();
+        let { singleton } = await workspace.build();
 
-        let setting = (await collection("settings") as any);
+        let setting = await singleton("settings");
         expect(setting?.theme).toBe("dark");
 
         watcher = await workspace.watch();
@@ -194,7 +194,7 @@ describe(
         );
 
         setting = await vi.waitFor(async () => {
-          let set = (await collection("settings") as any);
+          let set = await singleton("settings");
           expect(set?.theme).toBe("light");
           return set;
         }, 5000);
@@ -275,7 +275,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [settings],
+          content: [settings],
         });
 
         const workspace = workspaceBuilder(config);
@@ -287,9 +287,9 @@ describe(
       }`,
         );
 
-        let { collection } = await workspace.build();
+        let { singleton } = await workspace.build();
 
-        let setting = (await collection("settings") as any);
+        let setting = await singleton("settings");
         expect(setting?.theme).toBe("dark");
 
         watcher = await workspace.watch();
@@ -297,7 +297,7 @@ describe(
         await workspace.path("sources/settings.json").unlink();
 
         setting = await vi.waitFor(async () => {
-          const set = await collection("settings");
+          const set = await singleton("settings");
           expect(set).toBeUndefined();
           return set;
         }, 3000);

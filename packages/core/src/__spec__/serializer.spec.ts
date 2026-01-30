@@ -24,12 +24,12 @@ describe("serializer", () => {
         },
       });
 
+      // @ts-expect-error non serializable data
       const config = defineConfig({
-        // @ts-expect-error non serializable data
         collections: [posts],
       });
 
-      const workspace = workspaceBuilder(config);
+      const workspace = workspaceBuilder(config as any);
 
       workspace.file(
         "sources/posts/one.md",

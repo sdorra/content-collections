@@ -374,7 +374,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [settings],
+        content: [settings],
       });
 
       const workspace = workspaceBuilder(config);
@@ -386,8 +386,8 @@ describe("parser", () => {
         }`,
       );
 
-      const { collection } = await workspace.build();
-      const settingsCollection = await collection("settings");
+      const { singleton } = await workspace.build();
+      const settingsCollection = await singleton("settings");
       expect(settingsCollection).toBeUndefined();
     },
   );

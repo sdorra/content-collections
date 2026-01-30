@@ -3,7 +3,7 @@ import os from "node:os";
 import { basename, dirname, extname, join } from "node:path";
 import pLimit from "p-limit";
 import { Cache, CacheManager } from "./cache";
-import { AnyContent, Context, SkippedSignal, isSingleton, skippedSymbol } from "./config";
+import { AnyContent, CollectionContext, Context, SkippedSignal, SingletonContext, isSingleton, skippedSymbol, Singleton } from "./config";
 import { Emitter } from "./events";
 import { deprecated } from "./features";
 import { getParser } from "./parser";
@@ -191,11 +191,8 @@ export function createTransformer(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
     cache: Cache,
-  ): Context<unknown> {
-    const sourceDirectory = isSingleton(collection)
-      ? dirname(collection.filePath)
-      : collection.directory;
-    return {
+  ): CollectionContext<unknown> | SingletonContext<unknown> {
+    const base: Context<unknown> = {
       documents: (source) => {
         const resolved = collections.find((c) => c.name === source.name);
         if (!resolved) {
@@ -206,31 +203,51 @@ export function createTransformer(
         }
         return resolved.documents.map((doc) => doc.document);
       },
-      collection: {
-        name: collection.name,
-        directory: sourceDirectory,
-        documents: async () => {
-          return collection.documents.map((doc) => doc.document);
-        },
-      },
       cache: cache.cacheFn,
       skip: (reason?: string) => ({
         [skippedSymbol]: true,
         reason,
       }),
     };
+
+    if (isSingleton(collection)) {
+      return {
+        ...base,
+        singleton: {
+          name: collection.name,
+          filePath: collection.filePath,
+          directory: dirname(collection.filePath),
+          document: async () => {
+            return collection.documents[0]?.document;
+          },
+        },
+      };
+    }
+
+    return {
+      ...base,
+      collection: {
+        name: collection.name,
+        directory: collection.directory,
+        documents: async () => {
+          return collection.documents.map((doc) => doc.document);
+        },
+      },
+    };
   }
 
   async function transformDocument(
     collections: Array<TransformedCollection>,
     collection: TransformedCollection,
-    transform: (data: any, context: Context<unknown>) => any,
+    transform: (data: any, context: CollectionContext<unknown> | SingletonContext<unknown>) => any,
     doc: any,
   ) {
     const cache = cacheManager.cache(collection.name, doc.document._meta.path);
     const context = createContext(collections, collection, cache);
     try {
-      const document = await transform(doc.document, context);
+      const document = isSingleton(collection)
+        ? await transform(doc.document, context as SingletonContext<unknown>)
+        : await transform(doc.document, context as CollectionContext<unknown>);
       await cache.tidyUp();
       if (isSkippedSignal(document)) {
         emitter.emit("transformer:document-skipped", {
@@ -272,8 +289,13 @@ export function createTransformer(
     if (transform) {
       const limit = pLimit(os.cpus().length);
 
+      const typedTransform = transform as (
+        data: any,
+        context: CollectionContext<unknown> | SingletonContext<unknown>,
+      ) => any;
+
       const docs = collection.documents.map((doc) =>
-        limit(() => transformDocument(collections, collection, transform, doc)),
+        limit(() => transformDocument(collections, collection, typedTransform, doc)),
       );
 
       const transformed = await Promise.all(docs);

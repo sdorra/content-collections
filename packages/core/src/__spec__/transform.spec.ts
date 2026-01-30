@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { Events } from "../events";
 import { createDefaultImport, createNamedImport } from "../import";
 import { workspaceTest } from "./workspace";
@@ -26,8 +26,23 @@ describe("workspace tests", () => {
       },
     });
 
+    const settings = defineSingleton({
+      name: "settings",
+      filePath: "sources/settings.json",
+      parser: "json",
+      schema: z.object({
+        color: z.string(),
+      }),
+      transform: (doc) => {
+        return {
+          ...doc,
+          color: doc.color.toUpperCase(),
+        };
+      },
+    });
+
     const config = defineConfig({
-      collections: [posts],
+      content: [posts, settings],
     });
 
     const workspace = workspaceBuilder(config);
@@ -56,10 +71,23 @@ describe("workspace tests", () => {
     `,
     );
 
-    const { collection } = await workspace.build();
+    workspace.file(
+      "sources/settings.json",
+      `
+      {
+        "color": "#ffffff"
+      }
+    `,
+    )
+
+    const { collection, singleton } = await workspace.build();
     const allPosts = await collection("posts");
 
     expect(allPosts.map((p) => p.title)).toEqual(["FIRST POST", "SECOND POST"]);
+
+    const setting = await singleton("settings");
+
+    expect(setting?.color).toEqual("#FFFFFF");
   });
 
   workspaceTest(

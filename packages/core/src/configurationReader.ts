@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { AnyContent } from "./config";
 import { compile } from "./esbuild";
+import { deprecated } from "./features";
 
 export type ErrorType = "Read" | "Compile";
 
@@ -66,12 +67,19 @@ export function createConfigurationReader() {
         `file://${path.resolve(outfile)}?x=${Date.now()}`
       );
 
+      const exported = module.default as any;
+      const content: Array<AnyContent> = exported?.content ?? exported?.collections ?? [];
+      if (!exported?.content && exported?.collecitons) {
+        deprecated("collectionsConfigProperty");
+      }
+
       const hash = createHash("sha256");
       hash.update(await fs.readFile(outfile, "utf-8"));
       const checksum = hash.digest("hex");
 
       return {
-        ...module.default,
+        ...exported,
+        content,
         path: configurationPath,
         inputPaths: configurationPaths.map((p) => path.resolve(p)),
         generateTypes: true,

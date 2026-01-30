@@ -79,13 +79,27 @@ export type Context<TSchema = unknown> = {
     source: TSource,
   ): Array<GetSchema<TSource>>;
   cache: CacheFn;
+  skip: (reason?: string) => SkippedSignal;
+};
+
+export type CollectionContext<TSchema = unknown> = Context<TSchema> & {
   collection: {
     name: string;
     directory: string;
     documents: () => Promise<Array<TSchema>>;
   };
-  skip: (reason?: string) => SkippedSignal;
 };
+
+export type SingletonContext<TSchema = unknown> = Context<TSchema> & {
+  singleton: {
+    name: string;
+    filePath: string;
+    directory: string;
+    document: () => Promise<TSchema | undefined>;
+  }
+};
+
+export type ContentType = "collection" | "singleton";
 
 export type CollectionRequest<
   TName extends string,
@@ -99,7 +113,7 @@ export type CollectionRequest<
   parser?: TParser;
   typeName?: string;
   schema: TShape;
-  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
+  transform?: (data: TSchema, context: CollectionContext<TSchema>) => TTransformResult;
   directory: string;
   include: string | string[];
   exclude?: string | string[];
@@ -124,6 +138,7 @@ export type Collection<
   >,
   "schema"
 > & {
+  type: "collection";
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
@@ -151,7 +166,7 @@ export type SingletonRequest<
   parser?: TParser;
   typeName?: string;
   schema: TShape;
-  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
+  transform?: (data: TSchema, context: SingletonContext<TSchema>) => TTransformResult;
   onSuccess?: (document: TDocument | undefined) => void | Promise<void>;
 };
 
@@ -173,6 +188,7 @@ export type Singleton<
   >,
   "schema"
 > & {
+  type: "singleton";
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
@@ -190,7 +206,7 @@ export type AnySingleton = Singleton<
 export type AnyContent = AnyCollection | AnySingleton;
 
 export function isSingleton(source: AnyContent): source is AnySingleton {
-  return "filePath" in source;
+  return source.type === "singleton";
 }
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
@@ -263,6 +279,7 @@ export function defineCollection<
   }
   return {
     ...collection,
+    type: "collection",
     typeName,
     parser,
     schema,
@@ -321,6 +338,7 @@ export function defineSingleton<
 
   return {
     ...singleton,
+    type: "singleton",
     typeName,
     parser,
     schema,
@@ -329,15 +347,43 @@ export function defineSingleton<
 
 type Cache = "memory" | "file" | "none";
 
-export type Configuration<TCollections extends Array<AnyContent>> = {
-  collections: TCollections;
+export type ConfigurationWithContent<TCollections extends Array<AnyContent>> = {
+  content: TCollections;
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections?: TCollections;
   cache?: Cache;
 };
 
+export type ConfigurationWithCollections<TCollections extends Array<AnyContent>> = {
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections: TCollections;
+  content?: TCollections;
+  cache?: Cache;
+};
+
+export type Configuration<TCollections extends Array<AnyContent>> =
+  | ConfigurationWithContent<TCollections>
+  | ConfigurationWithCollections<TCollections>;
+
 export type AnyConfiguration = Configuration<Array<AnyContent>>;
 
-export function defineConfig<TConfig extends AnyConfiguration>(
-  config: TConfig,
-) {
+export function defineConfig<TCollections extends Array<AnyContent>>(config: {
+  content: TCollections;
+  cache?: Cache;
+}): ConfigurationWithContent<TCollections>;
+
+export function defineConfig<TCollections extends Array<AnyContent>>(config: {
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections: TCollections;
+  cache?: Cache;
+}): ConfigurationWithCollections<TCollections>;
+
+export function defineConfig<TConfig extends AnyConfiguration>(config: TConfig) {
   return config;
 }

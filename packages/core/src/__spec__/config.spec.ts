@@ -363,7 +363,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [settings],
+        content: [settings],
       });
 
       const workspace = workspaceBuilder(config);
@@ -434,14 +434,14 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [settings],
+        content: [settings],
       });
 
       const workspace = workspaceBuilder(config);
 
-      const { collection } = await workspace.build();
+      const { singleton } = await workspace.build();
 
-      const loaded = (await collection("settings")) as any;
+      const loaded = await singleton("settings");
       expect(loaded).toBeUndefined();
 
       expect(warnings).toHaveLength(1);
@@ -469,7 +469,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [settings],
+        content: [settings],
       });
 
       const workspace = workspaceBuilder(config);
@@ -483,9 +483,9 @@ describe("config", () => {
       `,
       );
 
-      const { collection } = await workspace.build();
+      const { singleton } = await workspace.build();
 
-      const loaded = (await collection("settings")) as any;
+      const loaded = await singleton("settings");
       expect(loaded?.title).toBe("A");
       expect(warnings).toHaveLength(0);
     },

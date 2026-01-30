@@ -3,10 +3,11 @@ import os from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "vitest";
 import { type Builder, createBuilder, createInternalBuilder } from "../builder";
-import type { AnyConfiguration } from "../config";
+import type { AnyCollection, AnyConfiguration, AnySingleton } from "../config";
+import { isSingleton } from "../config";
 import { defaultConfigName } from "../configurationReader";
 import { createEmitter, type Emitter } from "../events";
-import type { GetCollectionNames, GetTypeByName } from "../types";
+import type { CollectionByName, GetTypeByName } from "../types";
 import { generateArrayConstName, generateSingletonConstName } from "../utils";
 import type { Watcher } from "../watcher";
 
@@ -54,10 +55,15 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     }
   }
 
-  async function resolveExportName(collectionName: string): Promise<string> {
+  async function resolveDefined(name: string) {
     const cfg = await resolveConfiguration();
-    const defined = cfg?.collections?.find((c: any) => c?.name === collectionName);
-    if (defined && typeof defined === "object" && "filePath" in defined) {
+    const sources = cfg?.content ?? cfg?.collections;
+    return sources?.find((c: any) => c?.name === name);
+  }
+
+  async function resolveExportName(collectionName: string): Promise<string> {
+    const defined = await resolveDefined(collectionName);
+    if (defined && typeof defined === "object" && isSingleton(defined)) {
       return generateSingletonConstName(defined.typeName);
     }
     return generateArrayConstName(collectionName);
@@ -91,6 +97,12 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
   }
 
   async function collection(collection: string) {
+    const defined = await resolveDefined(collection);
+    if (defined && typeof defined === "object" && isSingleton(defined)) {
+      throw new Error(
+        `Tried to load singleton "${collection}" via collection(). Use singleton("${collection}") instead.`,
+      );
+    }
     counter++;
     // TODO: ugly hack to avoid import caching of index file
     // The cache bust on the index file does not work,
@@ -103,6 +115,27 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     }
 
     return col;
+  }
+
+  async function singleton(singleton: string) {
+    const defined = await resolveDefined(singleton);
+    if (defined && typeof defined === "object" && !isSingleton(defined)) {
+      throw new Error(
+        `Tried to load collection "${singleton}" via singleton(). Use collection("${singleton}") instead.`,
+      );
+    }
+    counter++;
+    // TODO: ugly hack to avoid import caching of index file
+    // The cache bust on the index file does not work,
+    // because node caches the import of the data file and that url does not change.
+    let value;
+    if (counter > 0) {
+      value = await readCollectionFromDataFile(singleton);
+    } else {
+      value = await readCollectionFromIndex(singleton);
+    }
+
+    return value;
   }
 
   function path(relativePath: string) {
@@ -143,9 +176,11 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     if (typeof configuration === "string") {
       builder = await createBuilder(cfg, options, emitter);
     } else {
+      const collections = configuration.content ?? configuration.collections ?? [];
       builder = await createInternalBuilder(
         {
           ...configuration,
+          collections,
           // TODO: do we need a better way here to simulate internal configuration?
           path: cfg,
           inputPaths: [cfg],
@@ -164,6 +199,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
       configurationPath: cfg,
       builder,
       collection,
+      singleton,
     };
   }
 
@@ -216,8 +252,23 @@ export type Workspace<TConfig extends AnyConfiguration | string> = {
   };
 };
 
+type CollectionNamesOnly<TConfig extends AnyConfiguration> = {
+  [K in keyof CollectionByName<TConfig>]: CollectionByName<TConfig>[K] extends AnyCollection
+    ? K
+    : never;
+}[keyof CollectionByName<TConfig>];
+
+type SingletonNamesOnly<TConfig extends AnyConfiguration> = {
+  [K in keyof CollectionByName<TConfig>]: CollectionByName<TConfig>[K] extends AnySingleton
+    ? K
+    : never;
+}[keyof CollectionByName<TConfig>];
+
 type CollectionNameOrString<TConfig extends AnyConfiguration | string> =
-  TConfig extends AnyConfiguration ? GetCollectionNames<TConfig> : string;
+  TConfig extends AnyConfiguration ? CollectionNamesOnly<TConfig> : string;
+
+type SingletonNameOrString<TConfig extends AnyConfiguration | string> =
+  TConfig extends AnyConfiguration ? SingletonNamesOnly<TConfig> : string;
 
 type UnknownDocument = Record<string, any>;
 
@@ -229,6 +280,9 @@ export type Executor<TConfig extends AnyConfiguration | string> = {
   collection: <TCollection extends CollectionNameOrString<TConfig>>(
     name: TCollection,
   ) => Promise<Array<GeneratedReturnType<TConfig, TCollection>>>;
+  singleton: <TCollection extends SingletonNameOrString<TConfig>>(
+    name: TCollection,
+  ) => Promise<GeneratedReturnType<TConfig, TCollection> | undefined>;
 };
 
 export type WorkspaceBuilder = ReturnType<typeof workspaceBuilder>;

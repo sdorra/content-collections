@@ -23,10 +23,17 @@ export type ResolvedCollection<T extends FileCollection> = T & {
   files: Array<CollectionFile>;
 };
 
+type ConfigurationSources<TConfiguration extends AnyConfiguration> =
+  TConfiguration extends { content: infer TSources extends Array<AnyContent> }
+    ? TSources
+    : TConfiguration extends { collections: infer TSources extends Array<AnyContent> }
+      ? TSources
+      : never;
+
 export type GetCollectionNames<TConfiguration extends AnyConfiguration> = keyof CollectionByName<TConfiguration>;
 
 export type CollectionByName<TConfiguration extends AnyConfiguration> = {
-  [TCollection in TConfiguration["collections"][number] as TCollection["name"]]: TCollection;
+  [TCollection in ConfigurationSources<TConfiguration>[number] as TCollection["name"]]: TCollection;
 };
 
 type GetDocument<TSource extends AnyContent> =
