@@ -79,6 +79,14 @@ export type Context<TSchema = unknown> = {
     source: TSource,
   ): Array<GetSchema<TSource>>;
   cache: CacheFn;
+  /**
+   * @deprecated Use `CollectionContext["collection"]` in collection transforms.
+   */
+  collection: {
+    name: string;
+    directory: string;
+    documents: () => Promise<Array<TSchema>>;
+  };
   skip: (reason?: string) => SkippedSignal;
 };
 

@@ -192,6 +192,9 @@ export function createTransformer(
     collection: TransformedCollection,
     cache: Cache,
   ): CollectionContext<unknown> | SingletonContext<unknown> {
+    const sourceDirectory = isSingleton(collection)
+      ? dirname(collection.filePath)
+      : collection.directory;
     const base: Context<unknown> = {
       documents: (source) => {
         const resolved = collections.find((c) => c.name === source.name);
@@ -204,6 +207,11 @@ export function createTransformer(
         return resolved.documents.map((doc) => doc.document);
       },
       cache: cache.cacheFn,
+      collection: {
+        name: collection.name,
+        directory: sourceDirectory,
+        documents: async () => collection.documents.map((doc) => doc.document),
+      },
       skip: (reason?: string) => ({
         [skippedSymbol]: true,
         reason,
@@ -216,7 +224,7 @@ export function createTransformer(
         singleton: {
           name: collection.name,
           filePath: collection.filePath,
-          directory: dirname(collection.filePath),
+          directory: sourceDirectory,
           document: async () => {
             return collection.documents[0]?.document;
           },
@@ -224,16 +232,7 @@ export function createTransformer(
       };
     }
 
-    return {
-      ...base,
-      collection: {
-        name: collection.name,
-        directory: collection.directory,
-        documents: async () => {
-          return collection.documents.map((doc) => doc.document);
-        },
-      },
-    };
+    return base as CollectionContext<unknown>;
   }
 
   async function transformDocument(
