@@ -10,7 +10,7 @@ A collection defines how documents are read, validated, and transformed. Each co
 
 ### `name` (required)
 
-The name of the collection. The name is used to identify the collection and must be unique across all collections.
+The name of the collection. The name is used to identify the collection and must be unique across all collections and singletons.
 
 ### `directory` (required)
 
@@ -159,7 +159,7 @@ For more complete examples, please refer to the following samples:
 
 ### `transform` (optional)
 
-The `transform` property is a function that transforms the document before it is saved to the collection.
+The `transform` property is a function that transforms the document before it is saved.
 It takes two arguments: the document and a context object, and should return the transformed document.
 The "transform" function can be used to add computed properties, modify existing properties, or remove properties from the document.
 It can also fetch data from a remote server, transform markdown to HTML, or even join collections.
@@ -188,15 +188,53 @@ onSuccess: (docs) => {
 };
 ```
 
+## Singleton Object
+
+A singleton is similar to a collection, but it only contains a single document. A singleton can be created with the `defineSingleton` function from `@content-collections/core`  and receives an object with the following properties:
+
+### `name` (required)
+
+The name of the singleton. The name is used to identify the singleton and must be unique across all collections and singletons.
+
+### `filePath` (required)
+
+The path to the file where the singleton document is stored. The path must be relative to the root of the project.
+
+### `parser` (optional)
+
+The parser is the same as for the [parser for collections](#parser-optional).
+
+### `schema` (required)
+
+The schema is the same as for the [schema for collections](#schema-required).
+
+### `transform` (optional)
+
+The transform function is the same as for the [transform for collections](#transform-optional).
+
+### `typeName` (optional)
+
+The name of the generated TypeScript type. If the `typeName` property is not provided, the type name is generated from the singleton name.
+
 ## Configuration object
 
-The configuration file is a module that has to export a configuration object as the default export. The configuration object can be created with the `defineConfig` function from `@content-collections/core` and receives an object with a property called collections which contains an array of collection objects.
+The configuration file is a module that has to export a configuration object as the default export. The configuration object can be created with the `defineConfig` function from `@content-collections/core` and receives an object with a property called content which contains an array of collection and singleton objects.
 
 ## Example
 
 ```ts
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
+
+const siteConfig = defineSingleton({
+  name: "siteConfig",
+  filePath: "content/site.yaml",
+  parser: "yaml",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+});
 
 const authors = defineCollection({
   name: "authors",
@@ -220,6 +258,6 @@ const authors = defineCollection({
 });
 
 export default defineConfig({
-  collections: [authors],
+  content: [siteConfig, authors],
 });
 ```
