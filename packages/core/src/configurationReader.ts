@@ -67,9 +67,8 @@ export function createConfigurationReader() {
         `file://${path.resolve(outfile)}?x=${Date.now()}`
       );
 
-      const exported = module.default as any;
-      const content: Array<AnyContent> = exported?.content ?? exported?.collections ?? [];
-      if (!exported?.content && exported?.collecitons) {
+      const { content, collections, ...rest } = module.default;
+        if (!content && collections) {
         deprecated("collectionsConfigProperty");
       }
 
@@ -78,8 +77,8 @@ export function createConfigurationReader() {
       const checksum = hash.digest("hex");
 
       return {
-        ...exported,
-        content,
+        ...rest,
+        collections: content ?? collections ?? [],
         path: configurationPath,
         inputPaths: configurationPaths.map((p) => path.resolve(p)),
         generateTypes: true,
