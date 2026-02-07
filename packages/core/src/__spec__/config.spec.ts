@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { join } from "node:path";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
 import { defineCollection, defineConfig, defineSingleton } from "../config";
@@ -421,7 +421,9 @@ describe("config", () => {
     "should support singleton collections (missing => undefined)",
     async ({ workspaceBuilder, emitter, workspacePath }) => {
       const warnings: Array<any> = [];
-      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+      emitter.on("transformer:singleton-warning", (event) =>
+        warnings.push(event),
+      );
 
       const settings = defineSingleton({
         name: "settings",
@@ -450,7 +452,9 @@ describe("config", () => {
         join(workspacePath, ".content-collections/generated/index.d.ts"),
         "utf-8",
       );
-      expect(dts).toContain("export declare const settings: Settings | undefined;");
+      expect(dts).toContain(
+        "export declare const settings: Settings | undefined;",
+      );
     },
   );
 
@@ -458,7 +462,9 @@ describe("config", () => {
     "should support singleton collections (multiple => pick first + no warning)",
     async ({ workspaceBuilder, emitter }) => {
       const warnings: Array<any> = [];
-      emitter.on("transformer:singleton-warning", (event) => warnings.push(event));
+      emitter.on("transformer:singleton-warning", (event) =>
+        warnings.push(event),
+      );
 
       const settings = defineSingleton({
         name: "settings",
@@ -488,6 +494,41 @@ describe("config", () => {
       const loaded = await singleton("settings");
       expect(loaded?.title).toBe("A");
       expect(warnings).toHaveLength(0);
+    },
+  );
+
+  workspaceTest(
+    "should support deprecated collection property",
+    async ({ workspaceBuilder }) => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      try {
+        const workspace = workspaceBuilder /* ts */ `
+        import { defineSingleton, defineConfig } from "@content-collections/core";
+        import { z } from "zod";
+
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.md",
+          parser: "frontmatter-only",
+          schema: z.object({
+            title: z.string(),
+          }),
+        });
+
+        export default defineConfig({
+          collections: [settings],
+        });   
+      `;
+
+        await workspace.build();
+        
+        expect(warnSpy).toHaveBeenCalled(); // at least one call
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining("config-collections-property"),
+        );
+      } finally {
+        warnSpy.mockRestore();
+      }
     },
   );
 });
