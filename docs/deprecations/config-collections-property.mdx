@@ -1,9 +1,8 @@
 ---
-title: Deprecated Configuration Property colelctions
+title: Deprecated configuration property collections
 ---
 
-With version `0.XX.X`, Content Collections used to register sources using the `collections` property in `defineConfig`.
-This is now **deprecated** in favor of a clearer name: `content`.
+With version `0.14.0`, Content Collections used to register sources using the `collections` property in `defineConfig`. This is now **deprecated** in favor of a clearer name: `content`.
 
 ## What is deprecated?
 
@@ -13,17 +12,17 @@ Old (deprecated):
 import { defineCollection, defineConfig } from "@content-collections/core";
 
 const posts = defineCollection({
-    name: "posts",
-    directory: "content/posts",
-    include: "*.md",
-    schema: z.object({
-        title: z.string(),
-        content: z.string(),
-    }),
+  name: "posts",
+  directory: "content/posts",
+  include: "*.md",
+  schema: z.object({
+    title: z.string(),
+    content: z.string(),
+  }),
 });
 
 export default defineConfig({
-    content: [posts],
+  content: [posts],
 });
 ```
 
@@ -33,33 +32,32 @@ New (recommended):
 import { defineCollection, defineConfig } from "@content-collections/core";
 
 const posts = defineCollection({
-    name: "posts",
-    directory: "content/posts",
-    include: "*.md",
-    schema: z.object({
-        title: z.string(),
-        content: z.string(),
-    }),
+  name: "posts",
+  directory: "content/posts",
+  include: "*.md",
+  schema: z.object({
+    title: z.string(),
+    content: z.string(),
+  }),
 });
 
 const settings = defineSingleton({
-    name: "settings",
-    filePath: "content/settings.json",
-    parser: "json",
-    schema: z.object({
-        theme: z.enum(["light", "dark"]),
-    }),
+  name: "settings",
+  filePath: "content/settings.json",
+  parser: "json",
+  schema: z.object({
+    theme: z.enum(["light", "dark"]),
+  }),
 });
 
 export default defineConfig({
-    content: [posts, settings],
+  content: [posts, settings],
 });
 ```
 
 ## Why?
 
-`collections` is misleading because you can also register **singletons** (a single document) alongside collections.
-`content` is a better umbrella term for both.
+`collections` is misleading because you can also register **singletons** (a single document) alongside collections. `content` is a better umbrella term for both.
 
 ## Suppressing Deprecation Warning
 
@@ -70,4 +68,3 @@ import { suppressDeprecatedWarnings } from "@content-collections/core";
 
 suppressDeprecatedWarnings("collectionsConfigProperty");
 ```
-
