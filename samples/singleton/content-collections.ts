@@ -14,5 +14,5 @@ const settings = defineSingleton({
 });
 
 export default defineConfig({
-  collections: [settings],
+  content: [settings],
 });

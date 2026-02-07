@@ -45,7 +45,7 @@ describe("config", () => {
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -99,7 +99,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -158,7 +158,7 @@ describe("config", () => {
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -205,7 +205,7 @@ describe("config", () => {
       import { posts } from "./posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -251,7 +251,7 @@ describe("config", () => {
       import { posts } from "@posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -320,7 +320,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -395,7 +395,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config, {

@@ -26,7 +26,7 @@ describe("serializer", () => {
 
       // @ts-expect-error non serializable data
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config as any);

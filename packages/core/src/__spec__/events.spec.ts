@@ -22,7 +22,7 @@ describe("events", () => {
       });
 
       const config = defineConfig({
-        collections: [animals],
+        content: [animals],
       });
 
       type Event = Events["builder:created"];
@@ -62,7 +62,7 @@ describe("events", () => {
       });
 
       const config = defineConfig({
-        collections: [animals],
+        content: [animals],
       });
 
       const events = {

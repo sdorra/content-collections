@@ -111,7 +111,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -176,7 +176,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -246,7 +246,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -296,7 +296,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -336,7 +336,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -379,7 +379,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -434,7 +434,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -508,7 +508,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [authors, posts],
+        content: [authors, posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -563,7 +563,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [characters],
+        content: [characters],
       });
 
       const workspace = workspaceBuilder(config);
@@ -619,7 +619,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [characters],
+        content: [characters],
       });
 
       const workspace = workspaceBuilder(config);
@@ -682,7 +682,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [characters],
+        content: [characters],
       });
 
       const workspace = workspaceBuilder(config);
@@ -747,7 +747,7 @@ describe("workspace tests", () => {
       });
 
       const config = defineConfig({
-        collections: [characters],
+        content: [characters],
       });
 
       const workspace = workspaceBuilder(config);

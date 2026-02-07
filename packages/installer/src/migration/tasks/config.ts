@@ -29,7 +29,7 @@ import { z } from "zod";
 // });
 
 export default defineConfig({
-  collections: [/* posts */],
+  content: [/* posts */],
 });
 `;
 
@@ -60,7 +60,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
 `;
 
@@ -91,7 +91,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
 `;
 

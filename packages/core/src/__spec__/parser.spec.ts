@@ -18,7 +18,7 @@ describe("parser", () => {
     });
 
     const config = defineConfig({
-      collections: [movies],
+      content: [movies],
     });
 
     const workspace = workspaceBuilder(config);
@@ -56,7 +56,7 @@ describe("parser", () => {
     });
 
     const config = defineConfig({
-      collections: [movies],
+      content: [movies],
     });
 
     const workspace = workspaceBuilder(config);
@@ -99,7 +99,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -150,7 +150,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -206,7 +206,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -259,7 +259,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -333,7 +333,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);

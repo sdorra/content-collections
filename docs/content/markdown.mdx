@@ -44,7 +44,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
 ```
 

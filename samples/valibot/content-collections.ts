@@ -35,5 +35,5 @@ const characters = defineCollection({
 });
 
 export default defineConfig({
-  collections: [characters],
+  content: [characters],
 });

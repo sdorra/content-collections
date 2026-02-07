@@ -20,7 +20,7 @@ describe("schema", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -71,7 +71,7 @@ describe("schema", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -116,7 +116,7 @@ describe("schema", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -167,7 +167,7 @@ describe("schema", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -228,7 +228,7 @@ describe("schema", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);

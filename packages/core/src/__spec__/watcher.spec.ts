@@ -35,7 +35,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -103,7 +103,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -218,7 +218,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -321,7 +321,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -414,7 +414,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -458,7 +458,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -491,7 +491,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -538,7 +538,7 @@ describe(
       import { posts } from "./posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
