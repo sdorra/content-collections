@@ -204,6 +204,8 @@ The path to the file where the singleton document is stored. The path must be re
 
 The parser is the same as for the [parser for collections](#parser-optional).
 
+### `optional` (optional) If set to `true`, the singleton file is optional. If the file is not found, the singleton will be set to `undefined`. By default, the singleton file is required, and an error is thrown if the file is not found. This option is useful for cases where the singleton file may not exist in all environments, such as a local development environment or a production environment.
+
 ### `schema` (required)
 
 The schema is the same as for the [schema for collections](#schema-required).
@@ -230,6 +232,7 @@ const siteConfig = defineSingleton({
   name: "siteConfig",
   filePath: "content/site.yaml",
   parser: "yaml",
+  optional: true,
   schema: z.object({
     title: z.string(),
     description: z.string(),

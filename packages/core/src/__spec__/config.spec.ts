@@ -346,6 +346,46 @@ describe("config", () => {
   );
 
   workspaceTest(
+    "should support singletons",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const settings = defineSingleton({
+        name: "settings",
+        typeName: "Settings",
+        filePath: "sources/settings.md",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        `sources/settings.md`,
+        `---
+        title: Site settings
+        ---`,
+      );
+
+      const { singleton } = await workspace.build();
+
+      const loaded = await singleton("settings");
+      expect(loaded?.title).toEqual("Site settings");
+
+      const dts = fs.readFileSync(
+        join(workspacePath, ".content-collections/generated/index.d.ts"),
+        "utf-8",
+      );
+      expect(dts).toContain(
+        "export declare const settings: Settings;",
+      );
+    },
+  );
+
+  workspaceTest(
     "should call onSuccess after build",
     async ({ workspaceBuilder }) => {
       const titles: Array<string | undefined> = [];
@@ -418,7 +458,32 @@ describe("config", () => {
   );
 
   workspaceTest(
-    "should support singleton collections (missing => undefined)",
+    "should throw an error if singleton file is missing and not optional",
+    async ({ workspaceBuilder }) => {
+      const settings = defineSingleton({
+        name: "settings",
+        typeName: "Settings",
+        filePath: "sources/settings.md",
+        optional: false,
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      await expect(workspace.build).rejects.toThrowError(
+        "Singleton file not found at path: sources/settings.md",
+      );
+    },
+  );
+
+  workspaceTest(
+    "should support optional singleton collections (missing => undefined)",
     async ({ workspaceBuilder, emitter, workspacePath }) => {
       const warnings: Array<any> = [];
       emitter.on("transformer:singleton-warning", (event) =>
@@ -430,6 +495,7 @@ describe("config", () => {
         typeName: "Settings",
         filePath: "sources/settings.yaml",
         parser: "yaml",
+        optional: true,
         schema: z.object({
           title: z.string(),
         }),
@@ -459,45 +525,6 @@ describe("config", () => {
   );
 
   workspaceTest(
-    "should support singleton collections (multiple => pick first + no warning)",
-    async ({ workspaceBuilder, emitter }) => {
-      const warnings: Array<any> = [];
-      emitter.on("transformer:singleton-warning", (event) =>
-        warnings.push(event),
-      );
-
-      const settings = defineSingleton({
-        name: "settings",
-        filePath: "sources/settings.md",
-        schema: z.object({
-          title: z.string(),
-        }),
-      });
-
-      const config = defineConfig({
-        content: [settings],
-      });
-
-      const workspace = workspaceBuilder(config);
-
-      workspace.file(
-        "sources/settings.md",
-        `
-        ---
-        title: A
-        ---
-      `,
-      );
-
-      const { singleton } = await workspace.build();
-
-      const loaded = await singleton("settings");
-      expect(loaded?.title).toBe("A");
-      expect(warnings).toHaveLength(0);
-    },
-  );
-
-  workspaceTest(
     "should support deprecated collection property",
     async ({ workspaceBuilder }) => {
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -510,6 +537,7 @@ describe("config", () => {
           name: "settings",
           filePath: "sources/settings.md",
           parser: "frontmatter-only",
+          optional: true,
           schema: z.object({
             title: z.string(),
           }),
@@ -521,7 +549,7 @@ describe("config", () => {
       `;
 
         await workspace.build();
-        
+
         expect(warnSpy).toHaveBeenCalled(); // at least one call
         expect(warnSpy).toHaveBeenCalledWith(
           expect.stringContaining("config-collections-property"),

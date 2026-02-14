@@ -174,6 +174,7 @@ export type SingletonRequest<
   parser?: TParser;
   typeName?: string;
   schema: TShape;
+  optional?: boolean;
   transform?: (data: TSchema, context: SingletonContext<TSchema>) => TTransformResult;
   onSuccess?: (document: TDocument | undefined) => void | Promise<void>;
 };

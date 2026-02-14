@@ -43,11 +43,6 @@ type GetDocument<TSource extends AnyContent> =
       ? TDocument
       : never;
 
-export type GetTr<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, any, infer TDocument, any>
-    ? TDocument
-    : never;
-
 export type GetTypeByName<
   TConfiguration extends AnyConfiguration,
   TName extends keyof CollectionByName<TConfiguration>,

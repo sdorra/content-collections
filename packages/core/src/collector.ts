@@ -3,7 +3,7 @@ import path from "node:path";
 import { glob } from "tinyglobby";
 import { AnyContent, isSingleton } from "./config";
 import { Emitter } from "./events";
-import { getParser, parsers } from "./parser";
+import { getParser } from "./parser";
 import { CollectionFile, FileCollection } from "./types";
 import { isDefined, orderByPath, posixToNativePath } from "./utils";
 
@@ -74,12 +74,19 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
   }
 
   async function collectSingletonFile(
-    singleton: Extract<AnyContent, { filePath: string }>,
+    singleton: Extract<AnyContent, { filePath: string; optional?: boolean }>,
   ): Promise<CollectionFile | null> {
     const absolutePath = path.join(baseDirectory, singleton.filePath);
     const file = await read(absolutePath);
     if (!file) {
-      return null;
+      if (singleton.optional) {
+        return null;
+      }
+
+      throw new CollectError(
+        "Read",
+        `Singleton file not found at path: ${singleton.filePath}`,
+      );
     }
 
     try {
@@ -143,7 +150,9 @@ export function createCollector(emitter: Emitter, baseDirectory: string = ".") {
     };
   }
 
-  async function resolveSingleton(singleton: Extract<AnyContent, { filePath: string }>) {
+  async function resolveSingleton(
+    singleton: Extract<AnyContent, { filePath: string }>,
+  ) {
     const file = await collectSingletonFile(singleton);
     return {
       ...singleton,
