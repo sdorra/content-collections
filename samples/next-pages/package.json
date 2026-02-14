@@ -8,9 +8,9 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.13.1",
+    "@content-collections/core": "0.14.0",
     "@content-collections/mdx": "0.2.2",
-    "@content-collections/next": "0.2.10",
+    "@content-collections/next": "0.2.11",
     "@content-collections/sample-theme": "0.1.0",
     "next": "14.2.35",
     "react": "^18",

@@ -1,5 +1,12 @@
 # @content-collections/next
 
+## 0.2.11
+
+### Patch Changes
+
+- Updated dependencies [[`9d68701`](https://github.com/sdorra/content-collections/commit/9d68701de6244d5a2dd9c8e87cb1441f151ec148)]:
+  - @content-collections/integrations@0.5.0
+
 ## 0.2.10
 
 ### Patch Changes

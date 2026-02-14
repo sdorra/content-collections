@@ -1,7 +1,7 @@
 {
   "name": "@content-collections/integrations",
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Utils for integrating Content Collections with other tools",
   "author": "Sebastian Sdorra <s.sdorra@gmail.com>",
   "license": "MIT",
