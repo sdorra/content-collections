@@ -1,5 +1,11 @@
 # @content-collections/integrations
 
+## 0.5.0
+
+### Minor Changes
+
+- [#708](https://github.com/sdorra/content-collections/pull/708) [`9d68701`](https://github.com/sdorra/content-collections/commit/9d68701de6244d5a2dd9c8e87cb1441f151ec148) Thanks [@ExpensiveKoala](https://github.com/ExpensiveKoala)! - Support for singletons #300
+
 ## 0.4.0
 
 ### Minor Changes
