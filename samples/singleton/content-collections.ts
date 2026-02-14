@@ -1,7 +1,6 @@
 import { defineConfig, defineSingleton } from "@content-collections/core";
 import { z } from "zod";
 
-
 const settings = defineSingleton({
   name: "settings",
   typeName: "Settings",
