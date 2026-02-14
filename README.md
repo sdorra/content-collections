@@ -52,7 +52,7 @@ If your framework is not listed, you can still use Content Collections by using 
    });
 
    export default defineConfig({
-     collections: [posts],
+     content: [posts],
    });
    ```
 

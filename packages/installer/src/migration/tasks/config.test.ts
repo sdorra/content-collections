@@ -41,7 +41,7 @@ describe("config", () => {
 
       const filePath = join(tmpdir, "content-collections.ts");
       const content = await fs.readFile(filePath, "utf-8");
-      expect(content).toContain("collections: [/* posts */]");
+      expect(content).toContain("content: [/* posts */]");
     },
   );
 
@@ -53,7 +53,7 @@ describe("config", () => {
 
       const filePath = join(tmpdir, "content-collections.ts");
       const content = await fs.readFile(filePath, "utf-8");
-      expect(content).toContain("collections: [posts]");
+      expect(content).toContain("content: [posts]");
       expect(content).toContain("compileMarkdown");
     },
   );
@@ -66,7 +66,7 @@ describe("config", () => {
 
       const filePath = join(tmpdir, "content-collections.ts");
       const content = await fs.readFile(filePath, "utf-8");
-      expect(content).toContain("collections: [posts]");
+      expect(content).toContain("content: [posts]");
       expect(content).toContain("compileMDX");
     },
   );

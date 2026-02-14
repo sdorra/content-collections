@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import { join } from "node:path";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 import { createBuilder } from "../builder";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { workspaceTest } from "./workspace";
 
 describe("config", () => {
@@ -45,7 +45,7 @@ describe("config", () => {
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -99,7 +99,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -158,7 +158,7 @@ describe("config", () => {
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -205,7 +205,7 @@ describe("config", () => {
       import { posts } from "./posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -251,7 +251,7 @@ describe("config", () => {
       import { posts } from "@posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -320,7 +320,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -346,6 +346,42 @@ describe("config", () => {
   );
 
   workspaceTest(
+    "should call onSuccess after build",
+    async ({ workspaceBuilder }) => {
+      const titles: Array<string | undefined> = [];
+
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        onSuccess: (doc) => {
+          titles.push(doc?.title);
+        },
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.yaml",
+        `
+        title: A
+    `,
+      );
+
+      await workspace.build();
+
+      expect(titles).toEqual(["A"]);
+    },
+  );
+
+  workspaceTest(
     "should use specified output directory",
     async ({ workspaceBuilder, workspacePath }) => {
       const posts = defineCollection({
@@ -359,7 +395,7 @@ describe("config", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config, {
@@ -378,6 +414,121 @@ describe("config", () => {
       expect(fs.existsSync(join(workspacePath, "build/allPosts.js"))).toBe(
         true,
       );
+    },
+  );
+
+  workspaceTest(
+    "should support singleton collections (missing => undefined)",
+    async ({ workspaceBuilder, emitter, workspacePath }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) =>
+        warnings.push(event),
+      );
+
+      const settings = defineSingleton({
+        name: "settings",
+        typeName: "Settings",
+        filePath: "sources/settings.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      const { singleton } = await workspace.build();
+
+      const loaded = await singleton("settings");
+      expect(loaded).toBeUndefined();
+
+      expect(warnings).toHaveLength(1);
+
+      const dts = fs.readFileSync(
+        join(workspacePath, ".content-collections/generated/index.d.ts"),
+        "utf-8",
+      );
+      expect(dts).toContain(
+        "export declare const settings: Settings | undefined;",
+      );
+    },
+  );
+
+  workspaceTest(
+    "should support singleton collections (multiple => pick first + no warning)",
+    async ({ workspaceBuilder, emitter }) => {
+      const warnings: Array<any> = [];
+      emitter.on("transformer:singleton-warning", (event) =>
+        warnings.push(event),
+      );
+
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.md",
+        schema: z.object({
+          title: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.md",
+        `
+        ---
+        title: A
+        ---
+      `,
+      );
+
+      const { singleton } = await workspace.build();
+
+      const loaded = await singleton("settings");
+      expect(loaded?.title).toBe("A");
+      expect(warnings).toHaveLength(0);
+    },
+  );
+
+  workspaceTest(
+    "should support deprecated collection property",
+    async ({ workspaceBuilder }) => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      try {
+        const workspace = workspaceBuilder /* ts */ `
+        import { defineSingleton, defineConfig } from "@content-collections/core";
+        import { z } from "zod";
+
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.md",
+          parser: "frontmatter-only",
+          schema: z.object({
+            title: z.string(),
+          }),
+        });
+
+        export default defineConfig({
+          collections: [settings],
+        });   
+      `;
+
+        await workspace.build();
+        
+        expect(warnSpy).toHaveBeenCalled(); // at least one call
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining("config-collections-property"),
+        );
+      } finally {
+        warnSpy.mockRestore();
+      }
     },
   );
 });

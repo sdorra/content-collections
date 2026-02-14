@@ -40,5 +40,5 @@ const movies = defineCollection({
 });
 
 export default defineConfig({
-  collections: [movies],
+  content: [movies],
 });

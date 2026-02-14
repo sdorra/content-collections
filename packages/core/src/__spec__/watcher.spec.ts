@@ -1,7 +1,7 @@
 import { Watcher } from "src/watcher";
 import { afterEach, describe, expect, vi } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { workspaceTest } from "./workspace";
 
 let watcher: Watcher | undefined = undefined;
@@ -35,7 +35,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -103,7 +103,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -156,6 +156,54 @@ describe(
     );
 
     workspaceTest(
+      "should update existing singleton on file update",
+      async ({ workspaceBuilder }) => {
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.json",
+          parser: "json",
+          schema: z.object({
+            theme: z.enum(["dark", "light"]),
+          }),
+        });
+
+        const config = defineConfig({
+          content: [settings],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/settings.json",
+          `{
+        "theme": "dark"
+      }`,
+        );
+
+        let { singleton } = await workspace.build();
+
+        let setting = await singleton("settings");
+        expect(setting?.theme).toBe("dark");
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/settings.json").write(
+          `{
+        "theme": "light"
+      }`,
+        );
+
+        setting = await vi.waitFor(async () => {
+          let set = await singleton("settings");
+          expect(set?.theme).toBe("light");
+          return set;
+        }, 5000);
+
+        expect(setting?.theme).toBe("light");
+      },
+    );
+
+    workspaceTest(
       "should remove file from collection",
       async ({ workspaceBuilder }) => {
         const movies = defineCollection({
@@ -170,7 +218,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -215,6 +263,50 @@ describe(
     );
 
     workspaceTest(
+      "singleton should be undefined after remove file",
+      async ({ workspaceBuilder }) => {
+        const settings = defineSingleton({
+          name: "settings",
+          filePath: "sources/settings.json",
+          parser: "json",
+          schema: z.object({
+            theme: z.enum(["dark", "light"]),
+          }),
+        });
+
+        const config = defineConfig({
+          content: [settings],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/settings.json",
+          `{
+        "theme": "dark"
+      }`,
+        );
+
+        let { singleton } = await workspace.build();
+
+        let setting = await singleton("settings");
+        expect(setting?.theme).toBe("dark");
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/settings.json").unlink();
+
+        setting = await vi.waitFor(async () => {
+          const set = await singleton("settings");
+          expect(set).toBeUndefined();
+          return set;
+        }, 3000);
+
+        expect(setting).toBeUndefined();
+      },
+    );
+
+    workspaceTest(
       "should stop watching after unsubscribe",
       async ({ workspaceBuilder }) => {
         const movies = defineCollection({
@@ -229,7 +321,7 @@ describe(
         });
 
         const config = defineConfig({
-          collections: [movies],
+          content: [movies],
         });
 
         const workspace = workspaceBuilder(config);
@@ -322,7 +414,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -366,7 +458,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -399,7 +491,7 @@ describe(
       });
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 
@@ -446,7 +538,7 @@ describe(
       import { posts } from "./posts"
 
       export default defineConfig({
-        collections: [posts],
+        content: [posts],
       });
     `;
 

@@ -3,6 +3,10 @@ const deprecations = {
 Please add an explicit content property to your schema.
 For more information, see:
 https://content-collections.dev/docs/deprecations/implicit-content-property`,
+  collectionsConfigProperty: `The configuration property "collections" is deprecated.
+Please use "content" instead.
+For more information, see:
+https://content-collections.dev/docs/deprecations/config-collections-property`,
 };
 
 type Deprecation = keyof typeof deprecations;

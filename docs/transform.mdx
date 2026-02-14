@@ -2,7 +2,7 @@
 title: Transform
 ---
 
-The `transform` function of a collection can be used to perform various tasks on the document before it is saved to the collection. It receives two arguments: the document, which matches the schema's shape, and a context object. The result of the `transform` function defines the TypeScript type of the document and should return an object that can be serialized to JSON. The function can be synchronous or asynchronous.
+The `transform` function of a collection can be used to perform various tasks on the document before it is saved. It receives two arguments: the document, which matches the schema's shape, and a context object. The result of the `transform` function defines the TypeScript type of the document and should return an object that can be serialized to JSON. The function can be synchronous or asynchronous.
 
 ## Content
 
@@ -249,6 +249,6 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [authors, posts],
+  content: [authors, posts],
 });
 ```

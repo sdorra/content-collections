@@ -30,7 +30,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
 `,
   },
@@ -63,7 +63,7 @@ const people = defineCollection({
 });
 
 export default defineConfig({
-  collections: [people],
+  content: [people],
 });
 `,
   },
@@ -105,7 +105,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [authors, posts],
+  content: [authors, posts],
 });
 `,
   },
@@ -134,7 +134,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
     `,
   },
@@ -164,7 +164,7 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  content: [posts],
 });
 `,
   },

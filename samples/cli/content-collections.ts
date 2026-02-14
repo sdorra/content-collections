@@ -59,5 +59,5 @@ const categories = defineCollection({
 });
 
 export default defineConfig({
-  collections: [authors, posts, categories],
+  content: [authors, posts, categories],
 });

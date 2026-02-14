@@ -60,10 +60,12 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type GetSchema<TCollection extends AnyCollection> =
-  TCollection extends Collection<any, any, any, infer TSchema, any, any>
+type GetSchema<TSource extends AnyContent> =
+  TSource extends Collection<any, any, any, infer TSchema, any, any>
     ? Prettify<TSchema>
-    : never;
+    : TSource extends Singleton<any, any, any, infer TSchema, any, any>
+      ? Prettify<TSchema>
+      : never;
 
 export const skippedSymbol = Symbol("skipped");
 
@@ -73,10 +75,13 @@ export type SkippedSignal = {
 };
 
 export type Context<TSchema = unknown> = {
-  documents<TCollection extends AnyCollection>(
-    collection: TCollection,
-  ): Array<GetSchema<TCollection>>;
+  documents<TSource extends AnyContent>(
+    source: TSource,
+  ): Array<GetSchema<TSource>>;
   cache: CacheFn;
+  /**
+   * @deprecated Use `CollectionContext["collection"]` in collection transforms.
+   */
   collection: {
     name: string;
     directory: string;
@@ -84,6 +89,25 @@ export type Context<TSchema = unknown> = {
   };
   skip: (reason?: string) => SkippedSignal;
 };
+
+export type CollectionContext<TSchema = unknown> = Context<TSchema> & {
+  collection: {
+    name: string;
+    directory: string;
+    documents: () => Promise<Array<TSchema>>;
+  };
+};
+
+export type SingletonContext<TSchema = unknown> = Context<TSchema> & {
+  singleton: {
+    name: string;
+    filePath: string;
+    directory: string;
+    document: () => Promise<TSchema | undefined>;
+  }
+};
+
+export type ContentType = "collection" | "singleton";
 
 export type CollectionRequest<
   TName extends string,
@@ -97,7 +121,7 @@ export type CollectionRequest<
   parser?: TParser;
   typeName?: string;
   schema: TShape;
-  transform?: (data: TSchema, context: Context<TSchema>) => TTransformResult;
+  transform?: (data: TSchema, context: CollectionContext<TSchema>) => TTransformResult;
   directory: string;
   include: string | string[];
   exclude?: string | string[];
@@ -122,6 +146,7 @@ export type Collection<
   >,
   "schema"
 > & {
+  type: "collection";
   typeName: string;
   schema: StandardSchemaV1;
   parser: TParser;
@@ -135,6 +160,62 @@ export type AnyCollection = Collection<
   any,
   any
 >;
+
+export type SingletonRequest<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser,
+  TSchema,
+  TTransformResult,
+  TDocument,
+> = {
+  name: TName;
+  filePath: string;
+  parser?: TParser;
+  typeName?: string;
+  schema: TShape;
+  transform?: (data: TSchema, context: SingletonContext<TSchema>) => TTransformResult;
+  onSuccess?: (document: TDocument | undefined) => void | Promise<void>;
+};
+
+export type Singleton<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser extends ConfiguredParser,
+  TSchema,
+  TTransformResult,
+  TDocument,
+> = Omit<
+  SingletonRequest<
+    TName,
+    TShape,
+    TParser,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >,
+  "schema"
+> & {
+  type: "singleton";
+  typeName: string;
+  schema: StandardSchemaV1;
+  parser: TParser;
+};
+
+export type AnySingleton = Singleton<
+  any,
+  TSchemaProp,
+  ConfiguredParser,
+  any,
+  any,
+  any
+>;
+
+export type AnyContent = AnyCollection | AnySingleton;
+
+export function isSingleton(source: AnyContent): source is AnySingleton {
+  return source.type === "singleton";
+}
 
 const InvalidReturnTypeSymbol = Symbol(`InvalidReturnType`);
 
@@ -197,7 +278,7 @@ export function defineCollection<
   } else if (!isValidParser(parser)) {
     throw new ConfigurationError(
       "Read",
-      `Parser ${parser} is not valid a parser`,
+      `Parser ${parser} is not a valid parser`,
     );
   }
   let schema: any = collection.schema;
@@ -206,6 +287,66 @@ export function defineCollection<
   }
   return {
     ...collection,
+    type: "collection",
+    typeName,
+    parser,
+    schema,
+  } as TResult;
+}
+
+
+export function defineSingleton<
+  TName extends string,
+  TShape extends TSchemaProp,
+  TParser extends ConfiguredParser = "frontmatter",
+  TSchema = Schema<TParser, TShape>,
+  TTransformResult = never,
+  TDocument = [TTransformResult] extends [never]
+    ? Schema<TParser, TShape>
+    : Exclude<Awaited<TTransformResult>, SkippedSignal>,
+  TResult = TDocument extends Serializable
+    ? Singleton<
+        TName,
+        TShape,
+        TParser,
+        TSchema,
+        TTransformResult,
+        ResolveImports<TDocument>
+      >
+    : InvalidReturnType<NotSerializableError, TDocument>,
+>(
+  singleton: SingletonRequest<
+    TName,
+    TShape,
+    TParser,
+    TSchema,
+    TTransformResult,
+    TDocument
+  >,
+): TResult {
+  let typeName = singleton.typeName;
+  if (!typeName) {
+    typeName = generateTypeName(singleton.name);
+  }
+
+  let parser = singleton.parser;
+  if (!parser) {
+    parser = "frontmatter" as TParser;
+  } else if (!isValidParser(parser)) {
+    throw new ConfigurationError(
+      "Read",
+      `Parser ${parser} is not a valid parser`,
+    );
+  }
+
+  let schema: any = singleton.schema;
+  if (!schema["~standard"]) {
+    retired("legacySchema");
+  }
+
+  return {
+    ...singleton,
+    type: "singleton",
     typeName,
     parser,
     schema,
@@ -214,15 +355,43 @@ export function defineCollection<
 
 type Cache = "memory" | "file" | "none";
 
-export type Configuration<TCollections extends Array<AnyCollection>> = {
-  collections: TCollections;
+export type ConfigurationWithContent<TCollections extends Array<AnyContent>> = {
+  content: TCollections;
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections?: TCollections;
   cache?: Cache;
 };
 
-export type AnyConfiguration = Configuration<Array<AnyCollection>>;
+export type ConfigurationWithCollections<TCollections extends Array<AnyContent>> = {
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections: TCollections;
+  content?: TCollections;
+  cache?: Cache;
+};
 
-export function defineConfig<TConfig extends AnyConfiguration>(
-  config: TConfig,
-) {
+export type Configuration<TCollections extends Array<AnyContent>> =
+  | ConfigurationWithContent<TCollections>
+  | ConfigurationWithCollections<TCollections>;
+
+export type AnyConfiguration = Configuration<Array<AnyContent>>;
+
+export function defineConfig<TCollections extends Array<AnyContent>>(config: {
+  content: TCollections;
+  cache?: Cache;
+}): ConfigurationWithContent<TCollections>;
+
+export function defineConfig<TCollections extends Array<AnyContent>>(config: {
+  /**
+   * @deprecated Use `content` instead.
+   */
+  collections: TCollections;
+  cache?: Cache;
+}): ConfigurationWithCollections<TCollections>;
+
+export function defineConfig<TConfig extends AnyConfiguration>(config: TConfig) {
   return config;
 }

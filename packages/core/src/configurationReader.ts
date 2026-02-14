@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { AnyCollection } from "./config";
+import { AnyContent } from "./config";
 import { compile } from "./esbuild";
+import { deprecated } from "./features";
 
 export type ErrorType = "Read" | "Compile";
 
@@ -16,7 +17,7 @@ export class ConfigurationError extends Error {
 }
 
 export type InternalConfiguration = {
-  collections: Array<AnyCollection>;
+  collections: Array<AnyContent>;
   path: string;
   inputPaths: Array<string>;
   checksum: string;
@@ -66,12 +67,18 @@ export function createConfigurationReader() {
         `file://${path.resolve(outfile)}?x=${Date.now()}`
       );
 
+      const { content, collections, ...rest } = module.default;
+        if (!content && collections) {
+        deprecated("collectionsConfigProperty");
+      }
+
       const hash = createHash("sha256");
       hash.update(await fs.readFile(outfile, "utf-8"));
       const checksum = hash.digest("hex");
 
       return {
-        ...module.default,
+        ...rest,
+        collections: content ?? collections ?? [],
         path: configurationPath,
         inputPaths: configurationPaths.map((p) => path.resolve(p)),
         generateTypes: true,

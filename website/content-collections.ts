@@ -158,5 +158,5 @@ const sponsors = defineCollection({
 });
 
 export default defineConfig({
-  collections: [samples, docs, metas, sponsors],
+  content: [samples, docs, metas, sponsors],
 });

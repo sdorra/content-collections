@@ -18,7 +18,7 @@ describe("fs", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -70,7 +70,7 @@ describe("fs", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);
@@ -101,7 +101,7 @@ describe("fs", () => {
       });
 
       const config = defineConfig({
-        collections: [posts],
+        content: [posts],
       });
 
       const workspace = workspaceBuilder(config);

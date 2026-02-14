@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
-import { defineCollection, defineConfig } from "../config";
+import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { defineParser } from "../parser";
 import { workspaceTest } from "./workspace";
 
@@ -18,7 +18,7 @@ describe("parser", () => {
     });
 
     const config = defineConfig({
-      collections: [movies],
+      content: [movies],
     });
 
     const workspace = workspaceBuilder(config);
@@ -56,7 +56,7 @@ describe("parser", () => {
     });
 
     const config = defineConfig({
-      collections: [movies],
+      content: [movies],
     });
 
     const workspace = workspaceBuilder(config);
@@ -99,7 +99,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -150,7 +150,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -206,7 +206,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -259,7 +259,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -302,7 +302,20 @@ describe("parser", () => {
           content: z.string(),
         }),
       }),
-    ).toThrowError("Parser non-existing-parser is not valid a parser");
+    ).toThrowError("Parser non-existing-parser is not a valid parser");
+
+    expect(() =>
+      defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.md",
+        // @ts-expect-error non existing parser
+        parser: "non-existing-parser",
+        schema: z.object({
+          title: z.string(),
+          content: z.string(),
+        }),
+      }),
+    ).toThrowError("Parser non-existing-parser is not a valid parser");
   });
 
   workspaceTest(
@@ -320,7 +333,7 @@ describe("parser", () => {
       });
 
       const config = defineConfig({
-        collections: [movies],
+        content: [movies],
       });
 
       const workspace = workspaceBuilder(config);
@@ -345,6 +358,37 @@ describe("parser", () => {
       const allMovies = await collection("movies");
       expect(allMovies).toHaveLength(1);
       expect(allMovies.map((m) => m.name)).toEqual(["Inception"]);
+    },
+  );
+
+  workspaceTest(
+    "non parsable documents should result in undefined singleton",
+    async ({ workspaceBuilder }) => {
+      const settings = defineSingleton({
+        name: "settings",
+        filePath: "sources/settings.json",
+        parser: "json",
+        schema: z.object({
+          name: z.string(),
+        }),
+      });
+
+      const config = defineConfig({
+        content: [settings],
+      });
+
+      const workspace = workspaceBuilder(config);
+
+      workspace.file(
+        "sources/settings.json",
+        `// This is a non valid JSON file
+          "name": "Invalid Settings"
+        }`,
+      );
+
+      const { singleton } = await workspace.build();
+      const settingsCollection = await singleton("settings");
+      expect(settingsCollection).toBeUndefined();
     },
   );
 });

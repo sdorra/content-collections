@@ -8,12 +8,19 @@ export function isUnknownError(event: string) {
 }
 
 export function registerErrorListeners(builder: Builder) {
+  builder.on("transformer:singleton-warning", (event) => {
+    console.log();
+    console.log(`Singleton collection "${event.collection.name}" matched no documents. Export will be undefined.`);
+    console.log();
+  });
+
   builder.on("transformer:validation-error", (event) => {
     console.log();
-    console.log(
-      "Validation failed on",
-      path.join(event.collection.directory, event.file.path) + ":",
-    );
+    const location =
+      "filePath" in (event.collection as any)
+        ? (event.collection as any).filePath
+        : path.join((event.collection as any).directory, event.file.path);
+    console.log("Validation failed on", location + ":");
     console.log(event.error.message);
     console.log();
   });
