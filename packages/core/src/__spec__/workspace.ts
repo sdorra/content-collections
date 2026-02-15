@@ -46,9 +46,15 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     }
 
     // For string/template configurations, load the compiled config output that the builder produced.
-    const compiledConfig = join(directory, ".content-collections/cache", defaultConfigName);
+    const compiledConfig = join(
+      directory,
+      ".content-collections/cache",
+      defaultConfigName,
+    );
     try {
-      const module = await import(`${compiledConfig}?t=${Date.now()}&c=${counter}`);
+      const module = await import(
+        `${compiledConfig}?t=${Date.now()}&c=${counter}`
+      );
       return module.default as AnyConfiguration;
     } catch {
       return null;
@@ -159,6 +165,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
   }
 
   let outputDir: string | undefined = undefined;
+  let cacheDir: string | undefined = undefined;
 
   async function build() {
     await Promise.all(Object.entries(files).map(createFile));
@@ -172,11 +179,17 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
       options.outputDir = join(directory, outputDir);
     }
 
+    if (cacheDir) {
+      // @ts-expect-error not typed yet
+      options.cacheDir = join(directory, cacheDir);
+    }
+
     const cfg = join(directory, configurationPath);
     if (typeof configuration === "string") {
       builder = await createBuilder(cfg, options, emitter);
     } else {
-      const collections = configuration.content ?? configuration.collections ?? [];
+      const collections =
+        configuration.content ?? configuration.collections ?? [];
       builder = await createInternalBuilder(
         {
           ...configuration,
@@ -206,6 +219,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
   type Options = {
     configurationPath?: string;
     outputDir?: string;
+    cacheDir?: string;
   };
 
   function createWorkspace<
@@ -218,6 +232,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
     : Workspace<string> {
     const relativePath = options.configurationPath || "content-collections.ts";
     outputDir = options.outputDir;
+    cacheDir = options.cacheDir;
 
     configurationPath = relativePath;
 
@@ -273,7 +288,9 @@ type SingletonNameOrString<TConfig extends AnyConfiguration | string> =
 type UnknownDocument = Record<string, any>;
 
 type GeneratedReturnType<TConfig, TCollection> =
-  TConfig extends AnyConfiguration ? GetTypeByName<TConfig, TCollection> : UnknownDocument;
+  TConfig extends AnyConfiguration
+    ? GetTypeByName<TConfig, TCollection>
+    : UnknownDocument;
 
 export type Executor<TConfig extends AnyConfiguration | string> = {
   configurationPath: string;
