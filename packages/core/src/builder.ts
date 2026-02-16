@@ -9,7 +9,6 @@ import {
 import { type Emitter, createEmitter } from "./events";
 import { Modification } from "./types";
 import { createWatcher, Watcher } from "./watcher";
-import { AnyConfiguration } from "./config";
 
 // TODO: get rid of namespaces at all
 export type BuilderEvents = BuildEvents & {
@@ -46,6 +45,13 @@ function resolveOutputDir(baseDirectory: string, options: Options) {
   return path.join(baseDirectory, ".content-collections", "generated");
 }
 
+function resolveCacheDir(baseDirectory: string, options: Options) {
+  if (options.cacheDir) {
+    return options.cacheDir;
+  }
+  return path.join(baseDirectory, ".content-collections", "cache");
+}
+
 export class ConfigurationReloadError extends Error {
   constructor(message: string) {
     super(message);
@@ -64,24 +70,20 @@ export async function createBuilder(
 
   const configuration = await readConfiguration(configurationPath, options);
 
-  return createInternalBuilder(
-    configuration,
-    baseDirectory,
-    options,
-    emitter
-  );
+  return createInternalBuilder(configuration, baseDirectory, options, emitter);
 }
 
 export async function createInternalBuilder(
   initialConfiguration: InternalConfiguration,
   baseDirectory: string,
   options: Options,
-  emitter: Emitter
+  emitter: Emitter,
 ) {
   const readConfiguration = createConfigurationReader();
 
   const configurationPath = initialConfiguration.path;
   const outputDirectory = resolveOutputDir(baseDirectory, options);
+  const cacheDirectory = resolveCacheDir(baseDirectory, options);
 
   emitter.emit("builder:created", {
     createdAt: Date.now(),
@@ -96,6 +98,7 @@ export async function createInternalBuilder(
     emitter,
     baseDirectory,
     outputDirectory,
+    cacheDirectory,
     configuration,
   });
 
@@ -145,6 +148,7 @@ export async function createInternalBuilder(
       emitter,
       baseDirectory,
       outputDirectory,
+      cacheDirectory,
       configuration,
     });
 

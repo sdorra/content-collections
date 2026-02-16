@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect } from "vitest";
@@ -78,7 +79,7 @@ describe("workspace tests", () => {
         "color": "#ffffff"
       }
     `,
-    )
+    );
 
     const { collection, singleton } = await workspace.build();
     const allPosts = await collection("posts");
@@ -779,6 +780,54 @@ describe("workspace tests", () => {
 
       expect(events).toHaveLength(1);
       expect(events[0]?.reason).toBeUndefined();
+    },
+  );
+
+  workspaceTest(
+    "should use specified cache directory",
+    async ({ workspaceBuilder, workspacePath }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "*.yaml",
+        parser: "yaml",
+        schema: z.object({
+          title: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const val = await cache(doc.title, (title) => title.toUpperCase());
+
+          return {
+            ...doc,
+            title: val,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        content: [posts],
+      });
+
+      const workspace = workspaceBuilder(config, {
+        cacheDir: "custom-cache",
+      });
+
+      workspace.file("sources/posts/one.yaml", "title: Post One");
+
+      await workspace.build();
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts.map((p) => p.title)).toEqual(["POST ONE"]);
+      expect(
+        existsSync(path.join(workspacePath, "custom-cache/mapping.json")),
+      ).toBe(true);
+      expect(
+        existsSync(
+          path.join(workspacePath, ".content-collections/cache/mapping.json"),
+        ),
+      ).toBe(false);
     },
   );
 });

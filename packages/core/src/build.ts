@@ -11,6 +11,7 @@ import { createWriter } from "./writer";
 type Dependencies = {
   emitter: Emitter;
   outputDirectory: string;
+  cacheDirectory: string;
   baseDirectory: string;
   configuration: InternalConfiguration;
 };
@@ -32,6 +33,7 @@ export type BuildEvents = {
 export async function createBuildContext({
   emitter,
   outputDirectory,
+  cacheDirectory,
   baseDirectory,
   configuration,
 }: Dependencies) {
@@ -40,7 +42,7 @@ export async function createBuildContext({
   const [writer, resolved, cacheManager] = await Promise.all([
     createWriter(outputDirectory),
     collector.collect(configuration.collections),
-    createCacheManager(baseDirectory, configuration.checksum),
+    createCacheManager(cacheDirectory, configuration.checksum),
   ]);
 
   const synchronizer = createSynchronizer(

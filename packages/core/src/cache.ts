@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
-import path, { join } from "node:path";
+import { join } from "node:path";
 
 type Options = {
   key: string;
@@ -26,12 +26,10 @@ function createKey(config: string, input: unknown, key: string): string {
 }
 
 // @visibleForTesting
-export async function createCacheDirectory(directory: string) {
-  const cacheDirectory = path.join(directory, ".content-collections", "cache");
+export async function createCacheDirectory(cacheDirectory: string) {
   if (!existsSync(cacheDirectory)) {
     await mkdir(cacheDirectory, { recursive: true });
   }
-  return cacheDirectory;
 }
 
 function fileName(input: string): string {
@@ -58,10 +56,10 @@ async function readMapping(mappingPath: string): Promise<Mapping> {
 }
 
 export async function createCacheManager(
-  baseDirectory: string,
+  cacheDirectory: string,
   configChecksum: string,
 ) {
-  const cacheDirectory = await createCacheDirectory(baseDirectory);
+  await createCacheDirectory(cacheDirectory);
 
   const mappingPath = join(cacheDirectory, "mapping.json");
 
