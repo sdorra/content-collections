@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.18.0",
-    "@builder.io/qwik-city": "^1.18.0",
+    "@builder.io/qwik-city": "^1.19.0",
     "@content-collections/core": "0.14.1",
     "@content-collections/vite": "0.2.9",
     "@types/eslint": "^8.56.7",
