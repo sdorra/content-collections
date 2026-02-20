@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.14.1
+
+### Patch Changes
+
+- [#719](https://github.com/sdorra/content-collections/pull/719) [`3e019b1`](https://github.com/sdorra/content-collections/commit/3e019b1879dc49f690aba618bcaca35495e2c875) Thanks [@sdorra](https://github.com/sdorra)! - #718 fix serializer handling of import arrays
+
+- [#716](https://github.com/sdorra/content-collections/pull/716) [`d6e9da2`](https://github.com/sdorra/content-collections/commit/d6e9da2308d97789aba7145c71781b95397225fe) Thanks [@nihgwu](https://github.com/nihgwu)! - Respect `cacheDir` option for transform cache directory
+
 ## 0.14.0
 
 ### Minor Changes
