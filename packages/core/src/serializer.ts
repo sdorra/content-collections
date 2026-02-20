@@ -54,25 +54,28 @@ export function serialize(value: unknown): string {
   let serializedValue = "";
   let counter = 0;
 
-  function handleImports(item: any) {
+  function handleImports(item: any, parent?: any, key?: string | number) {
     if (!item || typeof item !== "object") {
       return;
     }
 
-    if (Array.isArray(item)) {
-      item.forEach(handleImports);
+    if (isImport(item)) {
+      counter++;
+      const variableName = `__v_${counter}`;
+      serializedValue += createImport(item, variableName);
+      if (parent !== undefined && key !== undefined) {
+        parent[key] = variableName;
+      }
       return;
     }
 
-    Object.entries(item).forEach(([key, value]) => {
-      if (isImport(value)) {
-        counter++;
-        const variableName = `__v_${counter}`;
-        serializedValue += createImport(value, variableName);
-        item[key] = variableName;
-      } else {
-        handleImports(value);
-      }
+    if (Array.isArray(item)) {
+      item.forEach((entry, index) => handleImports(entry, item, index));
+      return;
+    }
+
+    Object.entries(item).forEach(([entryKey, entryValue]) => {
+      handleImports(entryValue, item, entryKey);
     });
   }
 
