@@ -26,6 +26,10 @@ function resolveDirname() {
 
 }
 
+function isInternalTest() {
+  return process.env.CC_TEST_INDICATOR === "__yes";
+}
+
 function createExternalsPlugin(configPath: string): Plugin {
   const resolvedPaths = tsconfigResolvePaths(configPath);
   const resolvePatterns = tsconfigPathsToRegExp(resolvedPaths);
@@ -36,7 +40,7 @@ function createExternalsPlugin(configPath: string): Plugin {
     name: "external-packages",
     setup: (build) => {
       build.onResolve({ filter: /.*/ }, ({ path, kind }) => {
-        if (process.env.NODE_ENV === "test" && isCoreImport(path, kind)) {
+        if (isInternalTest() && isCoreImport(path, kind)) {
           return { path: join(currentDir, "index.ts"), external: true };
         }
 

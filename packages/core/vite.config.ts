@@ -10,6 +10,9 @@ const excludes = [
 
 export default defineConfig({
   test: {
+    env: {
+      CC_TEST_INDICATOR: "__yes",
+    },
     include: [
       "src/**/*.test.ts",
       "src/**/*.test-d.ts",
