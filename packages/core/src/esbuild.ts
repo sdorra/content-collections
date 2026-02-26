@@ -1,6 +1,7 @@
 import { loadTsConfig, match, tsconfigPathsToRegExp } from "bundle-require";
 import { type Plugin, build } from "esbuild";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from 'node:url';
 
 // the code to handle externals is mostly the one which is used by the awesome tsup project
 // https://github.com/egoist/tsup
@@ -19,16 +20,24 @@ function isCoreImport(path: string, kind: string) {
   return path === "@content-collections/core" && kind === "import-statement";
 }
 
+function resolveDirname() {
+  const filename = fileURLToPath(import.meta.url);
+  return dirname(filename);
+
+}
+
 function createExternalsPlugin(configPath: string): Plugin {
   const resolvedPaths = tsconfigResolvePaths(configPath);
   const resolvePatterns = tsconfigPathsToRegExp(resolvedPaths);
+
+  const currentDir = resolveDirname();
 
   return {
     name: "external-packages",
     setup: (build) => {
       build.onResolve({ filter: /.*/ }, ({ path, kind }) => {
         if (process.env.NODE_ENV === "test" && isCoreImport(path, kind)) {
-          return { path: join(__dirname, "index.ts"), external: true };
+          return { path: join(currentDir, "index.ts"), external: true };
         }
 
         if (match(path, resolvePatterns)) {
