@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.14.2
+
+### Patch Changes
+
+- [#722](https://github.com/sdorra/content-collections/pull/722) [`dd6e16d`](https://github.com/sdorra/content-collections/commit/dd6e16dad415e6e4a24b035b907d99202955d247) Thanks [@sdorra](https://github.com/sdorra)! - Fix usage of content-collection with NODE_ENV=test
+
+- [#728](https://github.com/sdorra/content-collections/pull/728) [`a6f9fff`](https://github.com/sdorra/content-collections/commit/a6f9fff155313fff57e05c4ad9613e72bf675bd0) Thanks [@sdorra](https://github.com/sdorra)! - Update serialize-javascript to fix vuln [GHSA-5c6j-r48x-rmvq](https://github.com/advisories/GHSA-5c6j-r48x-rmvq)
+
 ## 0.14.1
 
 ### Patch Changes
