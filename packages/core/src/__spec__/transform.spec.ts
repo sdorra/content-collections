@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect } from "vitest";
 import { z } from "zod";
+import { fileName } from "../cache";
 import { defineCollection, defineConfig, defineSingleton } from "../config";
 import { Events } from "../events";
 import { createDefaultImport, createNamedImport } from "../import";
@@ -316,6 +317,58 @@ describe("workspace tests", () => {
   );
 
   workspaceTest(
+    "should not throw when caching documents with very long nested paths",
+    async ({ workspaceBuilder }) => {
+      const posts = defineCollection({
+        name: "posts",
+        directory: "sources/posts",
+        include: "**/*.md",
+        schema: z.object({
+          title: z.string(),
+          author: z.string(),
+          content: z.string(),
+        }),
+        transform: async (doc, { cache }) => {
+          const title = await cache(doc.title, (input) => input.toUpperCase());
+
+          return {
+            ...doc,
+            title,
+          };
+        },
+      });
+
+      const config = defineConfig({
+        content: [posts],
+      });
+
+      const workspace = workspaceBuilder(config);
+      const nestedPath = `${Array.from(
+        { length: 30 },
+        (_, index) => `segment-${String(index).padStart(2, "0")}`,
+      ).join("/")}/document-name-with-some-extra-characters.md`;
+
+      workspace.file(
+        `sources/posts/${nestedPath}`,
+        `
+        ---
+        title: Very long post
+        author: trillian
+        ---
+
+        # Very long post
+      `,
+      );
+
+      const { collection } = await workspace.build();
+      const allPosts = await collection("posts");
+
+      expect(allPosts).toHaveLength(1);
+      expect(allPosts[0]?.title).toBe("VERY LONG POST");
+    },
+  );
+
+  workspaceTest(
     "should recreate broken cache mapping file",
     async ({ workspaceBuilder }) => {
       const posts = defineCollection({
@@ -390,11 +443,16 @@ describe("workspace tests", () => {
       // build the workspace twice to test the cache
       await workspace.build();
 
+      const cacheDirectory = path.join(
+        workspacePath,
+        ".content-collections/cache",
+        fileName("posts"),
+        fileName("one"),
+      );
+
       // break all cache files
       await fs
-        .readdir(
-          path.join(workspacePath, ".content-collections/cache/posts/one"),
-        )
+        .readdir(cacheDirectory)
         .then((files) =>
           files
             .filter((f) => f.endsWith(".cache"))
