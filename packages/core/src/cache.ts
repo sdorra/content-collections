@@ -33,7 +33,14 @@ export async function createCacheDirectory(cacheDirectory: string) {
 }
 
 function fileName(input: string): string {
-  return input.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+  const readable = input.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+  const hash = createHash("sha1").update(input).digest("hex").slice(0, 12);
+
+  if (!readable) {
+    return hash;
+  }
+
+  return `${readable.slice(0, 24)}_${hash}`;
 }
 
 type Mapping = {
