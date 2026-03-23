@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.14.3
+
+### Patch Changes
+
+- [#734](https://github.com/sdorra/content-collections/pull/734) [`fbe2f14`](https://github.com/sdorra/content-collections/commit/fbe2f14c7f5469892dc10cca84822e6ad4402d90) Thanks [@nihgwu](https://github.com/nihgwu)! - Shorten cache directory names to avoid `ENAMETOOLONG` on deeply nested documents.
+
 ## 0.14.2
 
 ### Patch Changes
