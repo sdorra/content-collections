@@ -13,7 +13,7 @@
     "@content-collections/markdown": "0.1.4",
     "@content-collections/vite": "0.2.9",
     "@sveltejs/adapter-auto": "^7.0.1",
-    "@sveltejs/kit": "^2.53.2",
+    "@sveltejs/kit": "^2.53.3",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "svelte": "^5.53.5",
     "svelte-check": "^4.4.4",
