@@ -58,6 +58,6 @@
     "pluralize": "^8.0.0",
     "serialize-javascript": "^7.0.3",
     "tinyglobby": "^0.2.5",
-    "yaml": "^2.4.5"
+    "yaml": "^2.8.3"
   }
 }
