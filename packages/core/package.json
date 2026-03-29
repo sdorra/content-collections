@@ -56,7 +56,7 @@
     "p-limit": "^6.1.0",
     "picomatch": "^4.0.2",
     "pluralize": "^8.0.0",
-    "serialize-javascript": "^7.0.3",
+    "serialize-javascript": "^7.0.5",
     "tinyglobby": "^0.2.5",
     "yaml": "^2.4.5"
   }
