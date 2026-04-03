@@ -33,7 +33,7 @@
     "postpack": "rm -f ./README.md"
   },
   "peerDependencies": {
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2 || ^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
