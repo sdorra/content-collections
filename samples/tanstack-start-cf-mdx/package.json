@@ -1,0 +1,35 @@
+{
+  "name": "samples-tanstack-start-cf-mdx",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "test": "playwright test",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@content-collections/sample-theme": "0.1.0",
+    "@mdx-js/rollup": "^3.1.0",
+    "@tanstack/react-router": "^1.168.22",
+    "@tanstack/react-start": "^1.167.41",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@content-collections/core": "0.14.3",
+    "@content-collections/vite": "0.2.9",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^22.19.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitejs/plugin-rsc": "^0.5.24",
+    "remark-frontmatter": "^5.0.0",
+    "remark-mdx-frontmatter": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.1.1"
+  }
+}
