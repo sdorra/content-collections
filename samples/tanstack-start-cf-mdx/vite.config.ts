@@ -11,7 +11,7 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
   server: {
-    port: 5182,
+    port: 5184,
   },
   plugins: [
     {
@@ -36,6 +36,7 @@ export default defineConfig({
     cloudflare({
       viteEnvironment: {
         name: "ssr",
+        childEnvironments: ["rsc"]
       },
     }),
   ],
