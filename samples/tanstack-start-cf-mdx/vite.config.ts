@@ -13,6 +13,11 @@ export default defineConfig({
   server: {
     port: 5184,
   },
+  resolve: {
+    alias: {
+      "~": "/src",
+    }
+  },
   plugins: [
     {
       enforce: "pre",
