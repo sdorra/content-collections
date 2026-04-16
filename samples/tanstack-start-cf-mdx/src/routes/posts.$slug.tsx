@@ -1,14 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { findPostBySlug, getMdxContent } from "~/utils/posts";
+import { getPostBySlug } from "~/utils/posts";
 
 export const Route = createFileRoute("/posts/$slug")({
-  loader: async ({ params: { slug } }) => {
-    const { mdx, ...post } = findPostBySlug(slug);
-    return {
-      ...post,
-      mdx: getMdxContent(slug)
-    };
-  },
+  loader: ({ params: { slug } }) => getPostBySlug(slug),
   component: PostComponent,
   pendingComponent: () => <div>Loading...</div>,
 });

@@ -6,24 +6,25 @@ import {
 } from "@tanstack/react-start/rsc";
 import { allPosts } from "content-collections";
 
-const getMdxContentServerFn = createServerFn({ method: "GET" })
+const getPostServerFn = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
-    const post = findPostBySlug(slug);
+    const post = allPosts.find((post) => post.slug === slug);
+    if (!post) {
+      throw notFound();
+    }
     const MDXContent = post.mdx;
 
-    return renderToReadableStream(<MDXContent />);
+    return {
+      ...post,
+      mdx: renderToReadableStream(<MDXContent />),
+    };
   });
 
-export async function getMdxContent(slug: string) {
-  const mdx = await getMdxContentServerFn({ data: slug });
-  return createFromReadableStream(mdx);
-}
-
-export function findPostBySlug(slug: string) {
-  const post = allPosts.find((post) => post.slug === slug);
-  if (!post) {
-    throw notFound();
-  }
-  return post;
+export async function getPostBySlug(slug: string) {
+  const { mdx, ...post } = await getPostServerFn({ data: slug });
+  return {
+    ...post,
+    mdx: await createFromReadableStream(mdx),
+  };
 }
