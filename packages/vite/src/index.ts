@@ -6,6 +6,7 @@ import type { Plugin, UserConfig } from "vite";
 export type Options = {
   configPath: string;
   isEnabled?: (config: UserConfig) => boolean;
+  environment?: string;
 };
 
 const defaultOptions = {
@@ -28,6 +29,18 @@ export default function contentCollectionsPlugin(
 
   function isEnabled(config: UserConfig) {
     return options.isEnabled ? options.isEnabled(config) : true;
+  }
+
+  function shouldRun(environment?: string) {
+    if (!builder) {
+      return false;
+    }
+
+    if (!environment || !pluginOptions.environment) {
+      return true;
+    }
+
+    return pluginOptions.environment === environment;
   }
 
   return {
@@ -88,18 +101,16 @@ export default function contentCollectionsPlugin(
     },
 
     async buildStart() {
-      if (!builder) {
+      if (!shouldRun(this.environment?.name)) {
         return;
       }
+
       console.log("Start initial build");
       await builder.build();
       return;
     },
 
     async configureServer() {
-      if (!builder) {
-        return;
-      }
       console.log("Start watching");
       builder.watch();
       return;

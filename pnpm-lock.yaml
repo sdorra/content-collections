@@ -407,8 +407,8 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
       vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@20.14.9)(terser@5.31.0)
+        specifier: ^6.4.2
+        version: 6.4.2(@types/node@20.14.9)(jiti@2.6.1)(terser@5.31.0)(tsx@4.19.2)(yaml@2.8.2)
 
   samples/arktype:
     dependencies:
