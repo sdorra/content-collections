@@ -12,5 +12,3 @@ adapter: vite
 ---
 
 TODO: readme
-TODO: port
-TODO: tests
