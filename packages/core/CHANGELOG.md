@@ -1,5 +1,15 @@
 # @content-collections/core
 
+## 0.15.0
+
+### Minor Changes
+
+- [#751](https://github.com/sdorra/content-collections/pull/751) [`4dfd60a`](https://github.com/sdorra/content-collections/commit/4dfd60a16b08dd1c2598eecd1d950d99e04cd15b) Thanks [@sdorra](https://github.com/sdorra)! - Add support for writer hooks.
+
+### Patch Changes
+
+- [#745](https://github.com/sdorra/content-collections/pull/745) [`8558ccc`](https://github.com/sdorra/content-collections/commit/8558ccc3a40f127b616af69e79b3a63ea09f79c3) Thanks [@eyelidlessness](https://github.com/eyelidlessness)! - Explicitly allow TypeScript 6 as peer dependency
+
 ## 0.14.3
 
 ### Patch Changes

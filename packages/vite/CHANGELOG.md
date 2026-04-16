@@ -1,5 +1,20 @@
 # @content-collections/vite
 
+## 0.3.0
+
+### Minor Changes
+
+- [#751](https://github.com/sdorra/content-collections/pull/751) [`f4be3be`](https://github.com/sdorra/content-collections/commit/f4be3be4d2bb0a3e7a92802f13c91207bba4166e) Thanks [@sdorra](https://github.com/sdorra)! - Add an option to run the plugin only for a specific Vite environments
+
+- [#751](https://github.com/sdorra/content-collections/pull/751) [`f4be3be`](https://github.com/sdorra/content-collections/commit/f4be3be4d2bb0a3e7a92802f13c91207bba4166e) Thanks [@sdorra](https://github.com/sdorra)! - Require at least vite 6.x as peer dependency.
+
+### Patch Changes
+
+- [#751](https://github.com/sdorra/content-collections/pull/751) [`f4be3be`](https://github.com/sdorra/content-collections/commit/f4be3be4d2bb0a3e7a92802f13c91207bba4166e) Thanks [@sdorra](https://github.com/sdorra)! - Allow Vite 8.x as peer dependency.
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.5.0
+
 ## 0.2.9
 
 ### Patch Changes

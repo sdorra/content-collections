@@ -1,5 +1,11 @@
 # @content-collections/remix-vite
 
+## 0.3.0
+
+### Minor Changes
+
+- [#751](https://github.com/sdorra/content-collections/pull/751) [`ec4d2c7`](https://github.com/sdorra/content-collections/commit/ec4d2c7a1f051fe1b60c01b4ec846d27055e73bd) Thanks [@sdorra](https://github.com/sdorra)! - Require at least Vite 6 as peer dependency.
+
 ## 0.2.2
 
 ### Patch Changes
