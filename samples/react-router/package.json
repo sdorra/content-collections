@@ -10,9 +10,9 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@content-collections/core": "0.14.3",
+    "@content-collections/core": "0.15.0",
     "@content-collections/markdown": "0.1.4",
-    "@content-collections/remix-vite": "0.2.2",
+    "@content-collections/remix-vite": "0.3.0",
     "@content-collections/sample-theme": "0.1.0",
     "@react-router/node": "^7.13.1",
     "@react-router/serve": "^7.13.1",
