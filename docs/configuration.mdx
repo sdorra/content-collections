@@ -222,7 +222,41 @@ The name of the generated TypeScript type. If the `typeName` property is not pro
 
 ## Configuration object
 
-The configuration file is a module that has to export a configuration object as the default export. The configuration object can be created with the `defineConfig` function from `@content-collections/core` and receives an object with a property called content which contains an array of collection and singleton objects.
+The configuration file is a module that has to export a configuration object as the default export. The configuration object can be created with the `defineConfig` function from `@content-collections/core` and receives an object with the following  properties:
+
+### `content` (required)
+
+The `content` property is an array of collections and singletons.
+
+### `hooks` (optional)
+
+Since version `0.15.0`, Content Collections supports hooks. The `hooks` property is an object that defines hooks called during the generation process. Available hooks include:
+
+#### `writer`
+
+The `writer` hook is called before a generated file is written to the disk. It takes a single argument, an object with the following properties:
+
+- `filePath`: The path where the file will be written.
+- `content`: The content of the file.
+- `fileType`: The type of the file, either **data**, **javascript** or **typeDefinition**.
+
+Each hook have to return an object with a content property, which is the content that will be written to the file. This hook can be used to modify the generated files. This is especially useful if you want to ensure that the collections are only used on the server side and you want to add a special import like `server-only`, a hook like this looks like this:
+
+```ts
+export default defineConfig({
+  content: [/* collections and singletons */],
+  hooks: {
+    writer: ({ filePath, content, fileType }) => {
+      if (fileType === "javascript") {
+        return {
+          content: `import "server-only";\n\n${content}`,
+        };
+      }
+      return { content };
+    },
+  },
+});
+```
 
 ## Example
 

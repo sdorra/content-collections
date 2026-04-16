@@ -11,6 +11,7 @@ import {
 } from "./parser";
 import { NotSerializableError, Serializable } from "./serializer";
 import { generateTypeName } from "./utils";
+import { WriterHook } from "./writer";
 
 export type Meta = {
   filePath: string;
@@ -104,7 +105,7 @@ export type SingletonContext<TSchema = unknown> = Context<TSchema> & {
     filePath: string;
     directory: string;
     document: () => Promise<TSchema | undefined>;
-  }
+  };
 };
 
 export type ContentType = "collection" | "singleton";
@@ -121,7 +122,10 @@ export type CollectionRequest<
   parser?: TParser;
   typeName?: string;
   schema: TShape;
-  transform?: (data: TSchema, context: CollectionContext<TSchema>) => TTransformResult;
+  transform?: (
+    data: TSchema,
+    context: CollectionContext<TSchema>,
+  ) => TTransformResult;
   directory: string;
   include: string | string[];
   exclude?: string | string[];
@@ -175,7 +179,10 @@ export type SingletonRequest<
   typeName?: string;
   schema: TShape;
   optional?: boolean;
-  transform?: (data: TSchema, context: SingletonContext<TSchema>) => TTransformResult;
+  transform?: (
+    data: TSchema,
+    context: SingletonContext<TSchema>,
+  ) => TTransformResult;
   onSuccess?: (document: TDocument | undefined) => void | Promise<void>;
 };
 
@@ -295,7 +302,6 @@ export function defineCollection<
   } as TResult;
 }
 
-
 export function defineSingleton<
   TName extends string,
   TShape extends TSchemaProp,
@@ -363,15 +369,19 @@ export type ConfigurationWithContent<TCollections extends Array<AnyContent>> = {
    */
   collections?: TCollections;
   cache?: Cache;
+  hooks?: Hooks;
 };
 
-export type ConfigurationWithCollections<TCollections extends Array<AnyContent>> = {
+export type ConfigurationWithCollections<
+  TCollections extends Array<AnyContent>,
+> = {
   /**
    * @deprecated Use `content` instead.
    */
   collections: TCollections;
   content?: TCollections;
   cache?: Cache;
+  hooks?: Hooks;
 };
 
 export type Configuration<TCollections extends Array<AnyContent>> =
@@ -380,9 +390,14 @@ export type Configuration<TCollections extends Array<AnyContent>> =
 
 export type AnyConfiguration = Configuration<Array<AnyContent>>;
 
+export type Hooks = {
+  writer?: Array<WriterHook>;
+};
+
 export function defineConfig<TCollections extends Array<AnyContent>>(config: {
   content: TCollections;
   cache?: Cache;
+  hooks?: Hooks;
 }): ConfigurationWithContent<TCollections>;
 
 export function defineConfig<TCollections extends Array<AnyContent>>(config: {
@@ -391,8 +406,11 @@ export function defineConfig<TCollections extends Array<AnyContent>>(config: {
    */
   collections: TCollections;
   cache?: Cache;
+  hooks?: Hooks;
 }): ConfigurationWithCollections<TCollections>;
 
-export function defineConfig<TConfig extends AnyConfiguration>(config: TConfig) {
+export function defineConfig<TConfig extends AnyConfiguration>(
+  config: TConfig,
+) {
   return config;
 }

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { AnyContent } from "./config";
+import { AnyContent, Hooks } from "./config";
 import { compile } from "./esbuild";
 import { deprecated } from "./features";
 
@@ -21,6 +21,7 @@ export type InternalConfiguration = {
   path: string;
   inputPaths: Array<string>;
   checksum: string;
+  hooks: Hooks;
   generateTypes?: boolean;
 };
 
@@ -67,7 +68,7 @@ export function createConfigurationReader() {
         `file://${path.resolve(outfile)}?x=${Date.now()}`
       );
 
-      const { content, collections, ...rest } = module.default;
+      const { content, collections, hooks, ...rest } = module.default;
         if (!content && collections) {
         deprecated("collectionsConfigProperty");
       }
@@ -79,6 +80,7 @@ export function createConfigurationReader() {
       return {
         ...rest,
         collections: content ?? collections ?? [],
+        hooks: hooks ?? {},
         path: configurationPath,
         inputPaths: configurationPaths.map((p) => path.resolve(p)),
         generateTypes: true,

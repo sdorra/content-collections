@@ -194,6 +194,7 @@ function workspaceBuilder(directory: string, emitter: Emitter) {
         {
           ...configuration,
           collections,
+          hooks: configuration.hooks ?? {},
           // TODO: do we need a better way here to simulate internal configuration?
           path: cfg,
           inputPaths: [cfg],
@@ -321,6 +322,20 @@ async function createWorkspaceDirectory() {
   return directoryPath;
 }
 
+async function removeWorkspaceDirectory(workspacePath: string) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await fs.rm(workspacePath, { recursive: true, force: true });
+      return;
+    } catch (error: any) {
+      if (error?.code !== "ENOTEMPTY" || attempt === 2) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+  }
+}
+
 export const workspaceTest = test.extend<WorkspaceFixture>({
   emitter: async ({}, use) => {
     const emitter = createEmitter();
@@ -329,7 +344,7 @@ export const workspaceTest = test.extend<WorkspaceFixture>({
   workspacePath: async ({}, use) => {
     const workspacePath = await createWorkspaceDirectory();
     await use(workspacePath);
-    await fs.rm(workspacePath, { recursive: true });
+    await removeWorkspaceDirectory(workspacePath);
   },
   workspaceBuilder: async ({ workspacePath, emitter }, use) => {
     await use(workspaceBuilder(workspacePath, emitter));

@@ -2,6 +2,7 @@ import {
   createDefaultImport,
   defineCollection,
   defineConfig,
+  WriterHook,
 } from "@content-collections/core";
 import { MDXContent } from "mdx/types";
 import { z } from "zod";
@@ -31,6 +32,18 @@ const posts = defineCollection({
   },
 });
 
+const serverOnlyHook: WriterHook = async ({ fileType, content }) => {
+  if (fileType === "typeDefinition") {
+    return { content };
+  }
+  return {
+    content: `import '@tanstack/react-start/server-only';\n\n${content}`,
+  };
+};
+
 export default defineConfig({
   content: [posts],
+  hooks: {
+    writer: [serverOnlyHook],
+  },
 });
