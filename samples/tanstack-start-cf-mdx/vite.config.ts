@@ -1,3 +1,4 @@
+import { cloudflare } from "@cloudflare/vite-plugin";
 import contentCollections from "@content-collections/vite";
 import mdx from "@mdx-js/rollup";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -7,7 +8,6 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
-import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
   server: {
@@ -36,7 +36,7 @@ export default defineConfig({
     cloudflare({
       viteEnvironment: {
         name: "ssr",
-        childEnvironments: ["rsc"]
+        childEnvironments: ["rsc"],
       },
     }),
   ],
