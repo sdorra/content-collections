@@ -1,16 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
+import { getAllPosts } from "~/utils/posts";
 
 export const Route = createFileRoute("/")({
   component: Home,
+  loader: () => getAllPosts(),
 });
 
 function Home() {
+  const posts = Route.useLoaderData();
   return (
     <main>
       <h2>Posts</h2>
       <div className="posts">
-        {allPosts.map((post) => (
+        {posts.map((post) => (
           <Link
             key={post.slug}
             to={`/posts/$slug`}

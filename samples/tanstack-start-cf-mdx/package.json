@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite dev",
     "test": "playwright test",
-    "build": "vite build"
+    "build": "vite build",
+    "deploy": "pnpm run build && wrangler deploy",
+    "preview": "pnpm run build && wrangler dev",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@content-collections/sample-theme": "0.1.0",
@@ -18,6 +21,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.32.3",
     "@content-collections/core": "0.14.3",
     "@content-collections/vite": "0.2.9",
     "@types/mdx": "^2.0.13",
@@ -30,6 +34,7 @@
     "remark-mdx-frontmatter": "^4.0.0",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "wrangler": "^4.83.0"
   }
 }
