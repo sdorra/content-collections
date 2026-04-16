@@ -7,6 +7,7 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
+import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
   server: {
@@ -19,7 +20,9 @@ export default defineConfig({
         remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
       }),
     },
-    contentCollections(),
+    contentCollections({
+      environment: "ssr",
+    }),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
@@ -30,5 +33,10 @@ export default defineConfig({
     }),
     rsc(),
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
+    cloudflare({
+      viteEnvironment: {
+        name: "ssr",
+      },
+    }),
   ],
 });

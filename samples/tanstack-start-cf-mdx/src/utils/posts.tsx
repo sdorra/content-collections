@@ -28,3 +28,9 @@ export async function getPostBySlug(slug: string) {
     mdx: await createFromReadableStream(mdx),
   };
 }
+
+export const getAllPosts = createServerFn({ method: "GET" }).handler(
+  async () => {
+    return allPosts.map(({ mdx, ...post }) => post);
+  },
+);
