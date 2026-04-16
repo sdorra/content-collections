@@ -8,10 +8,27 @@ import { generateArrayConstName, generateSingletonConstName } from "./utils";
 
 type DataFileCollection = TransformedCollection;
 
+export type FileType = "data" | "javascript" | "typeDefinition";
+
+export type WriterHookContext = {
+  fileType: FileType;
+  content: string;
+  filePath: string;
+};
+
+export type WriterHookResult = {
+  content: string;
+};
+
+export type WriterHook = (
+  ctx: WriterHookContext,
+) => Promise<WriterHookResult> | WriterHookResult;
+
 // visible for testing
 export async function createDataFile(
   directory: string,
   collection: DataFileCollection,
+  hooks: Array<WriterHook>,
 ) {
   const constName = isSingleton(collection)
     ? generateSingletonConstName(collection.typeName)
@@ -22,15 +39,30 @@ export async function createDataFile(
     ? collection.documents[0]?.document
     : collection.documents.map((doc) => doc.document);
 
-  await fs.writeFile(dataPath, serialize(value));
+  const serializedContent = serialize(value);
+
+  let content = serializedContent;
+  for (const hook of hooks) {
+    const result = await hook({
+      fileType: "data",
+      content,
+      filePath: dataPath,
+    });
+    content = result.content;
+  }
+
+  await fs.writeFile(dataPath, content);
 }
 
 function createDataFiles(
   directory: string,
   collections: Array<DataFileCollection>,
+  hooks: Array<WriterHook>,
 ) {
   return Promise.all(
-    collections.map((collection) => createDataFile(directory, collection)),
+    collections.map((collection) =>
+      createDataFile(directory, collection, hooks),
+    ),
   );
 }
 
@@ -41,6 +73,7 @@ type JavaScriptFileConfiguration = {
 async function createJavaScriptFile(
   directory: string,
   configuration: JavaScriptFileConfiguration,
+  hooks: Array<WriterHook>,
 ) {
   const exports = configuration.collections.map((collection) =>
     isSingleton(collection)
@@ -55,7 +88,18 @@ async function createJavaScriptFile(
   content += "\n";
   content += "export { " + exports.join(", ") + " };\n";
 
-  await fs.writeFile(path.join(directory, "index.js"), content, "utf-8");
+  const filePath = path.join(directory, "index.js");
+
+  for (const hook of hooks) {
+    const result = await hook({
+      fileType: "javascript",
+      content,
+      filePath,
+    });
+    content = result.content;
+  }
+
+  await fs.writeFile(filePath, content, "utf-8");
 }
 
 type TypeDefinitionFileConfiguration = Pick<
@@ -78,6 +122,7 @@ function createImportPath(directory: string, target: string) {
 async function createTypeDefinitionFile(
   directory: string,
   configuration: TypeDefinitionFileConfiguration,
+  hooks: Array<WriterHook>,
 ) {
   if (!configuration.generateTypes) {
     return;
@@ -107,19 +152,33 @@ import { GetTypeByName } from "@content-collections/core";
   // https://github.com/microsoft/TypeScript/issues/38592
   content += "export {};\n";
 
-  await fs.writeFile(path.join(directory, "index.d.ts"), content, "utf-8");
+  const filePath = path.join(directory, "index.d.ts");
+
+  for (const hook of hooks) {
+    const result = await hook({
+      fileType: "typeDefinition",
+      content,
+      filePath,
+    });
+    content = result.content;
+  }
+
+  await fs.writeFile(filePath, content, "utf-8");
 }
 
-export async function createWriter(directory: string) {
+export async function createWriter(
+  directory: string,
+  hooks: Array<WriterHook>,
+) {
   await fs.mkdir(directory, { recursive: true });
   return {
     createJavaScriptFile: (configuration: JavaScriptFileConfiguration) =>
-      createJavaScriptFile(directory, configuration),
+      createJavaScriptFile(directory, configuration, hooks),
     createTypeDefinitionFile: (
       configuration: TypeDefinitionFileConfiguration,
-    ) => createTypeDefinitionFile(directory, configuration),
+    ) => createTypeDefinitionFile(directory, configuration, hooks),
     createDataFiles: (collections: Array<DataFileCollection>) =>
-      createDataFiles(directory, collections),
+      createDataFiles(directory, collections, hooks),
   };
 }
 

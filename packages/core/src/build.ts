@@ -40,7 +40,7 @@ export async function createBuildContext({
   const collector = createCollector(emitter, baseDirectory);
 
   const [writer, resolved, cacheManager] = await Promise.all([
-    createWriter(outputDirectory),
+    createWriter(outputDirectory, configuration.hooks?.writer ?? []),
     collector.collect(configuration.collections),
     createCacheManager(cacheDirectory, configuration.checksum),
   ]);
