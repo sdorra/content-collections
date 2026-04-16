@@ -23,9 +23,10 @@ Besides this, it has several benefits to let the bundler, which already bundles 
 ## Setup mdx rendering
 
 We have to set up MDX rendering in Vite and we have to remove the frontmatter.
-The MDX plugin must be enforced as a pre plugin in order to ensure it runs before the React plugin.
-To remove the frontmatter we use the `remark-frontmatter` and `remark-mdx-frontmatter` remark plugins.
+The MDX plugin must be enforced as a pre-plugin in order to ensure it runs before the React plugin.
+To remove the frontmatter, we use the `remark-frontmatter` and `remark-mdx-frontmatter` remark plugins.
 We also have to inform the React plugin about the MDX file extension.
+If we want to use a TypeScript path alias for our MDX files, we have to add a Vite resolve alias as well (I don't know why the vite-tsconfig-paths does not work in this case).
 A complete `vite.config.ts` could look like the following:
 
 ```ts
@@ -40,6 +41,11 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "~": "/src",
+    }
+  },
   plugins: [
     {
       enforce: "pre",
@@ -65,7 +71,7 @@ export default defineConfig({
 ## Static Importing MDX
 
 Now we can use a static import to get our MDX.
-At the moment, we can't use TypeScript aliases for the static import, so we have to use a relative path for now.
+**Note**: The snippet below uses a path alias which must be configured in the `vite.config.ts` and the `tsconfig.json`.
 
 ```ts
 import {
@@ -78,7 +84,7 @@ import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "content/posts",
+  directory: "./src/posts",
   include: "*.mdx",
   parser: "frontmatter-only",
   schema: z.object({
@@ -89,7 +95,7 @@ const posts = defineCollection({
   }),
   transform: async ({ _meta, ...post }) => {
     const mdx = createDefaultImport<MDXContent>(
-      `../../content/posts/${_meta.filePath}`,
+      `~/posts/${_meta.filePath}`,
     );
     return {
       ...post,

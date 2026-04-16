@@ -9,7 +9,7 @@ import { z } from "zod";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "content/posts",
+  directory: "./src/posts",
   include: "*.mdx",
   parser: "frontmatter-only",
   schema: z.object({
@@ -19,10 +19,8 @@ const posts = defineCollection({
     author: z.string(),
   }),
   transform: async ({ _meta, ...post }) => {
-    // TODO: check why typescript aliases don't work here
-    // and we have to use relative paths
     const mdx = createDefaultImport<MDXContent>(
-      `../../content/posts/${_meta.filePath}`,
+      `~/posts/${_meta.filePath}`,
     );
     return {
       ...post,
