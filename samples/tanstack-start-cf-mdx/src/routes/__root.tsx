@@ -23,6 +23,7 @@ export const Route = createRootRoute({
     links: [{ rel: "stylesheet", href: appCss }],
   }),
   component: RootComponent,
+  notFoundComponent: () => <p>Not found</p>
 });
 
 function RootComponent() {

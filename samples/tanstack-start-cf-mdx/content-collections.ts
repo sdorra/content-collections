@@ -18,6 +18,8 @@ const posts = defineCollection({
     author: z.string(),
   }),
   transform: async ({ _meta, ...post }) => {
+    // TODO: check why typescript aliases don't work here
+    // and we have to use relative paths
     const mdx = createDefaultImport<MDXContent>(
       `../../content/posts/${_meta.filePath}`,
     );
