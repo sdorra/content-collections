@@ -81,3 +81,7 @@ Specifies the path to the Content Collections configuration file. Defaults to `c
 ### `isEnabled` (optional)
 
 A function which takes the vite user config and returns a boolean value to enable or disable the plugin. This function is useful if you want to enable or disable the plugin based on the environment or other conditions.
+
+### `environment` (optional)
+
+The name of the Vite environment in which the plugin should run. All other environments will be ignored. If you're using a framework that runs the build for multiple environments (for example, `ssr` and `client`), you can use this option to run the plugin only for the `ssr` environment. This way, you avoid running the plugin twice and improve build performance.
