@@ -111,6 +111,9 @@ export default function contentCollectionsPlugin(
     },
 
     async configureServer() {
+      if (!builder) {
+        return;
+      }
       console.log("Start watching");
       builder.watch();
       return;

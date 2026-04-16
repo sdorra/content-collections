@@ -1,9 +1,10 @@
 packages:
-- "packages/*"
-- "utils/*"
-- "samples/*"
-- "website"
+  - packages/*
+  - utils/*
+  - samples/*
+  - website
 
-# allow samples to use the current version
-# in order to use them with stackblitz
 linkWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - workerd
