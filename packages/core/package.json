@@ -54,7 +54,7 @@
     "esbuild": "^0.25.11",
     "gray-matter": "^4.0.3",
     "p-limit": "^6.1.0",
-    "picomatch": "^4.0.2",
+    "picomatch": "^4.0.4",
     "pluralize": "^8.0.0",
     "serialize-javascript": "^7.0.5",
     "tinyglobby": "^0.2.5",
