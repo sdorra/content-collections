@@ -29,7 +29,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^5.1.4",
-    "@vitejs/plugin-rsc": "^0.5.24",
+    "@vitejs/plugin-rsc": "^0.5.26",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
     "typescript": "^5.7.2",
