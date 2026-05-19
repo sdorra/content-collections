@@ -22,14 +22,14 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  content: [posts],
+  collections: [posts]
 });
 ```
 
 New (recommended):
 
 ```ts
-import { defineCollection, defineConfig } from "@content-collections/core";
+import { defineCollection, defineConfig, defineSingleton } from "@content-collections/core";
 
 const posts = defineCollection({
   name: "posts",
