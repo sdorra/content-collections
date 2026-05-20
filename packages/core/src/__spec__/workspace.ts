@@ -311,10 +311,10 @@ export interface WorkspaceFixture {
   workspaceBuilder: WorkspaceBuilder;
 }
 
-async function createWorkspaceDirectory() {
+async function createWorkspaceDirectory(prefix = "content-collections-") {
   const tmpdir = os.tmpdir();
 
-  const directory = await fs.mkdtemp(join(tmpdir, "content-collections-"));
+  const directory = await fs.mkdtemp(join(tmpdir, prefix));
   // we need to call realpath, because mktemp returns /var/folders/... on macOS
   // but the paths which are returned by the watcher are /private/var/folders/...
   const directoryPath = await fs.realpath(directory);
@@ -345,6 +345,25 @@ export const workspaceTest = test.extend<WorkspaceFixture>({
     const workspacePath = await createWorkspaceDirectory();
     await use(workspacePath);
     await removeWorkspaceDirectory(workspacePath);
+  },
+  workspaceBuilder: async ({ workspacePath, emitter }, use) => {
+    await use(workspaceBuilder(workspacePath, emitter));
+  },
+});
+
+export const hiddenWorkspaceTest = test.extend<WorkspaceFixture>({
+  emitter: async ({}, use) => {
+    const emitter = createEmitter();
+    await use(emitter);
+  },
+  workspacePath: async ({}, use) => {
+    const hiddenParentPath = await createWorkspaceDirectory(
+      ".content-collections-parent-",
+    );
+    const workspacePath = join(hiddenParentPath, "workspace");
+    await fs.mkdir(workspacePath, { recursive: true });
+    await use(workspacePath);
+    await removeWorkspaceDirectory(hiddenParentPath);
   },
   workspaceBuilder: async ({ workspacePath, emitter }, use) => {
     await use(workspaceBuilder(workspacePath, emitter));

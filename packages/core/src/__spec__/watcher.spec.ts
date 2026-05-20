@@ -1,8 +1,8 @@
-import { Watcher } from "src/watcher";
+import type { Watcher } from "src/watcher";
 import { afterEach, describe, expect, vi } from "vitest";
 import { z } from "zod";
 import { defineCollection, defineConfig, defineSingleton } from "../config";
-import { workspaceTest } from "./workspace";
+import { hiddenWorkspaceTest, workspaceTest } from "./workspace";
 
 let watcher: Watcher | undefined = undefined;
 
@@ -383,6 +383,119 @@ describe(
           "Inception",
           "Interstellar",
         ]);
+      },
+    );
+  },
+);
+
+describe(
+  "collection file changes in hidden parent directories",
+  {
+    retry: 3,
+    timeout: 20000,
+  },
+  () => {
+    hiddenWorkspaceTest(
+      "should update existing file in collection",
+      async ({ workspaceBuilder }) => {
+        const pages = defineCollection({
+          name: "pages",
+          directory: "sources/pages",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            title: z.string(),
+          }),
+        });
+
+        const config = defineConfig({
+          content: [pages],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/pages/index.json",
+          `{
+        "title": "Before"
+      }`,
+        );
+
+        const { collection } = await workspace.build();
+
+        let allPages = await collection("pages");
+        expect(allPages.map((page) => page.title)).toEqual(["Before"]);
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/pages/index.json").write(
+          `{
+        "title": "After"
+      }`,
+        );
+
+        allPages = await vi.waitFor(async () => {
+          const col = await collection("pages");
+          expect(col.map((page) => page.title)).toEqual(["After"]);
+          return col;
+        }, 5000);
+
+        expect(allPages.map((page) => page.title)).toEqual(["After"]);
+      },
+    );
+  },
+);
+
+describe(
+  "collection file changes in node_modules directories",
+  {
+    retry: 3,
+    timeout: 20000,
+  },
+  () => {
+    workspaceTest(
+      "should ignore updates in node_modules",
+      async ({ workspaceBuilder }) => {
+        const packages = defineCollection({
+          name: "packages",
+          directory: "sources/node_modules/packages",
+          include: "*.json",
+          parser: "json",
+          schema: z.object({
+            name: z.string(),
+          }),
+        });
+
+        const config = defineConfig({
+          content: [packages],
+        });
+
+        const workspace = workspaceBuilder(config);
+
+        workspace.file(
+          "sources/node_modules/packages/one.json",
+          `{
+        "name": "One"
+      }`,
+        );
+
+        const { collection } = await workspace.build();
+
+        let allPackages = await collection("packages");
+        expect(allPackages.map((pkg) => pkg.name)).toEqual(["One"]);
+
+        watcher = await workspace.watch();
+
+        await workspace.path("sources/node_modules/packages/two.json").write(
+          `{
+        "name": "Two"
+      }`,
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        allPackages = await collection("packages");
+        expect(allPackages.map((pkg) => pkg.name)).toEqual(["One"]);
       },
     );
   },

@@ -2,7 +2,7 @@ import chokidar from "chokidar";
 import path, { dirname, resolve } from "node:path";
 import { Emitter } from "./events";
 import { Modification } from "./types";
-import { isDefined, removeChildPaths, toError } from "./utils";
+import { removeChildPaths, toError } from "./utils";
 import { isSingleton } from "./config";
 
 export type WatcherEvents = {
@@ -47,11 +47,37 @@ export async function createWatcher(
     ...configuration.inputPaths.map((p) => dirname(p)),
   ]);
 
+  function isInsideWatchPath(filePath: string, watchPath: string) {
+    const relativePath = path.relative(watchPath, filePath);
+
+    return (
+      relativePath !== "" &&
+      !relativePath.startsWith("..") &&
+      !path.isAbsolute(relativePath)
+    );
+  }
+
+  function isHiddenInWatchedTree(filePath: string) {
+    return paths.some((watchPath) => {
+      if (!isInsideWatchPath(filePath, watchPath)) {
+        return false;
+      }
+
+      const relativePath = path.relative(watchPath, filePath);
+      return /(^|[\/\\])\./.test(relativePath);
+    });
+  }
+
   const watcher = chokidar.watch(paths, {
-    ignored: [
-      /(^|[\/\\])\../, // ignore dotfiles
-      /(^|[\/\\])node_modules([\/\\]|$)/, // ignore node_modules
-    ],
+    ignored: (filePath) => {
+      const absolutePath = resolve(filePath);
+
+      if (/(^|[\/\\])node_modules([\/\\]|$)/.test(absolutePath)) {
+        return true;
+      }
+
+      return isHiddenInWatchedTree(absolutePath);
+    },
     persistent: true,
     ignoreInitial: true, // ignore initial add events
   });
