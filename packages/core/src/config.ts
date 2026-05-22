@@ -239,13 +239,11 @@ type ResolveImports<TTransformResult> =
       ? Array<ResolveImports<U>>
       : TTransformResult extends (...args: any[]) => any
         ? TTransformResult
-        : TTransformResult extends object
-          ? {
-              [K in keyof TTransformResult]: ResolveImports<
-                TTransformResult[K]
-              >;
-            }
-          : TTransformResult;
+        : TTransformResult extends (Date | RegExp | Map<any, any> | Set<any> | WeakMap<any, any> | WeakSet<any> | Promise<any>)
+         ? TTransformResult
+         : TTransformResult extends object
+           ? { [K in keyof TTransformResult]: ResolveImports<TTransformResult[K]> }
+           : TTransformResult;
 
 export function defineCollection<
   TName extends string,
