@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.15.1
+
+### Patch Changes
+
+- [`ff55570`](https://github.com/sdorra/content-collections/commit/ff555701ade36475c81e09bae5c4884078e2a9eb) Thanks [@sebastienbarre](https://github.com/sebastienbarre)! - Fix preserve built-in object types in ResolveImports (#769).
+
+- [#767](https://github.com/sdorra/content-collections/pull/767) [`faced7b`](https://github.com/sdorra/content-collections/commit/faced7b01ad2932ce4dcdef921d09b64f106829e) Thanks [@sdorra](https://github.com/sdorra)! - Ignore hidden files only within watched trees
+
 ## 0.15.0
 
 ### Minor Changes
