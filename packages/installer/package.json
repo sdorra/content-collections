@@ -37,7 +37,7 @@
     "tsdown": "^0.15.12",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
-    "vitest": "^4.0.6",
+    "vitest": "^4.1.0",
     "zod": "^3.24.4"
   },
   "dependencies": {
