@@ -50,7 +50,7 @@
   "dependencies": {
     "@standard-schema/spec": "^1.0.0",
     "camelcase": "^8.0.0",
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "esbuild": "^0.25.11",
     "gray-matter": "^4.0.3",
     "p-limit": "^6.1.0",
