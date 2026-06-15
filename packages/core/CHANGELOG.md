@@ -1,5 +1,13 @@
 # @content-collections/core
 
+## 0.15.2
+
+### Patch Changes
+
+- [`407238f`](https://github.com/sdorra/content-collections/commit/407238f1cd8ea4d4c0117a44b6001761431b0cf5) Thanks [@sdorra](https://github.com/sdorra)! - Allow TypeScript 7 as peer dependency (#776).
+
+- [#775](https://github.com/sdorra/content-collections/pull/775) [`493c548`](https://github.com/sdorra/content-collections/commit/493c5488fc181d08ef435d2e8e9036d008b49ea0) Thanks [@jeremy-code](https://github.com/jeremy-code)! - Fix installation with pnpm and trust policy no-downgrade
+
 ## 0.15.1
 
 ### Patch Changes
