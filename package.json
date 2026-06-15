@@ -26,7 +26,7 @@
     "@changesets/cli": "^2.27.5",
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
-    "@playwright/test": "^1.47.0",
+    "@playwright/test": "^1.61.0",
     "husky": "^9.0.11",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
