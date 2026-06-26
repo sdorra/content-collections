@@ -44,7 +44,7 @@
     "bundle-require": "^5.0.0",
     "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
-    "vitest": "^4.0.6",
+    "vitest": "^4.1.0",
     "zod": "^4.1.11"
   },
   "dependencies": {
