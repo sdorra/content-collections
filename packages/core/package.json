@@ -52,7 +52,7 @@
     "camelcase": "^8.0.0",
     "chokidar": "^5.0.0",
     "esbuild": "^0.25.11",
-    "gray-matter": "^4.0.3",
+    "@11ty/gray-matter": "^3.0.0",
     "p-limit": "^6.1.0",
     "picomatch": "^4.0.4",
     "pluralize": "^8.0.0",
