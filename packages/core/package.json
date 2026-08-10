@@ -37,27 +37,27 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
-    "@types/picomatch": "^3.0.1",
+    "@types/picomatch": "^3.0.2",
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
     "@vitest/coverage-v8": "^4.0.6",
-    "bundle-require": "^5.0.0",
+    "bundle-require": "^5.1.0",
     "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
     "vitest": "^4.0.6",
     "zod": "^4.1.11"
   },
   "dependencies": {
-    "@standard-schema/spec": "^1.0.0",
+    "@11ty/gray-matter": "^3.0.0",
+    "@standard-schema/spec": "^1.1.0",
     "camelcase": "^8.0.0",
     "chokidar": "^5.0.0",
     "esbuild": "^0.25.11",
-    "@11ty/gray-matter": "^3.0.0",
-    "p-limit": "^6.1.0",
-    "picomatch": "^4.0.4",
+    "p-limit": "^6.2.0",
+    "picomatch": "^4.0.5",
     "pluralize": "^8.0.0",
-    "serialize-javascript": "^7.0.5",
-    "tinyglobby": "^0.2.5",
-    "yaml": "^2.8.3"
+    "serialize-javascript": "^7.1.0",
+    "tinyglobby": "^0.2.17",
+    "yaml": "^2.9.0"
   }
 }
