@@ -11,7 +11,7 @@
   "dependencies": {
     "@content-collections/cli": "0.1.9",
     "@content-collections/core": "0.15.2",
-    "valibot": "^1.2.0"
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@types/node": "20",
