@@ -409,6 +409,9 @@ importers:
       vite:
         specifier: ^6.4.2
         version: 6.4.2(@types/node@20.14.9)(jiti@2.6.1)(terser@5.31.0)(tsx@4.19.2)(yaml@2.9.0)
+      vitest:
+        specifier: ^4.0.6
+        version: 4.0.6(@types/debug@4.1.12)(@types/node@20.14.9)(happy-dom@20.8.9)(jiti@2.6.1)(terser@5.31.0)(tsx@4.19.2)(yaml@2.9.0)
 
   samples/arktype:
     dependencies:
