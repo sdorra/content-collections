@@ -33,11 +33,11 @@
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
     "@types/node": "^20.14.9",
-    "@vitest/coverage-v8": "^4.0.6",
+    "@vitest/coverage-v8": "^4.1.11",
     "tsdown": "^0.15.12",
     "tsx": "^4.1.1",
     "typescript": "^5.5.4",
-    "vitest": "^4.0.6",
+    "vitest": "^4.1.11",
     "zod": "^3.24.4"
   },
   "dependencies": {

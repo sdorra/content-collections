@@ -40,11 +40,11 @@
     "@types/picomatch": "^3.0.2",
     "@types/pluralize": "^0.0.33",
     "@types/serialize-javascript": "^5.0.4",
-    "@vitest/coverage-v8": "^4.0.6",
+    "@vitest/coverage-v8": "^4.1.11",
     "bundle-require": "^5.1.0",
     "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
-    "vitest": "^4.0.6",
+    "vitest": "^4.1.11",
     "zod": "^4.1.11"
   },
   "dependencies": {
