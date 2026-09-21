@@ -22,7 +22,8 @@
     }
   },
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts -d dist"
+    "build": "tsdown src/index.ts --format esm --dts -d dist",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@content-collections/integrations": "workspace:*"
@@ -32,7 +33,8 @@
     "@types/node": "20.x",
     "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
-    "vite": "^6.4.2"
+    "vite": "^6.4.2",
+    "vitest": "^4.0.6"
   },
   "peerDependencies": {
     "@content-collections/core": "^0.x",

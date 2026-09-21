@@ -20,12 +20,15 @@ function resolveConfigPath(root: string, configPath: string) {
   return configPath;
 }
 
+type WatcherSubscription = Awaited<ReturnType<Builder["watch"]>>;
+
 export default function contentCollectionsPlugin(
   options: Partial<Options> = {},
 ): Plugin {
   const pluginOptions = { ...defaultOptions, ...options };
 
   let builder: Builder;
+  let watcherSubscription: WatcherSubscription | undefined;
 
   function isEnabled(config: UserConfig) {
     return options.isEnabled ? options.isEnabled(config) : true;
@@ -115,7 +118,14 @@ export default function contentCollectionsPlugin(
         return;
       }
       console.log("Start watching");
-      builder.watch();
+      watcherSubscription = await builder.watch();
+      return;
+    },
+
+    async closeBundle() {
+      const subscription = watcherSubscription;
+      watcherSubscription = undefined;
+      await subscription?.unsubscribe();
       return;
     },
   };
