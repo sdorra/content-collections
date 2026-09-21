@@ -1,5 +1,14 @@
 # @content-collections/vite
 
+## 0.3.1
+
+### Patch Changes
+
+- [#807](https://github.com/sdorra/content-collections/pull/807) [`e0574ed`](https://github.com/sdorra/content-collections/commit/e0574ed8324b96ecbcc0b6b473c96ef6db86860e) Thanks [@sdorra](https://github.com/sdorra)! - Stop the content watcher when the Vite server closes
+
+- Updated dependencies []:
+  - @content-collections/integrations@0.5.0
+
 ## 0.3.0
 
 ### Minor Changes
