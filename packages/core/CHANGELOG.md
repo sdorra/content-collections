@@ -1,5 +1,11 @@
 # @content-collections/core
 
+## 0.15.3
+
+### Patch Changes
+
+- [`8691108`](https://github.com/sdorra/content-collections/commit/8691108c8bc87162b9469630e15bfefb5dc4070a) Thanks [@sdorra](https://github.com/sdorra)! - Replace gray-matter with @11ty/gray-matter, see issue #798
+
 ## 0.15.2
 
 ### Patch Changes
