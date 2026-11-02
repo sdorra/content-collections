@@ -31,6 +31,6 @@
     "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
-    "zod": "^3.24.4"
+    "zod": "^4.6.6"
   }
 }
