@@ -20,7 +20,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.13.1",
-    "zod": "^3.24.4"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@react-router/dev": "^7.13.1",
