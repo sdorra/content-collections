@@ -7,4 +7,5 @@ packages:
 linkWorkspacePackages: true
 
 onlyBuiltDependencies:
+  - esbuild
   - workerd
