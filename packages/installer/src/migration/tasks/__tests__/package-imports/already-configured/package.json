@@ -1,0 +1,10 @@
+{
+	"name": "already-configured",
+	"type": "module",
+	"imports": {
+		"#content-collections": "./.content-collections/generated/index.js"
+	},
+	"devDependencies": {
+		"@sveltejs/kit": "^3.0.0"
+	}
+}
