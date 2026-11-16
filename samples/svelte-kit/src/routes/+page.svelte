@@ -1,5 +1,5 @@
 <script>
-  import { allCharacters } from "content-collections";
+  import { allCharacters } from "#content-collections";
 </script>
 
 <h1>Characters</h1>
