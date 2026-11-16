@@ -24,7 +24,23 @@ npm i @content-collections/core @content-collections/vite zod -D
 </div>
 <div className="step">
 
-Adjust your `svelte.config.js`:
+Add a [subpath import](https://nodejs.org/api/packages.html#subpath-imports) to your `package.json`:
+
+```json
+{
+  "imports": {
+    "#content-collections": "./.content-collections/generated/index.js"
+  }
+}
+```
+
+We require a path alias for the generated files.
+This is necessary because we will generate the files in the `.content-collections/generated` folder.
+
+<Callout title="SvelteKit 2">
+
+SvelteKit 3 [no longer reads `svelte.config.js`](https://svelte.dev/docs/kit/migrating-to-sveltekit-3#Configuration-svelte.config.js-is-no-longer-supported) and [deprecates the `alias` option](https://svelte.dev/docs/kit/configuration#alias).
+If you are still on SvelteKit 2, you can add the alias to `kit.alias` in your `svelte.config.js` instead and import from `content-collections`:
 
 ```js
 const config = {
@@ -38,8 +54,7 @@ const config = {
 };
 ```
 
-We require a path alias for the generated files.
-This is necessary because we will generate the files in the `.content-collections/generated` folder.
+</Callout>
 
 </div>
 <div className="step">
@@ -130,12 +145,12 @@ If the files are valid, they will be automatically added to the `posts` collecti
 
 ### Showing Document List (Posts)
 
-To generate a list of posts create in a `src/posts` directory two files.
+To generate a list of posts create in a `src/routes/posts` directory two files.
 
 `+page.ts` file
 ```typescript
 import type { PageLoad } from './$types';
-import { allPosts } from 'content-collections';
+import { allPosts } from '#content-collections';
 
 export const load: PageLoad = async () => {
   // Fetch all posts from the content collection and filter or sort (optional)
@@ -171,13 +186,13 @@ The `allPosts` collection will contain all posts that are valid.
 The `post` object will contain the `slug`, `title`, `summary` and `content` fields as well as some meta information in the `_meta` field.
 
 ## Showing Document Entry (Post)
-For showing a single post create two files in `src/posts/[...slug]`.
+For showing a single post create two files in `src/routes/posts/[slug]`.
 
 `+page.ts` file
 ```typescript
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import { allPosts } from 'content-collections';
+import { allPosts } from '#content-collections';
 
 export const load: PageLoad = async ({ params }) => {
   const post = allPosts.find((post) => post.slug == params.slug);

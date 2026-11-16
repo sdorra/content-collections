@@ -8,18 +8,21 @@
     "lint": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test": "playwright test"
   },
+  "imports": {
+    "#content-collections": "./.content-collections/generated/index.js"
+  },
   "devDependencies": {
     "@content-collections/core": "0.15.3",
     "@content-collections/markdown": "0.1.4",
     "@content-collections/vite": "0.3.1",
-    "@sveltejs/adapter-auto": "^7.0.1",
-    "@sveltejs/kit": "^2.57.1",
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
-    "svelte": "^5.53.5",
+    "@sveltejs/adapter-auto": "^8.0.1",
+    "@sveltejs/kit": "^3.2.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte": "^5.57.1",
     "svelte-check": "^4.4.4",
     "tslib": "^2.8.1",
-    "typescript": "^5.5.4",
-    "vite": "^7.3.1"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.12"
   },
   "dependencies": {
     "zod": "^3.24.4"

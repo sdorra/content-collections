@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { PackageJson } from "src/packageJson.js";
 import { describe, expect, it } from "vitest";
 import { migratorSvelteKit } from "./sveltekit.js";
@@ -5,7 +6,19 @@ import { migratorSvelteKit } from "./sveltekit.js";
 describe("sveltekit migrator", () => {
   const packageJson: PackageJson = {
     name: "something",
+    devDependencies: {
+      "@sveltejs/kit": "^2.5.18",
+    },
   };
+
+  // a directory with a svelte.config.js
+  const directory = join(
+    __dirname,
+    "tasks",
+    "__tests__",
+    "svelte-config",
+    "simple",
+  );
 
   describe("isResponsible", () => {
     it("should be responsible for sveltekit", () => {
@@ -50,7 +63,7 @@ describe("sveltekit migrator", () => {
     it("should return tasks without demo content", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
-          directory: "directory",
+          directory,
           packageJson,
         },
         {
@@ -71,7 +84,7 @@ describe("sveltekit migrator", () => {
     it("should return tasks with demo content", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
-          directory: "directory",
+          directory,
           packageJson,
         },
         {
@@ -93,7 +106,7 @@ describe("sveltekit migrator", () => {
     it("should add markdown package with markdown demo content", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
-          directory: "directory",
+          directory,
           packageJson,
         },
         {
@@ -116,7 +129,7 @@ describe("sveltekit migrator", () => {
     it("should not add markdown package without demo content", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
-          directory: "directory",
+          directory,
           packageJson,
         },
         {
@@ -139,7 +152,7 @@ describe("sveltekit migrator", () => {
     it("should add core, vite and zod packages", async () => {
       const migration = await migratorSvelteKit.createMigration(
         {
-          directory: "directory",
+          directory,
           packageJson,
         },
         {
@@ -159,6 +172,48 @@ describe("sveltekit migrator", () => {
       expect(dependencies).toContain("@content-collections/core");
       expect(dependencies).toContain("@content-collections/vite");
       expect(dependencies).toContain("zod");
+    });
+
+    it("should add a subpath import instead of an alias for sveltekit 3", async () => {
+      const migration = await migratorSvelteKit.createMigration(
+        {
+          directory,
+          packageJson: {
+            name: "something",
+            devDependencies: {
+              "@sveltejs/kit": "^3.0.0",
+            },
+          },
+        },
+        {
+          demoContent: "none",
+        },
+      );
+
+      const names = migration.map((task) => task.name);
+      expect(names).toEqual([
+        "Install dependencies",
+        "Add subpath import to package.json",
+        "Modify vite configuration",
+        "Add .content-collections to .gitignore",
+        "Create configuration file",
+      ]);
+    });
+
+    it("should add a subpath import without a svelte.config.js", async () => {
+      const migration = await migratorSvelteKit.createMigration(
+        {
+          directory: "directory",
+          packageJson,
+        },
+        {
+          demoContent: "none",
+        },
+      );
+
+      const names = migration.map((task) => task.name);
+      expect(names).toContain("Add subpath import to package.json");
+      expect(names).not.toContain("Modify svelte-kit configuration");
     });
   });
 });

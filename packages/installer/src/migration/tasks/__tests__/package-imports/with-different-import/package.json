@@ -1,0 +1,10 @@
+{
+	"name": "with-different-import",
+	"type": "module",
+	"imports": {
+		"#content-collections": "./src/content.js"
+	},
+	"devDependencies": {
+		"@sveltejs/kit": "^3.0.0"
+	}
+}

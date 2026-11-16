@@ -1,0 +1,7 @@
+{
+	"name": "simple",
+	"type": "module",
+	"devDependencies": {
+		"@sveltejs/kit": "^3.0.0"
+	}
+}

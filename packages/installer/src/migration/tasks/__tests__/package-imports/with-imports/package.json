@@ -1,0 +1,10 @@
+{
+	"name": "with-imports",
+	"type": "module",
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
+	"devDependencies": {
+		"@sveltejs/kit": "^3.0.0"
+	}
+}
