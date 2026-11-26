@@ -28,7 +28,7 @@
     "shiki-magic-move": "^1.2.1",
     "tailwind-merge": "^2.5.2",
     "typewriter-effect": "^2.21.0",
-    "zod": "^4.1.11"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@content-collections/core": "workspace:*",
