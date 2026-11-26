@@ -45,7 +45,7 @@
     "tsdown": "^0.15.12",
     "typescript": "^5.5.4",
     "vitest": "^4.1.11",
-    "zod": "^4.1.11"
+    "zod": "^4.6.6"
   },
   "dependencies": {
     "@11ty/gray-matter": "^3.0.0",
