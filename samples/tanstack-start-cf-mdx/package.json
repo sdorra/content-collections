@@ -13,28 +13,28 @@
   },
   "dependencies": {
     "@content-collections/sample-theme": "0.1.0",
-    "@mdx-js/rollup": "^3.1.0",
-    "@tanstack/react-router": "^1.168.22",
-    "@tanstack/react-start": "^1.167.41",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "zod": "^3.24.4"
+    "@mdx-js/rollup": "^3.1.1",
+    "@tanstack/react-router": "^1.170.46",
+    "@tanstack/react-start": "^1.169.7",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.32.3",
+    "@cloudflare/vite-plugin": "^1.70.2",
     "@content-collections/core": "0.15.3",
     "@content-collections/vite": "0.3.1",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "^22.19.13",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^5.1.4",
-    "@vitejs/plugin-rsc": "^0.5.24",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^22.20.7",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-rsc": "^0.5.39",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
     "typescript": "^5.7.2",
-    "vite": "^7.3.1",
+    "vite": "^8.3.8",
     "vite-tsconfig-paths": "^6.1.1",
-    "wrangler": "^4.83.0"
+    "wrangler": "^4.168.0"
   }
 }

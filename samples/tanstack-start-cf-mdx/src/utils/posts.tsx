@@ -4,7 +4,7 @@ import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { allPosts } from "content-collections";
 
 const getPostBySlugServerFn = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const post = allPosts.find((post) => post.slug === slug);
     if (!post) {
