@@ -7,16 +7,16 @@ import rsc from "@vitejs/plugin-rsc";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   server: {
     port: 5184,
   },
   resolve: {
+    tsconfigPaths: true,
     alias: {
       "~": "/src",
-    }
+    },
   },
   plugins: [
     {
@@ -27,9 +27,6 @@ export default defineConfig({
     },
     contentCollections({
       environment: "ssr",
-    }),
-    tsConfigPaths({
-      projects: ["./tsconfig.json"],
     }),
     tanstackStart({
       rsc: {

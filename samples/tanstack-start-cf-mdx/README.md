@@ -26,7 +26,7 @@ We have to set up MDX rendering in Vite and we have to remove the frontmatter.
 The MDX plugin must be enforced as a pre-plugin in order to ensure it runs before the React plugin.
 To remove the frontmatter, we use the `remark-frontmatter` and `remark-mdx-frontmatter` remark plugins.
 We also have to inform the React plugin about the MDX file extension.
-If we want to use a TypeScript path alias for our MDX files, we have to add a Vite resolve alias as well (I don't know why the vite-tsconfig-paths does not work in this case).
+If we want to use a TypeScript path alias for our MDX files, we have to add a Vite resolve alias as well (Vite's `resolve.tsconfigPaths` does not apply to the generated content-collections files).
 A complete `vite.config.ts` could look like the following:
 
 ```ts
@@ -37,14 +37,14 @@ import react from "@vitejs/plugin-react";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
   resolve: {
+    tsconfigPaths: true,
     alias: {
       "~": "/src",
-    }
+    },
   },
   plugins: [
     {
@@ -54,9 +54,6 @@ export default defineConfig({
       }),
     },
     contentCollections(),
-    tsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
     tanstackStart(),
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     cloudflare({
