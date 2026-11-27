@@ -1,7 +1,7 @@
 import { Builder, createBuilder } from "@content-collections/core";
 import { configureLogging } from "@content-collections/integrations";
 import path from "node:path";
-import type { Plugin, UserConfig } from "vite";
+import type { Logger, Plugin, UserConfig } from "vite";
 
 export type Options = {
   configPath: string;
@@ -28,6 +28,7 @@ export default function contentCollectionsPlugin(
   const pluginOptions = { ...defaultOptions, ...options };
 
   let builder: Builder;
+  let logger: Logger | undefined;
   let watcherSubscription: WatcherSubscription | undefined;
 
   function isEnabled(config: UserConfig) {
@@ -91,10 +92,13 @@ export default function contentCollectionsPlugin(
       if (!isEnabled(config)) {
         return;
       }
+      // configResolved is called with `this: void`,
+      // so we have to use the logger of the resolved config
+      logger = config.logger;
       let configPath = resolveConfigPath(config.root, pluginOptions.configPath);
-      console.log(
-        "Starting content-collections with config",
-        path.relative(process.cwd(), configPath),
+      logger?.info(
+        `Starting content-collections with config ${path.relative(process.cwd(), configPath)}`,
+        { timestamp: true },
       );
 
       builder = await createBuilder(configPath);
@@ -108,7 +112,7 @@ export default function contentCollectionsPlugin(
         return;
       }
 
-      console.log("Start initial build");
+      logger?.info("Start initial build", { timestamp: true });
       await builder.build();
       return;
     },
@@ -117,7 +121,7 @@ export default function contentCollectionsPlugin(
       if (!builder) {
         return;
       }
-      console.log("Start watching");
+      logger?.info("Start watching", { timestamp: true });
       watcherSubscription = await builder.watch();
       return;
     },
