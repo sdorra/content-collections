@@ -29,13 +29,11 @@ type WatcherConfiguration = {
   collections: Array<WatchableCollection | { filePath: string }>;
 };
 
-export async function createWatcher(
-  emitter: Emitter,
+export function resolveWatchPaths(
   baseDirectory: string,
   configuration: WatcherConfiguration,
-  sync: SyncFn,
 ) {
-  const paths = removeChildPaths([
+  return removeChildPaths([
     ...configuration.collections
       .map((collection) => {
         const directory = isSingleton(collection as any)
@@ -46,6 +44,15 @@ export async function createWatcher(
       .map((p) => resolve(p)),
     ...configuration.inputPaths.map((p) => dirname(p)),
   ]);
+}
+
+export async function createWatcher(
+  emitter: Emitter,
+  baseDirectory: string,
+  configuration: WatcherConfiguration,
+  sync: SyncFn,
+) {
+  const paths = resolveWatchPaths(baseDirectory, configuration);
 
   function isInsideWatchPath(filePath: string, watchPath: string) {
     const relativePath = path.relative(watchPath, filePath);
