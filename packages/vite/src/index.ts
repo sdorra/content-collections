@@ -1,4 +1,8 @@
-import { Builder, createBuilder } from "@content-collections/core";
+import {
+  Builder,
+  createBuilder,
+  type Modification,
+} from "@content-collections/core";
 import { configureLogging } from "@content-collections/integrations";
 import path from "node:path";
 import type { Plugin, UserConfig } from "vite";
@@ -20,15 +24,12 @@ function resolveConfigPath(root: string, configPath: string) {
   return configPath;
 }
 
-type WatcherSubscription = Awaited<ReturnType<Builder["watch"]>>;
-
 export default function contentCollectionsPlugin(
   options: Partial<Options> = {},
 ): Plugin {
   const pluginOptions = { ...defaultOptions, ...options };
 
   let builder: Builder;
-  let watcherSubscription: WatcherSubscription | undefined;
 
   function isEnabled(config: UserConfig) {
     return options.isEnabled ? options.isEnabled(config) : true;
@@ -113,20 +114,46 @@ export default function contentCollectionsPlugin(
       return;
     },
 
-    async configureServer() {
+    configureServer(server) {
       if (!builder) {
         return;
       }
-      console.log("Start watching");
-      watcherSubscription = await builder.watch();
-      return;
-    },
 
-    async closeBundle() {
-      const subscription = watcherSubscription;
-      watcherSubscription = undefined;
-      await subscription?.unsubscribe();
-      return;
+      console.log("Start watching");
+      const addedPaths = new Set<string>();
+
+      const watchCollectionPaths = () => {
+        const paths = builder.watchPaths().filter((watchPath) => {
+          const relativePath = path.relative(server.config.root, watchPath);
+          const insideRoot =
+            !relativePath.startsWith("..") && !path.isAbsolute(relativePath);
+
+          return !insideRoot && !addedPaths.has(watchPath);
+        });
+
+        if (paths.length > 0) {
+          paths.forEach((watchPath) => addedPaths.add(watchPath));
+          server.watcher.add(paths);
+        }
+      };
+
+      watchCollectionPaths();
+
+      const sync = (modification: Modification) => async (filePath: string) => {
+        try {
+          if (await builder.sync(modification, filePath)) {
+            watchCollectionPaths();
+          }
+        } catch (error) {
+          server.config.logger.error(
+            `content-collections: failed to sync ${filePath}: ${error}`,
+          );
+        }
+      };
+
+      server.watcher.on("add", sync("create"));
+      server.watcher.on("change", sync("update"));
+      server.watcher.on("unlink", sync("delete"));
     },
   };
 }
