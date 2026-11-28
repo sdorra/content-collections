@@ -8,7 +8,7 @@ import {
 } from "./configurationReader";
 import { type Emitter, createEmitter } from "./events";
 import { Modification } from "./types";
-import { createWatcher, Watcher } from "./watcher";
+import { createWatcher, resolveWatchPaths, Watcher } from "./watcher";
 
 // TODO: get rid of namespaces at all
 export type BuilderEvents = BuildEvents & {
@@ -190,6 +190,7 @@ export async function createInternalBuilder(
     build: () => build(context),
     sync,
     watch,
+    watchPaths: () => resolveWatchPaths(baseDirectory, configuration),
     on: emitter.on,
   };
 }
